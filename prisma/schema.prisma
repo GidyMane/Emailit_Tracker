@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Client {
+  id             String   @id @default(uuid())
+  name           String
+  email          String   @unique
+  companyName    String?
+  approved       Boolean  @default(false)
+  kindeId        String?  @unique
+  domain         String   @unique
+  verified       Boolean  @default(false)
+
+  emails         Email[]
+  events         EmailEvent[]
+  summary        SummaryStats?
+  webhookLogs    WebhookLog[]
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Email {
+  id          String       @id @default(uuid())
+  messageId   String       @unique
+  subject     String
+  from        String
+  to          String
+  body        String?
+  status      String       @default("sent")
+
+  token       String?
+  metadata    Json?        // Optional extra payload from Emailit
+  clientId    String
+  client      Client       @relation(fields: [clientId], references: [id])
+
+  events      EmailEvent[]
+
+  createdAt   DateTime     @default(now())
+}
+
+model EmailEvent {
+  id          String       @id @default(uuid())
+  type        String       // open | click | bounce | delivered etc.
+  timestamp   Float
+  userAgent   String?
+  ipAddress   String?
+  country     String?
+  city        String?
+
+  emailId     String
+  email       Email        @relation(fields: [emailId], references: [id])
+
+  clientId    String
+  client      Client       @relation(fields: [clientId], references: [id])
+
+  createdAt   DateTime     @default(now())
+
+  @@unique([emailId, type, timestamp]) // Prevent duplicate event records
+}
+
+model SummaryStats {
+  id              String   @id @default(uuid())
+  clientId        String   @unique
+  client          Client   @relation(fields: [clientId], references: [id])
+
+  totalSent       Int      @default(0)
+  totalDelivered  Int      @default(0)
+  totalOpened     Int      @default(0)
+  totalBounced    Int      @default(0)
+  totalClicked    Int      @default(0)
+
+  updatedAt       DateTime @updatedAt
+}
+
+model WebhookLog {
+  id          String   @id @default(uuid())
+  clientId    String
+  client      Client   @relation(fields: [clientId], references: [id])
+
+  payload     Json
+  eventType   String?      // Optional: open, click, etc.
+  status      String       // processed | failed | ignored
+  error       String?      // Error message if failed
+  receivedAt  DateTime     @default(now())
+}
