@@ -2,6 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
+type WebhookEventType =
+  | "email.delivery.sent"
+  | "email.delivery.hardfail"
+  | "email.delivery.softfail"
+  | "email.delivery.bounce"
+  | "email.delivery.error"
+  | "email.delivery.held"
+  | "email.delivery.delayed";
+
 export async function POST(req: NextRequest) {
   try {
     const payload = await req.json();
@@ -9,7 +18,7 @@ export async function POST(req: NextRequest) {
     const EmailitPayloadSchema = z.object({
       webhook_request_id: z.string(),
       event_id: z.string(),
-      type: z.string(),
+      type: z.custom<WebhookEventType>(),
       object: z.object({
         email: z.object({
           id: z.number(),
@@ -74,9 +83,22 @@ export async function POST(req: NextRequest) {
     });
 
     // Update or create the summary stats
-    const incrementData: any = { totalSent: { increment: 1 } };
-    if (parsed.type.includes("delivered")) incrementData.totalDelivered = { increment: 1 };
-    if (parsed.type.includes("failed")) incrementData.totalFailed = { increment: 1 };
+    const incrementData: Record<string, { increment: number }> = {
+      totalSent: { increment: 1 },
+    };
+
+    if (parsed.type.includes("delivered")) {
+      incrementData.totalDelivered = { increment: 1 };
+    }
+
+    if (
+      parsed.type.includes("hardfail") ||
+      parsed.type.includes("softfail") ||
+      parsed.type.includes("bounce") ||
+      parsed.type.includes("error")
+    ) {
+      incrementData.totalFailed = { increment: 1 };
+    }
 
     await prisma.emailSummary.upsert({
       where: { domainId: domain.id },
@@ -85,7 +107,13 @@ export async function POST(req: NextRequest) {
         domainId: domain.id,
         totalSent: 1,
         totalDelivered: parsed.type.includes("delivered") ? 1 : 0,
-        totalFailed: parsed.type.includes("failed") ? 1 : 0,
+        totalFailed:
+          parsed.type.includes("hardfail") ||
+          parsed.type.includes("softfail") ||
+          parsed.type.includes("bounce") ||
+          parsed.type.includes("error")
+            ? 1
+            : 0,
       },
     });
 
