@@ -2,15 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
-type WebhookEventType =
-  | "email.delivery.sent"
-  | "email.delivery.hardfail"
-  | "email.delivery.softfail"
-  | "email.delivery.bounce"
-  | "email.delivery.error"
-  | "email.delivery.held"
-  | "email.delivery.delayed";
-
 export async function POST(req: NextRequest) {
   try {
     const payload = await req.json();
@@ -18,7 +9,7 @@ export async function POST(req: NextRequest) {
     const EmailitPayloadSchema = z.object({
       webhook_request_id: z.string(),
       event_id: z.string(),
-      type: z.custom<WebhookEventType>(),
+      type: z.string(),
       object: z.object({
         email: z.object({
           id: z.number(),
@@ -83,21 +74,42 @@ export async function POST(req: NextRequest) {
     });
 
     // Update or create the summary stats
-    const incrementData: Record<string, { increment: number }> = {
-      totalSent: { increment: 1 },
-    };
+    const incrementData: {
+      totalSent?: { increment: number };
+      totalDelivered?: { increment: number };
+      totalFailed?: { increment: number };
+    } = {};
 
-    if (parsed.type.includes("delivered")) {
-      incrementData.totalDelivered = { increment: 1 };
-    }
+    // Only increment totalSent for delivery events
+    const deliveryEvents = [
+      "email.delivery.sent",
+      "email.delivery.hardfail",
+      "email.delivery.softfail",
+      "email.delivery.bounce",
+      "email.delivery.error",
+      "email.delivery.held",
+      "email.delivery.delayed",
+    ];
 
-    if (
-      parsed.type.includes("hardfail") ||
-      parsed.type.includes("softfail") ||
-      parsed.type.includes("bounce") ||
-      parsed.type.includes("error")
-    ) {
-      incrementData.totalFailed = { increment: 1 };
+    if (deliveryEvents.includes(parsed.type)) {
+      incrementData.totalSent = { increment: 1 };
+
+      if (
+        parsed.type === "email.delivery.sent"
+      ) {
+        incrementData.totalDelivered = { increment: 1 };
+      }
+
+      if (
+        [
+          "email.delivery.hardfail",
+          "email.delivery.softfail",
+          "email.delivery.bounce",
+          "email.delivery.error",
+        ].includes(parsed.type)
+      ) {
+        incrementData.totalFailed = { increment: 1 };
+      }
     }
 
     await prisma.emailSummary.upsert({
@@ -105,21 +117,25 @@ export async function POST(req: NextRequest) {
       update: incrementData,
       create: {
         domainId: domain.id,
-        totalSent: 1,
-        totalDelivered: parsed.type.includes("delivered") ? 1 : 0,
-        totalFailed:
-          parsed.type.includes("hardfail") ||
-          parsed.type.includes("softfail") ||
-          parsed.type.includes("bounce") ||
-          parsed.type.includes("error")
-            ? 1
-            : 0,
+        totalSent: deliveryEvents.includes(parsed.type) ? 1 : 0,
+        totalDelivered: parsed.type === "email.delivery.sent" ? 1 : 0,
+        totalFailed: [
+          "email.delivery.hardfail",
+          "email.delivery.softfail",
+          "email.delivery.bounce",
+          "email.delivery.error",
+        ].includes(parsed.type)
+          ? 1
+          : 0,
       },
     });
 
     return NextResponse.json({ message: "Event stored successfully" });
   } catch (err) {
     console.error("Webhook error:", err);
-    return NextResponse.json({ error: "Webhook processing failed" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Webhook processing failed" },
+      { status: 500 }
+    );
   }
 }

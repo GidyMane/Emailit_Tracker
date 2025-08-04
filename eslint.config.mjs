@@ -10,7 +10,7 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  // ✅ Ignore generated folder
+
   {
     ignores: ["src/generated/**"],
   },
