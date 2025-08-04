@@ -46,7 +46,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Prevent duplicate events
     const existingEvent = await prisma.emailEvent.findFirst({
       where: { messageId: parsed.object.email.message_id },
     });
@@ -56,7 +55,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "Duplicate event ignored" });
     }
 
-    // Save the email event
     await prisma.emailEvent.create({
       data: {
         emailId: parsed.object.email.id,
@@ -73,14 +71,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Update or create the summary stats
-    const incrementData: {
-      totalSent?: { increment: number };
-      totalDelivered?: { increment: number };
-      totalFailed?: { increment: number };
-    } = {};
-
-    // Only increment totalSent for delivery events
+    // Engagement and delivery tracking
     const deliveryEvents = [
       "email.delivery.sent",
       "email.delivery.hardfail",
@@ -91,12 +82,18 @@ export async function POST(req: NextRequest) {
       "email.delivery.delayed",
     ];
 
+    const engagementEvents = {
+      "email.loaded": "totalOpens",
+      "email.link.clicked": "totalClicks",
+    };
+
+    const incrementData: Record<string, { increment: number }> = {};
+
+    // Delivery tracking
     if (deliveryEvents.includes(parsed.type)) {
       incrementData.totalSent = { increment: 1 };
 
-      if (
-        parsed.type === "email.delivery.sent"
-      ) {
+      if (parsed.type === "email.delivery.sent") {
         incrementData.totalDelivered = { increment: 1 };
       }
 
@@ -110,6 +107,14 @@ export async function POST(req: NextRequest) {
       ) {
         incrementData.totalFailed = { increment: 1 };
       }
+    }
+
+    
+
+    // Engagement tracking
+    if (Object.prototype.hasOwnProperty.call(engagementEvents, parsed.type)) {
+      const key = engagementEvents[parsed.type as keyof typeof engagementEvents];
+      incrementData[key] = { increment: 1 };
     }
 
     await prisma.emailSummary.upsert({
@@ -127,6 +132,8 @@ export async function POST(req: NextRequest) {
         ].includes(parsed.type)
           ? 1
           : 0,
+        totalOpens: parsed.type === "email.loaded" ? 1 : 0,
+        totalClicks: parsed.type === "email.link.clicked" ? 1 : 0,
       },
     });
 
