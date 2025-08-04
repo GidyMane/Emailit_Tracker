@@ -14,50 +14,50 @@ enum Role {
 }
 
 model User {
-  id             String         @id @default(uuid())
-  kindeId        String         @unique // From Kinde sub claim
-  email          String         @unique
-  name           String
-  role           Role           @default(CLIENT)
-  sendingDomains SendingDomain[]
-  createdAt      DateTime       @default(now())
+  id        String   @id @default(uuid())
+  kindeId   String   @unique
+  email     String   @unique
+  name      String?
+  domains   Domain[] // A user can be linked to multiple domains (optional link)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model SendingDomain {
-  id         String       @id @default(uuid())
-  domain     String       @unique // e.g. emailit.dev
-  userId     String
-  user       User         @relation(fields: [userId], references: [id])
-  emailEvents EmailEvent[]
-  createdAt  DateTime     @default(now())
-  summaryStats  SummaryStats?
+model Domain {
+  id        String         @id @default(uuid())
+  name      String         @unique         // E.g. ryden.co.ke
+  userId    String?                           // Optional: allows anonymous domain ownership
+  user      User?         @relation(fields: [userId], references: [id])
+  emails    EmailEvent[]
+  summary   EmailSummary?
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
 }
 
 model EmailEvent {
-  id             String       @id @default(uuid())
-  webhookEventId String       @unique // for deduplication (from event_id)
-  messageId      String       @unique // from object.email.message_id
-  status         String
-  type           String       // e.g. email.delivery.sent
-  recipient      String       // object.email.to
-  sender         String       // object.email.from
-  subject        String
-  sentWithSSL    Boolean
-  timeTaken      Float?
-  spamStatus     Int?
-  details        String?
-  timestamp      Float         // object.timestamp (unix)
-  sendingDomainId String
-  sendingDomain  SendingDomain @relation(fields: [sendingDomainId], references: [id])
-  createdAt      DateTime      @default(now())
+  id           String   @id @default(uuid())
+  emailId      Int
+  token        String
+  messageId    String
+  to           String
+  from         String
+  subject      String
+  eventType    String
+  status       String
+  spamStatus   Int
+  timestamp    DateTime
+  domainId     String
+  domain       Domain   @relation(fields: [domainId], references: [id])
+  createdAt    DateTime @default(now())
 }
 
-model SummaryStats {
-  id              String       @id @default(uuid())
-  sendingDomainId String       @unique
-  sendingDomain   SendingDomain @relation(fields: [sendingDomainId], references: [id])
-  totalSent       Int          @default(0)
-  totalDelivered  Int          @default(0)
-  totalFailed     Int          @default(0)
-  lastUpdated     DateTime     @updatedAt
+model EmailSummary {
+  id              String   @id @default(uuid())
+  domainId        String   @unique
+  totalSent       Int      @default(0)
+  totalDelivered  Int      @default(0)
+  totalFailed     Int      @default(0)
+  domain          Domain   @relation(fields: [domainId], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }

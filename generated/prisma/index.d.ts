@@ -19,20 +19,20 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
- * Model SendingDomain
+ * Model Domain
  * 
  */
-export type SendingDomain = $Result.DefaultSelection<Prisma.$SendingDomainPayload>
+export type Domain = $Result.DefaultSelection<Prisma.$DomainPayload>
 /**
  * Model EmailEvent
  * 
  */
 export type EmailEvent = $Result.DefaultSelection<Prisma.$EmailEventPayload>
 /**
- * Model SummaryStats
+ * Model EmailSummary
  * 
  */
-export type SummaryStats = $Result.DefaultSelection<Prisma.$SummaryStatsPayload>
+export type EmailSummary = $Result.DefaultSelection<Prisma.$EmailSummaryPayload>
 
 /**
  * Enums
@@ -187,14 +187,14 @@ export class PrismaClient<
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.sendingDomain`: Exposes CRUD operations for the **SendingDomain** model.
+   * `prisma.domain`: Exposes CRUD operations for the **Domain** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more SendingDomains
-    * const sendingDomains = await prisma.sendingDomain.findMany()
+    * // Fetch zero or more Domains
+    * const domains = await prisma.domain.findMany()
     * ```
     */
-  get sendingDomain(): Prisma.SendingDomainDelegate<ExtArgs, ClientOptions>;
+  get domain(): Prisma.DomainDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.emailEvent`: Exposes CRUD operations for the **EmailEvent** model.
@@ -207,14 +207,14 @@ export class PrismaClient<
   get emailEvent(): Prisma.EmailEventDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.summaryStats`: Exposes CRUD operations for the **SummaryStats** model.
+   * `prisma.emailSummary`: Exposes CRUD operations for the **EmailSummary** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more SummaryStats
-    * const summaryStats = await prisma.summaryStats.findMany()
+    * // Fetch zero or more EmailSummaries
+    * const emailSummaries = await prisma.emailSummary.findMany()
     * ```
     */
-  get summaryStats(): Prisma.SummaryStatsDelegate<ExtArgs, ClientOptions>;
+  get emailSummary(): Prisma.EmailSummaryDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -656,9 +656,9 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
-    SendingDomain: 'SendingDomain',
+    Domain: 'Domain',
     EmailEvent: 'EmailEvent',
-    SummaryStats: 'SummaryStats'
+    EmailSummary: 'EmailSummary'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -677,7 +677,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "sendingDomain" | "emailEvent" | "summaryStats"
+      modelProps: "user" | "domain" | "emailEvent" | "emailSummary"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -755,77 +755,77 @@ export namespace Prisma {
           }
         }
       }
-      SendingDomain: {
-        payload: Prisma.$SendingDomainPayload<ExtArgs>
-        fields: Prisma.SendingDomainFieldRefs
+      Domain: {
+        payload: Prisma.$DomainPayload<ExtArgs>
+        fields: Prisma.DomainFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.SendingDomainFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SendingDomainPayload> | null
+            args: Prisma.DomainFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DomainPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.SendingDomainFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SendingDomainPayload>
+            args: Prisma.DomainFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DomainPayload>
           }
           findFirst: {
-            args: Prisma.SendingDomainFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SendingDomainPayload> | null
+            args: Prisma.DomainFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DomainPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.SendingDomainFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SendingDomainPayload>
+            args: Prisma.DomainFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DomainPayload>
           }
           findMany: {
-            args: Prisma.SendingDomainFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SendingDomainPayload>[]
+            args: Prisma.DomainFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DomainPayload>[]
           }
           create: {
-            args: Prisma.SendingDomainCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SendingDomainPayload>
+            args: Prisma.DomainCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DomainPayload>
           }
           createMany: {
-            args: Prisma.SendingDomainCreateManyArgs<ExtArgs>
+            args: Prisma.DomainCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.SendingDomainCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SendingDomainPayload>[]
+            args: Prisma.DomainCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DomainPayload>[]
           }
           delete: {
-            args: Prisma.SendingDomainDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SendingDomainPayload>
+            args: Prisma.DomainDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DomainPayload>
           }
           update: {
-            args: Prisma.SendingDomainUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SendingDomainPayload>
+            args: Prisma.DomainUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DomainPayload>
           }
           deleteMany: {
-            args: Prisma.SendingDomainDeleteManyArgs<ExtArgs>
+            args: Prisma.DomainDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.SendingDomainUpdateManyArgs<ExtArgs>
+            args: Prisma.DomainUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.SendingDomainUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SendingDomainPayload>[]
+            args: Prisma.DomainUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DomainPayload>[]
           }
           upsert: {
-            args: Prisma.SendingDomainUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SendingDomainPayload>
+            args: Prisma.DomainUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DomainPayload>
           }
           aggregate: {
-            args: Prisma.SendingDomainAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateSendingDomain>
+            args: Prisma.DomainAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDomain>
           }
           groupBy: {
-            args: Prisma.SendingDomainGroupByArgs<ExtArgs>
-            result: $Utils.Optional<SendingDomainGroupByOutputType>[]
+            args: Prisma.DomainGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DomainGroupByOutputType>[]
           }
           count: {
-            args: Prisma.SendingDomainCountArgs<ExtArgs>
-            result: $Utils.Optional<SendingDomainCountAggregateOutputType> | number
+            args: Prisma.DomainCountArgs<ExtArgs>
+            result: $Utils.Optional<DomainCountAggregateOutputType> | number
           }
         }
       }
@@ -903,77 +903,77 @@ export namespace Prisma {
           }
         }
       }
-      SummaryStats: {
-        payload: Prisma.$SummaryStatsPayload<ExtArgs>
-        fields: Prisma.SummaryStatsFieldRefs
+      EmailSummary: {
+        payload: Prisma.$EmailSummaryPayload<ExtArgs>
+        fields: Prisma.EmailSummaryFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.SummaryStatsFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SummaryStatsPayload> | null
+            args: Prisma.EmailSummaryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailSummaryPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.SummaryStatsFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SummaryStatsPayload>
+            args: Prisma.EmailSummaryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailSummaryPayload>
           }
           findFirst: {
-            args: Prisma.SummaryStatsFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SummaryStatsPayload> | null
+            args: Prisma.EmailSummaryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailSummaryPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.SummaryStatsFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SummaryStatsPayload>
+            args: Prisma.EmailSummaryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailSummaryPayload>
           }
           findMany: {
-            args: Prisma.SummaryStatsFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SummaryStatsPayload>[]
+            args: Prisma.EmailSummaryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailSummaryPayload>[]
           }
           create: {
-            args: Prisma.SummaryStatsCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SummaryStatsPayload>
+            args: Prisma.EmailSummaryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailSummaryPayload>
           }
           createMany: {
-            args: Prisma.SummaryStatsCreateManyArgs<ExtArgs>
+            args: Prisma.EmailSummaryCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.SummaryStatsCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SummaryStatsPayload>[]
+            args: Prisma.EmailSummaryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailSummaryPayload>[]
           }
           delete: {
-            args: Prisma.SummaryStatsDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SummaryStatsPayload>
+            args: Prisma.EmailSummaryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailSummaryPayload>
           }
           update: {
-            args: Prisma.SummaryStatsUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SummaryStatsPayload>
+            args: Prisma.EmailSummaryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailSummaryPayload>
           }
           deleteMany: {
-            args: Prisma.SummaryStatsDeleteManyArgs<ExtArgs>
+            args: Prisma.EmailSummaryDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.SummaryStatsUpdateManyArgs<ExtArgs>
+            args: Prisma.EmailSummaryUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.SummaryStatsUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SummaryStatsPayload>[]
+            args: Prisma.EmailSummaryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailSummaryPayload>[]
           }
           upsert: {
-            args: Prisma.SummaryStatsUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SummaryStatsPayload>
+            args: Prisma.EmailSummaryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailSummaryPayload>
           }
           aggregate: {
-            args: Prisma.SummaryStatsAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateSummaryStats>
+            args: Prisma.EmailSummaryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEmailSummary>
           }
           groupBy: {
-            args: Prisma.SummaryStatsGroupByArgs<ExtArgs>
-            result: $Utils.Optional<SummaryStatsGroupByOutputType>[]
+            args: Prisma.EmailSummaryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EmailSummaryGroupByOutputType>[]
           }
           count: {
-            args: Prisma.SummaryStatsCountArgs<ExtArgs>
-            result: $Utils.Optional<SummaryStatsCountAggregateOutputType> | number
+            args: Prisma.EmailSummaryCountArgs<ExtArgs>
+            result: $Utils.Optional<EmailSummaryCountAggregateOutputType> | number
           }
         }
       }
@@ -1070,9 +1070,9 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     user?: UserOmit
-    sendingDomain?: SendingDomainOmit
+    domain?: DomainOmit
     emailEvent?: EmailEventOmit
-    summaryStats?: SummaryStatsOmit
+    emailSummary?: EmailSummaryOmit
   }
 
   /* Types for Logging */
@@ -1172,11 +1172,11 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    sendingDomains: number
+    domains: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    sendingDomains?: boolean | UserCountOutputTypeCountSendingDomainsArgs
+    domains?: boolean | UserCountOutputTypeCountDomainsArgs
   }
 
   // Custom InputTypes
@@ -1193,38 +1193,38 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountSendingDomainsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SendingDomainWhereInput
+  export type UserCountOutputTypeCountDomainsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DomainWhereInput
   }
 
 
   /**
-   * Count Type SendingDomainCountOutputType
+   * Count Type DomainCountOutputType
    */
 
-  export type SendingDomainCountOutputType = {
-    emailEvents: number
+  export type DomainCountOutputType = {
+    emails: number
   }
 
-  export type SendingDomainCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    emailEvents?: boolean | SendingDomainCountOutputTypeCountEmailEventsArgs
+  export type DomainCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    emails?: boolean | DomainCountOutputTypeCountEmailsArgs
   }
 
   // Custom InputTypes
   /**
-   * SendingDomainCountOutputType without action
+   * DomainCountOutputType without action
    */
-  export type SendingDomainCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DomainCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SendingDomainCountOutputType
+     * Select specific fields to fetch from the DomainCountOutputType
      */
-    select?: SendingDomainCountOutputTypeSelect<ExtArgs> | null
+    select?: DomainCountOutputTypeSelect<ExtArgs> | null
   }
 
   /**
-   * SendingDomainCountOutputType without action
+   * DomainCountOutputType without action
    */
-  export type SendingDomainCountOutputTypeCountEmailEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DomainCountOutputTypeCountEmailsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: EmailEventWhereInput
   }
 
@@ -1248,8 +1248,8 @@ export namespace Prisma {
     kindeId: string | null
     email: string | null
     name: string | null
-    role: $Enums.Role | null
     createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -1257,8 +1257,8 @@ export namespace Prisma {
     kindeId: string | null
     email: string | null
     name: string | null
-    role: $Enums.Role | null
     createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -1266,8 +1266,8 @@ export namespace Prisma {
     kindeId: number
     email: number
     name: number
-    role: number
     createdAt: number
+    updatedAt: number
     _all: number
   }
 
@@ -1277,8 +1277,8 @@ export namespace Prisma {
     kindeId?: true
     email?: true
     name?: true
-    role?: true
     createdAt?: true
+    updatedAt?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -1286,8 +1286,8 @@ export namespace Prisma {
     kindeId?: true
     email?: true
     name?: true
-    role?: true
     createdAt?: true
+    updatedAt?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -1295,8 +1295,8 @@ export namespace Prisma {
     kindeId?: true
     email?: true
     name?: true
-    role?: true
     createdAt?: true
+    updatedAt?: true
     _all?: true
   }
 
@@ -1376,9 +1376,9 @@ export namespace Prisma {
     id: string
     kindeId: string
     email: string
-    name: string
-    role: $Enums.Role
+    name: string | null
     createdAt: Date
+    updatedAt: Date
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -1403,9 +1403,9 @@ export namespace Prisma {
     kindeId?: boolean
     email?: boolean
     name?: boolean
-    role?: boolean
     createdAt?: boolean
-    sendingDomains?: boolean | User$sendingDomainsArgs<ExtArgs>
+    updatedAt?: boolean
+    domains?: boolean | User$domainsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1414,8 +1414,8 @@ export namespace Prisma {
     kindeId?: boolean
     email?: boolean
     name?: boolean
-    role?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1423,8 +1423,8 @@ export namespace Prisma {
     kindeId?: boolean
     email?: boolean
     name?: boolean
-    role?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -1432,13 +1432,13 @@ export namespace Prisma {
     kindeId?: boolean
     email?: boolean
     name?: boolean
-    role?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "kindeId" | "email" | "name" | "role" | "createdAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "kindeId" | "email" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    sendingDomains?: boolean | User$sendingDomainsArgs<ExtArgs>
+    domains?: boolean | User$domainsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1447,15 +1447,15 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      sendingDomains: Prisma.$SendingDomainPayload<ExtArgs>[]
+      domains: Prisma.$DomainPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       kindeId: string
       email: string
-      name: string
-      role: $Enums.Role
+      name: string | null
       createdAt: Date
+      updatedAt: Date
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -1850,7 +1850,7 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    sendingDomains<T extends User$sendingDomainsArgs<ExtArgs> = {}>(args?: Subset<T, User$sendingDomainsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SendingDomainPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    domains<T extends User$domainsArgs<ExtArgs> = {}>(args?: Subset<T, User$domainsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DomainPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1884,8 +1884,8 @@ export namespace Prisma {
     readonly kindeId: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
     readonly name: FieldRef<"User", 'String'>
-    readonly role: FieldRef<"User", 'Role'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
+    readonly updatedAt: FieldRef<"User", 'DateTime'>
   }
     
 
@@ -2274,27 +2274,27 @@ export namespace Prisma {
   }
 
   /**
-   * User.sendingDomains
+   * User.domains
    */
-  export type User$sendingDomainsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$domainsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SendingDomain
+     * Select specific fields to fetch from the Domain
      */
-    select?: SendingDomainSelect<ExtArgs> | null
+    select?: DomainSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SendingDomain
+     * Omit specific fields from the Domain
      */
-    omit?: SendingDomainOmit<ExtArgs> | null
+    omit?: DomainOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SendingDomainInclude<ExtArgs> | null
-    where?: SendingDomainWhereInput
-    orderBy?: SendingDomainOrderByWithRelationInput | SendingDomainOrderByWithRelationInput[]
-    cursor?: SendingDomainWhereUniqueInput
+    include?: DomainInclude<ExtArgs> | null
+    where?: DomainWhereInput
+    orderBy?: DomainOrderByWithRelationInput | DomainOrderByWithRelationInput[]
+    cursor?: DomainWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: SendingDomainScalarFieldEnum | SendingDomainScalarFieldEnum[]
+    distinct?: DomainScalarFieldEnum | DomainScalarFieldEnum[]
   }
 
   /**
@@ -2317,346 +2317,358 @@ export namespace Prisma {
 
 
   /**
-   * Model SendingDomain
+   * Model Domain
    */
 
-  export type AggregateSendingDomain = {
-    _count: SendingDomainCountAggregateOutputType | null
-    _min: SendingDomainMinAggregateOutputType | null
-    _max: SendingDomainMaxAggregateOutputType | null
+  export type AggregateDomain = {
+    _count: DomainCountAggregateOutputType | null
+    _min: DomainMinAggregateOutputType | null
+    _max: DomainMaxAggregateOutputType | null
   }
 
-  export type SendingDomainMinAggregateOutputType = {
+  export type DomainMinAggregateOutputType = {
     id: string | null
-    domain: string | null
+    name: string | null
     userId: string | null
     createdAt: Date | null
+    updatedAt: Date | null
   }
 
-  export type SendingDomainMaxAggregateOutputType = {
+  export type DomainMaxAggregateOutputType = {
     id: string | null
-    domain: string | null
+    name: string | null
     userId: string | null
     createdAt: Date | null
+    updatedAt: Date | null
   }
 
-  export type SendingDomainCountAggregateOutputType = {
+  export type DomainCountAggregateOutputType = {
     id: number
-    domain: number
+    name: number
     userId: number
     createdAt: number
+    updatedAt: number
     _all: number
   }
 
 
-  export type SendingDomainMinAggregateInputType = {
+  export type DomainMinAggregateInputType = {
     id?: true
-    domain?: true
+    name?: true
     userId?: true
     createdAt?: true
+    updatedAt?: true
   }
 
-  export type SendingDomainMaxAggregateInputType = {
+  export type DomainMaxAggregateInputType = {
     id?: true
-    domain?: true
+    name?: true
     userId?: true
     createdAt?: true
+    updatedAt?: true
   }
 
-  export type SendingDomainCountAggregateInputType = {
+  export type DomainCountAggregateInputType = {
     id?: true
-    domain?: true
+    name?: true
     userId?: true
     createdAt?: true
+    updatedAt?: true
     _all?: true
   }
 
-  export type SendingDomainAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DomainAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which SendingDomain to aggregate.
+     * Filter which Domain to aggregate.
      */
-    where?: SendingDomainWhereInput
+    where?: DomainWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of SendingDomains to fetch.
+     * Determine the order of Domains to fetch.
      */
-    orderBy?: SendingDomainOrderByWithRelationInput | SendingDomainOrderByWithRelationInput[]
+    orderBy?: DomainOrderByWithRelationInput | DomainOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: SendingDomainWhereUniqueInput
+    cursor?: DomainWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` SendingDomains from the position of the cursor.
+     * Take `±n` Domains from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` SendingDomains.
+     * Skip the first `n` Domains.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned SendingDomains
+     * Count returned Domains
     **/
-    _count?: true | SendingDomainCountAggregateInputType
+    _count?: true | DomainCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: SendingDomainMinAggregateInputType
+    _min?: DomainMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: SendingDomainMaxAggregateInputType
+    _max?: DomainMaxAggregateInputType
   }
 
-  export type GetSendingDomainAggregateType<T extends SendingDomainAggregateArgs> = {
-        [P in keyof T & keyof AggregateSendingDomain]: P extends '_count' | 'count'
+  export type GetDomainAggregateType<T extends DomainAggregateArgs> = {
+        [P in keyof T & keyof AggregateDomain]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateSendingDomain[P]>
-      : GetScalarType<T[P], AggregateSendingDomain[P]>
+        : GetScalarType<T[P], AggregateDomain[P]>
+      : GetScalarType<T[P], AggregateDomain[P]>
   }
 
 
 
 
-  export type SendingDomainGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SendingDomainWhereInput
-    orderBy?: SendingDomainOrderByWithAggregationInput | SendingDomainOrderByWithAggregationInput[]
-    by: SendingDomainScalarFieldEnum[] | SendingDomainScalarFieldEnum
-    having?: SendingDomainScalarWhereWithAggregatesInput
+  export type DomainGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DomainWhereInput
+    orderBy?: DomainOrderByWithAggregationInput | DomainOrderByWithAggregationInput[]
+    by: DomainScalarFieldEnum[] | DomainScalarFieldEnum
+    having?: DomainScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: SendingDomainCountAggregateInputType | true
-    _min?: SendingDomainMinAggregateInputType
-    _max?: SendingDomainMaxAggregateInputType
+    _count?: DomainCountAggregateInputType | true
+    _min?: DomainMinAggregateInputType
+    _max?: DomainMaxAggregateInputType
   }
 
-  export type SendingDomainGroupByOutputType = {
+  export type DomainGroupByOutputType = {
     id: string
-    domain: string
-    userId: string
+    name: string
+    userId: string | null
     createdAt: Date
-    _count: SendingDomainCountAggregateOutputType | null
-    _min: SendingDomainMinAggregateOutputType | null
-    _max: SendingDomainMaxAggregateOutputType | null
+    updatedAt: Date
+    _count: DomainCountAggregateOutputType | null
+    _min: DomainMinAggregateOutputType | null
+    _max: DomainMaxAggregateOutputType | null
   }
 
-  type GetSendingDomainGroupByPayload<T extends SendingDomainGroupByArgs> = Prisma.PrismaPromise<
+  type GetDomainGroupByPayload<T extends DomainGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<SendingDomainGroupByOutputType, T['by']> &
+      PickEnumerable<DomainGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof SendingDomainGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof DomainGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], SendingDomainGroupByOutputType[P]>
-            : GetScalarType<T[P], SendingDomainGroupByOutputType[P]>
+              : GetScalarType<T[P], DomainGroupByOutputType[P]>
+            : GetScalarType<T[P], DomainGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type SendingDomainSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type DomainSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    domain?: boolean
+    name?: boolean
     userId?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    emailEvents?: boolean | SendingDomain$emailEventsArgs<ExtArgs>
-    summaryStats?: boolean | SendingDomain$summaryStatsArgs<ExtArgs>
-    _count?: boolean | SendingDomainCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["sendingDomain"]>
+    updatedAt?: boolean
+    user?: boolean | Domain$userArgs<ExtArgs>
+    emails?: boolean | Domain$emailsArgs<ExtArgs>
+    summary?: boolean | Domain$summaryArgs<ExtArgs>
+    _count?: boolean | DomainCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["domain"]>
 
-  export type SendingDomainSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type DomainSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    domain?: boolean
+    name?: boolean
     userId?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["sendingDomain"]>
+    updatedAt?: boolean
+    user?: boolean | Domain$userArgs<ExtArgs>
+  }, ExtArgs["result"]["domain"]>
 
-  export type SendingDomainSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type DomainSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    domain?: boolean
+    name?: boolean
     userId?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["sendingDomain"]>
+    updatedAt?: boolean
+    user?: boolean | Domain$userArgs<ExtArgs>
+  }, ExtArgs["result"]["domain"]>
 
-  export type SendingDomainSelectScalar = {
+  export type DomainSelectScalar = {
     id?: boolean
-    domain?: boolean
+    name?: boolean
     userId?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
   }
 
-  export type SendingDomainOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "domain" | "userId" | "createdAt", ExtArgs["result"]["sendingDomain"]>
-  export type SendingDomainInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    emailEvents?: boolean | SendingDomain$emailEventsArgs<ExtArgs>
-    summaryStats?: boolean | SendingDomain$summaryStatsArgs<ExtArgs>
-    _count?: boolean | SendingDomainCountOutputTypeDefaultArgs<ExtArgs>
+  export type DomainOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["domain"]>
+  export type DomainInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | Domain$userArgs<ExtArgs>
+    emails?: boolean | Domain$emailsArgs<ExtArgs>
+    summary?: boolean | Domain$summaryArgs<ExtArgs>
+    _count?: boolean | DomainCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type SendingDomainIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+  export type DomainIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | Domain$userArgs<ExtArgs>
   }
-  export type SendingDomainIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+  export type DomainIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | Domain$userArgs<ExtArgs>
   }
 
-  export type $SendingDomainPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "SendingDomain"
+  export type $DomainPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Domain"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-      emailEvents: Prisma.$EmailEventPayload<ExtArgs>[]
-      summaryStats: Prisma.$SummaryStatsPayload<ExtArgs> | null
+      user: Prisma.$UserPayload<ExtArgs> | null
+      emails: Prisma.$EmailEventPayload<ExtArgs>[]
+      summary: Prisma.$EmailSummaryPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      domain: string
-      userId: string
+      name: string
+      userId: string | null
       createdAt: Date
-    }, ExtArgs["result"]["sendingDomain"]>
+      updatedAt: Date
+    }, ExtArgs["result"]["domain"]>
     composites: {}
   }
 
-  type SendingDomainGetPayload<S extends boolean | null | undefined | SendingDomainDefaultArgs> = $Result.GetResult<Prisma.$SendingDomainPayload, S>
+  type DomainGetPayload<S extends boolean | null | undefined | DomainDefaultArgs> = $Result.GetResult<Prisma.$DomainPayload, S>
 
-  type SendingDomainCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<SendingDomainFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: SendingDomainCountAggregateInputType | true
+  type DomainCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DomainFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DomainCountAggregateInputType | true
     }
 
-  export interface SendingDomainDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SendingDomain'], meta: { name: 'SendingDomain' } }
+  export interface DomainDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Domain'], meta: { name: 'Domain' } }
     /**
-     * Find zero or one SendingDomain that matches the filter.
-     * @param {SendingDomainFindUniqueArgs} args - Arguments to find a SendingDomain
+     * Find zero or one Domain that matches the filter.
+     * @param {DomainFindUniqueArgs} args - Arguments to find a Domain
      * @example
-     * // Get one SendingDomain
-     * const sendingDomain = await prisma.sendingDomain.findUnique({
+     * // Get one Domain
+     * const domain = await prisma.domain.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends SendingDomainFindUniqueArgs>(args: SelectSubset<T, SendingDomainFindUniqueArgs<ExtArgs>>): Prisma__SendingDomainClient<$Result.GetResult<Prisma.$SendingDomainPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends DomainFindUniqueArgs>(args: SelectSubset<T, DomainFindUniqueArgs<ExtArgs>>): Prisma__DomainClient<$Result.GetResult<Prisma.$DomainPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one SendingDomain that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Domain that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {SendingDomainFindUniqueOrThrowArgs} args - Arguments to find a SendingDomain
+     * @param {DomainFindUniqueOrThrowArgs} args - Arguments to find a Domain
      * @example
-     * // Get one SendingDomain
-     * const sendingDomain = await prisma.sendingDomain.findUniqueOrThrow({
+     * // Get one Domain
+     * const domain = await prisma.domain.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends SendingDomainFindUniqueOrThrowArgs>(args: SelectSubset<T, SendingDomainFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SendingDomainClient<$Result.GetResult<Prisma.$SendingDomainPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends DomainFindUniqueOrThrowArgs>(args: SelectSubset<T, DomainFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DomainClient<$Result.GetResult<Prisma.$DomainPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first SendingDomain that matches the filter.
+     * Find the first Domain that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SendingDomainFindFirstArgs} args - Arguments to find a SendingDomain
+     * @param {DomainFindFirstArgs} args - Arguments to find a Domain
      * @example
-     * // Get one SendingDomain
-     * const sendingDomain = await prisma.sendingDomain.findFirst({
+     * // Get one Domain
+     * const domain = await prisma.domain.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends SendingDomainFindFirstArgs>(args?: SelectSubset<T, SendingDomainFindFirstArgs<ExtArgs>>): Prisma__SendingDomainClient<$Result.GetResult<Prisma.$SendingDomainPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends DomainFindFirstArgs>(args?: SelectSubset<T, DomainFindFirstArgs<ExtArgs>>): Prisma__DomainClient<$Result.GetResult<Prisma.$DomainPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first SendingDomain that matches the filter or
+     * Find the first Domain that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SendingDomainFindFirstOrThrowArgs} args - Arguments to find a SendingDomain
+     * @param {DomainFindFirstOrThrowArgs} args - Arguments to find a Domain
      * @example
-     * // Get one SendingDomain
-     * const sendingDomain = await prisma.sendingDomain.findFirstOrThrow({
+     * // Get one Domain
+     * const domain = await prisma.domain.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends SendingDomainFindFirstOrThrowArgs>(args?: SelectSubset<T, SendingDomainFindFirstOrThrowArgs<ExtArgs>>): Prisma__SendingDomainClient<$Result.GetResult<Prisma.$SendingDomainPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends DomainFindFirstOrThrowArgs>(args?: SelectSubset<T, DomainFindFirstOrThrowArgs<ExtArgs>>): Prisma__DomainClient<$Result.GetResult<Prisma.$DomainPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more SendingDomains that matches the filter.
+     * Find zero or more Domains that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SendingDomainFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {DomainFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all SendingDomains
-     * const sendingDomains = await prisma.sendingDomain.findMany()
+     * // Get all Domains
+     * const domains = await prisma.domain.findMany()
      * 
-     * // Get first 10 SendingDomains
-     * const sendingDomains = await prisma.sendingDomain.findMany({ take: 10 })
+     * // Get first 10 Domains
+     * const domains = await prisma.domain.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const sendingDomainWithIdOnly = await prisma.sendingDomain.findMany({ select: { id: true } })
+     * const domainWithIdOnly = await prisma.domain.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends SendingDomainFindManyArgs>(args?: SelectSubset<T, SendingDomainFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SendingDomainPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends DomainFindManyArgs>(args?: SelectSubset<T, DomainFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DomainPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a SendingDomain.
-     * @param {SendingDomainCreateArgs} args - Arguments to create a SendingDomain.
+     * Create a Domain.
+     * @param {DomainCreateArgs} args - Arguments to create a Domain.
      * @example
-     * // Create one SendingDomain
-     * const SendingDomain = await prisma.sendingDomain.create({
+     * // Create one Domain
+     * const Domain = await prisma.domain.create({
      *   data: {
-     *     // ... data to create a SendingDomain
+     *     // ... data to create a Domain
      *   }
      * })
      * 
      */
-    create<T extends SendingDomainCreateArgs>(args: SelectSubset<T, SendingDomainCreateArgs<ExtArgs>>): Prisma__SendingDomainClient<$Result.GetResult<Prisma.$SendingDomainPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends DomainCreateArgs>(args: SelectSubset<T, DomainCreateArgs<ExtArgs>>): Prisma__DomainClient<$Result.GetResult<Prisma.$DomainPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many SendingDomains.
-     * @param {SendingDomainCreateManyArgs} args - Arguments to create many SendingDomains.
+     * Create many Domains.
+     * @param {DomainCreateManyArgs} args - Arguments to create many Domains.
      * @example
-     * // Create many SendingDomains
-     * const sendingDomain = await prisma.sendingDomain.createMany({
+     * // Create many Domains
+     * const domain = await prisma.domain.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends SendingDomainCreateManyArgs>(args?: SelectSubset<T, SendingDomainCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends DomainCreateManyArgs>(args?: SelectSubset<T, DomainCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many SendingDomains and returns the data saved in the database.
-     * @param {SendingDomainCreateManyAndReturnArgs} args - Arguments to create many SendingDomains.
+     * Create many Domains and returns the data saved in the database.
+     * @param {DomainCreateManyAndReturnArgs} args - Arguments to create many Domains.
      * @example
-     * // Create many SendingDomains
-     * const sendingDomain = await prisma.sendingDomain.createManyAndReturn({
+     * // Create many Domains
+     * const domain = await prisma.domain.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many SendingDomains and only return the `id`
-     * const sendingDomainWithIdOnly = await prisma.sendingDomain.createManyAndReturn({
+     * // Create many Domains and only return the `id`
+     * const domainWithIdOnly = await prisma.domain.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -2666,28 +2678,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends SendingDomainCreateManyAndReturnArgs>(args?: SelectSubset<T, SendingDomainCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SendingDomainPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends DomainCreateManyAndReturnArgs>(args?: SelectSubset<T, DomainCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DomainPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a SendingDomain.
-     * @param {SendingDomainDeleteArgs} args - Arguments to delete one SendingDomain.
+     * Delete a Domain.
+     * @param {DomainDeleteArgs} args - Arguments to delete one Domain.
      * @example
-     * // Delete one SendingDomain
-     * const SendingDomain = await prisma.sendingDomain.delete({
+     * // Delete one Domain
+     * const Domain = await prisma.domain.delete({
      *   where: {
-     *     // ... filter to delete one SendingDomain
+     *     // ... filter to delete one Domain
      *   }
      * })
      * 
      */
-    delete<T extends SendingDomainDeleteArgs>(args: SelectSubset<T, SendingDomainDeleteArgs<ExtArgs>>): Prisma__SendingDomainClient<$Result.GetResult<Prisma.$SendingDomainPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends DomainDeleteArgs>(args: SelectSubset<T, DomainDeleteArgs<ExtArgs>>): Prisma__DomainClient<$Result.GetResult<Prisma.$DomainPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one SendingDomain.
-     * @param {SendingDomainUpdateArgs} args - Arguments to update one SendingDomain.
+     * Update one Domain.
+     * @param {DomainUpdateArgs} args - Arguments to update one Domain.
      * @example
-     * // Update one SendingDomain
-     * const sendingDomain = await prisma.sendingDomain.update({
+     * // Update one Domain
+     * const domain = await prisma.domain.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -2697,30 +2709,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends SendingDomainUpdateArgs>(args: SelectSubset<T, SendingDomainUpdateArgs<ExtArgs>>): Prisma__SendingDomainClient<$Result.GetResult<Prisma.$SendingDomainPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends DomainUpdateArgs>(args: SelectSubset<T, DomainUpdateArgs<ExtArgs>>): Prisma__DomainClient<$Result.GetResult<Prisma.$DomainPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more SendingDomains.
-     * @param {SendingDomainDeleteManyArgs} args - Arguments to filter SendingDomains to delete.
+     * Delete zero or more Domains.
+     * @param {DomainDeleteManyArgs} args - Arguments to filter Domains to delete.
      * @example
-     * // Delete a few SendingDomains
-     * const { count } = await prisma.sendingDomain.deleteMany({
+     * // Delete a few Domains
+     * const { count } = await prisma.domain.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends SendingDomainDeleteManyArgs>(args?: SelectSubset<T, SendingDomainDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends DomainDeleteManyArgs>(args?: SelectSubset<T, DomainDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more SendingDomains.
+     * Update zero or more Domains.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SendingDomainUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {DomainUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many SendingDomains
-     * const sendingDomain = await prisma.sendingDomain.updateMany({
+     * // Update many Domains
+     * const domain = await prisma.domain.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -2730,14 +2742,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends SendingDomainUpdateManyArgs>(args: SelectSubset<T, SendingDomainUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends DomainUpdateManyArgs>(args: SelectSubset<T, DomainUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more SendingDomains and returns the data updated in the database.
-     * @param {SendingDomainUpdateManyAndReturnArgs} args - Arguments to update many SendingDomains.
+     * Update zero or more Domains and returns the data updated in the database.
+     * @param {DomainUpdateManyAndReturnArgs} args - Arguments to update many Domains.
      * @example
-     * // Update many SendingDomains
-     * const sendingDomain = await prisma.sendingDomain.updateManyAndReturn({
+     * // Update many Domains
+     * const domain = await prisma.domain.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -2746,8 +2758,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more SendingDomains and only return the `id`
-     * const sendingDomainWithIdOnly = await prisma.sendingDomain.updateManyAndReturn({
+     * // Update zero or more Domains and only return the `id`
+     * const domainWithIdOnly = await prisma.domain.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -2760,56 +2772,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends SendingDomainUpdateManyAndReturnArgs>(args: SelectSubset<T, SendingDomainUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SendingDomainPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends DomainUpdateManyAndReturnArgs>(args: SelectSubset<T, DomainUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DomainPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one SendingDomain.
-     * @param {SendingDomainUpsertArgs} args - Arguments to update or create a SendingDomain.
+     * Create or update one Domain.
+     * @param {DomainUpsertArgs} args - Arguments to update or create a Domain.
      * @example
-     * // Update or create a SendingDomain
-     * const sendingDomain = await prisma.sendingDomain.upsert({
+     * // Update or create a Domain
+     * const domain = await prisma.domain.upsert({
      *   create: {
-     *     // ... data to create a SendingDomain
+     *     // ... data to create a Domain
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the SendingDomain we want to update
+     *     // ... the filter for the Domain we want to update
      *   }
      * })
      */
-    upsert<T extends SendingDomainUpsertArgs>(args: SelectSubset<T, SendingDomainUpsertArgs<ExtArgs>>): Prisma__SendingDomainClient<$Result.GetResult<Prisma.$SendingDomainPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends DomainUpsertArgs>(args: SelectSubset<T, DomainUpsertArgs<ExtArgs>>): Prisma__DomainClient<$Result.GetResult<Prisma.$DomainPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of SendingDomains.
+     * Count the number of Domains.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SendingDomainCountArgs} args - Arguments to filter SendingDomains to count.
+     * @param {DomainCountArgs} args - Arguments to filter Domains to count.
      * @example
-     * // Count the number of SendingDomains
-     * const count = await prisma.sendingDomain.count({
+     * // Count the number of Domains
+     * const count = await prisma.domain.count({
      *   where: {
-     *     // ... the filter for the SendingDomains we want to count
+     *     // ... the filter for the Domains we want to count
      *   }
      * })
     **/
-    count<T extends SendingDomainCountArgs>(
-      args?: Subset<T, SendingDomainCountArgs>,
+    count<T extends DomainCountArgs>(
+      args?: Subset<T, DomainCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], SendingDomainCountAggregateOutputType>
+          : GetScalarType<T['select'], DomainCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a SendingDomain.
+     * Allows you to perform aggregations operations on a Domain.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SendingDomainAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {DomainAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -2829,13 +2841,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends SendingDomainAggregateArgs>(args: Subset<T, SendingDomainAggregateArgs>): Prisma.PrismaPromise<GetSendingDomainAggregateType<T>>
+    aggregate<T extends DomainAggregateArgs>(args: Subset<T, DomainAggregateArgs>): Prisma.PrismaPromise<GetDomainAggregateType<T>>
 
     /**
-     * Group by SendingDomain.
+     * Group by Domain.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SendingDomainGroupByArgs} args - Group by arguments.
+     * @param {DomainGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -2850,14 +2862,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends SendingDomainGroupByArgs,
+      T extends DomainGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: SendingDomainGroupByArgs['orderBy'] }
-        : { orderBy?: SendingDomainGroupByArgs['orderBy'] },
+        ? { orderBy: DomainGroupByArgs['orderBy'] }
+        : { orderBy?: DomainGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -2906,24 +2918,24 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, SendingDomainGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSendingDomainGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, DomainGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDomainGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the SendingDomain model
+   * Fields of the Domain model
    */
-  readonly fields: SendingDomainFieldRefs;
+  readonly fields: DomainFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for SendingDomain.
+   * The delegate class that acts as a "Promise-like" for Domain.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__SendingDomainClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__DomainClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    emailEvents<T extends SendingDomain$emailEventsArgs<ExtArgs> = {}>(args?: Subset<T, SendingDomain$emailEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    summaryStats<T extends SendingDomain$summaryStatsArgs<ExtArgs> = {}>(args?: Subset<T, SendingDomain$summaryStatsArgs<ExtArgs>>): Prisma__SummaryStatsClient<$Result.GetResult<Prisma.$SummaryStatsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    user<T extends Domain$userArgs<ExtArgs> = {}>(args?: Subset<T, Domain$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    emails<T extends Domain$emailsArgs<ExtArgs> = {}>(args?: Subset<T, Domain$emailsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    summary<T extends Domain$summaryArgs<ExtArgs> = {}>(args?: Subset<T, Domain$summaryArgs<ExtArgs>>): Prisma__EmailSummaryClient<$Result.GetResult<Prisma.$EmailSummaryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2950,412 +2962,432 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the SendingDomain model
+   * Fields of the Domain model
    */
-  interface SendingDomainFieldRefs {
-    readonly id: FieldRef<"SendingDomain", 'String'>
-    readonly domain: FieldRef<"SendingDomain", 'String'>
-    readonly userId: FieldRef<"SendingDomain", 'String'>
-    readonly createdAt: FieldRef<"SendingDomain", 'DateTime'>
+  interface DomainFieldRefs {
+    readonly id: FieldRef<"Domain", 'String'>
+    readonly name: FieldRef<"Domain", 'String'>
+    readonly userId: FieldRef<"Domain", 'String'>
+    readonly createdAt: FieldRef<"Domain", 'DateTime'>
+    readonly updatedAt: FieldRef<"Domain", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * SendingDomain findUnique
+   * Domain findUnique
    */
-  export type SendingDomainFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DomainFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SendingDomain
+     * Select specific fields to fetch from the Domain
      */
-    select?: SendingDomainSelect<ExtArgs> | null
+    select?: DomainSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SendingDomain
+     * Omit specific fields from the Domain
      */
-    omit?: SendingDomainOmit<ExtArgs> | null
+    omit?: DomainOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SendingDomainInclude<ExtArgs> | null
+    include?: DomainInclude<ExtArgs> | null
     /**
-     * Filter, which SendingDomain to fetch.
+     * Filter, which Domain to fetch.
      */
-    where: SendingDomainWhereUniqueInput
+    where: DomainWhereUniqueInput
   }
 
   /**
-   * SendingDomain findUniqueOrThrow
+   * Domain findUniqueOrThrow
    */
-  export type SendingDomainFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DomainFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SendingDomain
+     * Select specific fields to fetch from the Domain
      */
-    select?: SendingDomainSelect<ExtArgs> | null
+    select?: DomainSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SendingDomain
+     * Omit specific fields from the Domain
      */
-    omit?: SendingDomainOmit<ExtArgs> | null
+    omit?: DomainOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SendingDomainInclude<ExtArgs> | null
+    include?: DomainInclude<ExtArgs> | null
     /**
-     * Filter, which SendingDomain to fetch.
+     * Filter, which Domain to fetch.
      */
-    where: SendingDomainWhereUniqueInput
+    where: DomainWhereUniqueInput
   }
 
   /**
-   * SendingDomain findFirst
+   * Domain findFirst
    */
-  export type SendingDomainFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DomainFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SendingDomain
+     * Select specific fields to fetch from the Domain
      */
-    select?: SendingDomainSelect<ExtArgs> | null
+    select?: DomainSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SendingDomain
+     * Omit specific fields from the Domain
      */
-    omit?: SendingDomainOmit<ExtArgs> | null
+    omit?: DomainOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SendingDomainInclude<ExtArgs> | null
+    include?: DomainInclude<ExtArgs> | null
     /**
-     * Filter, which SendingDomain to fetch.
+     * Filter, which Domain to fetch.
      */
-    where?: SendingDomainWhereInput
+    where?: DomainWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of SendingDomains to fetch.
+     * Determine the order of Domains to fetch.
      */
-    orderBy?: SendingDomainOrderByWithRelationInput | SendingDomainOrderByWithRelationInput[]
+    orderBy?: DomainOrderByWithRelationInput | DomainOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for SendingDomains.
+     * Sets the position for searching for Domains.
      */
-    cursor?: SendingDomainWhereUniqueInput
+    cursor?: DomainWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` SendingDomains from the position of the cursor.
+     * Take `±n` Domains from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` SendingDomains.
+     * Skip the first `n` Domains.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of SendingDomains.
+     * Filter by unique combinations of Domains.
      */
-    distinct?: SendingDomainScalarFieldEnum | SendingDomainScalarFieldEnum[]
+    distinct?: DomainScalarFieldEnum | DomainScalarFieldEnum[]
   }
 
   /**
-   * SendingDomain findFirstOrThrow
+   * Domain findFirstOrThrow
    */
-  export type SendingDomainFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DomainFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SendingDomain
+     * Select specific fields to fetch from the Domain
      */
-    select?: SendingDomainSelect<ExtArgs> | null
+    select?: DomainSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SendingDomain
+     * Omit specific fields from the Domain
      */
-    omit?: SendingDomainOmit<ExtArgs> | null
+    omit?: DomainOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SendingDomainInclude<ExtArgs> | null
+    include?: DomainInclude<ExtArgs> | null
     /**
-     * Filter, which SendingDomain to fetch.
+     * Filter, which Domain to fetch.
      */
-    where?: SendingDomainWhereInput
+    where?: DomainWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of SendingDomains to fetch.
+     * Determine the order of Domains to fetch.
      */
-    orderBy?: SendingDomainOrderByWithRelationInput | SendingDomainOrderByWithRelationInput[]
+    orderBy?: DomainOrderByWithRelationInput | DomainOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for SendingDomains.
+     * Sets the position for searching for Domains.
      */
-    cursor?: SendingDomainWhereUniqueInput
+    cursor?: DomainWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` SendingDomains from the position of the cursor.
+     * Take `±n` Domains from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` SendingDomains.
+     * Skip the first `n` Domains.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of SendingDomains.
+     * Filter by unique combinations of Domains.
      */
-    distinct?: SendingDomainScalarFieldEnum | SendingDomainScalarFieldEnum[]
+    distinct?: DomainScalarFieldEnum | DomainScalarFieldEnum[]
   }
 
   /**
-   * SendingDomain findMany
+   * Domain findMany
    */
-  export type SendingDomainFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DomainFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SendingDomain
+     * Select specific fields to fetch from the Domain
      */
-    select?: SendingDomainSelect<ExtArgs> | null
+    select?: DomainSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SendingDomain
+     * Omit specific fields from the Domain
      */
-    omit?: SendingDomainOmit<ExtArgs> | null
+    omit?: DomainOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SendingDomainInclude<ExtArgs> | null
+    include?: DomainInclude<ExtArgs> | null
     /**
-     * Filter, which SendingDomains to fetch.
+     * Filter, which Domains to fetch.
      */
-    where?: SendingDomainWhereInput
+    where?: DomainWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of SendingDomains to fetch.
+     * Determine the order of Domains to fetch.
      */
-    orderBy?: SendingDomainOrderByWithRelationInput | SendingDomainOrderByWithRelationInput[]
+    orderBy?: DomainOrderByWithRelationInput | DomainOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing SendingDomains.
+     * Sets the position for listing Domains.
      */
-    cursor?: SendingDomainWhereUniqueInput
+    cursor?: DomainWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` SendingDomains from the position of the cursor.
+     * Take `±n` Domains from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` SendingDomains.
+     * Skip the first `n` Domains.
      */
     skip?: number
-    distinct?: SendingDomainScalarFieldEnum | SendingDomainScalarFieldEnum[]
+    distinct?: DomainScalarFieldEnum | DomainScalarFieldEnum[]
   }
 
   /**
-   * SendingDomain create
+   * Domain create
    */
-  export type SendingDomainCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DomainCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SendingDomain
+     * Select specific fields to fetch from the Domain
      */
-    select?: SendingDomainSelect<ExtArgs> | null
+    select?: DomainSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SendingDomain
+     * Omit specific fields from the Domain
      */
-    omit?: SendingDomainOmit<ExtArgs> | null
+    omit?: DomainOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SendingDomainInclude<ExtArgs> | null
+    include?: DomainInclude<ExtArgs> | null
     /**
-     * The data needed to create a SendingDomain.
+     * The data needed to create a Domain.
      */
-    data: XOR<SendingDomainCreateInput, SendingDomainUncheckedCreateInput>
+    data: XOR<DomainCreateInput, DomainUncheckedCreateInput>
   }
 
   /**
-   * SendingDomain createMany
+   * Domain createMany
    */
-  export type SendingDomainCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DomainCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many SendingDomains.
+     * The data used to create many Domains.
      */
-    data: SendingDomainCreateManyInput | SendingDomainCreateManyInput[]
+    data: DomainCreateManyInput | DomainCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * SendingDomain createManyAndReturn
+   * Domain createManyAndReturn
    */
-  export type SendingDomainCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DomainCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SendingDomain
+     * Select specific fields to fetch from the Domain
      */
-    select?: SendingDomainSelectCreateManyAndReturn<ExtArgs> | null
+    select?: DomainSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the SendingDomain
+     * Omit specific fields from the Domain
      */
-    omit?: SendingDomainOmit<ExtArgs> | null
+    omit?: DomainOmit<ExtArgs> | null
     /**
-     * The data used to create many SendingDomains.
+     * The data used to create many Domains.
      */
-    data: SendingDomainCreateManyInput | SendingDomainCreateManyInput[]
+    data: DomainCreateManyInput | DomainCreateManyInput[]
     skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SendingDomainIncludeCreateManyAndReturn<ExtArgs> | null
+    include?: DomainIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * SendingDomain update
+   * Domain update
    */
-  export type SendingDomainUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DomainUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SendingDomain
+     * Select specific fields to fetch from the Domain
      */
-    select?: SendingDomainSelect<ExtArgs> | null
+    select?: DomainSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SendingDomain
+     * Omit specific fields from the Domain
      */
-    omit?: SendingDomainOmit<ExtArgs> | null
+    omit?: DomainOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SendingDomainInclude<ExtArgs> | null
+    include?: DomainInclude<ExtArgs> | null
     /**
-     * The data needed to update a SendingDomain.
+     * The data needed to update a Domain.
      */
-    data: XOR<SendingDomainUpdateInput, SendingDomainUncheckedUpdateInput>
+    data: XOR<DomainUpdateInput, DomainUncheckedUpdateInput>
     /**
-     * Choose, which SendingDomain to update.
+     * Choose, which Domain to update.
      */
-    where: SendingDomainWhereUniqueInput
+    where: DomainWhereUniqueInput
   }
 
   /**
-   * SendingDomain updateMany
+   * Domain updateMany
    */
-  export type SendingDomainUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DomainUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update SendingDomains.
+     * The data used to update Domains.
      */
-    data: XOR<SendingDomainUpdateManyMutationInput, SendingDomainUncheckedUpdateManyInput>
+    data: XOR<DomainUpdateManyMutationInput, DomainUncheckedUpdateManyInput>
     /**
-     * Filter which SendingDomains to update
+     * Filter which Domains to update
      */
-    where?: SendingDomainWhereInput
+    where?: DomainWhereInput
     /**
-     * Limit how many SendingDomains to update.
+     * Limit how many Domains to update.
      */
     limit?: number
   }
 
   /**
-   * SendingDomain updateManyAndReturn
+   * Domain updateManyAndReturn
    */
-  export type SendingDomainUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DomainUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SendingDomain
+     * Select specific fields to fetch from the Domain
      */
-    select?: SendingDomainSelectUpdateManyAndReturn<ExtArgs> | null
+    select?: DomainSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the SendingDomain
+     * Omit specific fields from the Domain
      */
-    omit?: SendingDomainOmit<ExtArgs> | null
+    omit?: DomainOmit<ExtArgs> | null
     /**
-     * The data used to update SendingDomains.
+     * The data used to update Domains.
      */
-    data: XOR<SendingDomainUpdateManyMutationInput, SendingDomainUncheckedUpdateManyInput>
+    data: XOR<DomainUpdateManyMutationInput, DomainUncheckedUpdateManyInput>
     /**
-     * Filter which SendingDomains to update
+     * Filter which Domains to update
      */
-    where?: SendingDomainWhereInput
+    where?: DomainWhereInput
     /**
-     * Limit how many SendingDomains to update.
+     * Limit how many Domains to update.
      */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SendingDomainIncludeUpdateManyAndReturn<ExtArgs> | null
+    include?: DomainIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * SendingDomain upsert
+   * Domain upsert
    */
-  export type SendingDomainUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DomainUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SendingDomain
+     * Select specific fields to fetch from the Domain
      */
-    select?: SendingDomainSelect<ExtArgs> | null
+    select?: DomainSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SendingDomain
+     * Omit specific fields from the Domain
      */
-    omit?: SendingDomainOmit<ExtArgs> | null
+    omit?: DomainOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SendingDomainInclude<ExtArgs> | null
+    include?: DomainInclude<ExtArgs> | null
     /**
-     * The filter to search for the SendingDomain to update in case it exists.
+     * The filter to search for the Domain to update in case it exists.
      */
-    where: SendingDomainWhereUniqueInput
+    where: DomainWhereUniqueInput
     /**
-     * In case the SendingDomain found by the `where` argument doesn't exist, create a new SendingDomain with this data.
+     * In case the Domain found by the `where` argument doesn't exist, create a new Domain with this data.
      */
-    create: XOR<SendingDomainCreateInput, SendingDomainUncheckedCreateInput>
+    create: XOR<DomainCreateInput, DomainUncheckedCreateInput>
     /**
-     * In case the SendingDomain was found with the provided `where` argument, update it with this data.
+     * In case the Domain was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<SendingDomainUpdateInput, SendingDomainUncheckedUpdateInput>
+    update: XOR<DomainUpdateInput, DomainUncheckedUpdateInput>
   }
 
   /**
-   * SendingDomain delete
+   * Domain delete
    */
-  export type SendingDomainDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DomainDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SendingDomain
+     * Select specific fields to fetch from the Domain
      */
-    select?: SendingDomainSelect<ExtArgs> | null
+    select?: DomainSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SendingDomain
+     * Omit specific fields from the Domain
      */
-    omit?: SendingDomainOmit<ExtArgs> | null
+    omit?: DomainOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SendingDomainInclude<ExtArgs> | null
+    include?: DomainInclude<ExtArgs> | null
     /**
-     * Filter which SendingDomain to delete.
+     * Filter which Domain to delete.
      */
-    where: SendingDomainWhereUniqueInput
+    where: DomainWhereUniqueInput
   }
 
   /**
-   * SendingDomain deleteMany
+   * Domain deleteMany
    */
-  export type SendingDomainDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DomainDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which SendingDomains to delete
+     * Filter which Domains to delete
      */
-    where?: SendingDomainWhereInput
+    where?: DomainWhereInput
     /**
-     * Limit how many SendingDomains to delete.
+     * Limit how many Domains to delete.
      */
     limit?: number
   }
 
   /**
-   * SendingDomain.emailEvents
+   * Domain.user
    */
-  export type SendingDomain$emailEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Domain$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Domain.emails
+   */
+  export type Domain$emailsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the EmailEvent
      */
@@ -3377,40 +3409,40 @@ export namespace Prisma {
   }
 
   /**
-   * SendingDomain.summaryStats
+   * Domain.summary
    */
-  export type SendingDomain$summaryStatsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Domain$summaryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SummaryStats
+     * Select specific fields to fetch from the EmailSummary
      */
-    select?: SummaryStatsSelect<ExtArgs> | null
+    select?: EmailSummarySelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SummaryStats
+     * Omit specific fields from the EmailSummary
      */
-    omit?: SummaryStatsOmit<ExtArgs> | null
+    omit?: EmailSummaryOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SummaryStatsInclude<ExtArgs> | null
-    where?: SummaryStatsWhereInput
+    include?: EmailSummaryInclude<ExtArgs> | null
+    where?: EmailSummaryWhereInput
   }
 
   /**
-   * SendingDomain without action
+   * Domain without action
    */
-  export type SendingDomainDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DomainDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SendingDomain
+     * Select specific fields to fetch from the Domain
      */
-    select?: SendingDomainSelect<ExtArgs> | null
+    select?: DomainSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SendingDomain
+     * Omit specific fields from the Domain
      */
-    omit?: SendingDomainOmit<ExtArgs> | null
+    omit?: DomainOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SendingDomainInclude<ExtArgs> | null
+    include?: DomainInclude<ExtArgs> | null
   }
 
 
@@ -3427,136 +3459,120 @@ export namespace Prisma {
   }
 
   export type EmailEventAvgAggregateOutputType = {
-    timeTaken: number | null
+    emailId: number | null
     spamStatus: number | null
-    timestamp: number | null
   }
 
   export type EmailEventSumAggregateOutputType = {
-    timeTaken: number | null
+    emailId: number | null
     spamStatus: number | null
-    timestamp: number | null
   }
 
   export type EmailEventMinAggregateOutputType = {
     id: string | null
-    webhookEventId: string | null
+    emailId: number | null
+    token: string | null
     messageId: string | null
-    status: string | null
-    type: string | null
-    recipient: string | null
-    sender: string | null
+    to: string | null
+    from: string | null
     subject: string | null
-    sentWithSSL: boolean | null
-    timeTaken: number | null
+    eventType: string | null
+    status: string | null
     spamStatus: number | null
-    details: string | null
-    timestamp: number | null
-    sendingDomainId: string | null
+    timestamp: Date | null
+    domainId: string | null
     createdAt: Date | null
   }
 
   export type EmailEventMaxAggregateOutputType = {
     id: string | null
-    webhookEventId: string | null
+    emailId: number | null
+    token: string | null
     messageId: string | null
-    status: string | null
-    type: string | null
-    recipient: string | null
-    sender: string | null
+    to: string | null
+    from: string | null
     subject: string | null
-    sentWithSSL: boolean | null
-    timeTaken: number | null
+    eventType: string | null
+    status: string | null
     spamStatus: number | null
-    details: string | null
-    timestamp: number | null
-    sendingDomainId: string | null
+    timestamp: Date | null
+    domainId: string | null
     createdAt: Date | null
   }
 
   export type EmailEventCountAggregateOutputType = {
     id: number
-    webhookEventId: number
+    emailId: number
+    token: number
     messageId: number
-    status: number
-    type: number
-    recipient: number
-    sender: number
+    to: number
+    from: number
     subject: number
-    sentWithSSL: number
-    timeTaken: number
+    eventType: number
+    status: number
     spamStatus: number
-    details: number
     timestamp: number
-    sendingDomainId: number
+    domainId: number
     createdAt: number
     _all: number
   }
 
 
   export type EmailEventAvgAggregateInputType = {
-    timeTaken?: true
+    emailId?: true
     spamStatus?: true
-    timestamp?: true
   }
 
   export type EmailEventSumAggregateInputType = {
-    timeTaken?: true
+    emailId?: true
     spamStatus?: true
-    timestamp?: true
   }
 
   export type EmailEventMinAggregateInputType = {
     id?: true
-    webhookEventId?: true
+    emailId?: true
+    token?: true
     messageId?: true
-    status?: true
-    type?: true
-    recipient?: true
-    sender?: true
+    to?: true
+    from?: true
     subject?: true
-    sentWithSSL?: true
-    timeTaken?: true
+    eventType?: true
+    status?: true
     spamStatus?: true
-    details?: true
     timestamp?: true
-    sendingDomainId?: true
+    domainId?: true
     createdAt?: true
   }
 
   export type EmailEventMaxAggregateInputType = {
     id?: true
-    webhookEventId?: true
+    emailId?: true
+    token?: true
     messageId?: true
-    status?: true
-    type?: true
-    recipient?: true
-    sender?: true
+    to?: true
+    from?: true
     subject?: true
-    sentWithSSL?: true
-    timeTaken?: true
+    eventType?: true
+    status?: true
     spamStatus?: true
-    details?: true
     timestamp?: true
-    sendingDomainId?: true
+    domainId?: true
     createdAt?: true
   }
 
   export type EmailEventCountAggregateInputType = {
     id?: true
-    webhookEventId?: true
+    emailId?: true
+    token?: true
     messageId?: true
-    status?: true
-    type?: true
-    recipient?: true
-    sender?: true
+    to?: true
+    from?: true
     subject?: true
-    sentWithSSL?: true
-    timeTaken?: true
+    eventType?: true
+    status?: true
     spamStatus?: true
-    details?: true
     timestamp?: true
-    sendingDomainId?: true
+    domainId?: true
     createdAt?: true
     _all?: true
   }
@@ -3649,19 +3665,17 @@ export namespace Prisma {
 
   export type EmailEventGroupByOutputType = {
     id: string
-    webhookEventId: string
+    emailId: number
+    token: string
     messageId: string
-    status: string
-    type: string
-    recipient: string
-    sender: string
+    to: string
+    from: string
     subject: string
-    sentWithSSL: boolean
-    timeTaken: number | null
-    spamStatus: number | null
-    details: string | null
-    timestamp: number
-    sendingDomainId: string
+    eventType: string
+    status: string
+    spamStatus: number
+    timestamp: Date
+    domainId: string
     createdAt: Date
     _count: EmailEventCountAggregateOutputType | null
     _avg: EmailEventAvgAggregateOutputType | null
@@ -3686,110 +3700,100 @@ export namespace Prisma {
 
   export type EmailEventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    webhookEventId?: boolean
+    emailId?: boolean
+    token?: boolean
     messageId?: boolean
-    status?: boolean
-    type?: boolean
-    recipient?: boolean
-    sender?: boolean
+    to?: boolean
+    from?: boolean
     subject?: boolean
-    sentWithSSL?: boolean
-    timeTaken?: boolean
+    eventType?: boolean
+    status?: boolean
     spamStatus?: boolean
-    details?: boolean
     timestamp?: boolean
-    sendingDomainId?: boolean
+    domainId?: boolean
     createdAt?: boolean
-    sendingDomain?: boolean | SendingDomainDefaultArgs<ExtArgs>
+    domain?: boolean | DomainDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["emailEvent"]>
 
   export type EmailEventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    webhookEventId?: boolean
+    emailId?: boolean
+    token?: boolean
     messageId?: boolean
-    status?: boolean
-    type?: boolean
-    recipient?: boolean
-    sender?: boolean
+    to?: boolean
+    from?: boolean
     subject?: boolean
-    sentWithSSL?: boolean
-    timeTaken?: boolean
+    eventType?: boolean
+    status?: boolean
     spamStatus?: boolean
-    details?: boolean
     timestamp?: boolean
-    sendingDomainId?: boolean
+    domainId?: boolean
     createdAt?: boolean
-    sendingDomain?: boolean | SendingDomainDefaultArgs<ExtArgs>
+    domain?: boolean | DomainDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["emailEvent"]>
 
   export type EmailEventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    webhookEventId?: boolean
+    emailId?: boolean
+    token?: boolean
     messageId?: boolean
-    status?: boolean
-    type?: boolean
-    recipient?: boolean
-    sender?: boolean
+    to?: boolean
+    from?: boolean
     subject?: boolean
-    sentWithSSL?: boolean
-    timeTaken?: boolean
+    eventType?: boolean
+    status?: boolean
     spamStatus?: boolean
-    details?: boolean
     timestamp?: boolean
-    sendingDomainId?: boolean
+    domainId?: boolean
     createdAt?: boolean
-    sendingDomain?: boolean | SendingDomainDefaultArgs<ExtArgs>
+    domain?: boolean | DomainDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["emailEvent"]>
 
   export type EmailEventSelectScalar = {
     id?: boolean
-    webhookEventId?: boolean
+    emailId?: boolean
+    token?: boolean
     messageId?: boolean
-    status?: boolean
-    type?: boolean
-    recipient?: boolean
-    sender?: boolean
+    to?: boolean
+    from?: boolean
     subject?: boolean
-    sentWithSSL?: boolean
-    timeTaken?: boolean
+    eventType?: boolean
+    status?: boolean
     spamStatus?: boolean
-    details?: boolean
     timestamp?: boolean
-    sendingDomainId?: boolean
+    domainId?: boolean
     createdAt?: boolean
   }
 
-  export type EmailEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "webhookEventId" | "messageId" | "status" | "type" | "recipient" | "sender" | "subject" | "sentWithSSL" | "timeTaken" | "spamStatus" | "details" | "timestamp" | "sendingDomainId" | "createdAt", ExtArgs["result"]["emailEvent"]>
+  export type EmailEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "emailId" | "token" | "messageId" | "to" | "from" | "subject" | "eventType" | "status" | "spamStatus" | "timestamp" | "domainId" | "createdAt", ExtArgs["result"]["emailEvent"]>
   export type EmailEventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    sendingDomain?: boolean | SendingDomainDefaultArgs<ExtArgs>
+    domain?: boolean | DomainDefaultArgs<ExtArgs>
   }
   export type EmailEventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    sendingDomain?: boolean | SendingDomainDefaultArgs<ExtArgs>
+    domain?: boolean | DomainDefaultArgs<ExtArgs>
   }
   export type EmailEventIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    sendingDomain?: boolean | SendingDomainDefaultArgs<ExtArgs>
+    domain?: boolean | DomainDefaultArgs<ExtArgs>
   }
 
   export type $EmailEventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "EmailEvent"
     objects: {
-      sendingDomain: Prisma.$SendingDomainPayload<ExtArgs>
+      domain: Prisma.$DomainPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      webhookEventId: string
+      emailId: number
+      token: string
       messageId: string
-      status: string
-      type: string
-      recipient: string
-      sender: string
+      to: string
+      from: string
       subject: string
-      sentWithSSL: boolean
-      timeTaken: number | null
-      spamStatus: number | null
-      details: string | null
-      timestamp: number
-      sendingDomainId: string
+      eventType: string
+      status: string
+      spamStatus: number
+      timestamp: Date
+      domainId: string
       createdAt: Date
     }, ExtArgs["result"]["emailEvent"]>
     composites: {}
@@ -4185,7 +4189,7 @@ export namespace Prisma {
    */
   export interface Prisma__EmailEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    sendingDomain<T extends SendingDomainDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SendingDomainDefaultArgs<ExtArgs>>): Prisma__SendingDomainClient<$Result.GetResult<Prisma.$SendingDomainPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    domain<T extends DomainDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DomainDefaultArgs<ExtArgs>>): Prisma__DomainClient<$Result.GetResult<Prisma.$DomainPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4216,19 +4220,17 @@ export namespace Prisma {
    */
   interface EmailEventFieldRefs {
     readonly id: FieldRef<"EmailEvent", 'String'>
-    readonly webhookEventId: FieldRef<"EmailEvent", 'String'>
+    readonly emailId: FieldRef<"EmailEvent", 'Int'>
+    readonly token: FieldRef<"EmailEvent", 'String'>
     readonly messageId: FieldRef<"EmailEvent", 'String'>
-    readonly status: FieldRef<"EmailEvent", 'String'>
-    readonly type: FieldRef<"EmailEvent", 'String'>
-    readonly recipient: FieldRef<"EmailEvent", 'String'>
-    readonly sender: FieldRef<"EmailEvent", 'String'>
+    readonly to: FieldRef<"EmailEvent", 'String'>
+    readonly from: FieldRef<"EmailEvent", 'String'>
     readonly subject: FieldRef<"EmailEvent", 'String'>
-    readonly sentWithSSL: FieldRef<"EmailEvent", 'Boolean'>
-    readonly timeTaken: FieldRef<"EmailEvent", 'Float'>
+    readonly eventType: FieldRef<"EmailEvent", 'String'>
+    readonly status: FieldRef<"EmailEvent", 'String'>
     readonly spamStatus: FieldRef<"EmailEvent", 'Int'>
-    readonly details: FieldRef<"EmailEvent", 'String'>
-    readonly timestamp: FieldRef<"EmailEvent", 'Float'>
-    readonly sendingDomainId: FieldRef<"EmailEvent", 'String'>
+    readonly timestamp: FieldRef<"EmailEvent", 'DateTime'>
+    readonly domainId: FieldRef<"EmailEvent", 'String'>
     readonly createdAt: FieldRef<"EmailEvent", 'DateTime'>
   }
     
@@ -4645,404 +4647,416 @@ export namespace Prisma {
 
 
   /**
-   * Model SummaryStats
+   * Model EmailSummary
    */
 
-  export type AggregateSummaryStats = {
-    _count: SummaryStatsCountAggregateOutputType | null
-    _avg: SummaryStatsAvgAggregateOutputType | null
-    _sum: SummaryStatsSumAggregateOutputType | null
-    _min: SummaryStatsMinAggregateOutputType | null
-    _max: SummaryStatsMaxAggregateOutputType | null
+  export type AggregateEmailSummary = {
+    _count: EmailSummaryCountAggregateOutputType | null
+    _avg: EmailSummaryAvgAggregateOutputType | null
+    _sum: EmailSummarySumAggregateOutputType | null
+    _min: EmailSummaryMinAggregateOutputType | null
+    _max: EmailSummaryMaxAggregateOutputType | null
   }
 
-  export type SummaryStatsAvgAggregateOutputType = {
+  export type EmailSummaryAvgAggregateOutputType = {
     totalSent: number | null
     totalDelivered: number | null
     totalFailed: number | null
   }
 
-  export type SummaryStatsSumAggregateOutputType = {
+  export type EmailSummarySumAggregateOutputType = {
     totalSent: number | null
     totalDelivered: number | null
     totalFailed: number | null
   }
 
-  export type SummaryStatsMinAggregateOutputType = {
+  export type EmailSummaryMinAggregateOutputType = {
     id: string | null
-    sendingDomainId: string | null
+    domainId: string | null
     totalSent: number | null
     totalDelivered: number | null
     totalFailed: number | null
-    lastUpdated: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
   }
 
-  export type SummaryStatsMaxAggregateOutputType = {
+  export type EmailSummaryMaxAggregateOutputType = {
     id: string | null
-    sendingDomainId: string | null
+    domainId: string | null
     totalSent: number | null
     totalDelivered: number | null
     totalFailed: number | null
-    lastUpdated: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
   }
 
-  export type SummaryStatsCountAggregateOutputType = {
+  export type EmailSummaryCountAggregateOutputType = {
     id: number
-    sendingDomainId: number
+    domainId: number
     totalSent: number
     totalDelivered: number
     totalFailed: number
-    lastUpdated: number
+    createdAt: number
+    updatedAt: number
     _all: number
   }
 
 
-  export type SummaryStatsAvgAggregateInputType = {
+  export type EmailSummaryAvgAggregateInputType = {
     totalSent?: true
     totalDelivered?: true
     totalFailed?: true
   }
 
-  export type SummaryStatsSumAggregateInputType = {
+  export type EmailSummarySumAggregateInputType = {
     totalSent?: true
     totalDelivered?: true
     totalFailed?: true
   }
 
-  export type SummaryStatsMinAggregateInputType = {
+  export type EmailSummaryMinAggregateInputType = {
     id?: true
-    sendingDomainId?: true
+    domainId?: true
     totalSent?: true
     totalDelivered?: true
     totalFailed?: true
-    lastUpdated?: true
+    createdAt?: true
+    updatedAt?: true
   }
 
-  export type SummaryStatsMaxAggregateInputType = {
+  export type EmailSummaryMaxAggregateInputType = {
     id?: true
-    sendingDomainId?: true
+    domainId?: true
     totalSent?: true
     totalDelivered?: true
     totalFailed?: true
-    lastUpdated?: true
+    createdAt?: true
+    updatedAt?: true
   }
 
-  export type SummaryStatsCountAggregateInputType = {
+  export type EmailSummaryCountAggregateInputType = {
     id?: true
-    sendingDomainId?: true
+    domainId?: true
     totalSent?: true
     totalDelivered?: true
     totalFailed?: true
-    lastUpdated?: true
+    createdAt?: true
+    updatedAt?: true
     _all?: true
   }
 
-  export type SummaryStatsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EmailSummaryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which SummaryStats to aggregate.
+     * Filter which EmailSummary to aggregate.
      */
-    where?: SummaryStatsWhereInput
+    where?: EmailSummaryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of SummaryStats to fetch.
+     * Determine the order of EmailSummaries to fetch.
      */
-    orderBy?: SummaryStatsOrderByWithRelationInput | SummaryStatsOrderByWithRelationInput[]
+    orderBy?: EmailSummaryOrderByWithRelationInput | EmailSummaryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: SummaryStatsWhereUniqueInput
+    cursor?: EmailSummaryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` SummaryStats from the position of the cursor.
+     * Take `±n` EmailSummaries from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` SummaryStats.
+     * Skip the first `n` EmailSummaries.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned SummaryStats
+     * Count returned EmailSummaries
     **/
-    _count?: true | SummaryStatsCountAggregateInputType
+    _count?: true | EmailSummaryCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to average
     **/
-    _avg?: SummaryStatsAvgAggregateInputType
+    _avg?: EmailSummaryAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to sum
     **/
-    _sum?: SummaryStatsSumAggregateInputType
+    _sum?: EmailSummarySumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: SummaryStatsMinAggregateInputType
+    _min?: EmailSummaryMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: SummaryStatsMaxAggregateInputType
+    _max?: EmailSummaryMaxAggregateInputType
   }
 
-  export type GetSummaryStatsAggregateType<T extends SummaryStatsAggregateArgs> = {
-        [P in keyof T & keyof AggregateSummaryStats]: P extends '_count' | 'count'
+  export type GetEmailSummaryAggregateType<T extends EmailSummaryAggregateArgs> = {
+        [P in keyof T & keyof AggregateEmailSummary]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateSummaryStats[P]>
-      : GetScalarType<T[P], AggregateSummaryStats[P]>
+        : GetScalarType<T[P], AggregateEmailSummary[P]>
+      : GetScalarType<T[P], AggregateEmailSummary[P]>
   }
 
 
 
 
-  export type SummaryStatsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SummaryStatsWhereInput
-    orderBy?: SummaryStatsOrderByWithAggregationInput | SummaryStatsOrderByWithAggregationInput[]
-    by: SummaryStatsScalarFieldEnum[] | SummaryStatsScalarFieldEnum
-    having?: SummaryStatsScalarWhereWithAggregatesInput
+  export type EmailSummaryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmailSummaryWhereInput
+    orderBy?: EmailSummaryOrderByWithAggregationInput | EmailSummaryOrderByWithAggregationInput[]
+    by: EmailSummaryScalarFieldEnum[] | EmailSummaryScalarFieldEnum
+    having?: EmailSummaryScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: SummaryStatsCountAggregateInputType | true
-    _avg?: SummaryStatsAvgAggregateInputType
-    _sum?: SummaryStatsSumAggregateInputType
-    _min?: SummaryStatsMinAggregateInputType
-    _max?: SummaryStatsMaxAggregateInputType
+    _count?: EmailSummaryCountAggregateInputType | true
+    _avg?: EmailSummaryAvgAggregateInputType
+    _sum?: EmailSummarySumAggregateInputType
+    _min?: EmailSummaryMinAggregateInputType
+    _max?: EmailSummaryMaxAggregateInputType
   }
 
-  export type SummaryStatsGroupByOutputType = {
+  export type EmailSummaryGroupByOutputType = {
     id: string
-    sendingDomainId: string
+    domainId: string
     totalSent: number
     totalDelivered: number
     totalFailed: number
-    lastUpdated: Date
-    _count: SummaryStatsCountAggregateOutputType | null
-    _avg: SummaryStatsAvgAggregateOutputType | null
-    _sum: SummaryStatsSumAggregateOutputType | null
-    _min: SummaryStatsMinAggregateOutputType | null
-    _max: SummaryStatsMaxAggregateOutputType | null
+    createdAt: Date
+    updatedAt: Date
+    _count: EmailSummaryCountAggregateOutputType | null
+    _avg: EmailSummaryAvgAggregateOutputType | null
+    _sum: EmailSummarySumAggregateOutputType | null
+    _min: EmailSummaryMinAggregateOutputType | null
+    _max: EmailSummaryMaxAggregateOutputType | null
   }
 
-  type GetSummaryStatsGroupByPayload<T extends SummaryStatsGroupByArgs> = Prisma.PrismaPromise<
+  type GetEmailSummaryGroupByPayload<T extends EmailSummaryGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<SummaryStatsGroupByOutputType, T['by']> &
+      PickEnumerable<EmailSummaryGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof SummaryStatsGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof EmailSummaryGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], SummaryStatsGroupByOutputType[P]>
-            : GetScalarType<T[P], SummaryStatsGroupByOutputType[P]>
+              : GetScalarType<T[P], EmailSummaryGroupByOutputType[P]>
+            : GetScalarType<T[P], EmailSummaryGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type SummaryStatsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type EmailSummarySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    sendingDomainId?: boolean
+    domainId?: boolean
     totalSent?: boolean
     totalDelivered?: boolean
     totalFailed?: boolean
-    lastUpdated?: boolean
-    sendingDomain?: boolean | SendingDomainDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["summaryStats"]>
+    createdAt?: boolean
+    updatedAt?: boolean
+    domain?: boolean | DomainDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["emailSummary"]>
 
-  export type SummaryStatsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type EmailSummarySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    sendingDomainId?: boolean
+    domainId?: boolean
     totalSent?: boolean
     totalDelivered?: boolean
     totalFailed?: boolean
-    lastUpdated?: boolean
-    sendingDomain?: boolean | SendingDomainDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["summaryStats"]>
+    createdAt?: boolean
+    updatedAt?: boolean
+    domain?: boolean | DomainDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["emailSummary"]>
 
-  export type SummaryStatsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type EmailSummarySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    sendingDomainId?: boolean
+    domainId?: boolean
     totalSent?: boolean
     totalDelivered?: boolean
     totalFailed?: boolean
-    lastUpdated?: boolean
-    sendingDomain?: boolean | SendingDomainDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["summaryStats"]>
+    createdAt?: boolean
+    updatedAt?: boolean
+    domain?: boolean | DomainDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["emailSummary"]>
 
-  export type SummaryStatsSelectScalar = {
+  export type EmailSummarySelectScalar = {
     id?: boolean
-    sendingDomainId?: boolean
+    domainId?: boolean
     totalSent?: boolean
     totalDelivered?: boolean
     totalFailed?: boolean
-    lastUpdated?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
   }
 
-  export type SummaryStatsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sendingDomainId" | "totalSent" | "totalDelivered" | "totalFailed" | "lastUpdated", ExtArgs["result"]["summaryStats"]>
-  export type SummaryStatsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    sendingDomain?: boolean | SendingDomainDefaultArgs<ExtArgs>
+  export type EmailSummaryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "domainId" | "totalSent" | "totalDelivered" | "totalFailed" | "createdAt" | "updatedAt", ExtArgs["result"]["emailSummary"]>
+  export type EmailSummaryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    domain?: boolean | DomainDefaultArgs<ExtArgs>
   }
-  export type SummaryStatsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    sendingDomain?: boolean | SendingDomainDefaultArgs<ExtArgs>
+  export type EmailSummaryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    domain?: boolean | DomainDefaultArgs<ExtArgs>
   }
-  export type SummaryStatsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    sendingDomain?: boolean | SendingDomainDefaultArgs<ExtArgs>
+  export type EmailSummaryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    domain?: boolean | DomainDefaultArgs<ExtArgs>
   }
 
-  export type $SummaryStatsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "SummaryStats"
+  export type $EmailSummaryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EmailSummary"
     objects: {
-      sendingDomain: Prisma.$SendingDomainPayload<ExtArgs>
+      domain: Prisma.$DomainPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      sendingDomainId: string
+      domainId: string
       totalSent: number
       totalDelivered: number
       totalFailed: number
-      lastUpdated: Date
-    }, ExtArgs["result"]["summaryStats"]>
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["emailSummary"]>
     composites: {}
   }
 
-  type SummaryStatsGetPayload<S extends boolean | null | undefined | SummaryStatsDefaultArgs> = $Result.GetResult<Prisma.$SummaryStatsPayload, S>
+  type EmailSummaryGetPayload<S extends boolean | null | undefined | EmailSummaryDefaultArgs> = $Result.GetResult<Prisma.$EmailSummaryPayload, S>
 
-  type SummaryStatsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<SummaryStatsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: SummaryStatsCountAggregateInputType | true
+  type EmailSummaryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EmailSummaryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EmailSummaryCountAggregateInputType | true
     }
 
-  export interface SummaryStatsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SummaryStats'], meta: { name: 'SummaryStats' } }
+  export interface EmailSummaryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EmailSummary'], meta: { name: 'EmailSummary' } }
     /**
-     * Find zero or one SummaryStats that matches the filter.
-     * @param {SummaryStatsFindUniqueArgs} args - Arguments to find a SummaryStats
+     * Find zero or one EmailSummary that matches the filter.
+     * @param {EmailSummaryFindUniqueArgs} args - Arguments to find a EmailSummary
      * @example
-     * // Get one SummaryStats
-     * const summaryStats = await prisma.summaryStats.findUnique({
+     * // Get one EmailSummary
+     * const emailSummary = await prisma.emailSummary.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends SummaryStatsFindUniqueArgs>(args: SelectSubset<T, SummaryStatsFindUniqueArgs<ExtArgs>>): Prisma__SummaryStatsClient<$Result.GetResult<Prisma.$SummaryStatsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends EmailSummaryFindUniqueArgs>(args: SelectSubset<T, EmailSummaryFindUniqueArgs<ExtArgs>>): Prisma__EmailSummaryClient<$Result.GetResult<Prisma.$EmailSummaryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one SummaryStats that matches the filter or throw an error with `error.code='P2025'`
+     * Find one EmailSummary that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {SummaryStatsFindUniqueOrThrowArgs} args - Arguments to find a SummaryStats
+     * @param {EmailSummaryFindUniqueOrThrowArgs} args - Arguments to find a EmailSummary
      * @example
-     * // Get one SummaryStats
-     * const summaryStats = await prisma.summaryStats.findUniqueOrThrow({
+     * // Get one EmailSummary
+     * const emailSummary = await prisma.emailSummary.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends SummaryStatsFindUniqueOrThrowArgs>(args: SelectSubset<T, SummaryStatsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SummaryStatsClient<$Result.GetResult<Prisma.$SummaryStatsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends EmailSummaryFindUniqueOrThrowArgs>(args: SelectSubset<T, EmailSummaryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EmailSummaryClient<$Result.GetResult<Prisma.$EmailSummaryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first SummaryStats that matches the filter.
+     * Find the first EmailSummary that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SummaryStatsFindFirstArgs} args - Arguments to find a SummaryStats
+     * @param {EmailSummaryFindFirstArgs} args - Arguments to find a EmailSummary
      * @example
-     * // Get one SummaryStats
-     * const summaryStats = await prisma.summaryStats.findFirst({
+     * // Get one EmailSummary
+     * const emailSummary = await prisma.emailSummary.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends SummaryStatsFindFirstArgs>(args?: SelectSubset<T, SummaryStatsFindFirstArgs<ExtArgs>>): Prisma__SummaryStatsClient<$Result.GetResult<Prisma.$SummaryStatsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends EmailSummaryFindFirstArgs>(args?: SelectSubset<T, EmailSummaryFindFirstArgs<ExtArgs>>): Prisma__EmailSummaryClient<$Result.GetResult<Prisma.$EmailSummaryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first SummaryStats that matches the filter or
+     * Find the first EmailSummary that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SummaryStatsFindFirstOrThrowArgs} args - Arguments to find a SummaryStats
+     * @param {EmailSummaryFindFirstOrThrowArgs} args - Arguments to find a EmailSummary
      * @example
-     * // Get one SummaryStats
-     * const summaryStats = await prisma.summaryStats.findFirstOrThrow({
+     * // Get one EmailSummary
+     * const emailSummary = await prisma.emailSummary.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends SummaryStatsFindFirstOrThrowArgs>(args?: SelectSubset<T, SummaryStatsFindFirstOrThrowArgs<ExtArgs>>): Prisma__SummaryStatsClient<$Result.GetResult<Prisma.$SummaryStatsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends EmailSummaryFindFirstOrThrowArgs>(args?: SelectSubset<T, EmailSummaryFindFirstOrThrowArgs<ExtArgs>>): Prisma__EmailSummaryClient<$Result.GetResult<Prisma.$EmailSummaryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more SummaryStats that matches the filter.
+     * Find zero or more EmailSummaries that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SummaryStatsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {EmailSummaryFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all SummaryStats
-     * const summaryStats = await prisma.summaryStats.findMany()
+     * // Get all EmailSummaries
+     * const emailSummaries = await prisma.emailSummary.findMany()
      * 
-     * // Get first 10 SummaryStats
-     * const summaryStats = await prisma.summaryStats.findMany({ take: 10 })
+     * // Get first 10 EmailSummaries
+     * const emailSummaries = await prisma.emailSummary.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const summaryStatsWithIdOnly = await prisma.summaryStats.findMany({ select: { id: true } })
+     * const emailSummaryWithIdOnly = await prisma.emailSummary.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends SummaryStatsFindManyArgs>(args?: SelectSubset<T, SummaryStatsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SummaryStatsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends EmailSummaryFindManyArgs>(args?: SelectSubset<T, EmailSummaryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailSummaryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a SummaryStats.
-     * @param {SummaryStatsCreateArgs} args - Arguments to create a SummaryStats.
+     * Create a EmailSummary.
+     * @param {EmailSummaryCreateArgs} args - Arguments to create a EmailSummary.
      * @example
-     * // Create one SummaryStats
-     * const SummaryStats = await prisma.summaryStats.create({
+     * // Create one EmailSummary
+     * const EmailSummary = await prisma.emailSummary.create({
      *   data: {
-     *     // ... data to create a SummaryStats
+     *     // ... data to create a EmailSummary
      *   }
      * })
      * 
      */
-    create<T extends SummaryStatsCreateArgs>(args: SelectSubset<T, SummaryStatsCreateArgs<ExtArgs>>): Prisma__SummaryStatsClient<$Result.GetResult<Prisma.$SummaryStatsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends EmailSummaryCreateArgs>(args: SelectSubset<T, EmailSummaryCreateArgs<ExtArgs>>): Prisma__EmailSummaryClient<$Result.GetResult<Prisma.$EmailSummaryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many SummaryStats.
-     * @param {SummaryStatsCreateManyArgs} args - Arguments to create many SummaryStats.
+     * Create many EmailSummaries.
+     * @param {EmailSummaryCreateManyArgs} args - Arguments to create many EmailSummaries.
      * @example
-     * // Create many SummaryStats
-     * const summaryStats = await prisma.summaryStats.createMany({
+     * // Create many EmailSummaries
+     * const emailSummary = await prisma.emailSummary.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends SummaryStatsCreateManyArgs>(args?: SelectSubset<T, SummaryStatsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends EmailSummaryCreateManyArgs>(args?: SelectSubset<T, EmailSummaryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many SummaryStats and returns the data saved in the database.
-     * @param {SummaryStatsCreateManyAndReturnArgs} args - Arguments to create many SummaryStats.
+     * Create many EmailSummaries and returns the data saved in the database.
+     * @param {EmailSummaryCreateManyAndReturnArgs} args - Arguments to create many EmailSummaries.
      * @example
-     * // Create many SummaryStats
-     * const summaryStats = await prisma.summaryStats.createManyAndReturn({
+     * // Create many EmailSummaries
+     * const emailSummary = await prisma.emailSummary.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many SummaryStats and only return the `id`
-     * const summaryStatsWithIdOnly = await prisma.summaryStats.createManyAndReturn({
+     * // Create many EmailSummaries and only return the `id`
+     * const emailSummaryWithIdOnly = await prisma.emailSummary.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -5052,28 +5066,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends SummaryStatsCreateManyAndReturnArgs>(args?: SelectSubset<T, SummaryStatsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SummaryStatsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends EmailSummaryCreateManyAndReturnArgs>(args?: SelectSubset<T, EmailSummaryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailSummaryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a SummaryStats.
-     * @param {SummaryStatsDeleteArgs} args - Arguments to delete one SummaryStats.
+     * Delete a EmailSummary.
+     * @param {EmailSummaryDeleteArgs} args - Arguments to delete one EmailSummary.
      * @example
-     * // Delete one SummaryStats
-     * const SummaryStats = await prisma.summaryStats.delete({
+     * // Delete one EmailSummary
+     * const EmailSummary = await prisma.emailSummary.delete({
      *   where: {
-     *     // ... filter to delete one SummaryStats
+     *     // ... filter to delete one EmailSummary
      *   }
      * })
      * 
      */
-    delete<T extends SummaryStatsDeleteArgs>(args: SelectSubset<T, SummaryStatsDeleteArgs<ExtArgs>>): Prisma__SummaryStatsClient<$Result.GetResult<Prisma.$SummaryStatsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends EmailSummaryDeleteArgs>(args: SelectSubset<T, EmailSummaryDeleteArgs<ExtArgs>>): Prisma__EmailSummaryClient<$Result.GetResult<Prisma.$EmailSummaryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one SummaryStats.
-     * @param {SummaryStatsUpdateArgs} args - Arguments to update one SummaryStats.
+     * Update one EmailSummary.
+     * @param {EmailSummaryUpdateArgs} args - Arguments to update one EmailSummary.
      * @example
-     * // Update one SummaryStats
-     * const summaryStats = await prisma.summaryStats.update({
+     * // Update one EmailSummary
+     * const emailSummary = await prisma.emailSummary.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -5083,30 +5097,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends SummaryStatsUpdateArgs>(args: SelectSubset<T, SummaryStatsUpdateArgs<ExtArgs>>): Prisma__SummaryStatsClient<$Result.GetResult<Prisma.$SummaryStatsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends EmailSummaryUpdateArgs>(args: SelectSubset<T, EmailSummaryUpdateArgs<ExtArgs>>): Prisma__EmailSummaryClient<$Result.GetResult<Prisma.$EmailSummaryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more SummaryStats.
-     * @param {SummaryStatsDeleteManyArgs} args - Arguments to filter SummaryStats to delete.
+     * Delete zero or more EmailSummaries.
+     * @param {EmailSummaryDeleteManyArgs} args - Arguments to filter EmailSummaries to delete.
      * @example
-     * // Delete a few SummaryStats
-     * const { count } = await prisma.summaryStats.deleteMany({
+     * // Delete a few EmailSummaries
+     * const { count } = await prisma.emailSummary.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends SummaryStatsDeleteManyArgs>(args?: SelectSubset<T, SummaryStatsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends EmailSummaryDeleteManyArgs>(args?: SelectSubset<T, EmailSummaryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more SummaryStats.
+     * Update zero or more EmailSummaries.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SummaryStatsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {EmailSummaryUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many SummaryStats
-     * const summaryStats = await prisma.summaryStats.updateMany({
+     * // Update many EmailSummaries
+     * const emailSummary = await prisma.emailSummary.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -5116,14 +5130,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends SummaryStatsUpdateManyArgs>(args: SelectSubset<T, SummaryStatsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends EmailSummaryUpdateManyArgs>(args: SelectSubset<T, EmailSummaryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more SummaryStats and returns the data updated in the database.
-     * @param {SummaryStatsUpdateManyAndReturnArgs} args - Arguments to update many SummaryStats.
+     * Update zero or more EmailSummaries and returns the data updated in the database.
+     * @param {EmailSummaryUpdateManyAndReturnArgs} args - Arguments to update many EmailSummaries.
      * @example
-     * // Update many SummaryStats
-     * const summaryStats = await prisma.summaryStats.updateManyAndReturn({
+     * // Update many EmailSummaries
+     * const emailSummary = await prisma.emailSummary.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -5132,8 +5146,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more SummaryStats and only return the `id`
-     * const summaryStatsWithIdOnly = await prisma.summaryStats.updateManyAndReturn({
+     * // Update zero or more EmailSummaries and only return the `id`
+     * const emailSummaryWithIdOnly = await prisma.emailSummary.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -5146,56 +5160,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends SummaryStatsUpdateManyAndReturnArgs>(args: SelectSubset<T, SummaryStatsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SummaryStatsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends EmailSummaryUpdateManyAndReturnArgs>(args: SelectSubset<T, EmailSummaryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailSummaryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one SummaryStats.
-     * @param {SummaryStatsUpsertArgs} args - Arguments to update or create a SummaryStats.
+     * Create or update one EmailSummary.
+     * @param {EmailSummaryUpsertArgs} args - Arguments to update or create a EmailSummary.
      * @example
-     * // Update or create a SummaryStats
-     * const summaryStats = await prisma.summaryStats.upsert({
+     * // Update or create a EmailSummary
+     * const emailSummary = await prisma.emailSummary.upsert({
      *   create: {
-     *     // ... data to create a SummaryStats
+     *     // ... data to create a EmailSummary
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the SummaryStats we want to update
+     *     // ... the filter for the EmailSummary we want to update
      *   }
      * })
      */
-    upsert<T extends SummaryStatsUpsertArgs>(args: SelectSubset<T, SummaryStatsUpsertArgs<ExtArgs>>): Prisma__SummaryStatsClient<$Result.GetResult<Prisma.$SummaryStatsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends EmailSummaryUpsertArgs>(args: SelectSubset<T, EmailSummaryUpsertArgs<ExtArgs>>): Prisma__EmailSummaryClient<$Result.GetResult<Prisma.$EmailSummaryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of SummaryStats.
+     * Count the number of EmailSummaries.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SummaryStatsCountArgs} args - Arguments to filter SummaryStats to count.
+     * @param {EmailSummaryCountArgs} args - Arguments to filter EmailSummaries to count.
      * @example
-     * // Count the number of SummaryStats
-     * const count = await prisma.summaryStats.count({
+     * // Count the number of EmailSummaries
+     * const count = await prisma.emailSummary.count({
      *   where: {
-     *     // ... the filter for the SummaryStats we want to count
+     *     // ... the filter for the EmailSummaries we want to count
      *   }
      * })
     **/
-    count<T extends SummaryStatsCountArgs>(
-      args?: Subset<T, SummaryStatsCountArgs>,
+    count<T extends EmailSummaryCountArgs>(
+      args?: Subset<T, EmailSummaryCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], SummaryStatsCountAggregateOutputType>
+          : GetScalarType<T['select'], EmailSummaryCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a SummaryStats.
+     * Allows you to perform aggregations operations on a EmailSummary.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SummaryStatsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {EmailSummaryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -5215,13 +5229,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends SummaryStatsAggregateArgs>(args: Subset<T, SummaryStatsAggregateArgs>): Prisma.PrismaPromise<GetSummaryStatsAggregateType<T>>
+    aggregate<T extends EmailSummaryAggregateArgs>(args: Subset<T, EmailSummaryAggregateArgs>): Prisma.PrismaPromise<GetEmailSummaryAggregateType<T>>
 
     /**
-     * Group by SummaryStats.
+     * Group by EmailSummary.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SummaryStatsGroupByArgs} args - Group by arguments.
+     * @param {EmailSummaryGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -5236,14 +5250,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends SummaryStatsGroupByArgs,
+      T extends EmailSummaryGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: SummaryStatsGroupByArgs['orderBy'] }
-        : { orderBy?: SummaryStatsGroupByArgs['orderBy'] },
+        ? { orderBy: EmailSummaryGroupByArgs['orderBy'] }
+        : { orderBy?: EmailSummaryGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -5292,22 +5306,22 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, SummaryStatsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSummaryStatsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, EmailSummaryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEmailSummaryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the SummaryStats model
+   * Fields of the EmailSummary model
    */
-  readonly fields: SummaryStatsFieldRefs;
+  readonly fields: EmailSummaryFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for SummaryStats.
+   * The delegate class that acts as a "Promise-like" for EmailSummary.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__SummaryStatsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__EmailSummaryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    sendingDomain<T extends SendingDomainDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SendingDomainDefaultArgs<ExtArgs>>): Prisma__SendingDomainClient<$Result.GetResult<Prisma.$SendingDomainPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    domain<T extends DomainDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DomainDefaultArgs<ExtArgs>>): Prisma__DomainClient<$Result.GetResult<Prisma.$DomainPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5334,426 +5348,427 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the SummaryStats model
+   * Fields of the EmailSummary model
    */
-  interface SummaryStatsFieldRefs {
-    readonly id: FieldRef<"SummaryStats", 'String'>
-    readonly sendingDomainId: FieldRef<"SummaryStats", 'String'>
-    readonly totalSent: FieldRef<"SummaryStats", 'Int'>
-    readonly totalDelivered: FieldRef<"SummaryStats", 'Int'>
-    readonly totalFailed: FieldRef<"SummaryStats", 'Int'>
-    readonly lastUpdated: FieldRef<"SummaryStats", 'DateTime'>
+  interface EmailSummaryFieldRefs {
+    readonly id: FieldRef<"EmailSummary", 'String'>
+    readonly domainId: FieldRef<"EmailSummary", 'String'>
+    readonly totalSent: FieldRef<"EmailSummary", 'Int'>
+    readonly totalDelivered: FieldRef<"EmailSummary", 'Int'>
+    readonly totalFailed: FieldRef<"EmailSummary", 'Int'>
+    readonly createdAt: FieldRef<"EmailSummary", 'DateTime'>
+    readonly updatedAt: FieldRef<"EmailSummary", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * SummaryStats findUnique
+   * EmailSummary findUnique
    */
-  export type SummaryStatsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EmailSummaryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SummaryStats
+     * Select specific fields to fetch from the EmailSummary
      */
-    select?: SummaryStatsSelect<ExtArgs> | null
+    select?: EmailSummarySelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SummaryStats
+     * Omit specific fields from the EmailSummary
      */
-    omit?: SummaryStatsOmit<ExtArgs> | null
+    omit?: EmailSummaryOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SummaryStatsInclude<ExtArgs> | null
+    include?: EmailSummaryInclude<ExtArgs> | null
     /**
-     * Filter, which SummaryStats to fetch.
+     * Filter, which EmailSummary to fetch.
      */
-    where: SummaryStatsWhereUniqueInput
+    where: EmailSummaryWhereUniqueInput
   }
 
   /**
-   * SummaryStats findUniqueOrThrow
+   * EmailSummary findUniqueOrThrow
    */
-  export type SummaryStatsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EmailSummaryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SummaryStats
+     * Select specific fields to fetch from the EmailSummary
      */
-    select?: SummaryStatsSelect<ExtArgs> | null
+    select?: EmailSummarySelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SummaryStats
+     * Omit specific fields from the EmailSummary
      */
-    omit?: SummaryStatsOmit<ExtArgs> | null
+    omit?: EmailSummaryOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SummaryStatsInclude<ExtArgs> | null
+    include?: EmailSummaryInclude<ExtArgs> | null
     /**
-     * Filter, which SummaryStats to fetch.
+     * Filter, which EmailSummary to fetch.
      */
-    where: SummaryStatsWhereUniqueInput
+    where: EmailSummaryWhereUniqueInput
   }
 
   /**
-   * SummaryStats findFirst
+   * EmailSummary findFirst
    */
-  export type SummaryStatsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EmailSummaryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SummaryStats
+     * Select specific fields to fetch from the EmailSummary
      */
-    select?: SummaryStatsSelect<ExtArgs> | null
+    select?: EmailSummarySelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SummaryStats
+     * Omit specific fields from the EmailSummary
      */
-    omit?: SummaryStatsOmit<ExtArgs> | null
+    omit?: EmailSummaryOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SummaryStatsInclude<ExtArgs> | null
+    include?: EmailSummaryInclude<ExtArgs> | null
     /**
-     * Filter, which SummaryStats to fetch.
+     * Filter, which EmailSummary to fetch.
      */
-    where?: SummaryStatsWhereInput
+    where?: EmailSummaryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of SummaryStats to fetch.
+     * Determine the order of EmailSummaries to fetch.
      */
-    orderBy?: SummaryStatsOrderByWithRelationInput | SummaryStatsOrderByWithRelationInput[]
+    orderBy?: EmailSummaryOrderByWithRelationInput | EmailSummaryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for SummaryStats.
+     * Sets the position for searching for EmailSummaries.
      */
-    cursor?: SummaryStatsWhereUniqueInput
+    cursor?: EmailSummaryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` SummaryStats from the position of the cursor.
+     * Take `±n` EmailSummaries from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` SummaryStats.
+     * Skip the first `n` EmailSummaries.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of SummaryStats.
+     * Filter by unique combinations of EmailSummaries.
      */
-    distinct?: SummaryStatsScalarFieldEnum | SummaryStatsScalarFieldEnum[]
+    distinct?: EmailSummaryScalarFieldEnum | EmailSummaryScalarFieldEnum[]
   }
 
   /**
-   * SummaryStats findFirstOrThrow
+   * EmailSummary findFirstOrThrow
    */
-  export type SummaryStatsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EmailSummaryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SummaryStats
+     * Select specific fields to fetch from the EmailSummary
      */
-    select?: SummaryStatsSelect<ExtArgs> | null
+    select?: EmailSummarySelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SummaryStats
+     * Omit specific fields from the EmailSummary
      */
-    omit?: SummaryStatsOmit<ExtArgs> | null
+    omit?: EmailSummaryOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SummaryStatsInclude<ExtArgs> | null
+    include?: EmailSummaryInclude<ExtArgs> | null
     /**
-     * Filter, which SummaryStats to fetch.
+     * Filter, which EmailSummary to fetch.
      */
-    where?: SummaryStatsWhereInput
+    where?: EmailSummaryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of SummaryStats to fetch.
+     * Determine the order of EmailSummaries to fetch.
      */
-    orderBy?: SummaryStatsOrderByWithRelationInput | SummaryStatsOrderByWithRelationInput[]
+    orderBy?: EmailSummaryOrderByWithRelationInput | EmailSummaryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for SummaryStats.
+     * Sets the position for searching for EmailSummaries.
      */
-    cursor?: SummaryStatsWhereUniqueInput
+    cursor?: EmailSummaryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` SummaryStats from the position of the cursor.
+     * Take `±n` EmailSummaries from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` SummaryStats.
+     * Skip the first `n` EmailSummaries.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of SummaryStats.
+     * Filter by unique combinations of EmailSummaries.
      */
-    distinct?: SummaryStatsScalarFieldEnum | SummaryStatsScalarFieldEnum[]
+    distinct?: EmailSummaryScalarFieldEnum | EmailSummaryScalarFieldEnum[]
   }
 
   /**
-   * SummaryStats findMany
+   * EmailSummary findMany
    */
-  export type SummaryStatsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EmailSummaryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SummaryStats
+     * Select specific fields to fetch from the EmailSummary
      */
-    select?: SummaryStatsSelect<ExtArgs> | null
+    select?: EmailSummarySelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SummaryStats
+     * Omit specific fields from the EmailSummary
      */
-    omit?: SummaryStatsOmit<ExtArgs> | null
+    omit?: EmailSummaryOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SummaryStatsInclude<ExtArgs> | null
+    include?: EmailSummaryInclude<ExtArgs> | null
     /**
-     * Filter, which SummaryStats to fetch.
+     * Filter, which EmailSummaries to fetch.
      */
-    where?: SummaryStatsWhereInput
+    where?: EmailSummaryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of SummaryStats to fetch.
+     * Determine the order of EmailSummaries to fetch.
      */
-    orderBy?: SummaryStatsOrderByWithRelationInput | SummaryStatsOrderByWithRelationInput[]
+    orderBy?: EmailSummaryOrderByWithRelationInput | EmailSummaryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing SummaryStats.
+     * Sets the position for listing EmailSummaries.
      */
-    cursor?: SummaryStatsWhereUniqueInput
+    cursor?: EmailSummaryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` SummaryStats from the position of the cursor.
+     * Take `±n` EmailSummaries from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` SummaryStats.
+     * Skip the first `n` EmailSummaries.
      */
     skip?: number
-    distinct?: SummaryStatsScalarFieldEnum | SummaryStatsScalarFieldEnum[]
+    distinct?: EmailSummaryScalarFieldEnum | EmailSummaryScalarFieldEnum[]
   }
 
   /**
-   * SummaryStats create
+   * EmailSummary create
    */
-  export type SummaryStatsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EmailSummaryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SummaryStats
+     * Select specific fields to fetch from the EmailSummary
      */
-    select?: SummaryStatsSelect<ExtArgs> | null
+    select?: EmailSummarySelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SummaryStats
+     * Omit specific fields from the EmailSummary
      */
-    omit?: SummaryStatsOmit<ExtArgs> | null
+    omit?: EmailSummaryOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SummaryStatsInclude<ExtArgs> | null
+    include?: EmailSummaryInclude<ExtArgs> | null
     /**
-     * The data needed to create a SummaryStats.
+     * The data needed to create a EmailSummary.
      */
-    data: XOR<SummaryStatsCreateInput, SummaryStatsUncheckedCreateInput>
+    data: XOR<EmailSummaryCreateInput, EmailSummaryUncheckedCreateInput>
   }
 
   /**
-   * SummaryStats createMany
+   * EmailSummary createMany
    */
-  export type SummaryStatsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EmailSummaryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many SummaryStats.
+     * The data used to create many EmailSummaries.
      */
-    data: SummaryStatsCreateManyInput | SummaryStatsCreateManyInput[]
+    data: EmailSummaryCreateManyInput | EmailSummaryCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * SummaryStats createManyAndReturn
+   * EmailSummary createManyAndReturn
    */
-  export type SummaryStatsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EmailSummaryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SummaryStats
+     * Select specific fields to fetch from the EmailSummary
      */
-    select?: SummaryStatsSelectCreateManyAndReturn<ExtArgs> | null
+    select?: EmailSummarySelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the SummaryStats
+     * Omit specific fields from the EmailSummary
      */
-    omit?: SummaryStatsOmit<ExtArgs> | null
+    omit?: EmailSummaryOmit<ExtArgs> | null
     /**
-     * The data used to create many SummaryStats.
+     * The data used to create many EmailSummaries.
      */
-    data: SummaryStatsCreateManyInput | SummaryStatsCreateManyInput[]
+    data: EmailSummaryCreateManyInput | EmailSummaryCreateManyInput[]
     skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SummaryStatsIncludeCreateManyAndReturn<ExtArgs> | null
+    include?: EmailSummaryIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * SummaryStats update
+   * EmailSummary update
    */
-  export type SummaryStatsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EmailSummaryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SummaryStats
+     * Select specific fields to fetch from the EmailSummary
      */
-    select?: SummaryStatsSelect<ExtArgs> | null
+    select?: EmailSummarySelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SummaryStats
+     * Omit specific fields from the EmailSummary
      */
-    omit?: SummaryStatsOmit<ExtArgs> | null
+    omit?: EmailSummaryOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SummaryStatsInclude<ExtArgs> | null
+    include?: EmailSummaryInclude<ExtArgs> | null
     /**
-     * The data needed to update a SummaryStats.
+     * The data needed to update a EmailSummary.
      */
-    data: XOR<SummaryStatsUpdateInput, SummaryStatsUncheckedUpdateInput>
+    data: XOR<EmailSummaryUpdateInput, EmailSummaryUncheckedUpdateInput>
     /**
-     * Choose, which SummaryStats to update.
+     * Choose, which EmailSummary to update.
      */
-    where: SummaryStatsWhereUniqueInput
+    where: EmailSummaryWhereUniqueInput
   }
 
   /**
-   * SummaryStats updateMany
+   * EmailSummary updateMany
    */
-  export type SummaryStatsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EmailSummaryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update SummaryStats.
+     * The data used to update EmailSummaries.
      */
-    data: XOR<SummaryStatsUpdateManyMutationInput, SummaryStatsUncheckedUpdateManyInput>
+    data: XOR<EmailSummaryUpdateManyMutationInput, EmailSummaryUncheckedUpdateManyInput>
     /**
-     * Filter which SummaryStats to update
+     * Filter which EmailSummaries to update
      */
-    where?: SummaryStatsWhereInput
+    where?: EmailSummaryWhereInput
     /**
-     * Limit how many SummaryStats to update.
+     * Limit how many EmailSummaries to update.
      */
     limit?: number
   }
 
   /**
-   * SummaryStats updateManyAndReturn
+   * EmailSummary updateManyAndReturn
    */
-  export type SummaryStatsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EmailSummaryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SummaryStats
+     * Select specific fields to fetch from the EmailSummary
      */
-    select?: SummaryStatsSelectUpdateManyAndReturn<ExtArgs> | null
+    select?: EmailSummarySelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the SummaryStats
+     * Omit specific fields from the EmailSummary
      */
-    omit?: SummaryStatsOmit<ExtArgs> | null
+    omit?: EmailSummaryOmit<ExtArgs> | null
     /**
-     * The data used to update SummaryStats.
+     * The data used to update EmailSummaries.
      */
-    data: XOR<SummaryStatsUpdateManyMutationInput, SummaryStatsUncheckedUpdateManyInput>
+    data: XOR<EmailSummaryUpdateManyMutationInput, EmailSummaryUncheckedUpdateManyInput>
     /**
-     * Filter which SummaryStats to update
+     * Filter which EmailSummaries to update
      */
-    where?: SummaryStatsWhereInput
+    where?: EmailSummaryWhereInput
     /**
-     * Limit how many SummaryStats to update.
+     * Limit how many EmailSummaries to update.
      */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SummaryStatsIncludeUpdateManyAndReturn<ExtArgs> | null
+    include?: EmailSummaryIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * SummaryStats upsert
+   * EmailSummary upsert
    */
-  export type SummaryStatsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EmailSummaryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SummaryStats
+     * Select specific fields to fetch from the EmailSummary
      */
-    select?: SummaryStatsSelect<ExtArgs> | null
+    select?: EmailSummarySelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SummaryStats
+     * Omit specific fields from the EmailSummary
      */
-    omit?: SummaryStatsOmit<ExtArgs> | null
+    omit?: EmailSummaryOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SummaryStatsInclude<ExtArgs> | null
+    include?: EmailSummaryInclude<ExtArgs> | null
     /**
-     * The filter to search for the SummaryStats to update in case it exists.
+     * The filter to search for the EmailSummary to update in case it exists.
      */
-    where: SummaryStatsWhereUniqueInput
+    where: EmailSummaryWhereUniqueInput
     /**
-     * In case the SummaryStats found by the `where` argument doesn't exist, create a new SummaryStats with this data.
+     * In case the EmailSummary found by the `where` argument doesn't exist, create a new EmailSummary with this data.
      */
-    create: XOR<SummaryStatsCreateInput, SummaryStatsUncheckedCreateInput>
+    create: XOR<EmailSummaryCreateInput, EmailSummaryUncheckedCreateInput>
     /**
-     * In case the SummaryStats was found with the provided `where` argument, update it with this data.
+     * In case the EmailSummary was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<SummaryStatsUpdateInput, SummaryStatsUncheckedUpdateInput>
+    update: XOR<EmailSummaryUpdateInput, EmailSummaryUncheckedUpdateInput>
   }
 
   /**
-   * SummaryStats delete
+   * EmailSummary delete
    */
-  export type SummaryStatsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EmailSummaryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SummaryStats
+     * Select specific fields to fetch from the EmailSummary
      */
-    select?: SummaryStatsSelect<ExtArgs> | null
+    select?: EmailSummarySelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SummaryStats
+     * Omit specific fields from the EmailSummary
      */
-    omit?: SummaryStatsOmit<ExtArgs> | null
+    omit?: EmailSummaryOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SummaryStatsInclude<ExtArgs> | null
+    include?: EmailSummaryInclude<ExtArgs> | null
     /**
-     * Filter which SummaryStats to delete.
+     * Filter which EmailSummary to delete.
      */
-    where: SummaryStatsWhereUniqueInput
+    where: EmailSummaryWhereUniqueInput
   }
 
   /**
-   * SummaryStats deleteMany
+   * EmailSummary deleteMany
    */
-  export type SummaryStatsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EmailSummaryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which SummaryStats to delete
+     * Filter which EmailSummaries to delete
      */
-    where?: SummaryStatsWhereInput
+    where?: EmailSummaryWhereInput
     /**
-     * Limit how many SummaryStats to delete.
+     * Limit how many EmailSummaries to delete.
      */
     limit?: number
   }
 
   /**
-   * SummaryStats without action
+   * EmailSummary without action
    */
-  export type SummaryStatsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type EmailSummaryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SummaryStats
+     * Select specific fields to fetch from the EmailSummary
      */
-    select?: SummaryStatsSelect<ExtArgs> | null
+    select?: EmailSummarySelect<ExtArgs> | null
     /**
-     * Omit specific fields from the SummaryStats
+     * Omit specific fields from the EmailSummary
      */
-    omit?: SummaryStatsOmit<ExtArgs> | null
+    omit?: EmailSummaryOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SummaryStatsInclude<ExtArgs> | null
+    include?: EmailSummaryInclude<ExtArgs> | null
   }
 
 
@@ -5776,54 +5791,54 @@ export namespace Prisma {
     kindeId: 'kindeId',
     email: 'email',
     name: 'name',
-    role: 'role',
-    createdAt: 'createdAt'
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-  export const SendingDomainScalarFieldEnum: {
+  export const DomainScalarFieldEnum: {
     id: 'id',
-    domain: 'domain',
+    name: 'name',
     userId: 'userId',
-    createdAt: 'createdAt'
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
   };
 
-  export type SendingDomainScalarFieldEnum = (typeof SendingDomainScalarFieldEnum)[keyof typeof SendingDomainScalarFieldEnum]
+  export type DomainScalarFieldEnum = (typeof DomainScalarFieldEnum)[keyof typeof DomainScalarFieldEnum]
 
 
   export const EmailEventScalarFieldEnum: {
     id: 'id',
-    webhookEventId: 'webhookEventId',
+    emailId: 'emailId',
+    token: 'token',
     messageId: 'messageId',
-    status: 'status',
-    type: 'type',
-    recipient: 'recipient',
-    sender: 'sender',
+    to: 'to',
+    from: 'from',
     subject: 'subject',
-    sentWithSSL: 'sentWithSSL',
-    timeTaken: 'timeTaken',
+    eventType: 'eventType',
+    status: 'status',
     spamStatus: 'spamStatus',
-    details: 'details',
     timestamp: 'timestamp',
-    sendingDomainId: 'sendingDomainId',
+    domainId: 'domainId',
     createdAt: 'createdAt'
   };
 
   export type EmailEventScalarFieldEnum = (typeof EmailEventScalarFieldEnum)[keyof typeof EmailEventScalarFieldEnum]
 
 
-  export const SummaryStatsScalarFieldEnum: {
+  export const EmailSummaryScalarFieldEnum: {
     id: 'id',
-    sendingDomainId: 'sendingDomainId',
+    domainId: 'domainId',
     totalSent: 'totalSent',
     totalDelivered: 'totalDelivered',
     totalFailed: 'totalFailed',
-    lastUpdated: 'lastUpdated'
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
   };
 
-  export type SummaryStatsScalarFieldEnum = (typeof SummaryStatsScalarFieldEnum)[keyof typeof SummaryStatsScalarFieldEnum]
+  export type EmailSummaryScalarFieldEnum = (typeof EmailSummaryScalarFieldEnum)[keyof typeof EmailSummaryScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -5870,20 +5885,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Role'
-   */
-  export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
-    
-
-
-  /**
-   * Reference to a field of type 'Role[]'
-   */
-  export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
-    
-
-
-  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -5894,27 +5895,6 @@ export namespace Prisma {
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Boolean'
-   */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
-
-
-  /**
-   * Reference to a field of type 'Float'
-   */
-  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-  /**
-   * Reference to a field of type 'Float[]'
-   */
-  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 
@@ -5930,6 +5910,20 @@ export namespace Prisma {
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
+
+
+  /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
   /**
    * Deep Input Types
    */
@@ -5942,20 +5936,20 @@ export namespace Prisma {
     id?: StringFilter<"User"> | string
     kindeId?: StringFilter<"User"> | string
     email?: StringFilter<"User"> | string
-    name?: StringFilter<"User"> | string
-    role?: EnumRoleFilter<"User"> | $Enums.Role
+    name?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
-    sendingDomains?: SendingDomainListRelationFilter
+    updatedAt?: DateTimeFilter<"User"> | Date | string
+    domains?: DomainListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
     id?: SortOrder
     kindeId?: SortOrder
     email?: SortOrder
-    name?: SortOrder
-    role?: SortOrder
+    name?: SortOrderInput | SortOrder
     createdAt?: SortOrder
-    sendingDomains?: SendingDomainOrderByRelationAggregateInput
+    updatedAt?: SortOrder
+    domains?: DomainOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -5965,19 +5959,19 @@ export namespace Prisma {
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
-    name?: StringFilter<"User"> | string
-    role?: EnumRoleFilter<"User"> | $Enums.Role
+    name?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
-    sendingDomains?: SendingDomainListRelationFilter
+    updatedAt?: DateTimeFilter<"User"> | Date | string
+    domains?: DomainListRelationFilter
   }, "id" | "kindeId" | "email">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
     kindeId?: SortOrder
     email?: SortOrder
-    name?: SortOrder
-    role?: SortOrder
+    name?: SortOrderInput | SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -5990,65 +5984,70 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"User"> | string
     kindeId?: StringWithAggregatesFilter<"User"> | string
     email?: StringWithAggregatesFilter<"User"> | string
-    name?: StringWithAggregatesFilter<"User"> | string
-    role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
+    name?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
 
-  export type SendingDomainWhereInput = {
-    AND?: SendingDomainWhereInput | SendingDomainWhereInput[]
-    OR?: SendingDomainWhereInput[]
-    NOT?: SendingDomainWhereInput | SendingDomainWhereInput[]
-    id?: StringFilter<"SendingDomain"> | string
-    domain?: StringFilter<"SendingDomain"> | string
-    userId?: StringFilter<"SendingDomain"> | string
-    createdAt?: DateTimeFilter<"SendingDomain"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    emailEvents?: EmailEventListRelationFilter
-    summaryStats?: XOR<SummaryStatsNullableScalarRelationFilter, SummaryStatsWhereInput> | null
+  export type DomainWhereInput = {
+    AND?: DomainWhereInput | DomainWhereInput[]
+    OR?: DomainWhereInput[]
+    NOT?: DomainWhereInput | DomainWhereInput[]
+    id?: StringFilter<"Domain"> | string
+    name?: StringFilter<"Domain"> | string
+    userId?: StringNullableFilter<"Domain"> | string | null
+    createdAt?: DateTimeFilter<"Domain"> | Date | string
+    updatedAt?: DateTimeFilter<"Domain"> | Date | string
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    emails?: EmailEventListRelationFilter
+    summary?: XOR<EmailSummaryNullableScalarRelationFilter, EmailSummaryWhereInput> | null
   }
 
-  export type SendingDomainOrderByWithRelationInput = {
+  export type DomainOrderByWithRelationInput = {
     id?: SortOrder
-    domain?: SortOrder
-    userId?: SortOrder
+    name?: SortOrder
+    userId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
-    emailEvents?: EmailEventOrderByRelationAggregateInput
-    summaryStats?: SummaryStatsOrderByWithRelationInput
+    emails?: EmailEventOrderByRelationAggregateInput
+    summary?: EmailSummaryOrderByWithRelationInput
   }
 
-  export type SendingDomainWhereUniqueInput = Prisma.AtLeast<{
+  export type DomainWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    domain?: string
-    AND?: SendingDomainWhereInput | SendingDomainWhereInput[]
-    OR?: SendingDomainWhereInput[]
-    NOT?: SendingDomainWhereInput | SendingDomainWhereInput[]
-    userId?: StringFilter<"SendingDomain"> | string
-    createdAt?: DateTimeFilter<"SendingDomain"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    emailEvents?: EmailEventListRelationFilter
-    summaryStats?: XOR<SummaryStatsNullableScalarRelationFilter, SummaryStatsWhereInput> | null
-  }, "id" | "domain">
+    name?: string
+    AND?: DomainWhereInput | DomainWhereInput[]
+    OR?: DomainWhereInput[]
+    NOT?: DomainWhereInput | DomainWhereInput[]
+    userId?: StringNullableFilter<"Domain"> | string | null
+    createdAt?: DateTimeFilter<"Domain"> | Date | string
+    updatedAt?: DateTimeFilter<"Domain"> | Date | string
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    emails?: EmailEventListRelationFilter
+    summary?: XOR<EmailSummaryNullableScalarRelationFilter, EmailSummaryWhereInput> | null
+  }, "id" | "name">
 
-  export type SendingDomainOrderByWithAggregationInput = {
+  export type DomainOrderByWithAggregationInput = {
     id?: SortOrder
-    domain?: SortOrder
-    userId?: SortOrder
+    name?: SortOrder
+    userId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
-    _count?: SendingDomainCountOrderByAggregateInput
-    _max?: SendingDomainMaxOrderByAggregateInput
-    _min?: SendingDomainMinOrderByAggregateInput
+    updatedAt?: SortOrder
+    _count?: DomainCountOrderByAggregateInput
+    _max?: DomainMaxOrderByAggregateInput
+    _min?: DomainMinOrderByAggregateInput
   }
 
-  export type SendingDomainScalarWhereWithAggregatesInput = {
-    AND?: SendingDomainScalarWhereWithAggregatesInput | SendingDomainScalarWhereWithAggregatesInput[]
-    OR?: SendingDomainScalarWhereWithAggregatesInput[]
-    NOT?: SendingDomainScalarWhereWithAggregatesInput | SendingDomainScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"SendingDomain"> | string
-    domain?: StringWithAggregatesFilter<"SendingDomain"> | string
-    userId?: StringWithAggregatesFilter<"SendingDomain"> | string
-    createdAt?: DateTimeWithAggregatesFilter<"SendingDomain"> | Date | string
+  export type DomainScalarWhereWithAggregatesInput = {
+    AND?: DomainScalarWhereWithAggregatesInput | DomainScalarWhereWithAggregatesInput[]
+    OR?: DomainScalarWhereWithAggregatesInput[]
+    NOT?: DomainScalarWhereWithAggregatesInput | DomainScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Domain"> | string
+    name?: StringWithAggregatesFilter<"Domain"> | string
+    userId?: StringNullableWithAggregatesFilter<"Domain"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Domain"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Domain"> | Date | string
   }
 
   export type EmailEventWhereInput = {
@@ -6056,79 +6055,71 @@ export namespace Prisma {
     OR?: EmailEventWhereInput[]
     NOT?: EmailEventWhereInput | EmailEventWhereInput[]
     id?: StringFilter<"EmailEvent"> | string
-    webhookEventId?: StringFilter<"EmailEvent"> | string
+    emailId?: IntFilter<"EmailEvent"> | number
+    token?: StringFilter<"EmailEvent"> | string
     messageId?: StringFilter<"EmailEvent"> | string
-    status?: StringFilter<"EmailEvent"> | string
-    type?: StringFilter<"EmailEvent"> | string
-    recipient?: StringFilter<"EmailEvent"> | string
-    sender?: StringFilter<"EmailEvent"> | string
+    to?: StringFilter<"EmailEvent"> | string
+    from?: StringFilter<"EmailEvent"> | string
     subject?: StringFilter<"EmailEvent"> | string
-    sentWithSSL?: BoolFilter<"EmailEvent"> | boolean
-    timeTaken?: FloatNullableFilter<"EmailEvent"> | number | null
-    spamStatus?: IntNullableFilter<"EmailEvent"> | number | null
-    details?: StringNullableFilter<"EmailEvent"> | string | null
-    timestamp?: FloatFilter<"EmailEvent"> | number
-    sendingDomainId?: StringFilter<"EmailEvent"> | string
+    eventType?: StringFilter<"EmailEvent"> | string
+    status?: StringFilter<"EmailEvent"> | string
+    spamStatus?: IntFilter<"EmailEvent"> | number
+    timestamp?: DateTimeFilter<"EmailEvent"> | Date | string
+    domainId?: StringFilter<"EmailEvent"> | string
     createdAt?: DateTimeFilter<"EmailEvent"> | Date | string
-    sendingDomain?: XOR<SendingDomainScalarRelationFilter, SendingDomainWhereInput>
+    domain?: XOR<DomainScalarRelationFilter, DomainWhereInput>
   }
 
   export type EmailEventOrderByWithRelationInput = {
     id?: SortOrder
-    webhookEventId?: SortOrder
+    emailId?: SortOrder
+    token?: SortOrder
     messageId?: SortOrder
-    status?: SortOrder
-    type?: SortOrder
-    recipient?: SortOrder
-    sender?: SortOrder
+    to?: SortOrder
+    from?: SortOrder
     subject?: SortOrder
-    sentWithSSL?: SortOrder
-    timeTaken?: SortOrderInput | SortOrder
-    spamStatus?: SortOrderInput | SortOrder
-    details?: SortOrderInput | SortOrder
+    eventType?: SortOrder
+    status?: SortOrder
+    spamStatus?: SortOrder
     timestamp?: SortOrder
-    sendingDomainId?: SortOrder
+    domainId?: SortOrder
     createdAt?: SortOrder
-    sendingDomain?: SendingDomainOrderByWithRelationInput
+    domain?: DomainOrderByWithRelationInput
   }
 
   export type EmailEventWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    webhookEventId?: string
-    messageId?: string
     AND?: EmailEventWhereInput | EmailEventWhereInput[]
     OR?: EmailEventWhereInput[]
     NOT?: EmailEventWhereInput | EmailEventWhereInput[]
-    status?: StringFilter<"EmailEvent"> | string
-    type?: StringFilter<"EmailEvent"> | string
-    recipient?: StringFilter<"EmailEvent"> | string
-    sender?: StringFilter<"EmailEvent"> | string
+    emailId?: IntFilter<"EmailEvent"> | number
+    token?: StringFilter<"EmailEvent"> | string
+    messageId?: StringFilter<"EmailEvent"> | string
+    to?: StringFilter<"EmailEvent"> | string
+    from?: StringFilter<"EmailEvent"> | string
     subject?: StringFilter<"EmailEvent"> | string
-    sentWithSSL?: BoolFilter<"EmailEvent"> | boolean
-    timeTaken?: FloatNullableFilter<"EmailEvent"> | number | null
-    spamStatus?: IntNullableFilter<"EmailEvent"> | number | null
-    details?: StringNullableFilter<"EmailEvent"> | string | null
-    timestamp?: FloatFilter<"EmailEvent"> | number
-    sendingDomainId?: StringFilter<"EmailEvent"> | string
+    eventType?: StringFilter<"EmailEvent"> | string
+    status?: StringFilter<"EmailEvent"> | string
+    spamStatus?: IntFilter<"EmailEvent"> | number
+    timestamp?: DateTimeFilter<"EmailEvent"> | Date | string
+    domainId?: StringFilter<"EmailEvent"> | string
     createdAt?: DateTimeFilter<"EmailEvent"> | Date | string
-    sendingDomain?: XOR<SendingDomainScalarRelationFilter, SendingDomainWhereInput>
-  }, "id" | "webhookEventId" | "messageId">
+    domain?: XOR<DomainScalarRelationFilter, DomainWhereInput>
+  }, "id">
 
   export type EmailEventOrderByWithAggregationInput = {
     id?: SortOrder
-    webhookEventId?: SortOrder
+    emailId?: SortOrder
+    token?: SortOrder
     messageId?: SortOrder
-    status?: SortOrder
-    type?: SortOrder
-    recipient?: SortOrder
-    sender?: SortOrder
+    to?: SortOrder
+    from?: SortOrder
     subject?: SortOrder
-    sentWithSSL?: SortOrder
-    timeTaken?: SortOrderInput | SortOrder
-    spamStatus?: SortOrderInput | SortOrder
-    details?: SortOrderInput | SortOrder
+    eventType?: SortOrder
+    status?: SortOrder
+    spamStatus?: SortOrder
     timestamp?: SortOrder
-    sendingDomainId?: SortOrder
+    domainId?: SortOrder
     createdAt?: SortOrder
     _count?: EmailEventCountOrderByAggregateInput
     _avg?: EmailEventAvgOrderByAggregateInput
@@ -6142,392 +6133,395 @@ export namespace Prisma {
     OR?: EmailEventScalarWhereWithAggregatesInput[]
     NOT?: EmailEventScalarWhereWithAggregatesInput | EmailEventScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"EmailEvent"> | string
-    webhookEventId?: StringWithAggregatesFilter<"EmailEvent"> | string
+    emailId?: IntWithAggregatesFilter<"EmailEvent"> | number
+    token?: StringWithAggregatesFilter<"EmailEvent"> | string
     messageId?: StringWithAggregatesFilter<"EmailEvent"> | string
-    status?: StringWithAggregatesFilter<"EmailEvent"> | string
-    type?: StringWithAggregatesFilter<"EmailEvent"> | string
-    recipient?: StringWithAggregatesFilter<"EmailEvent"> | string
-    sender?: StringWithAggregatesFilter<"EmailEvent"> | string
+    to?: StringWithAggregatesFilter<"EmailEvent"> | string
+    from?: StringWithAggregatesFilter<"EmailEvent"> | string
     subject?: StringWithAggregatesFilter<"EmailEvent"> | string
-    sentWithSSL?: BoolWithAggregatesFilter<"EmailEvent"> | boolean
-    timeTaken?: FloatNullableWithAggregatesFilter<"EmailEvent"> | number | null
-    spamStatus?: IntNullableWithAggregatesFilter<"EmailEvent"> | number | null
-    details?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
-    timestamp?: FloatWithAggregatesFilter<"EmailEvent"> | number
-    sendingDomainId?: StringWithAggregatesFilter<"EmailEvent"> | string
+    eventType?: StringWithAggregatesFilter<"EmailEvent"> | string
+    status?: StringWithAggregatesFilter<"EmailEvent"> | string
+    spamStatus?: IntWithAggregatesFilter<"EmailEvent"> | number
+    timestamp?: DateTimeWithAggregatesFilter<"EmailEvent"> | Date | string
+    domainId?: StringWithAggregatesFilter<"EmailEvent"> | string
     createdAt?: DateTimeWithAggregatesFilter<"EmailEvent"> | Date | string
   }
 
-  export type SummaryStatsWhereInput = {
-    AND?: SummaryStatsWhereInput | SummaryStatsWhereInput[]
-    OR?: SummaryStatsWhereInput[]
-    NOT?: SummaryStatsWhereInput | SummaryStatsWhereInput[]
-    id?: StringFilter<"SummaryStats"> | string
-    sendingDomainId?: StringFilter<"SummaryStats"> | string
-    totalSent?: IntFilter<"SummaryStats"> | number
-    totalDelivered?: IntFilter<"SummaryStats"> | number
-    totalFailed?: IntFilter<"SummaryStats"> | number
-    lastUpdated?: DateTimeFilter<"SummaryStats"> | Date | string
-    sendingDomain?: XOR<SendingDomainScalarRelationFilter, SendingDomainWhereInput>
+  export type EmailSummaryWhereInput = {
+    AND?: EmailSummaryWhereInput | EmailSummaryWhereInput[]
+    OR?: EmailSummaryWhereInput[]
+    NOT?: EmailSummaryWhereInput | EmailSummaryWhereInput[]
+    id?: StringFilter<"EmailSummary"> | string
+    domainId?: StringFilter<"EmailSummary"> | string
+    totalSent?: IntFilter<"EmailSummary"> | number
+    totalDelivered?: IntFilter<"EmailSummary"> | number
+    totalFailed?: IntFilter<"EmailSummary"> | number
+    createdAt?: DateTimeFilter<"EmailSummary"> | Date | string
+    updatedAt?: DateTimeFilter<"EmailSummary"> | Date | string
+    domain?: XOR<DomainScalarRelationFilter, DomainWhereInput>
   }
 
-  export type SummaryStatsOrderByWithRelationInput = {
+  export type EmailSummaryOrderByWithRelationInput = {
     id?: SortOrder
-    sendingDomainId?: SortOrder
+    domainId?: SortOrder
     totalSent?: SortOrder
     totalDelivered?: SortOrder
     totalFailed?: SortOrder
-    lastUpdated?: SortOrder
-    sendingDomain?: SendingDomainOrderByWithRelationInput
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    domain?: DomainOrderByWithRelationInput
   }
 
-  export type SummaryStatsWhereUniqueInput = Prisma.AtLeast<{
+  export type EmailSummaryWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    sendingDomainId?: string
-    AND?: SummaryStatsWhereInput | SummaryStatsWhereInput[]
-    OR?: SummaryStatsWhereInput[]
-    NOT?: SummaryStatsWhereInput | SummaryStatsWhereInput[]
-    totalSent?: IntFilter<"SummaryStats"> | number
-    totalDelivered?: IntFilter<"SummaryStats"> | number
-    totalFailed?: IntFilter<"SummaryStats"> | number
-    lastUpdated?: DateTimeFilter<"SummaryStats"> | Date | string
-    sendingDomain?: XOR<SendingDomainScalarRelationFilter, SendingDomainWhereInput>
-  }, "id" | "sendingDomainId">
+    domainId?: string
+    AND?: EmailSummaryWhereInput | EmailSummaryWhereInput[]
+    OR?: EmailSummaryWhereInput[]
+    NOT?: EmailSummaryWhereInput | EmailSummaryWhereInput[]
+    totalSent?: IntFilter<"EmailSummary"> | number
+    totalDelivered?: IntFilter<"EmailSummary"> | number
+    totalFailed?: IntFilter<"EmailSummary"> | number
+    createdAt?: DateTimeFilter<"EmailSummary"> | Date | string
+    updatedAt?: DateTimeFilter<"EmailSummary"> | Date | string
+    domain?: XOR<DomainScalarRelationFilter, DomainWhereInput>
+  }, "id" | "domainId">
 
-  export type SummaryStatsOrderByWithAggregationInput = {
+  export type EmailSummaryOrderByWithAggregationInput = {
     id?: SortOrder
-    sendingDomainId?: SortOrder
+    domainId?: SortOrder
     totalSent?: SortOrder
     totalDelivered?: SortOrder
     totalFailed?: SortOrder
-    lastUpdated?: SortOrder
-    _count?: SummaryStatsCountOrderByAggregateInput
-    _avg?: SummaryStatsAvgOrderByAggregateInput
-    _max?: SummaryStatsMaxOrderByAggregateInput
-    _min?: SummaryStatsMinOrderByAggregateInput
-    _sum?: SummaryStatsSumOrderByAggregateInput
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: EmailSummaryCountOrderByAggregateInput
+    _avg?: EmailSummaryAvgOrderByAggregateInput
+    _max?: EmailSummaryMaxOrderByAggregateInput
+    _min?: EmailSummaryMinOrderByAggregateInput
+    _sum?: EmailSummarySumOrderByAggregateInput
   }
 
-  export type SummaryStatsScalarWhereWithAggregatesInput = {
-    AND?: SummaryStatsScalarWhereWithAggregatesInput | SummaryStatsScalarWhereWithAggregatesInput[]
-    OR?: SummaryStatsScalarWhereWithAggregatesInput[]
-    NOT?: SummaryStatsScalarWhereWithAggregatesInput | SummaryStatsScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"SummaryStats"> | string
-    sendingDomainId?: StringWithAggregatesFilter<"SummaryStats"> | string
-    totalSent?: IntWithAggregatesFilter<"SummaryStats"> | number
-    totalDelivered?: IntWithAggregatesFilter<"SummaryStats"> | number
-    totalFailed?: IntWithAggregatesFilter<"SummaryStats"> | number
-    lastUpdated?: DateTimeWithAggregatesFilter<"SummaryStats"> | Date | string
+  export type EmailSummaryScalarWhereWithAggregatesInput = {
+    AND?: EmailSummaryScalarWhereWithAggregatesInput | EmailSummaryScalarWhereWithAggregatesInput[]
+    OR?: EmailSummaryScalarWhereWithAggregatesInput[]
+    NOT?: EmailSummaryScalarWhereWithAggregatesInput | EmailSummaryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"EmailSummary"> | string
+    domainId?: StringWithAggregatesFilter<"EmailSummary"> | string
+    totalSent?: IntWithAggregatesFilter<"EmailSummary"> | number
+    totalDelivered?: IntWithAggregatesFilter<"EmailSummary"> | number
+    totalFailed?: IntWithAggregatesFilter<"EmailSummary"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"EmailSummary"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"EmailSummary"> | Date | string
   }
 
   export type UserCreateInput = {
     id?: string
     kindeId: string
     email: string
-    name: string
-    role?: $Enums.Role
+    name?: string | null
     createdAt?: Date | string
-    sendingDomains?: SendingDomainCreateNestedManyWithoutUserInput
+    updatedAt?: Date | string
+    domains?: DomainCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
     id?: string
     kindeId: string
     email: string
-    name: string
-    role?: $Enums.Role
+    name?: string | null
     createdAt?: Date | string
-    sendingDomains?: SendingDomainUncheckedCreateNestedManyWithoutUserInput
+    updatedAt?: Date | string
+    domains?: DomainUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     kindeId?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    name?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    sendingDomains?: SendingDomainUpdateManyWithoutUserNestedInput
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    domains?: DomainUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     kindeId?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    name?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    sendingDomains?: SendingDomainUncheckedUpdateManyWithoutUserNestedInput
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    domains?: DomainUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
     id?: string
     kindeId: string
     email: string
-    name: string
-    role?: $Enums.Role
+    name?: string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type UserUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     kindeId?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    name?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     kindeId?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DomainCreateInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user?: UserCreateNestedOneWithoutDomainsInput
+    emails?: EmailEventCreateNestedManyWithoutDomainInput
+    summary?: EmailSummaryCreateNestedOneWithoutDomainInput
+  }
+
+  export type DomainUncheckedCreateInput = {
+    id?: string
+    name: string
+    userId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    emails?: EmailEventUncheckedCreateNestedManyWithoutDomainInput
+    summary?: EmailSummaryUncheckedCreateNestedOneWithoutDomainInput
+  }
+
+  export type DomainUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutDomainsNestedInput
+    emails?: EmailEventUpdateManyWithoutDomainNestedInput
+    summary?: EmailSummaryUpdateOneWithoutDomainNestedInput
   }
 
-  export type SendingDomainCreateInput = {
+  export type DomainUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    emails?: EmailEventUncheckedUpdateManyWithoutDomainNestedInput
+    summary?: EmailSummaryUncheckedUpdateOneWithoutDomainNestedInput
+  }
+
+  export type DomainCreateManyInput = {
     id?: string
-    domain: string
+    name: string
+    userId?: string | null
     createdAt?: Date | string
-    user: UserCreateNestedOneWithoutSendingDomainsInput
-    emailEvents?: EmailEventCreateNestedManyWithoutSendingDomainInput
-    summaryStats?: SummaryStatsCreateNestedOneWithoutSendingDomainInput
+    updatedAt?: Date | string
   }
 
-  export type SendingDomainUncheckedCreateInput = {
-    id?: string
-    domain: string
-    userId: string
-    createdAt?: Date | string
-    emailEvents?: EmailEventUncheckedCreateNestedManyWithoutSendingDomainInput
-    summaryStats?: SummaryStatsUncheckedCreateNestedOneWithoutSendingDomainInput
-  }
-
-  export type SendingDomainUpdateInput = {
+  export type DomainUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    domain?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutSendingDomainsNestedInput
-    emailEvents?: EmailEventUpdateManyWithoutSendingDomainNestedInput
-    summaryStats?: SummaryStatsUpdateOneWithoutSendingDomainNestedInput
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type SendingDomainUncheckedUpdateInput = {
+  export type DomainUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    domain?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    emailEvents?: EmailEventUncheckedUpdateManyWithoutSendingDomainNestedInput
-    summaryStats?: SummaryStatsUncheckedUpdateOneWithoutSendingDomainNestedInput
-  }
-
-  export type SendingDomainCreateManyInput = {
-    id?: string
-    domain: string
-    userId: string
-    createdAt?: Date | string
-  }
-
-  export type SendingDomainUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    domain?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type SendingDomainUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    domain?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EmailEventCreateInput = {
     id?: string
-    webhookEventId: string
+    emailId: number
+    token: string
     messageId: string
-    status: string
-    type: string
-    recipient: string
-    sender: string
+    to: string
+    from: string
     subject: string
-    sentWithSSL: boolean
-    timeTaken?: number | null
-    spamStatus?: number | null
-    details?: string | null
-    timestamp: number
+    eventType: string
+    status: string
+    spamStatus: number
+    timestamp: Date | string
     createdAt?: Date | string
-    sendingDomain: SendingDomainCreateNestedOneWithoutEmailEventsInput
+    domain: DomainCreateNestedOneWithoutEmailsInput
   }
 
   export type EmailEventUncheckedCreateInput = {
     id?: string
-    webhookEventId: string
+    emailId: number
+    token: string
     messageId: string
-    status: string
-    type: string
-    recipient: string
-    sender: string
+    to: string
+    from: string
     subject: string
-    sentWithSSL: boolean
-    timeTaken?: number | null
-    spamStatus?: number | null
-    details?: string | null
-    timestamp: number
-    sendingDomainId: string
+    eventType: string
+    status: string
+    spamStatus: number
+    timestamp: Date | string
+    domainId: string
     createdAt?: Date | string
   }
 
   export type EmailEventUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    webhookEventId?: StringFieldUpdateOperationsInput | string
+    emailId?: IntFieldUpdateOperationsInput | number
+    token?: StringFieldUpdateOperationsInput | string
     messageId?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    recipient?: StringFieldUpdateOperationsInput | string
-    sender?: StringFieldUpdateOperationsInput | string
+    to?: StringFieldUpdateOperationsInput | string
+    from?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
-    sentWithSSL?: BoolFieldUpdateOperationsInput | boolean
-    timeTaken?: NullableFloatFieldUpdateOperationsInput | number | null
-    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
-    details?: NullableStringFieldUpdateOperationsInput | string | null
-    timestamp?: FloatFieldUpdateOperationsInput | number
+    eventType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    spamStatus?: IntFieldUpdateOperationsInput | number
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    sendingDomain?: SendingDomainUpdateOneRequiredWithoutEmailEventsNestedInput
+    domain?: DomainUpdateOneRequiredWithoutEmailsNestedInput
   }
 
   export type EmailEventUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    webhookEventId?: StringFieldUpdateOperationsInput | string
+    emailId?: IntFieldUpdateOperationsInput | number
+    token?: StringFieldUpdateOperationsInput | string
     messageId?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    recipient?: StringFieldUpdateOperationsInput | string
-    sender?: StringFieldUpdateOperationsInput | string
+    to?: StringFieldUpdateOperationsInput | string
+    from?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
-    sentWithSSL?: BoolFieldUpdateOperationsInput | boolean
-    timeTaken?: NullableFloatFieldUpdateOperationsInput | number | null
-    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
-    details?: NullableStringFieldUpdateOperationsInput | string | null
-    timestamp?: FloatFieldUpdateOperationsInput | number
-    sendingDomainId?: StringFieldUpdateOperationsInput | string
+    eventType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    spamStatus?: IntFieldUpdateOperationsInput | number
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    domainId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EmailEventCreateManyInput = {
     id?: string
-    webhookEventId: string
+    emailId: number
+    token: string
     messageId: string
-    status: string
-    type: string
-    recipient: string
-    sender: string
+    to: string
+    from: string
     subject: string
-    sentWithSSL: boolean
-    timeTaken?: number | null
-    spamStatus?: number | null
-    details?: string | null
-    timestamp: number
-    sendingDomainId: string
+    eventType: string
+    status: string
+    spamStatus: number
+    timestamp: Date | string
+    domainId: string
     createdAt?: Date | string
   }
 
   export type EmailEventUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    webhookEventId?: StringFieldUpdateOperationsInput | string
+    emailId?: IntFieldUpdateOperationsInput | number
+    token?: StringFieldUpdateOperationsInput | string
     messageId?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    recipient?: StringFieldUpdateOperationsInput | string
-    sender?: StringFieldUpdateOperationsInput | string
+    to?: StringFieldUpdateOperationsInput | string
+    from?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
-    sentWithSSL?: BoolFieldUpdateOperationsInput | boolean
-    timeTaken?: NullableFloatFieldUpdateOperationsInput | number | null
-    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
-    details?: NullableStringFieldUpdateOperationsInput | string | null
-    timestamp?: FloatFieldUpdateOperationsInput | number
+    eventType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    spamStatus?: IntFieldUpdateOperationsInput | number
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EmailEventUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    webhookEventId?: StringFieldUpdateOperationsInput | string
+    emailId?: IntFieldUpdateOperationsInput | number
+    token?: StringFieldUpdateOperationsInput | string
     messageId?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    recipient?: StringFieldUpdateOperationsInput | string
-    sender?: StringFieldUpdateOperationsInput | string
+    to?: StringFieldUpdateOperationsInput | string
+    from?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
-    sentWithSSL?: BoolFieldUpdateOperationsInput | boolean
-    timeTaken?: NullableFloatFieldUpdateOperationsInput | number | null
-    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
-    details?: NullableStringFieldUpdateOperationsInput | string | null
-    timestamp?: FloatFieldUpdateOperationsInput | number
-    sendingDomainId?: StringFieldUpdateOperationsInput | string
+    eventType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    spamStatus?: IntFieldUpdateOperationsInput | number
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    domainId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type SummaryStatsCreateInput = {
+  export type EmailSummaryCreateInput = {
     id?: string
     totalSent?: number
     totalDelivered?: number
     totalFailed?: number
-    lastUpdated?: Date | string
-    sendingDomain: SendingDomainCreateNestedOneWithoutSummaryStatsInput
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    domain: DomainCreateNestedOneWithoutSummaryInput
   }
 
-  export type SummaryStatsUncheckedCreateInput = {
+  export type EmailSummaryUncheckedCreateInput = {
     id?: string
-    sendingDomainId: string
+    domainId: string
     totalSent?: number
     totalDelivered?: number
     totalFailed?: number
-    lastUpdated?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type SummaryStatsUpdateInput = {
+  export type EmailSummaryUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     totalSent?: IntFieldUpdateOperationsInput | number
     totalDelivered?: IntFieldUpdateOperationsInput | number
     totalFailed?: IntFieldUpdateOperationsInput | number
-    lastUpdated?: DateTimeFieldUpdateOperationsInput | Date | string
-    sendingDomain?: SendingDomainUpdateOneRequiredWithoutSummaryStatsNestedInput
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    domain?: DomainUpdateOneRequiredWithoutSummaryNestedInput
   }
 
-  export type SummaryStatsUncheckedUpdateInput = {
+  export type EmailSummaryUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    sendingDomainId?: StringFieldUpdateOperationsInput | string
+    domainId?: StringFieldUpdateOperationsInput | string
     totalSent?: IntFieldUpdateOperationsInput | number
     totalDelivered?: IntFieldUpdateOperationsInput | number
     totalFailed?: IntFieldUpdateOperationsInput | number
-    lastUpdated?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type SummaryStatsCreateManyInput = {
+  export type EmailSummaryCreateManyInput = {
     id?: string
-    sendingDomainId: string
+    domainId: string
     totalSent?: number
     totalDelivered?: number
     totalFailed?: number
-    lastUpdated?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type SummaryStatsUpdateManyMutationInput = {
+  export type EmailSummaryUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     totalSent?: IntFieldUpdateOperationsInput | number
     totalDelivered?: IntFieldUpdateOperationsInput | number
     totalFailed?: IntFieldUpdateOperationsInput | number
-    lastUpdated?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type SummaryStatsUncheckedUpdateManyInput = {
+  export type EmailSummaryUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    sendingDomainId?: StringFieldUpdateOperationsInput | string
+    domainId?: StringFieldUpdateOperationsInput | string
     totalSent?: IntFieldUpdateOperationsInput | number
     totalDelivered?: IntFieldUpdateOperationsInput | number
     totalFailed?: IntFieldUpdateOperationsInput | number
-    lastUpdated?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -6545,11 +6539,19 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type EnumRoleFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type DateTimeFilter<$PrismaModel = never> = {
@@ -6563,13 +6565,18 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type SendingDomainListRelationFilter = {
-    every?: SendingDomainWhereInput
-    some?: SendingDomainWhereInput
-    none?: SendingDomainWhereInput
+  export type DomainListRelationFilter = {
+    every?: DomainWhereInput
+    some?: DomainWhereInput
+    none?: DomainWhereInput
   }
 
-  export type SendingDomainOrderByRelationAggregateInput = {
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
+  export type DomainOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -6578,8 +6585,8 @@ export namespace Prisma {
     kindeId?: SortOrder
     email?: SortOrder
     name?: SortOrder
-    role?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -6587,8 +6594,8 @@ export namespace Prisma {
     kindeId?: SortOrder
     email?: SortOrder
     name?: SortOrder
-    role?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -6596,8 +6603,8 @@ export namespace Prisma {
     kindeId?: SortOrder
     email?: SortOrder
     name?: SortOrder
-    role?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -6618,240 +6625,6 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
-  export type EnumRoleWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumRoleFilter<$PrismaModel>
-    _max?: NestedEnumRoleFilter<$PrismaModel>
-  }
-
-  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
-  }
-
-  export type EmailEventListRelationFilter = {
-    every?: EmailEventWhereInput
-    some?: EmailEventWhereInput
-    none?: EmailEventWhereInput
-  }
-
-  export type SummaryStatsNullableScalarRelationFilter = {
-    is?: SummaryStatsWhereInput | null
-    isNot?: SummaryStatsWhereInput | null
-  }
-
-  export type EmailEventOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type SendingDomainCountOrderByAggregateInput = {
-    id?: SortOrder
-    domain?: SortOrder
-    userId?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type SendingDomainMaxOrderByAggregateInput = {
-    id?: SortOrder
-    domain?: SortOrder
-    userId?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type SendingDomainMinOrderByAggregateInput = {
-    id?: SortOrder
-    domain?: SortOrder
-    userId?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type FloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type StringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type FloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
-  export type SendingDomainScalarRelationFilter = {
-    is?: SendingDomainWhereInput
-    isNot?: SendingDomainWhereInput
-  }
-
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
-  }
-
-  export type EmailEventCountOrderByAggregateInput = {
-    id?: SortOrder
-    webhookEventId?: SortOrder
-    messageId?: SortOrder
-    status?: SortOrder
-    type?: SortOrder
-    recipient?: SortOrder
-    sender?: SortOrder
-    subject?: SortOrder
-    sentWithSSL?: SortOrder
-    timeTaken?: SortOrder
-    spamStatus?: SortOrder
-    details?: SortOrder
-    timestamp?: SortOrder
-    sendingDomainId?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type EmailEventAvgOrderByAggregateInput = {
-    timeTaken?: SortOrder
-    spamStatus?: SortOrder
-    timestamp?: SortOrder
-  }
-
-  export type EmailEventMaxOrderByAggregateInput = {
-    id?: SortOrder
-    webhookEventId?: SortOrder
-    messageId?: SortOrder
-    status?: SortOrder
-    type?: SortOrder
-    recipient?: SortOrder
-    sender?: SortOrder
-    subject?: SortOrder
-    sentWithSSL?: SortOrder
-    timeTaken?: SortOrder
-    spamStatus?: SortOrder
-    details?: SortOrder
-    timestamp?: SortOrder
-    sendingDomainId?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type EmailEventMinOrderByAggregateInput = {
-    id?: SortOrder
-    webhookEventId?: SortOrder
-    messageId?: SortOrder
-    status?: SortOrder
-    type?: SortOrder
-    recipient?: SortOrder
-    sender?: SortOrder
-    subject?: SortOrder
-    sentWithSSL?: SortOrder
-    timeTaken?: SortOrder
-    spamStatus?: SortOrder
-    details?: SortOrder
-    timestamp?: SortOrder
-    sendingDomainId?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type EmailEventSumOrderByAggregateInput = {
-    timeTaken?: SortOrder
-    spamStatus?: SortOrder
-    timestamp?: SortOrder
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
-  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
-  }
-
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -6870,20 +6643,62 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
     _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedFloatFilter<$PrismaModel>
-    _min?: NestedFloatFilter<$PrismaModel>
-    _max?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
+  export type EmailEventListRelationFilter = {
+    every?: EmailEventWhereInput
+    some?: EmailEventWhereInput
+    none?: EmailEventWhereInput
+  }
+
+  export type EmailSummaryNullableScalarRelationFilter = {
+    is?: EmailSummaryWhereInput | null
+    isNot?: EmailSummaryWhereInput | null
+  }
+
+  export type EmailEventOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DomainCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DomainMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DomainMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -6897,43 +6712,67 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type SummaryStatsCountOrderByAggregateInput = {
+  export type DomainScalarRelationFilter = {
+    is?: DomainWhereInput
+    isNot?: DomainWhereInput
+  }
+
+  export type EmailEventCountOrderByAggregateInput = {
     id?: SortOrder
-    sendingDomainId?: SortOrder
-    totalSent?: SortOrder
-    totalDelivered?: SortOrder
-    totalFailed?: SortOrder
-    lastUpdated?: SortOrder
+    emailId?: SortOrder
+    token?: SortOrder
+    messageId?: SortOrder
+    to?: SortOrder
+    from?: SortOrder
+    subject?: SortOrder
+    eventType?: SortOrder
+    status?: SortOrder
+    spamStatus?: SortOrder
+    timestamp?: SortOrder
+    domainId?: SortOrder
+    createdAt?: SortOrder
   }
 
-  export type SummaryStatsAvgOrderByAggregateInput = {
-    totalSent?: SortOrder
-    totalDelivered?: SortOrder
-    totalFailed?: SortOrder
+  export type EmailEventAvgOrderByAggregateInput = {
+    emailId?: SortOrder
+    spamStatus?: SortOrder
   }
 
-  export type SummaryStatsMaxOrderByAggregateInput = {
+  export type EmailEventMaxOrderByAggregateInput = {
     id?: SortOrder
-    sendingDomainId?: SortOrder
-    totalSent?: SortOrder
-    totalDelivered?: SortOrder
-    totalFailed?: SortOrder
-    lastUpdated?: SortOrder
+    emailId?: SortOrder
+    token?: SortOrder
+    messageId?: SortOrder
+    to?: SortOrder
+    from?: SortOrder
+    subject?: SortOrder
+    eventType?: SortOrder
+    status?: SortOrder
+    spamStatus?: SortOrder
+    timestamp?: SortOrder
+    domainId?: SortOrder
+    createdAt?: SortOrder
   }
 
-  export type SummaryStatsMinOrderByAggregateInput = {
+  export type EmailEventMinOrderByAggregateInput = {
     id?: SortOrder
-    sendingDomainId?: SortOrder
-    totalSent?: SortOrder
-    totalDelivered?: SortOrder
-    totalFailed?: SortOrder
-    lastUpdated?: SortOrder
+    emailId?: SortOrder
+    token?: SortOrder
+    messageId?: SortOrder
+    to?: SortOrder
+    from?: SortOrder
+    subject?: SortOrder
+    eventType?: SortOrder
+    status?: SortOrder
+    spamStatus?: SortOrder
+    timestamp?: SortOrder
+    domainId?: SortOrder
+    createdAt?: SortOrder
   }
 
-  export type SummaryStatsSumOrderByAggregateInput = {
-    totalSent?: SortOrder
-    totalDelivered?: SortOrder
-    totalFailed?: SortOrder
+  export type EmailEventSumOrderByAggregateInput = {
+    emailId?: SortOrder
+    spamStatus?: SortOrder
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -6952,198 +6791,196 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
-  export type SendingDomainCreateNestedManyWithoutUserInput = {
-    create?: XOR<SendingDomainCreateWithoutUserInput, SendingDomainUncheckedCreateWithoutUserInput> | SendingDomainCreateWithoutUserInput[] | SendingDomainUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SendingDomainCreateOrConnectWithoutUserInput | SendingDomainCreateOrConnectWithoutUserInput[]
-    createMany?: SendingDomainCreateManyUserInputEnvelope
-    connect?: SendingDomainWhereUniqueInput | SendingDomainWhereUniqueInput[]
+  export type EmailSummaryCountOrderByAggregateInput = {
+    id?: SortOrder
+    domainId?: SortOrder
+    totalSent?: SortOrder
+    totalDelivered?: SortOrder
+    totalFailed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
-  export type SendingDomainUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<SendingDomainCreateWithoutUserInput, SendingDomainUncheckedCreateWithoutUserInput> | SendingDomainCreateWithoutUserInput[] | SendingDomainUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SendingDomainCreateOrConnectWithoutUserInput | SendingDomainCreateOrConnectWithoutUserInput[]
-    createMany?: SendingDomainCreateManyUserInputEnvelope
-    connect?: SendingDomainWhereUniqueInput | SendingDomainWhereUniqueInput[]
+  export type EmailSummaryAvgOrderByAggregateInput = {
+    totalSent?: SortOrder
+    totalDelivered?: SortOrder
+    totalFailed?: SortOrder
+  }
+
+  export type EmailSummaryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    domainId?: SortOrder
+    totalSent?: SortOrder
+    totalDelivered?: SortOrder
+    totalFailed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmailSummaryMinOrderByAggregateInput = {
+    id?: SortOrder
+    domainId?: SortOrder
+    totalSent?: SortOrder
+    totalDelivered?: SortOrder
+    totalFailed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmailSummarySumOrderByAggregateInput = {
+    totalSent?: SortOrder
+    totalDelivered?: SortOrder
+    totalFailed?: SortOrder
+  }
+
+  export type DomainCreateNestedManyWithoutUserInput = {
+    create?: XOR<DomainCreateWithoutUserInput, DomainUncheckedCreateWithoutUserInput> | DomainCreateWithoutUserInput[] | DomainUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DomainCreateOrConnectWithoutUserInput | DomainCreateOrConnectWithoutUserInput[]
+    createMany?: DomainCreateManyUserInputEnvelope
+    connect?: DomainWhereUniqueInput | DomainWhereUniqueInput[]
+  }
+
+  export type DomainUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<DomainCreateWithoutUserInput, DomainUncheckedCreateWithoutUserInput> | DomainCreateWithoutUserInput[] | DomainUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DomainCreateOrConnectWithoutUserInput | DomainCreateOrConnectWithoutUserInput[]
+    createMany?: DomainCreateManyUserInputEnvelope
+    connect?: DomainWhereUniqueInput | DomainWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
 
-  export type EnumRoleFieldUpdateOperationsInput = {
-    set?: $Enums.Role
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
   }
 
-  export type SendingDomainUpdateManyWithoutUserNestedInput = {
-    create?: XOR<SendingDomainCreateWithoutUserInput, SendingDomainUncheckedCreateWithoutUserInput> | SendingDomainCreateWithoutUserInput[] | SendingDomainUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SendingDomainCreateOrConnectWithoutUserInput | SendingDomainCreateOrConnectWithoutUserInput[]
-    upsert?: SendingDomainUpsertWithWhereUniqueWithoutUserInput | SendingDomainUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: SendingDomainCreateManyUserInputEnvelope
-    set?: SendingDomainWhereUniqueInput | SendingDomainWhereUniqueInput[]
-    disconnect?: SendingDomainWhereUniqueInput | SendingDomainWhereUniqueInput[]
-    delete?: SendingDomainWhereUniqueInput | SendingDomainWhereUniqueInput[]
-    connect?: SendingDomainWhereUniqueInput | SendingDomainWhereUniqueInput[]
-    update?: SendingDomainUpdateWithWhereUniqueWithoutUserInput | SendingDomainUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: SendingDomainUpdateManyWithWhereWithoutUserInput | SendingDomainUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: SendingDomainScalarWhereInput | SendingDomainScalarWhereInput[]
+  export type DomainUpdateManyWithoutUserNestedInput = {
+    create?: XOR<DomainCreateWithoutUserInput, DomainUncheckedCreateWithoutUserInput> | DomainCreateWithoutUserInput[] | DomainUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DomainCreateOrConnectWithoutUserInput | DomainCreateOrConnectWithoutUserInput[]
+    upsert?: DomainUpsertWithWhereUniqueWithoutUserInput | DomainUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: DomainCreateManyUserInputEnvelope
+    set?: DomainWhereUniqueInput | DomainWhereUniqueInput[]
+    disconnect?: DomainWhereUniqueInput | DomainWhereUniqueInput[]
+    delete?: DomainWhereUniqueInput | DomainWhereUniqueInput[]
+    connect?: DomainWhereUniqueInput | DomainWhereUniqueInput[]
+    update?: DomainUpdateWithWhereUniqueWithoutUserInput | DomainUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: DomainUpdateManyWithWhereWithoutUserInput | DomainUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: DomainScalarWhereInput | DomainScalarWhereInput[]
   }
 
-  export type SendingDomainUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<SendingDomainCreateWithoutUserInput, SendingDomainUncheckedCreateWithoutUserInput> | SendingDomainCreateWithoutUserInput[] | SendingDomainUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SendingDomainCreateOrConnectWithoutUserInput | SendingDomainCreateOrConnectWithoutUserInput[]
-    upsert?: SendingDomainUpsertWithWhereUniqueWithoutUserInput | SendingDomainUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: SendingDomainCreateManyUserInputEnvelope
-    set?: SendingDomainWhereUniqueInput | SendingDomainWhereUniqueInput[]
-    disconnect?: SendingDomainWhereUniqueInput | SendingDomainWhereUniqueInput[]
-    delete?: SendingDomainWhereUniqueInput | SendingDomainWhereUniqueInput[]
-    connect?: SendingDomainWhereUniqueInput | SendingDomainWhereUniqueInput[]
-    update?: SendingDomainUpdateWithWhereUniqueWithoutUserInput | SendingDomainUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: SendingDomainUpdateManyWithWhereWithoutUserInput | SendingDomainUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: SendingDomainScalarWhereInput | SendingDomainScalarWhereInput[]
+  export type DomainUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<DomainCreateWithoutUserInput, DomainUncheckedCreateWithoutUserInput> | DomainCreateWithoutUserInput[] | DomainUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DomainCreateOrConnectWithoutUserInput | DomainCreateOrConnectWithoutUserInput[]
+    upsert?: DomainUpsertWithWhereUniqueWithoutUserInput | DomainUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: DomainCreateManyUserInputEnvelope
+    set?: DomainWhereUniqueInput | DomainWhereUniqueInput[]
+    disconnect?: DomainWhereUniqueInput | DomainWhereUniqueInput[]
+    delete?: DomainWhereUniqueInput | DomainWhereUniqueInput[]
+    connect?: DomainWhereUniqueInput | DomainWhereUniqueInput[]
+    update?: DomainUpdateWithWhereUniqueWithoutUserInput | DomainUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: DomainUpdateManyWithWhereWithoutUserInput | DomainUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: DomainScalarWhereInput | DomainScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutSendingDomainsInput = {
-    create?: XOR<UserCreateWithoutSendingDomainsInput, UserUncheckedCreateWithoutSendingDomainsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutSendingDomainsInput
+  export type UserCreateNestedOneWithoutDomainsInput = {
+    create?: XOR<UserCreateWithoutDomainsInput, UserUncheckedCreateWithoutDomainsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDomainsInput
     connect?: UserWhereUniqueInput
   }
 
-  export type EmailEventCreateNestedManyWithoutSendingDomainInput = {
-    create?: XOR<EmailEventCreateWithoutSendingDomainInput, EmailEventUncheckedCreateWithoutSendingDomainInput> | EmailEventCreateWithoutSendingDomainInput[] | EmailEventUncheckedCreateWithoutSendingDomainInput[]
-    connectOrCreate?: EmailEventCreateOrConnectWithoutSendingDomainInput | EmailEventCreateOrConnectWithoutSendingDomainInput[]
-    createMany?: EmailEventCreateManySendingDomainInputEnvelope
+  export type EmailEventCreateNestedManyWithoutDomainInput = {
+    create?: XOR<EmailEventCreateWithoutDomainInput, EmailEventUncheckedCreateWithoutDomainInput> | EmailEventCreateWithoutDomainInput[] | EmailEventUncheckedCreateWithoutDomainInput[]
+    connectOrCreate?: EmailEventCreateOrConnectWithoutDomainInput | EmailEventCreateOrConnectWithoutDomainInput[]
+    createMany?: EmailEventCreateManyDomainInputEnvelope
     connect?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
   }
 
-  export type SummaryStatsCreateNestedOneWithoutSendingDomainInput = {
-    create?: XOR<SummaryStatsCreateWithoutSendingDomainInput, SummaryStatsUncheckedCreateWithoutSendingDomainInput>
-    connectOrCreate?: SummaryStatsCreateOrConnectWithoutSendingDomainInput
-    connect?: SummaryStatsWhereUniqueInput
+  export type EmailSummaryCreateNestedOneWithoutDomainInput = {
+    create?: XOR<EmailSummaryCreateWithoutDomainInput, EmailSummaryUncheckedCreateWithoutDomainInput>
+    connectOrCreate?: EmailSummaryCreateOrConnectWithoutDomainInput
+    connect?: EmailSummaryWhereUniqueInput
   }
 
-  export type EmailEventUncheckedCreateNestedManyWithoutSendingDomainInput = {
-    create?: XOR<EmailEventCreateWithoutSendingDomainInput, EmailEventUncheckedCreateWithoutSendingDomainInput> | EmailEventCreateWithoutSendingDomainInput[] | EmailEventUncheckedCreateWithoutSendingDomainInput[]
-    connectOrCreate?: EmailEventCreateOrConnectWithoutSendingDomainInput | EmailEventCreateOrConnectWithoutSendingDomainInput[]
-    createMany?: EmailEventCreateManySendingDomainInputEnvelope
+  export type EmailEventUncheckedCreateNestedManyWithoutDomainInput = {
+    create?: XOR<EmailEventCreateWithoutDomainInput, EmailEventUncheckedCreateWithoutDomainInput> | EmailEventCreateWithoutDomainInput[] | EmailEventUncheckedCreateWithoutDomainInput[]
+    connectOrCreate?: EmailEventCreateOrConnectWithoutDomainInput | EmailEventCreateOrConnectWithoutDomainInput[]
+    createMany?: EmailEventCreateManyDomainInputEnvelope
     connect?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
   }
 
-  export type SummaryStatsUncheckedCreateNestedOneWithoutSendingDomainInput = {
-    create?: XOR<SummaryStatsCreateWithoutSendingDomainInput, SummaryStatsUncheckedCreateWithoutSendingDomainInput>
-    connectOrCreate?: SummaryStatsCreateOrConnectWithoutSendingDomainInput
-    connect?: SummaryStatsWhereUniqueInput
+  export type EmailSummaryUncheckedCreateNestedOneWithoutDomainInput = {
+    create?: XOR<EmailSummaryCreateWithoutDomainInput, EmailSummaryUncheckedCreateWithoutDomainInput>
+    connectOrCreate?: EmailSummaryCreateOrConnectWithoutDomainInput
+    connect?: EmailSummaryWhereUniqueInput
   }
 
-  export type UserUpdateOneRequiredWithoutSendingDomainsNestedInput = {
-    create?: XOR<UserCreateWithoutSendingDomainsInput, UserUncheckedCreateWithoutSendingDomainsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutSendingDomainsInput
-    upsert?: UserUpsertWithoutSendingDomainsInput
+  export type UserUpdateOneWithoutDomainsNestedInput = {
+    create?: XOR<UserCreateWithoutDomainsInput, UserUncheckedCreateWithoutDomainsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDomainsInput
+    upsert?: UserUpsertWithoutDomainsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSendingDomainsInput, UserUpdateWithoutSendingDomainsInput>, UserUncheckedUpdateWithoutSendingDomainsInput>
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDomainsInput, UserUpdateWithoutDomainsInput>, UserUncheckedUpdateWithoutDomainsInput>
   }
 
-  export type EmailEventUpdateManyWithoutSendingDomainNestedInput = {
-    create?: XOR<EmailEventCreateWithoutSendingDomainInput, EmailEventUncheckedCreateWithoutSendingDomainInput> | EmailEventCreateWithoutSendingDomainInput[] | EmailEventUncheckedCreateWithoutSendingDomainInput[]
-    connectOrCreate?: EmailEventCreateOrConnectWithoutSendingDomainInput | EmailEventCreateOrConnectWithoutSendingDomainInput[]
-    upsert?: EmailEventUpsertWithWhereUniqueWithoutSendingDomainInput | EmailEventUpsertWithWhereUniqueWithoutSendingDomainInput[]
-    createMany?: EmailEventCreateManySendingDomainInputEnvelope
+  export type EmailEventUpdateManyWithoutDomainNestedInput = {
+    create?: XOR<EmailEventCreateWithoutDomainInput, EmailEventUncheckedCreateWithoutDomainInput> | EmailEventCreateWithoutDomainInput[] | EmailEventUncheckedCreateWithoutDomainInput[]
+    connectOrCreate?: EmailEventCreateOrConnectWithoutDomainInput | EmailEventCreateOrConnectWithoutDomainInput[]
+    upsert?: EmailEventUpsertWithWhereUniqueWithoutDomainInput | EmailEventUpsertWithWhereUniqueWithoutDomainInput[]
+    createMany?: EmailEventCreateManyDomainInputEnvelope
     set?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
     disconnect?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
     delete?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
     connect?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
-    update?: EmailEventUpdateWithWhereUniqueWithoutSendingDomainInput | EmailEventUpdateWithWhereUniqueWithoutSendingDomainInput[]
-    updateMany?: EmailEventUpdateManyWithWhereWithoutSendingDomainInput | EmailEventUpdateManyWithWhereWithoutSendingDomainInput[]
+    update?: EmailEventUpdateWithWhereUniqueWithoutDomainInput | EmailEventUpdateWithWhereUniqueWithoutDomainInput[]
+    updateMany?: EmailEventUpdateManyWithWhereWithoutDomainInput | EmailEventUpdateManyWithWhereWithoutDomainInput[]
     deleteMany?: EmailEventScalarWhereInput | EmailEventScalarWhereInput[]
   }
 
-  export type SummaryStatsUpdateOneWithoutSendingDomainNestedInput = {
-    create?: XOR<SummaryStatsCreateWithoutSendingDomainInput, SummaryStatsUncheckedCreateWithoutSendingDomainInput>
-    connectOrCreate?: SummaryStatsCreateOrConnectWithoutSendingDomainInput
-    upsert?: SummaryStatsUpsertWithoutSendingDomainInput
-    disconnect?: SummaryStatsWhereInput | boolean
-    delete?: SummaryStatsWhereInput | boolean
-    connect?: SummaryStatsWhereUniqueInput
-    update?: XOR<XOR<SummaryStatsUpdateToOneWithWhereWithoutSendingDomainInput, SummaryStatsUpdateWithoutSendingDomainInput>, SummaryStatsUncheckedUpdateWithoutSendingDomainInput>
+  export type EmailSummaryUpdateOneWithoutDomainNestedInput = {
+    create?: XOR<EmailSummaryCreateWithoutDomainInput, EmailSummaryUncheckedCreateWithoutDomainInput>
+    connectOrCreate?: EmailSummaryCreateOrConnectWithoutDomainInput
+    upsert?: EmailSummaryUpsertWithoutDomainInput
+    disconnect?: EmailSummaryWhereInput | boolean
+    delete?: EmailSummaryWhereInput | boolean
+    connect?: EmailSummaryWhereUniqueInput
+    update?: XOR<XOR<EmailSummaryUpdateToOneWithWhereWithoutDomainInput, EmailSummaryUpdateWithoutDomainInput>, EmailSummaryUncheckedUpdateWithoutDomainInput>
   }
 
-  export type EmailEventUncheckedUpdateManyWithoutSendingDomainNestedInput = {
-    create?: XOR<EmailEventCreateWithoutSendingDomainInput, EmailEventUncheckedCreateWithoutSendingDomainInput> | EmailEventCreateWithoutSendingDomainInput[] | EmailEventUncheckedCreateWithoutSendingDomainInput[]
-    connectOrCreate?: EmailEventCreateOrConnectWithoutSendingDomainInput | EmailEventCreateOrConnectWithoutSendingDomainInput[]
-    upsert?: EmailEventUpsertWithWhereUniqueWithoutSendingDomainInput | EmailEventUpsertWithWhereUniqueWithoutSendingDomainInput[]
-    createMany?: EmailEventCreateManySendingDomainInputEnvelope
+  export type EmailEventUncheckedUpdateManyWithoutDomainNestedInput = {
+    create?: XOR<EmailEventCreateWithoutDomainInput, EmailEventUncheckedCreateWithoutDomainInput> | EmailEventCreateWithoutDomainInput[] | EmailEventUncheckedCreateWithoutDomainInput[]
+    connectOrCreate?: EmailEventCreateOrConnectWithoutDomainInput | EmailEventCreateOrConnectWithoutDomainInput[]
+    upsert?: EmailEventUpsertWithWhereUniqueWithoutDomainInput | EmailEventUpsertWithWhereUniqueWithoutDomainInput[]
+    createMany?: EmailEventCreateManyDomainInputEnvelope
     set?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
     disconnect?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
     delete?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
     connect?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
-    update?: EmailEventUpdateWithWhereUniqueWithoutSendingDomainInput | EmailEventUpdateWithWhereUniqueWithoutSendingDomainInput[]
-    updateMany?: EmailEventUpdateManyWithWhereWithoutSendingDomainInput | EmailEventUpdateManyWithWhereWithoutSendingDomainInput[]
+    update?: EmailEventUpdateWithWhereUniqueWithoutDomainInput | EmailEventUpdateWithWhereUniqueWithoutDomainInput[]
+    updateMany?: EmailEventUpdateManyWithWhereWithoutDomainInput | EmailEventUpdateManyWithWhereWithoutDomainInput[]
     deleteMany?: EmailEventScalarWhereInput | EmailEventScalarWhereInput[]
   }
 
-  export type SummaryStatsUncheckedUpdateOneWithoutSendingDomainNestedInput = {
-    create?: XOR<SummaryStatsCreateWithoutSendingDomainInput, SummaryStatsUncheckedCreateWithoutSendingDomainInput>
-    connectOrCreate?: SummaryStatsCreateOrConnectWithoutSendingDomainInput
-    upsert?: SummaryStatsUpsertWithoutSendingDomainInput
-    disconnect?: SummaryStatsWhereInput | boolean
-    delete?: SummaryStatsWhereInput | boolean
-    connect?: SummaryStatsWhereUniqueInput
-    update?: XOR<XOR<SummaryStatsUpdateToOneWithWhereWithoutSendingDomainInput, SummaryStatsUpdateWithoutSendingDomainInput>, SummaryStatsUncheckedUpdateWithoutSendingDomainInput>
+  export type EmailSummaryUncheckedUpdateOneWithoutDomainNestedInput = {
+    create?: XOR<EmailSummaryCreateWithoutDomainInput, EmailSummaryUncheckedCreateWithoutDomainInput>
+    connectOrCreate?: EmailSummaryCreateOrConnectWithoutDomainInput
+    upsert?: EmailSummaryUpsertWithoutDomainInput
+    disconnect?: EmailSummaryWhereInput | boolean
+    delete?: EmailSummaryWhereInput | boolean
+    connect?: EmailSummaryWhereUniqueInput
+    update?: XOR<XOR<EmailSummaryUpdateToOneWithWhereWithoutDomainInput, EmailSummaryUpdateWithoutDomainInput>, EmailSummaryUncheckedUpdateWithoutDomainInput>
   }
 
-  export type SendingDomainCreateNestedOneWithoutEmailEventsInput = {
-    create?: XOR<SendingDomainCreateWithoutEmailEventsInput, SendingDomainUncheckedCreateWithoutEmailEventsInput>
-    connectOrCreate?: SendingDomainCreateOrConnectWithoutEmailEventsInput
-    connect?: SendingDomainWhereUniqueInput
-  }
-
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
-  }
-
-  export type NullableFloatFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
-  }
-
-  export type FloatFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type SendingDomainUpdateOneRequiredWithoutEmailEventsNestedInput = {
-    create?: XOR<SendingDomainCreateWithoutEmailEventsInput, SendingDomainUncheckedCreateWithoutEmailEventsInput>
-    connectOrCreate?: SendingDomainCreateOrConnectWithoutEmailEventsInput
-    upsert?: SendingDomainUpsertWithoutEmailEventsInput
-    connect?: SendingDomainWhereUniqueInput
-    update?: XOR<XOR<SendingDomainUpdateToOneWithWhereWithoutEmailEventsInput, SendingDomainUpdateWithoutEmailEventsInput>, SendingDomainUncheckedUpdateWithoutEmailEventsInput>
-  }
-
-  export type SendingDomainCreateNestedOneWithoutSummaryStatsInput = {
-    create?: XOR<SendingDomainCreateWithoutSummaryStatsInput, SendingDomainUncheckedCreateWithoutSummaryStatsInput>
-    connectOrCreate?: SendingDomainCreateOrConnectWithoutSummaryStatsInput
-    connect?: SendingDomainWhereUniqueInput
+  export type DomainCreateNestedOneWithoutEmailsInput = {
+    create?: XOR<DomainCreateWithoutEmailsInput, DomainUncheckedCreateWithoutEmailsInput>
+    connectOrCreate?: DomainCreateOrConnectWithoutEmailsInput
+    connect?: DomainWhereUniqueInput
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -7154,12 +6991,26 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type SendingDomainUpdateOneRequiredWithoutSummaryStatsNestedInput = {
-    create?: XOR<SendingDomainCreateWithoutSummaryStatsInput, SendingDomainUncheckedCreateWithoutSummaryStatsInput>
-    connectOrCreate?: SendingDomainCreateOrConnectWithoutSummaryStatsInput
-    upsert?: SendingDomainUpsertWithoutSummaryStatsInput
-    connect?: SendingDomainWhereUniqueInput
-    update?: XOR<XOR<SendingDomainUpdateToOneWithWhereWithoutSummaryStatsInput, SendingDomainUpdateWithoutSummaryStatsInput>, SendingDomainUncheckedUpdateWithoutSummaryStatsInput>
+  export type DomainUpdateOneRequiredWithoutEmailsNestedInput = {
+    create?: XOR<DomainCreateWithoutEmailsInput, DomainUncheckedCreateWithoutEmailsInput>
+    connectOrCreate?: DomainCreateOrConnectWithoutEmailsInput
+    upsert?: DomainUpsertWithoutEmailsInput
+    connect?: DomainWhereUniqueInput
+    update?: XOR<XOR<DomainUpdateToOneWithWhereWithoutEmailsInput, DomainUpdateWithoutEmailsInput>, DomainUncheckedUpdateWithoutEmailsInput>
+  }
+
+  export type DomainCreateNestedOneWithoutSummaryInput = {
+    create?: XOR<DomainCreateWithoutSummaryInput, DomainUncheckedCreateWithoutSummaryInput>
+    connectOrCreate?: DomainCreateOrConnectWithoutSummaryInput
+    connect?: DomainWhereUniqueInput
+  }
+
+  export type DomainUpdateOneRequiredWithoutSummaryNestedInput = {
+    create?: XOR<DomainCreateWithoutSummaryInput, DomainUncheckedCreateWithoutSummaryInput>
+    connectOrCreate?: DomainCreateOrConnectWithoutSummaryInput
+    upsert?: DomainUpsertWithoutSummaryInput
+    connect?: DomainWhereUniqueInput
+    update?: XOR<XOR<DomainUpdateToOneWithWhereWithoutSummaryInput, DomainUpdateWithoutSummaryInput>, DomainUncheckedUpdateWithoutSummaryInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -7176,11 +7027,18 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type NestedEnumRoleFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
@@ -7222,122 +7080,6 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type NestedEnumRoleWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumRoleFilter<$PrismaModel>
-    _max?: NestedEnumRoleFilter<$PrismaModel>
-  }
-
-  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
-  }
-
-  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -7355,20 +7097,29 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
     _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedFloatFilter<$PrismaModel>
-    _min?: NestedFloatFilter<$PrismaModel>
-    _max?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -7387,189 +7138,201 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
-  export type SendingDomainCreateWithoutUserInput = {
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type DomainCreateWithoutUserInput = {
     id?: string
-    domain: string
+    name: string
     createdAt?: Date | string
-    emailEvents?: EmailEventCreateNestedManyWithoutSendingDomainInput
-    summaryStats?: SummaryStatsCreateNestedOneWithoutSendingDomainInput
+    updatedAt?: Date | string
+    emails?: EmailEventCreateNestedManyWithoutDomainInput
+    summary?: EmailSummaryCreateNestedOneWithoutDomainInput
   }
 
-  export type SendingDomainUncheckedCreateWithoutUserInput = {
+  export type DomainUncheckedCreateWithoutUserInput = {
     id?: string
-    domain: string
+    name: string
     createdAt?: Date | string
-    emailEvents?: EmailEventUncheckedCreateNestedManyWithoutSendingDomainInput
-    summaryStats?: SummaryStatsUncheckedCreateNestedOneWithoutSendingDomainInput
+    updatedAt?: Date | string
+    emails?: EmailEventUncheckedCreateNestedManyWithoutDomainInput
+    summary?: EmailSummaryUncheckedCreateNestedOneWithoutDomainInput
   }
 
-  export type SendingDomainCreateOrConnectWithoutUserInput = {
-    where: SendingDomainWhereUniqueInput
-    create: XOR<SendingDomainCreateWithoutUserInput, SendingDomainUncheckedCreateWithoutUserInput>
+  export type DomainCreateOrConnectWithoutUserInput = {
+    where: DomainWhereUniqueInput
+    create: XOR<DomainCreateWithoutUserInput, DomainUncheckedCreateWithoutUserInput>
   }
 
-  export type SendingDomainCreateManyUserInputEnvelope = {
-    data: SendingDomainCreateManyUserInput | SendingDomainCreateManyUserInput[]
+  export type DomainCreateManyUserInputEnvelope = {
+    data: DomainCreateManyUserInput | DomainCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
-  export type SendingDomainUpsertWithWhereUniqueWithoutUserInput = {
-    where: SendingDomainWhereUniqueInput
-    update: XOR<SendingDomainUpdateWithoutUserInput, SendingDomainUncheckedUpdateWithoutUserInput>
-    create: XOR<SendingDomainCreateWithoutUserInput, SendingDomainUncheckedCreateWithoutUserInput>
+  export type DomainUpsertWithWhereUniqueWithoutUserInput = {
+    where: DomainWhereUniqueInput
+    update: XOR<DomainUpdateWithoutUserInput, DomainUncheckedUpdateWithoutUserInput>
+    create: XOR<DomainCreateWithoutUserInput, DomainUncheckedCreateWithoutUserInput>
   }
 
-  export type SendingDomainUpdateWithWhereUniqueWithoutUserInput = {
-    where: SendingDomainWhereUniqueInput
-    data: XOR<SendingDomainUpdateWithoutUserInput, SendingDomainUncheckedUpdateWithoutUserInput>
+  export type DomainUpdateWithWhereUniqueWithoutUserInput = {
+    where: DomainWhereUniqueInput
+    data: XOR<DomainUpdateWithoutUserInput, DomainUncheckedUpdateWithoutUserInput>
   }
 
-  export type SendingDomainUpdateManyWithWhereWithoutUserInput = {
-    where: SendingDomainScalarWhereInput
-    data: XOR<SendingDomainUpdateManyMutationInput, SendingDomainUncheckedUpdateManyWithoutUserInput>
+  export type DomainUpdateManyWithWhereWithoutUserInput = {
+    where: DomainScalarWhereInput
+    data: XOR<DomainUpdateManyMutationInput, DomainUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type SendingDomainScalarWhereInput = {
-    AND?: SendingDomainScalarWhereInput | SendingDomainScalarWhereInput[]
-    OR?: SendingDomainScalarWhereInput[]
-    NOT?: SendingDomainScalarWhereInput | SendingDomainScalarWhereInput[]
-    id?: StringFilter<"SendingDomain"> | string
-    domain?: StringFilter<"SendingDomain"> | string
-    userId?: StringFilter<"SendingDomain"> | string
-    createdAt?: DateTimeFilter<"SendingDomain"> | Date | string
+  export type DomainScalarWhereInput = {
+    AND?: DomainScalarWhereInput | DomainScalarWhereInput[]
+    OR?: DomainScalarWhereInput[]
+    NOT?: DomainScalarWhereInput | DomainScalarWhereInput[]
+    id?: StringFilter<"Domain"> | string
+    name?: StringFilter<"Domain"> | string
+    userId?: StringNullableFilter<"Domain"> | string | null
+    createdAt?: DateTimeFilter<"Domain"> | Date | string
+    updatedAt?: DateTimeFilter<"Domain"> | Date | string
   }
 
-  export type UserCreateWithoutSendingDomainsInput = {
+  export type UserCreateWithoutDomainsInput = {
     id?: string
     kindeId: string
     email: string
-    name: string
-    role?: $Enums.Role
+    name?: string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type UserUncheckedCreateWithoutSendingDomainsInput = {
+  export type UserUncheckedCreateWithoutDomainsInput = {
     id?: string
     kindeId: string
     email: string
-    name: string
-    role?: $Enums.Role
+    name?: string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type UserCreateOrConnectWithoutSendingDomainsInput = {
+  export type UserCreateOrConnectWithoutDomainsInput = {
     where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutSendingDomainsInput, UserUncheckedCreateWithoutSendingDomainsInput>
+    create: XOR<UserCreateWithoutDomainsInput, UserUncheckedCreateWithoutDomainsInput>
   }
 
-  export type EmailEventCreateWithoutSendingDomainInput = {
+  export type EmailEventCreateWithoutDomainInput = {
     id?: string
-    webhookEventId: string
+    emailId: number
+    token: string
     messageId: string
-    status: string
-    type: string
-    recipient: string
-    sender: string
+    to: string
+    from: string
     subject: string
-    sentWithSSL: boolean
-    timeTaken?: number | null
-    spamStatus?: number | null
-    details?: string | null
-    timestamp: number
+    eventType: string
+    status: string
+    spamStatus: number
+    timestamp: Date | string
     createdAt?: Date | string
   }
 
-  export type EmailEventUncheckedCreateWithoutSendingDomainInput = {
+  export type EmailEventUncheckedCreateWithoutDomainInput = {
     id?: string
-    webhookEventId: string
+    emailId: number
+    token: string
     messageId: string
-    status: string
-    type: string
-    recipient: string
-    sender: string
+    to: string
+    from: string
     subject: string
-    sentWithSSL: boolean
-    timeTaken?: number | null
-    spamStatus?: number | null
-    details?: string | null
-    timestamp: number
+    eventType: string
+    status: string
+    spamStatus: number
+    timestamp: Date | string
     createdAt?: Date | string
   }
 
-  export type EmailEventCreateOrConnectWithoutSendingDomainInput = {
+  export type EmailEventCreateOrConnectWithoutDomainInput = {
     where: EmailEventWhereUniqueInput
-    create: XOR<EmailEventCreateWithoutSendingDomainInput, EmailEventUncheckedCreateWithoutSendingDomainInput>
+    create: XOR<EmailEventCreateWithoutDomainInput, EmailEventUncheckedCreateWithoutDomainInput>
   }
 
-  export type EmailEventCreateManySendingDomainInputEnvelope = {
-    data: EmailEventCreateManySendingDomainInput | EmailEventCreateManySendingDomainInput[]
+  export type EmailEventCreateManyDomainInputEnvelope = {
+    data: EmailEventCreateManyDomainInput | EmailEventCreateManyDomainInput[]
     skipDuplicates?: boolean
   }
 
-  export type SummaryStatsCreateWithoutSendingDomainInput = {
+  export type EmailSummaryCreateWithoutDomainInput = {
     id?: string
     totalSent?: number
     totalDelivered?: number
     totalFailed?: number
-    lastUpdated?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type SummaryStatsUncheckedCreateWithoutSendingDomainInput = {
+  export type EmailSummaryUncheckedCreateWithoutDomainInput = {
     id?: string
     totalSent?: number
     totalDelivered?: number
     totalFailed?: number
-    lastUpdated?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type SummaryStatsCreateOrConnectWithoutSendingDomainInput = {
-    where: SummaryStatsWhereUniqueInput
-    create: XOR<SummaryStatsCreateWithoutSendingDomainInput, SummaryStatsUncheckedCreateWithoutSendingDomainInput>
+  export type EmailSummaryCreateOrConnectWithoutDomainInput = {
+    where: EmailSummaryWhereUniqueInput
+    create: XOR<EmailSummaryCreateWithoutDomainInput, EmailSummaryUncheckedCreateWithoutDomainInput>
   }
 
-  export type UserUpsertWithoutSendingDomainsInput = {
-    update: XOR<UserUpdateWithoutSendingDomainsInput, UserUncheckedUpdateWithoutSendingDomainsInput>
-    create: XOR<UserCreateWithoutSendingDomainsInput, UserUncheckedCreateWithoutSendingDomainsInput>
+  export type UserUpsertWithoutDomainsInput = {
+    update: XOR<UserUpdateWithoutDomainsInput, UserUncheckedUpdateWithoutDomainsInput>
+    create: XOR<UserCreateWithoutDomainsInput, UserUncheckedCreateWithoutDomainsInput>
     where?: UserWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutSendingDomainsInput = {
+  export type UserUpdateToOneWithWhereWithoutDomainsInput = {
     where?: UserWhereInput
-    data: XOR<UserUpdateWithoutSendingDomainsInput, UserUncheckedUpdateWithoutSendingDomainsInput>
+    data: XOR<UserUpdateWithoutDomainsInput, UserUncheckedUpdateWithoutDomainsInput>
   }
 
-  export type UserUpdateWithoutSendingDomainsInput = {
+  export type UserUpdateWithoutDomainsInput = {
     id?: StringFieldUpdateOperationsInput | string
     kindeId?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    name?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UserUncheckedUpdateWithoutSendingDomainsInput = {
+  export type UserUncheckedUpdateWithoutDomainsInput = {
     id?: StringFieldUpdateOperationsInput | string
     kindeId?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    name?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type EmailEventUpsertWithWhereUniqueWithoutSendingDomainInput = {
+  export type EmailEventUpsertWithWhereUniqueWithoutDomainInput = {
     where: EmailEventWhereUniqueInput
-    update: XOR<EmailEventUpdateWithoutSendingDomainInput, EmailEventUncheckedUpdateWithoutSendingDomainInput>
-    create: XOR<EmailEventCreateWithoutSendingDomainInput, EmailEventUncheckedCreateWithoutSendingDomainInput>
+    update: XOR<EmailEventUpdateWithoutDomainInput, EmailEventUncheckedUpdateWithoutDomainInput>
+    create: XOR<EmailEventCreateWithoutDomainInput, EmailEventUncheckedCreateWithoutDomainInput>
   }
 
-  export type EmailEventUpdateWithWhereUniqueWithoutSendingDomainInput = {
+  export type EmailEventUpdateWithWhereUniqueWithoutDomainInput = {
     where: EmailEventWhereUniqueInput
-    data: XOR<EmailEventUpdateWithoutSendingDomainInput, EmailEventUncheckedUpdateWithoutSendingDomainInput>
+    data: XOR<EmailEventUpdateWithoutDomainInput, EmailEventUncheckedUpdateWithoutDomainInput>
   }
 
-  export type EmailEventUpdateManyWithWhereWithoutSendingDomainInput = {
+  export type EmailEventUpdateManyWithWhereWithoutDomainInput = {
     where: EmailEventScalarWhereInput
-    data: XOR<EmailEventUpdateManyMutationInput, EmailEventUncheckedUpdateManyWithoutSendingDomainInput>
+    data: XOR<EmailEventUpdateManyMutationInput, EmailEventUncheckedUpdateManyWithoutDomainInput>
   }
 
   export type EmailEventScalarWhereInput = {
@@ -7577,238 +7340,242 @@ export namespace Prisma {
     OR?: EmailEventScalarWhereInput[]
     NOT?: EmailEventScalarWhereInput | EmailEventScalarWhereInput[]
     id?: StringFilter<"EmailEvent"> | string
-    webhookEventId?: StringFilter<"EmailEvent"> | string
+    emailId?: IntFilter<"EmailEvent"> | number
+    token?: StringFilter<"EmailEvent"> | string
     messageId?: StringFilter<"EmailEvent"> | string
-    status?: StringFilter<"EmailEvent"> | string
-    type?: StringFilter<"EmailEvent"> | string
-    recipient?: StringFilter<"EmailEvent"> | string
-    sender?: StringFilter<"EmailEvent"> | string
+    to?: StringFilter<"EmailEvent"> | string
+    from?: StringFilter<"EmailEvent"> | string
     subject?: StringFilter<"EmailEvent"> | string
-    sentWithSSL?: BoolFilter<"EmailEvent"> | boolean
-    timeTaken?: FloatNullableFilter<"EmailEvent"> | number | null
-    spamStatus?: IntNullableFilter<"EmailEvent"> | number | null
-    details?: StringNullableFilter<"EmailEvent"> | string | null
-    timestamp?: FloatFilter<"EmailEvent"> | number
-    sendingDomainId?: StringFilter<"EmailEvent"> | string
+    eventType?: StringFilter<"EmailEvent"> | string
+    status?: StringFilter<"EmailEvent"> | string
+    spamStatus?: IntFilter<"EmailEvent"> | number
+    timestamp?: DateTimeFilter<"EmailEvent"> | Date | string
+    domainId?: StringFilter<"EmailEvent"> | string
     createdAt?: DateTimeFilter<"EmailEvent"> | Date | string
   }
 
-  export type SummaryStatsUpsertWithoutSendingDomainInput = {
-    update: XOR<SummaryStatsUpdateWithoutSendingDomainInput, SummaryStatsUncheckedUpdateWithoutSendingDomainInput>
-    create: XOR<SummaryStatsCreateWithoutSendingDomainInput, SummaryStatsUncheckedCreateWithoutSendingDomainInput>
-    where?: SummaryStatsWhereInput
+  export type EmailSummaryUpsertWithoutDomainInput = {
+    update: XOR<EmailSummaryUpdateWithoutDomainInput, EmailSummaryUncheckedUpdateWithoutDomainInput>
+    create: XOR<EmailSummaryCreateWithoutDomainInput, EmailSummaryUncheckedCreateWithoutDomainInput>
+    where?: EmailSummaryWhereInput
   }
 
-  export type SummaryStatsUpdateToOneWithWhereWithoutSendingDomainInput = {
-    where?: SummaryStatsWhereInput
-    data: XOR<SummaryStatsUpdateWithoutSendingDomainInput, SummaryStatsUncheckedUpdateWithoutSendingDomainInput>
+  export type EmailSummaryUpdateToOneWithWhereWithoutDomainInput = {
+    where?: EmailSummaryWhereInput
+    data: XOR<EmailSummaryUpdateWithoutDomainInput, EmailSummaryUncheckedUpdateWithoutDomainInput>
   }
 
-  export type SummaryStatsUpdateWithoutSendingDomainInput = {
+  export type EmailSummaryUpdateWithoutDomainInput = {
     id?: StringFieldUpdateOperationsInput | string
     totalSent?: IntFieldUpdateOperationsInput | number
     totalDelivered?: IntFieldUpdateOperationsInput | number
     totalFailed?: IntFieldUpdateOperationsInput | number
-    lastUpdated?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type SummaryStatsUncheckedUpdateWithoutSendingDomainInput = {
+  export type EmailSummaryUncheckedUpdateWithoutDomainInput = {
     id?: StringFieldUpdateOperationsInput | string
     totalSent?: IntFieldUpdateOperationsInput | number
     totalDelivered?: IntFieldUpdateOperationsInput | number
     totalFailed?: IntFieldUpdateOperationsInput | number
-    lastUpdated?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type SendingDomainCreateWithoutEmailEventsInput = {
+  export type DomainCreateWithoutEmailsInput = {
     id?: string
-    domain: string
+    name: string
     createdAt?: Date | string
-    user: UserCreateNestedOneWithoutSendingDomainsInput
-    summaryStats?: SummaryStatsCreateNestedOneWithoutSendingDomainInput
+    updatedAt?: Date | string
+    user?: UserCreateNestedOneWithoutDomainsInput
+    summary?: EmailSummaryCreateNestedOneWithoutDomainInput
   }
 
-  export type SendingDomainUncheckedCreateWithoutEmailEventsInput = {
+  export type DomainUncheckedCreateWithoutEmailsInput = {
     id?: string
-    domain: string
-    userId: string
+    name: string
+    userId?: string | null
     createdAt?: Date | string
-    summaryStats?: SummaryStatsUncheckedCreateNestedOneWithoutSendingDomainInput
+    updatedAt?: Date | string
+    summary?: EmailSummaryUncheckedCreateNestedOneWithoutDomainInput
   }
 
-  export type SendingDomainCreateOrConnectWithoutEmailEventsInput = {
-    where: SendingDomainWhereUniqueInput
-    create: XOR<SendingDomainCreateWithoutEmailEventsInput, SendingDomainUncheckedCreateWithoutEmailEventsInput>
+  export type DomainCreateOrConnectWithoutEmailsInput = {
+    where: DomainWhereUniqueInput
+    create: XOR<DomainCreateWithoutEmailsInput, DomainUncheckedCreateWithoutEmailsInput>
   }
 
-  export type SendingDomainUpsertWithoutEmailEventsInput = {
-    update: XOR<SendingDomainUpdateWithoutEmailEventsInput, SendingDomainUncheckedUpdateWithoutEmailEventsInput>
-    create: XOR<SendingDomainCreateWithoutEmailEventsInput, SendingDomainUncheckedCreateWithoutEmailEventsInput>
-    where?: SendingDomainWhereInput
+  export type DomainUpsertWithoutEmailsInput = {
+    update: XOR<DomainUpdateWithoutEmailsInput, DomainUncheckedUpdateWithoutEmailsInput>
+    create: XOR<DomainCreateWithoutEmailsInput, DomainUncheckedCreateWithoutEmailsInput>
+    where?: DomainWhereInput
   }
 
-  export type SendingDomainUpdateToOneWithWhereWithoutEmailEventsInput = {
-    where?: SendingDomainWhereInput
-    data: XOR<SendingDomainUpdateWithoutEmailEventsInput, SendingDomainUncheckedUpdateWithoutEmailEventsInput>
+  export type DomainUpdateToOneWithWhereWithoutEmailsInput = {
+    where?: DomainWhereInput
+    data: XOR<DomainUpdateWithoutEmailsInput, DomainUncheckedUpdateWithoutEmailsInput>
   }
 
-  export type SendingDomainUpdateWithoutEmailEventsInput = {
+  export type DomainUpdateWithoutEmailsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    domain?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutSendingDomainsNestedInput
-    summaryStats?: SummaryStatsUpdateOneWithoutSendingDomainNestedInput
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutDomainsNestedInput
+    summary?: EmailSummaryUpdateOneWithoutDomainNestedInput
   }
 
-  export type SendingDomainUncheckedUpdateWithoutEmailEventsInput = {
+  export type DomainUncheckedUpdateWithoutEmailsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    domain?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    summaryStats?: SummaryStatsUncheckedUpdateOneWithoutSendingDomainNestedInput
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    summary?: EmailSummaryUncheckedUpdateOneWithoutDomainNestedInput
   }
 
-  export type SendingDomainCreateWithoutSummaryStatsInput = {
+  export type DomainCreateWithoutSummaryInput = {
     id?: string
-    domain: string
+    name: string
     createdAt?: Date | string
-    user: UserCreateNestedOneWithoutSendingDomainsInput
-    emailEvents?: EmailEventCreateNestedManyWithoutSendingDomainInput
+    updatedAt?: Date | string
+    user?: UserCreateNestedOneWithoutDomainsInput
+    emails?: EmailEventCreateNestedManyWithoutDomainInput
   }
 
-  export type SendingDomainUncheckedCreateWithoutSummaryStatsInput = {
+  export type DomainUncheckedCreateWithoutSummaryInput = {
     id?: string
-    domain: string
-    userId: string
+    name: string
+    userId?: string | null
     createdAt?: Date | string
-    emailEvents?: EmailEventUncheckedCreateNestedManyWithoutSendingDomainInput
+    updatedAt?: Date | string
+    emails?: EmailEventUncheckedCreateNestedManyWithoutDomainInput
   }
 
-  export type SendingDomainCreateOrConnectWithoutSummaryStatsInput = {
-    where: SendingDomainWhereUniqueInput
-    create: XOR<SendingDomainCreateWithoutSummaryStatsInput, SendingDomainUncheckedCreateWithoutSummaryStatsInput>
+  export type DomainCreateOrConnectWithoutSummaryInput = {
+    where: DomainWhereUniqueInput
+    create: XOR<DomainCreateWithoutSummaryInput, DomainUncheckedCreateWithoutSummaryInput>
   }
 
-  export type SendingDomainUpsertWithoutSummaryStatsInput = {
-    update: XOR<SendingDomainUpdateWithoutSummaryStatsInput, SendingDomainUncheckedUpdateWithoutSummaryStatsInput>
-    create: XOR<SendingDomainCreateWithoutSummaryStatsInput, SendingDomainUncheckedCreateWithoutSummaryStatsInput>
-    where?: SendingDomainWhereInput
+  export type DomainUpsertWithoutSummaryInput = {
+    update: XOR<DomainUpdateWithoutSummaryInput, DomainUncheckedUpdateWithoutSummaryInput>
+    create: XOR<DomainCreateWithoutSummaryInput, DomainUncheckedCreateWithoutSummaryInput>
+    where?: DomainWhereInput
   }
 
-  export type SendingDomainUpdateToOneWithWhereWithoutSummaryStatsInput = {
-    where?: SendingDomainWhereInput
-    data: XOR<SendingDomainUpdateWithoutSummaryStatsInput, SendingDomainUncheckedUpdateWithoutSummaryStatsInput>
+  export type DomainUpdateToOneWithWhereWithoutSummaryInput = {
+    where?: DomainWhereInput
+    data: XOR<DomainUpdateWithoutSummaryInput, DomainUncheckedUpdateWithoutSummaryInput>
   }
 
-  export type SendingDomainUpdateWithoutSummaryStatsInput = {
+  export type DomainUpdateWithoutSummaryInput = {
     id?: StringFieldUpdateOperationsInput | string
-    domain?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutSendingDomainsNestedInput
-    emailEvents?: EmailEventUpdateManyWithoutSendingDomainNestedInput
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutDomainsNestedInput
+    emails?: EmailEventUpdateManyWithoutDomainNestedInput
   }
 
-  export type SendingDomainUncheckedUpdateWithoutSummaryStatsInput = {
+  export type DomainUncheckedUpdateWithoutSummaryInput = {
     id?: StringFieldUpdateOperationsInput | string
-    domain?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    emailEvents?: EmailEventUncheckedUpdateManyWithoutSendingDomainNestedInput
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    emails?: EmailEventUncheckedUpdateManyWithoutDomainNestedInput
   }
 
-  export type SendingDomainCreateManyUserInput = {
+  export type DomainCreateManyUserInput = {
     id?: string
-    domain: string
+    name: string
     createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type SendingDomainUpdateWithoutUserInput = {
+  export type DomainUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    domain?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    emailEvents?: EmailEventUpdateManyWithoutSendingDomainNestedInput
-    summaryStats?: SummaryStatsUpdateOneWithoutSendingDomainNestedInput
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    emails?: EmailEventUpdateManyWithoutDomainNestedInput
+    summary?: EmailSummaryUpdateOneWithoutDomainNestedInput
   }
 
-  export type SendingDomainUncheckedUpdateWithoutUserInput = {
+  export type DomainUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    domain?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    emailEvents?: EmailEventUncheckedUpdateManyWithoutSendingDomainNestedInput
-    summaryStats?: SummaryStatsUncheckedUpdateOneWithoutSendingDomainNestedInput
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    emails?: EmailEventUncheckedUpdateManyWithoutDomainNestedInput
+    summary?: EmailSummaryUncheckedUpdateOneWithoutDomainNestedInput
   }
 
-  export type SendingDomainUncheckedUpdateManyWithoutUserInput = {
+  export type DomainUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    domain?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type EmailEventCreateManySendingDomainInput = {
+  export type EmailEventCreateManyDomainInput = {
     id?: string
-    webhookEventId: string
+    emailId: number
+    token: string
     messageId: string
-    status: string
-    type: string
-    recipient: string
-    sender: string
+    to: string
+    from: string
     subject: string
-    sentWithSSL: boolean
-    timeTaken?: number | null
-    spamStatus?: number | null
-    details?: string | null
-    timestamp: number
+    eventType: string
+    status: string
+    spamStatus: number
+    timestamp: Date | string
     createdAt?: Date | string
   }
 
-  export type EmailEventUpdateWithoutSendingDomainInput = {
+  export type EmailEventUpdateWithoutDomainInput = {
     id?: StringFieldUpdateOperationsInput | string
-    webhookEventId?: StringFieldUpdateOperationsInput | string
+    emailId?: IntFieldUpdateOperationsInput | number
+    token?: StringFieldUpdateOperationsInput | string
     messageId?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    recipient?: StringFieldUpdateOperationsInput | string
-    sender?: StringFieldUpdateOperationsInput | string
+    to?: StringFieldUpdateOperationsInput | string
+    from?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
-    sentWithSSL?: BoolFieldUpdateOperationsInput | boolean
-    timeTaken?: NullableFloatFieldUpdateOperationsInput | number | null
-    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
-    details?: NullableStringFieldUpdateOperationsInput | string | null
-    timestamp?: FloatFieldUpdateOperationsInput | number
+    eventType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    spamStatus?: IntFieldUpdateOperationsInput | number
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type EmailEventUncheckedUpdateWithoutSendingDomainInput = {
+  export type EmailEventUncheckedUpdateWithoutDomainInput = {
     id?: StringFieldUpdateOperationsInput | string
-    webhookEventId?: StringFieldUpdateOperationsInput | string
+    emailId?: IntFieldUpdateOperationsInput | number
+    token?: StringFieldUpdateOperationsInput | string
     messageId?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    recipient?: StringFieldUpdateOperationsInput | string
-    sender?: StringFieldUpdateOperationsInput | string
+    to?: StringFieldUpdateOperationsInput | string
+    from?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
-    sentWithSSL?: BoolFieldUpdateOperationsInput | boolean
-    timeTaken?: NullableFloatFieldUpdateOperationsInput | number | null
-    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
-    details?: NullableStringFieldUpdateOperationsInput | string | null
-    timestamp?: FloatFieldUpdateOperationsInput | number
+    eventType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    spamStatus?: IntFieldUpdateOperationsInput | number
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type EmailEventUncheckedUpdateManyWithoutSendingDomainInput = {
+  export type EmailEventUncheckedUpdateManyWithoutDomainInput = {
     id?: StringFieldUpdateOperationsInput | string
-    webhookEventId?: StringFieldUpdateOperationsInput | string
+    emailId?: IntFieldUpdateOperationsInput | number
+    token?: StringFieldUpdateOperationsInput | string
     messageId?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    recipient?: StringFieldUpdateOperationsInput | string
-    sender?: StringFieldUpdateOperationsInput | string
+    to?: StringFieldUpdateOperationsInput | string
+    from?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
-    sentWithSSL?: BoolFieldUpdateOperationsInput | boolean
-    timeTaken?: NullableFloatFieldUpdateOperationsInput | number | null
-    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
-    details?: NullableStringFieldUpdateOperationsInput | string | null
-    timestamp?: FloatFieldUpdateOperationsInput | number
+    eventType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    spamStatus?: IntFieldUpdateOperationsInput | number
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

@@ -125,42 +125,42 @@ exports.Prisma.UserScalarFieldEnum = {
   kindeId: 'kindeId',
   email: 'email',
   name: 'name',
-  role: 'role',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
-exports.Prisma.SendingDomainScalarFieldEnum = {
+exports.Prisma.DomainScalarFieldEnum = {
   id: 'id',
-  domain: 'domain',
+  name: 'name',
   userId: 'userId',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.EmailEventScalarFieldEnum = {
   id: 'id',
-  webhookEventId: 'webhookEventId',
+  emailId: 'emailId',
+  token: 'token',
   messageId: 'messageId',
-  status: 'status',
-  type: 'type',
-  recipient: 'recipient',
-  sender: 'sender',
+  to: 'to',
+  from: 'from',
   subject: 'subject',
-  sentWithSSL: 'sentWithSSL',
-  timeTaken: 'timeTaken',
+  eventType: 'eventType',
+  status: 'status',
   spamStatus: 'spamStatus',
-  details: 'details',
   timestamp: 'timestamp',
-  sendingDomainId: 'sendingDomainId',
+  domainId: 'domainId',
   createdAt: 'createdAt'
 };
 
-exports.Prisma.SummaryStatsScalarFieldEnum = {
+exports.Prisma.EmailSummaryScalarFieldEnum = {
   id: 'id',
-  sendingDomainId: 'sendingDomainId',
+  domainId: 'domainId',
   totalSent: 'totalSent',
   totalDelivered: 'totalDelivered',
   totalFailed: 'totalFailed',
-  lastUpdated: 'lastUpdated'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -177,16 +177,13 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-exports.Role = exports.$Enums.Role = {
-  ADMIN: 'ADMIN',
-  CLIENT: 'CLIENT'
-};
+
 
 exports.Prisma.ModelName = {
   User: 'User',
-  SendingDomain: 'SendingDomain',
+  Domain: 'Domain',
   EmailEvent: 'EmailEvent',
-  SummaryStats: 'SummaryStats'
+  EmailSummary: 'EmailSummary'
 };
 
 /**
