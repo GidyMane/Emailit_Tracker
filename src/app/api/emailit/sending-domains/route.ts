@@ -26,7 +26,7 @@ export async function GET() {
         create: {
           name: domain.name,
     
-          // userId: optional
+         
         },
       });
     }
