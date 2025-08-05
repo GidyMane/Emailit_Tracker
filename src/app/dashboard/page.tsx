@@ -12,7 +12,8 @@ function page() {
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             Dashboard will be here soon!
-        </div>      
+        </div> 
+            
     </div>
   )
 }
