@@ -19,9 +19,11 @@ export default withAuth(
         console.error("Unknown error occurred during user sync.");
       }
     }
+    console.log("Middleware triggered for path:", req.nextUrl.pathname);
   },
+  
   {
-    publicPaths: ["/blog"],
+    publicPaths: ["/blog", "/api/auth/kindecallback", "/api/"],
   }
 );
 
