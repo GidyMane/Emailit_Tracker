@@ -23,7 +23,7 @@ export default withAuth(
   },
   
   {
-    publicPaths: ["/blog", "/api/auth/kindecallback", "/api/"],
+    publicPaths: ["/blog", "/api/auth/kindecallback", "/api/auth/[kindeAuth]"],
   }
 );
 
