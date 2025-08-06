@@ -40,7 +40,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthenticated" }, { status: 401 });
   }
 
-  // 1. Check if user exists in DB
+  // 1. Check if user exists in DataBase
   let existingUser = await prisma.user.findUnique({
     where: { kindeId: user.id },
   });
