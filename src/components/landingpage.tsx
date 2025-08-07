@@ -157,7 +157,7 @@ export function LandingPage() {
           <div className="flex flex-col items-center text-center space-y-8">
             <Badge variant="secondary" className="px-4 py-2">
               <Zap className="size-4 mr-2" />
-              Now with AI-powered insights
+              Now with Realtime insights
             </Badge>
             
             <div className="space-y-4 max-w-4xl">

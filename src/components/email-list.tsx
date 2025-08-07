@@ -11,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { MoreHorizontal, Eye, Edit, Copy, Trash2, Calendar, Users, TrendingUp } from 'lucide-react'
+import { MoreHorizontal, Eye, Edit, Copy, Trash2, Calendar, Users, TrendingUp, Mail, ArrowRight } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -113,130 +113,68 @@ export function EmailList() {
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle>Email Campaigns</CardTitle>
+            <CardTitle>Recent Campaigns</CardTitle>
             <CardDescription>
-              Manage and monitor your email campaigns
+              Your latest email campaigns and their performance
             </CardDescription>
           </div>
-          <Button>Create Campaign</Button>
+          <Button>
+            <Mail className="mr-2 size-4" />
+            New Campaign
+          </Button>
         </div>
       </CardHeader>
       <CardContent>
-        <div className="overflow-x-auto">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Campaign</TableHead>
-                <TableHead className="hidden sm:table-cell">Status</TableHead>
-                <TableHead className="hidden md:table-cell">Recipients</TableHead>
-                <TableHead className="hidden lg:table-cell">Open Rate</TableHead>
-                <TableHead className="hidden lg:table-cell">Click Rate</TableHead>
-                <TableHead className="hidden xl:table-cell">Revenue</TableHead>
-                <TableHead className="hidden md:table-cell">Date</TableHead>
-                <TableHead className="w-[50px]"></TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {campaigns.map((campaign) => (
-                <TableRow key={campaign.id}>
-                  <TableCell>
-                    <div className="space-y-1">
-                      <div className="font-medium">{campaign.name}</div>
-                      <div className="text-sm text-muted-foreground line-clamp-1">
-                        {campaign.subject}
-                      </div>
-                      {/* Show mobile-only info */}
-                      <div className="sm:hidden text-xs text-muted-foreground space-y-1">
-                        <div className="flex items-center gap-2">
-                          <Badge variant={getStatusColor(campaign.status)} className="text-xs">
-                            {getStatusIcon(campaign.status)} {campaign.status}
-                          </Badge>
-                          {campaign.sentDate && (
-                            <span>{new Date(campaign.sentDate).toLocaleDateString()}</span>
-                          )}
-                        </div>
-                        <div>
-                          {campaign.recipients.toLocaleString()} recipients
-                          {campaign.openRate > 0 && ` • ${campaign.openRate}% open rate`}
-                        </div>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell className="hidden sm:table-cell">
-                    <Badge variant={getStatusColor(campaign.status)}>
-                      {getStatusIcon(campaign.status)} {campaign.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="hidden md:table-cell">
-                    <div className="flex items-center gap-1">
-                      <Users className="size-4 text-muted-foreground" />
-                      {campaign.recipients.toLocaleString()}
-                    </div>
-                  </TableCell>
-                  <TableCell className="hidden lg:table-cell">
-                    {campaign.openRate > 0 ? (
-                      <div className="flex items-center gap-1">
-                        <Eye className="size-4 text-muted-foreground" />
-                        {campaign.openRate}%
-                      </div>
-                    ) : (
-                      <span className="text-muted-foreground">-</span>
-                    )}
-                  </TableCell>
-                  <TableCell className="hidden lg:table-cell">
-                    {campaign.clickRate > 0 ? (
-                      <div className="flex items-center gap-1">
-                        <TrendingUp className="size-4 text-muted-foreground" />
-                        {campaign.clickRate}%
-                      </div>
-                    ) : (
-                      <span className="text-muted-foreground">-</span>
-                    )}
-                  </TableCell>
-                  <TableCell className="hidden xl:table-cell">
-                    <span className="font-medium">{campaign.revenue}</span>
-                  </TableCell>
-                  <TableCell className="hidden md:table-cell">
-                    {campaign.sentDate ? (
-                      <div className="flex items-center gap-1">
-                        <Calendar className="size-4 text-muted-foreground" />
-                        {new Date(campaign.sentDate).toLocaleDateString()}
-                      </div>
-                    ) : (
-                      <span className="text-muted-foreground">-</span>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon">
-                          <MoreHorizontal className="size-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
-                          <Eye className="mr-2 size-4" />
-                          View Details
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <Edit className="mr-2 size-4" />
-                          Edit
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <Copy className="mr-2 size-4" />
-                          Duplicate
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600">
-                          <Trash2 className="mr-2 size-4" />
-                          Delete
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+        <div className="space-y-4">
+          {campaigns.slice(0, 5).map((campaign) => (
+            <div key={campaign.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+              <div className="space-y-1 flex-1">
+                <div className="flex items-center gap-3">
+                  <h4 className="font-medium">{campaign.name}</h4>
+                  <Badge variant={getStatusColor(campaign.status)} className="text-xs">
+                    {campaign.status}
+                  </Badge>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  {campaign.recipients.toLocaleString()} recipients
+                  {campaign.openRate > 0 && ` • ${campaign.openRate}% opened`}
+                  {campaign.sentDate && ` • ${new Date(campaign.sentDate).toLocaleDateString()}`}
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button variant="ghost" size="sm">
+                  <Eye className="size-4" />
+                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="sm">
+                      <MoreHorizontal className="size-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem>
+                      <Edit className="mr-2 size-4" />
+                      Edit
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Copy className="mr-2 size-4" />
+                      Duplicate
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="text-red-600">
+                      <Trash2 className="mr-2 size-4" />
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-6 text-center">
+          <Button variant="outline">
+            View All Campaigns
+            <ArrowRight className="ml-2 size-4" />
+          </Button>
         </div>
       </CardContent>
     </Card>

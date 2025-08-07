@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { BarChart3, Bell, Calendar, ChevronDown, FileText, Home, Inbox, Mail, MailOpen, PieChart, Search, Send, Settings, TrendingUp, Users, Zap } from 'lucide-react'
+import { TrendingDown } from 'lucide-react'
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -62,6 +63,13 @@ const navigation = [
       { title: "A/B Tests", icon: BarChart3, url: "#" },
     ]
   }
+]
+
+const stats = [
+  { title: "Open Rate", icon: MailOpen, value: "85%", change: "+2%", trend: "up", color: "text-green-500" },
+  { title: "Click Rate", icon: Zap, value: "45%", change: "-3%", trend: "down", color: "text-red-500" },
+  { title: "Sent Emails", icon: Send, value: "1200", change: "+10%", trend: "up", color: "text-green-500" },
+  { title: "Unique Opens", icon: Users, value: "900", change: "-5%", trend: "down", color: "text-red-500" },
 ]
 
 export function EmailDashboard() {
@@ -149,7 +157,7 @@ export function EmailDashboard() {
       </Sidebar>
       
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+        <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center gap-2 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
           <div className="flex items-center gap-2 flex-1">
@@ -166,12 +174,50 @@ export function EmailDashboard() {
           </div>
         </header>
         
-        <main className="flex-1 space-y-6 p-6">
-          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-            <EmailStatsCards />
-            <EmailCharts />
-            <EmailList />
+        <main className="flex-1 space-y-8 p-6">
+          {/* Key Metrics - Top Priority */}
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {stats.map((stat) => (
+              <Card key={stat.title} className="hover:shadow-md transition-shadow">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">{stat.title}</CardTitle>
+                  <stat.icon className={`size-5 ${stat.color}`} />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold">{stat.value}</div>
+                  <div className="flex items-center space-x-2 text-sm text-muted-foreground mt-2">
+                    <div className="flex items-center">
+                      {stat.trend === "up" ? (
+                        <TrendingUp className="size-4 text-green-500 mr-1" />
+                      ) : (
+                        <TrendingDown className="size-4 text-red-500 mr-1" />
+                      )}
+                      <span className={stat.trend === "up" ? "text-green-500" : "text-red-500"}>
+                        {stat.change}
+                      </span>
+                    </div>
+                    <span>vs last month</span>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
+
+          {/* Main Chart - Secondary Priority */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Email Performance Overview</CardTitle>
+              <CardDescription>
+                Track your email sending trends and engagement over time
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <EmailCharts />
+            </CardContent>
+          </Card>
+
+          {/* Recent Campaigns - Tertiary Priority */}
+          <EmailList />
         </main>
       </SidebarInset>
     </SidebarProvider>
