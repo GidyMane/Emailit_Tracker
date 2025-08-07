@@ -301,7 +301,7 @@ export function LandingPage() {
                       <Star key={i} className="size-4 fill-yellow-400 text-yellow-400" />
                     ))}
                   </div>
-                  <p className="text-muted-foreground mb-4">"{testimonial.content}"</p>
+                  <p className="text-muted-foreground mb-4">&quot;{testimonial.content}&quot;</p>
                   <div>
                     <div className="font-semibold">{testimonial.name}</div>
                     <div className="text-sm text-muted-foreground">
@@ -321,7 +321,7 @@ export function LandingPage() {
           <div className="text-center space-y-4 mb-12">
             <h2 className="text-3xl md:text-4xl font-bold">Simple, transparent pricing</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Choose the plan that's right for your business. No hidden fees.
+                Choose the plan that&apos;s right for your business. No hidden fees.
             </p>
           </div>
           
