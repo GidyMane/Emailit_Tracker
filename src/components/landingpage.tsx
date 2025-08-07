@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { Mail, BarChart3, Users, Zap, CheckCircle, ArrowRight, Star, TrendingUp, Shield, Clock, Globe, Smartphone, Monitor } from 'lucide-react'
+import { Mail, BarChart3, Users, Zap, CheckCircle, ArrowRight, Star, Shield, Globe } from 'lucide-react'
 import Link from "next/link"
 import { LoginLink } from "@kinde-oss/kinde-auth-nextjs"
 
