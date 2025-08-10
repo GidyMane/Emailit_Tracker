@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
     const offset = parseInt(url.searchParams.get('offset') || '0');
 
     // Build date filter
-    const dateFilter: any = {};
+    const dateFilter: { gte?: Date; lte?: Date } = {};
     if (startDate) {
       dateFilter.gte = new Date(startDate);
     }
@@ -55,7 +55,11 @@ export async function GET(request: NextRequest) {
     }
 
     // Build where clause
-    const whereClause: any = {
+    const whereClause: {
+      domainId: string;
+      timestamp: { gte?: Date; lte?: Date };
+      eventType?: string;
+    } = {
       domainId: domain.id,
       timestamp: dateFilter
     };
