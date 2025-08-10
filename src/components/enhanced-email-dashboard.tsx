@@ -330,6 +330,10 @@ export function EnhancedEmailDashboard() {
                 <ChartSkeleton />
               </TabsContent>
 
+              <TabsContent value="emails" className="space-y-4 md:space-y-6">
+                <TableSkeleton rows={10} />
+              </TabsContent>
+
               <TabsContent value="audience" className="space-y-4 md:space-y-6">
                 <div className="grid gap-6 md:grid-cols-2">
                   <CardSkeleton />
