@@ -208,6 +208,7 @@ export function EnhancedEmailDashboard() {
           throw new Error(errorData.message || 'Failed to fetch audience data')
         }
         const audienceResult = await audienceResponse.json()
+        console.log('Audience Data:', audienceResult)
         setAudienceData(audienceResult)
 
         // Fetch events data
