@@ -190,6 +190,7 @@ export function EnhancedEmailDashboard() {
           throw new Error(errorData.message || 'Failed to fetch domain data')
         }
         const domainResult = await domainResponse.json()
+        console.log('Domain Data:', domainResult)
         setDomainData(domainResult)
 
         // Fetch email statistics
@@ -199,6 +200,7 @@ export function EnhancedEmailDashboard() {
           throw new Error(errorData.message || 'Failed to fetch email statistics')
         }
         const statsResult = await statsResponse.json()
+        console.log('Stats Data:', statsResult)
         setEmailStats(statsResult.stats)
 
         // Fetch audience data
