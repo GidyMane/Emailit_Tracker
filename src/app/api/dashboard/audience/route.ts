@@ -113,11 +113,11 @@ export async function GET(request: NextRequest) {
         bouncedRecipients: Number(overview.bounced_recipients) || 0
       },
       engagement: {
-        openRate: engagement.total_recipients > 0 
-          ? Math.round((Number(engagement.users_who_opened) / Number(engagement.total_recipients)) * 100) 
+        openRate: Number(engagement.total_recipients) > 0
+          ? Math.round((Number(engagement.users_who_opened) / Number(engagement.total_recipients)) * 100)
           : 0,
-        clickRate: engagement.total_recipients > 0 
-          ? Math.round((Number(engagement.users_who_clicked) / Number(engagement.total_recipients)) * 100) 
+        clickRate: Number(engagement.total_recipients) > 0
+          ? Math.round((Number(engagement.users_who_clicked) / Number(engagement.total_recipients)) * 100)
           : 0
       },
       domainName: domain.name
