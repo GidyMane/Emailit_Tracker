@@ -115,10 +115,10 @@ export async function GET(request: NextRequest) {
         COUNT(*) as total,
         COUNT(CASE WHEN status = 'delivered' THEN 1 END) as delivered,
         COUNT(CASE WHEN status = 'failed' OR status = 'bounced' THEN 1 END) as failed,
-        COUNT(CASE WHEN event_type = 'open' THEN 1 END) as opens,
-        COUNT(CASE WHEN event_type = 'click' THEN 1 END) as clicks
+        COUNT(CASE WHEN "eventType" = 'open' THEN 1 END) as opens,
+        COUNT(CASE WHEN "eventType" = 'click' THEN 1 END) as clicks
       FROM "EmailEvent"
-      WHERE domain_id = ANY(${domains.map(d => d.id)}::text[])
+      WHERE "domainId" = ANY(${domains.map(d => d.id)}::text[])
         AND timestamp >= ${thirtyDaysAgo}
       GROUP BY DATE(timestamp)
       ORDER BY DATE(timestamp)
@@ -128,10 +128,10 @@ export async function GET(request: NextRequest) {
         COUNT(*) as total,
         COUNT(CASE WHEN status = 'delivered' THEN 1 END) as delivered,
         COUNT(CASE WHEN status = 'failed' OR status = 'bounced' THEN 1 END) as failed,
-        COUNT(CASE WHEN event_type = 'open' THEN 1 END) as opens,
-        COUNT(CASE WHEN event_type = 'click' THEN 1 END) as clicks
+        COUNT(CASE WHEN "eventType" = 'open' THEN 1 END) as opens,
+        COUNT(CASE WHEN "eventType" = 'click' THEN 1 END) as clicks
       FROM "EmailEvent"
-      WHERE domain_id = ${domains[0].id}
+      WHERE "domainId" = ${domains[0].id}
         AND timestamp >= ${thirtyDaysAgo}
       GROUP BY DATE(timestamp)
       ORDER BY DATE(timestamp)
@@ -142,24 +142,24 @@ export async function GET(request: NextRequest) {
       SELECT
         EXTRACT(DOW FROM timestamp) as day_of_week,
         TO_CHAR(timestamp, 'Day') as day_name,
-        COUNT(CASE WHEN event_type = 'open' THEN 1 END) as opens,
-        COUNT(CASE WHEN event_type = 'click' THEN 1 END) as clicks
+        COUNT(CASE WHEN "eventType" = 'open' THEN 1 END) as opens,
+        COUNT(CASE WHEN "eventType" = 'click' THEN 1 END) as clicks
       FROM "EmailEvent"
-      WHERE domain_id = ANY(${domains.map(d => d.id)}::text[])
+      WHERE "domainId" = ANY(${domains.map(d => d.id)}::text[])
         AND timestamp >= ${thirtyDaysAgo}
-        AND event_type IN ('open', 'click')
+        AND "eventType" IN ('open', 'click')
       GROUP BY EXTRACT(DOW FROM timestamp), TO_CHAR(timestamp, 'Day')
       ORDER BY EXTRACT(DOW FROM timestamp)
     ` : await prisma.$queryRaw`
       SELECT
         EXTRACT(DOW FROM timestamp) as day_of_week,
         TO_CHAR(timestamp, 'Day') as day_name,
-        COUNT(CASE WHEN event_type = 'open' THEN 1 END) as opens,
-        COUNT(CASE WHEN event_type = 'click' THEN 1 END) as clicks
+        COUNT(CASE WHEN "eventType" = 'open' THEN 1 END) as opens,
+        COUNT(CASE WHEN "eventType" = 'click' THEN 1 END) as clicks
       FROM "EmailEvent"
-      WHERE domain_id = ${domains[0].id}
+      WHERE "domainId" = ${domains[0].id}
         AND timestamp >= ${thirtyDaysAgo}
-        AND event_type IN ('open', 'click')
+        AND "eventType" IN ('open', 'click')
       GROUP BY EXTRACT(DOW FROM timestamp), TO_CHAR(timestamp, 'Day')
       ORDER BY EXTRACT(DOW FROM timestamp)
     `;
