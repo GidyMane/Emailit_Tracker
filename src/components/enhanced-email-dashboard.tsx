@@ -220,6 +220,7 @@ export function EnhancedEmailDashboard() {
           throw new Error(errorData.message || 'Failed to fetch events data')
         }
         const eventsResult = await eventsResponse.json()
+        console.log('Events Data:', eventsResult)
         setEventsData(eventsResult)
 
       } catch (err) {
