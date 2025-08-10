@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useState, useEffect } from "react"
-import { BarChart3, Bell, Calendar, ChevronDown, FileText, Home, Inbox, Mail, MailOpen, Search, Send, Settings, TrendingUp, TrendingDown, Users, Zap, UserCheck, XCircle, CheckCircle, Clock } from 'lucide-react'
+import { BarChart3, Bell, ChevronDown, FileText, Home, Inbox, Mail, MailOpen, Search, Send, Settings, TrendingUp, TrendingDown, Users, Zap, UserCheck, XCircle, CheckCircle, Clock } from 'lucide-react'
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -120,14 +120,48 @@ interface AudienceData {
   domainName: string;
 }
 
+interface VolumeData {
+  date: string;
+  total: number;
+  delivered: number;
+  failed: number;
+  opens: number;
+  clicks: number;
+}
+
+interface EngagementChartData {
+  day_name: string;
+  opens: number;
+  clicks: number;
+}
+
 interface ChartData {
-  volume: any[];
-  engagement: any[];
+  volume: VolumeData[];
+  engagement: EngagementChartData[];
+}
+
+interface EmailEventData {
+  id: string;
+  emailId: number;
+  to: string;
+  from: string;
+  subject: string;
+  eventType: string;
+  status: string;
+  timestamp: string;
+  createdAt: string;
+}
+
+interface PaginationData {
+  total: number;
+  limit: number;
+  offset: number;
+  hasMore: boolean;
 }
 
 interface EventsData {
-  events: any[];
-  pagination: any;
+  events: EmailEventData[];
+  pagination: PaginationData;
   charts: ChartData;
   domainName: string;
 }
