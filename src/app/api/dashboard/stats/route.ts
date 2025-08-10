@@ -1,8 +1,15 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { prisma } from "@/lib/prisma";
 
-export async function GET(request: NextRequest) {
+interface Domain {
+  id: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export async function GET() {
   try {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
@@ -12,7 +19,7 @@ export async function GET(request: NextRequest) {
     }
 
     const isAdmin = user.email === "muragegideon2000@gmail.com";
-    let domains: any[] = [];
+    let domains: Domain[] = [];
 
     if (isAdmin) {
       // Admin sees all domains
@@ -42,7 +49,14 @@ export async function GET(request: NextRequest) {
 
     // Prepare domain filter for queries
     const domainIds = domains.map(d => d.id);
-    const domainFilter = isAdmin ? { domainId: { in: domainIds } } : { domainId: domains[0].id };
+    const domainFilter = isAdmin ? { domainId: { in: domainIds } } : { domainId: domains[0]?.id };
+
+    if (!isAdmin && (!domains[0] || !domains[0].id)) {
+      return NextResponse.json({
+        error: "Domain not found",
+        message: "No email data exists for your domain"
+      }, { status: 404 });
+    }
 
     // Get summary statistics for all relevant domains
     const summaries = await prisma.emailSummary.findMany({
