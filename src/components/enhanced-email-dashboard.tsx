@@ -344,7 +344,7 @@ export function EnhancedEmailDashboard() {
   }
 
   // Empty states with proper structure
-  const EmptyStateCard = ({ title, description, icon: Icon }: { title: string, description: string, icon: any }) => (
+  const EmptyStateCard = ({ title, description, icon: Icon }: { title: string, description: string, icon: React.ComponentType<{ className?: string }> }) => (
     <Card className="hover:shadow-md transition-shadow">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
