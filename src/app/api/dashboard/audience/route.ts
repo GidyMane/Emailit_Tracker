@@ -8,32 +8,45 @@ interface Domain {
 }
 
 export async function GET() {
+  console.log("📥 Incoming GET /audience request");
+
   try {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
+    console.log("👤 User object:", user);
 
     if (!user || !user.email) {
+      console.warn("⚠️ Unauthorized request - no user or email");
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const isAdmin = user.email === "muragegideon2000@gmail.com";
+    console.log("🔐 Is admin:", isAdmin);
+
     let domains: Domain[] = [];
     let domainFilter: string | string[];
 
     if (isAdmin) {
+      console.log("📡 Fetching all domains...");
       domains = await prisma.domain.findMany();
+      console.log("✅ Domains fetched:", domains);
       domainFilter = domains.map(d => d.id);
     } else {
       const userEmailDomain = user.email.split('@')[1];
+      console.log("📧 User email domain:", userEmailDomain);
+
       if (!userEmailDomain) {
+        console.warn("⚠️ Invalid email format:", user.email);
         return NextResponse.json({ error: "Invalid email format" }, { status: 400 });
       }
 
       const domain = await prisma.domain.findUnique({
         where: { name: userEmailDomain }
       });
+      console.log("🔍 Domain found:", domain);
 
       if (!domain) {
+        console.warn("⚠️ Domain not found for:", userEmailDomain);
         return NextResponse.json({
           error: "Domain not found",
           message: "No email data exists for your domain"
@@ -44,7 +57,10 @@ export async function GET() {
       domainFilter = domain.id;
     }
 
-    // Audience list & engagement stats from EmailEvent.to
+    console.log("📝 domainFilter:", domainFilter);
+
+    // Audience list & engagement stats
+    console.log("📊 Fetching audienceStats...");
     const audienceStats = isAdmin ? await prisma.$queryRaw`
       SELECT
         "to" AS email,
@@ -86,8 +102,10 @@ export async function GET() {
       ORDER BY MAX(timestamp) DESC
       LIMIT 100
     `;
+    console.log("✅ audienceStats count:", Array.isArray(audienceStats) ? audienceStats.length : 0);
 
     // Domain distribution
+    console.log("📊 Fetching domainDistribution...");
     const domainDistribution = isAdmin ? await prisma.$queryRaw`
       SELECT
         SPLIT_PART("to", '@', 2) AS recipient_domain,
@@ -109,8 +127,10 @@ export async function GET() {
       ORDER BY COUNT(*) DESC
       LIMIT 10
     `;
+    console.log("✅ domainDistribution:", domainDistribution);
 
     // Overview stats
+    console.log("📊 Fetching overviewStats...");
     const overviewStats = isAdmin ? await prisma.$queryRaw`
       SELECT
         COUNT(DISTINCT "to") AS total_recipients,
@@ -128,8 +148,10 @@ export async function GET() {
       FROM "EmailEvent"
       WHERE "domainId" = ${domainFilter}
     `;
+    console.log("✅ overviewStats:", overviewStats);
 
     // Engagement rates
+    console.log("📊 Fetching engagementRates...");
     const engagementRates = isAdmin ? await prisma.$queryRaw`
       SELECT
         COUNT(DISTINCT CASE WHEN "eventType" = 'open' THEN "to" END) AS users_who_opened,
@@ -145,10 +167,12 @@ export async function GET() {
       FROM "EmailEvent"
       WHERE "domainId" = ${domainFilter}
     `;
+    console.log("✅ engagementRates:", engagementRates);
 
     const overview = Array.isArray(overviewStats) ? overviewStats[0] : {};
     const engagement = Array.isArray(engagementRates) ? engagementRates[0] : {};
 
+    console.log("📦 Returning final response");
     return NextResponse.json({
       audience: audienceStats,
       domainDistribution,
@@ -171,7 +195,7 @@ export async function GET() {
     });
 
   } catch (error) {
-    console.error("Error fetching audience data:", error);
+    console.error("❌ Error fetching audience data:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
