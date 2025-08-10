@@ -62,12 +62,20 @@ interface DomainData {
     id: string;
     name: string;
     emailCount: number;
-    summary: any;
+    summary: EmailSummary | null;
     createdAt: string;
     updatedAt: string;
   };
   userEmail: string;
   userDomain: string;
+}
+
+interface EmailSummary {
+  totalSent: number;
+  totalDelivered: number;
+  totalFailed: number;
+  totalOpens: number;
+  totalClicks: number;
 }
 
 interface EmailStats {
@@ -80,6 +88,12 @@ interface EmailStats {
   deliveryRate: number;
 }
 
+interface DomainDistribution {
+  recipient_domain: string;
+  unique_recipients: number;
+  total_emails: number;
+}
+
 interface AudienceOverview {
   totalRecipients: number;
   activeRecipients: number;
@@ -87,24 +101,43 @@ interface AudienceOverview {
   bouncedRecipients: number;
 }
 
-interface EmailEvent {
-  id: string;
-  emailId: number;
-  to: string;
-  from: string;
-  subject: string;
-  eventType: string;
+interface Recipient {
+  email: string;
+  recipient_domain: string;
+  total_emails: number;
+  last_seen: string;
   status: string;
-  timestamp: string;
-  createdAt: string;
+}
+
+interface AudienceData {
+  audience: Recipient[];
+  domainDistribution: DomainDistribution[];
+  overview: AudienceOverview;
+  engagement: {
+    openRate: number;
+    clickRate: number;
+  };
+  domainName: string;
+}
+
+interface ChartData {
+  volume: any[];
+  engagement: any[];
+}
+
+interface EventsData {
+  events: any[];
+  pagination: any;
+  charts: ChartData;
+  domainName: string;
 }
 
 export function EnhancedEmailDashboard() {
   const [activeTab, setActiveTab] = useState("overview")
   const [domainData, setDomainData] = useState<DomainData | null>(null)
   const [emailStats, setEmailStats] = useState<EmailStats | null>(null)
-  const [audienceData, setAudienceData] = useState<any>(null)
-  const [eventsData, setEventsData] = useState<any>(null)
+  const [audienceData, setAudienceData] = useState<AudienceData | null>(null)
+  const [eventsData, setEventsData] = useState<EventsData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -498,7 +531,7 @@ export function EnhancedEmailDashboard() {
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-3">
-                        {audienceData.domainDistribution.slice(0, 5).map((domain: any, index: number) => (
+                        {audienceData.domainDistribution.slice(0, 5).map((domain: DomainDistribution) => (
                           <div key={domain.recipient_domain} className="flex items-center justify-between">
                             <span className="text-sm font-medium">{domain.recipient_domain}</span>
                             <div className="flex items-center gap-2">
@@ -548,7 +581,7 @@ export function EnhancedEmailDashboard() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      {audienceData.audience.slice(0, 10).map((recipient: any, index: number) => (
+                      {audienceData.audience.slice(0, 10).map((recipient: Recipient) => (
                         <div key={recipient.email} className="flex items-center justify-between p-3 rounded-lg border">
                           <div className="flex items-center gap-3">
                             <div className="flex aspect-square size-10 items-center justify-center rounded-lg bg-blue-100">
