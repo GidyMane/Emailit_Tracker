@@ -11,23 +11,36 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Extract domain from user's email
-    const userEmailDomain = user.email.split('@')[1];
+    const isAdmin = user.email === "muragegideon2000@gmail.com";
+    let domains: any[] = [];
+    let domainFilter: any;
 
-    if (!userEmailDomain) {
-      return NextResponse.json({ error: "Invalid email format" }, { status: 400 });
-    }
+    if (isAdmin) {
+      // Admin sees all domains
+      domains = await prisma.domain.findMany();
+      domainFilter = { domainId: { in: domains.map(d => d.id) } };
+    } else {
+      // Extract domain from user's email
+      const userEmailDomain = user.email.split('@')[1];
 
-    // Find the domain
-    const domain = await prisma.domain.findUnique({
-      where: { name: userEmailDomain }
-    });
+      if (!userEmailDomain) {
+        return NextResponse.json({ error: "Invalid email format" }, { status: 400 });
+      }
 
-    if (!domain) {
-      return NextResponse.json({ 
-        error: "Domain not found",
-        message: "No email data exists for your domain" 
-      }, { status: 404 });
+      // Find the domain
+      const domain = await prisma.domain.findUnique({
+        where: { name: userEmailDomain }
+      });
+
+      if (!domain) {
+        return NextResponse.json({
+          error: "Domain not found",
+          message: "No email data exists for your domain"
+        }, { status: 404 });
+      }
+
+      domains = [domain];
+      domainFilter = { domainId: domain.id };
     }
 
     // Get query parameters for filtering
@@ -56,11 +69,11 @@ export async function GET(request: NextRequest) {
 
     // Build where clause
     const whereClause: {
-      domainId: string;
+      domainId?: string | { in: string[] };
       timestamp: { gte?: Date; lte?: Date };
       eventType?: string;
     } = {
-      domainId: domain.id,
+      ...domainFilter,
       timestamp: dateFilter
     };
 
@@ -87,8 +100,8 @@ export async function GET(request: NextRequest) {
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-    const volumeData = await prisma.$queryRaw`
-      SELECT 
+    const volumeData = isAdmin ? await prisma.$queryRaw`
+      SELECT
         DATE(timestamp) as date,
         COUNT(*) as total,
         COUNT(CASE WHEN status = 'delivered' THEN 1 END) as delivered,
@@ -96,21 +109,46 @@ export async function GET(request: NextRequest) {
         COUNT(CASE WHEN event_type = 'open' THEN 1 END) as opens,
         COUNT(CASE WHEN event_type = 'click' THEN 1 END) as clicks
       FROM "EmailEvent"
-      WHERE domain_id = ${domain.id}
+      WHERE domain_id = ANY(${domains.map(d => d.id)}::text[])
+        AND timestamp >= ${thirtyDaysAgo}
+      GROUP BY DATE(timestamp)
+      ORDER BY DATE(timestamp)
+    ` : await prisma.$queryRaw`
+      SELECT
+        DATE(timestamp) as date,
+        COUNT(*) as total,
+        COUNT(CASE WHEN status = 'delivered' THEN 1 END) as delivered,
+        COUNT(CASE WHEN status = 'failed' OR status = 'bounced' THEN 1 END) as failed,
+        COUNT(CASE WHEN event_type = 'open' THEN 1 END) as opens,
+        COUNT(CASE WHEN event_type = 'click' THEN 1 END) as clicks
+      FROM "EmailEvent"
+      WHERE domain_id = ${domains[0].id}
         AND timestamp >= ${thirtyDaysAgo}
       GROUP BY DATE(timestamp)
       ORDER BY DATE(timestamp)
     `;
 
     // Get engagement data by day of week
-    const engagementData = await prisma.$queryRaw`
-      SELECT 
+    const engagementData = isAdmin ? await prisma.$queryRaw`
+      SELECT
         EXTRACT(DOW FROM timestamp) as day_of_week,
         TO_CHAR(timestamp, 'Day') as day_name,
         COUNT(CASE WHEN event_type = 'open' THEN 1 END) as opens,
         COUNT(CASE WHEN event_type = 'click' THEN 1 END) as clicks
       FROM "EmailEvent"
-      WHERE domain_id = ${domain.id}
+      WHERE domain_id = ANY(${domains.map(d => d.id)}::text[])
+        AND timestamp >= ${thirtyDaysAgo}
+        AND event_type IN ('open', 'click')
+      GROUP BY EXTRACT(DOW FROM timestamp), TO_CHAR(timestamp, 'Day')
+      ORDER BY EXTRACT(DOW FROM timestamp)
+    ` : await prisma.$queryRaw`
+      SELECT
+        EXTRACT(DOW FROM timestamp) as day_of_week,
+        TO_CHAR(timestamp, 'Day') as day_name,
+        COUNT(CASE WHEN event_type = 'open' THEN 1 END) as opens,
+        COUNT(CASE WHEN event_type = 'click' THEN 1 END) as clicks
+      FROM "EmailEvent"
+      WHERE domain_id = ${domains[0].id}
         AND timestamp >= ${thirtyDaysAgo}
         AND event_type IN ('open', 'click')
       GROUP BY EXTRACT(DOW FROM timestamp), TO_CHAR(timestamp, 'Day')
@@ -139,7 +177,8 @@ export async function GET(request: NextRequest) {
         volume: volumeData,
         engagement: engagementData
       },
-      domainName: domain.name
+      domainName: isAdmin ? "All Domains" : domains[0].name,
+      isAdmin
     });
 
   } catch (error) {
