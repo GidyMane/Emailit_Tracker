@@ -2,6 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { prisma } from "@/lib/prisma";
 
+interface Domain {
+  id: string;
+  name: string;
+}
+
+interface DomainFilter {
+  domainId?: string | { in: string[] };
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { getUser } = getKindeServerSession();
@@ -12,8 +21,8 @@ export async function GET(request: NextRequest) {
     }
 
     const isAdmin = user.email === "muragegideon2000@gmail.com";
-    let domains: any[] = [];
-    let domainFilter: any;
+    let domains: Domain[] = [];
+    let domainFilter: DomainFilter;
 
     if (isAdmin) {
       // Admin sees all domains
