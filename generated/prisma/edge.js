@@ -173,7 +173,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/kibo/Desktop/kibo-app/Emailit_Tracker/generated/prisma",
+      "value": "/app/code/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -182,12 +182,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "darwin-arm64",
+        "value": "debian-openssl-3.0.x",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/kibo/Desktop/kibo-app/Emailit_Tracker/prisma/schema.prisma",
+    "sourceFilePath": "/app/code/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
