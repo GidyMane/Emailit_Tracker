@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useState, useEffect } from "react"
-import { BarChart3, Bell, ChevronDown, FileText, Home, Inbox, Mail, MailOpen, Search, Send, Settings, TrendingUp, TrendingDown, Users, Zap, UserCheck, XCircle, CheckCircle, Clock } from 'lucide-react'
+import { BarChart3, Bell, ChevronDown, FileText, Home, Inbox, Mail, MailOpen, Search, Send, Settings, TrendingUp, TrendingDown, Users, Zap, UserCheck, XCircle, CheckCircle, Clock, Eye, MousePointer } from 'lucide-react'
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
