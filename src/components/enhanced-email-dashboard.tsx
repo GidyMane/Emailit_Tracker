@@ -948,51 +948,105 @@ export function EnhancedEmailDashboard() {
               {/* Audience List */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Recent Recipients</CardTitle>
-                  <CardDescription>List of email addresses from recent campaigns</CardDescription>
+                  <CardTitle>All Recipients</CardTitle>
+                  <CardDescription>Complete list of email addresses that have received emails</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     {audienceData?.audience && Array.isArray(audienceData.audience) && audienceData.audience.length > 0 ? (
-                      audienceData.audience.slice(0, 10).map((recipient: Recipient) => (
-                        <div key={recipient.email} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-lg border gap-3">
-                          <div className="flex items-center gap-3">
-                            <div className="flex aspect-square size-10 items-center justify-center rounded-lg bg-blue-100 flex-shrink-0">
-                              <UserCheck className="size-5 text-blue-600" />
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <div className="font-medium truncate">{recipient.email}</div>
-                              <div className="text-sm text-muted-foreground">{recipient.recipient_domain}</div>
-                            </div>
+                      <>
+                        {/* Audience Stats Summary */}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-muted/30 rounded-lg mb-4">
+                          <div className="text-center">
+                            <div className="text-2xl font-bold">{audienceData.audience.length}</div>
+                            <div className="text-sm text-muted-foreground">Total Recipients</div>
                           </div>
-                          <div className="flex items-center gap-4 sm:gap-6">
-                            <div className="text-center">
-                              <div className="text-sm font-medium">{recipient.total_emails}</div>
-                              <div className="text-xs text-muted-foreground">emails</div>
+                          <div className="text-center">
+                            <div className="text-2xl font-bold text-green-600">
+                              {audienceData.audience.filter((r: Recipient) => r.status === 'active').length}
                             </div>
-                            <div className="text-center">
-                              <div className="text-sm font-medium">
-                                {new Date(recipient.last_seen).toLocaleDateString()}
-                              </div>
-                              <div className="text-xs text-muted-foreground">last seen</div>
+                            <div className="text-sm text-muted-foreground">Active</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-2xl font-bold text-yellow-600">
+                              {audienceData.audience.filter((r: Recipient) => r.status === 'inactive').length}
                             </div>
-                            <Badge
-                              variant={
-                                recipient.status === 'active' ? 'default' :
-                                recipient.status === 'inactive' ? 'secondary' :
-                                'destructive'
-                              }
-                            >
-                              {recipient.status}
-                            </Badge>
+                            <div className="text-sm text-muted-foreground">Inactive</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-2xl font-bold text-red-600">
+                              {audienceData.audience.filter((r: Recipient) => r.status === 'bounced').length}
+                            </div>
+                            <div className="text-sm text-muted-foreground">Bounced</div>
                           </div>
                         </div>
-                      ))
+
+                        {/* Recipients Table */}
+                        <div className="rounded-lg border">
+                          <div className="grid grid-cols-12 gap-4 p-4 font-medium text-sm text-muted-foreground border-b bg-muted/50">
+                            <div className="col-span-4">Email Address</div>
+                            <div className="col-span-2">Domain</div>
+                            <div className="col-span-2">Total Emails</div>
+                            <div className="col-span-2">Last Seen</div>
+                            <div className="col-span-2">Status</div>
+                          </div>
+                          {audienceData.audience.map((recipient: Recipient) => (
+                            <div key={recipient.email} className="grid grid-cols-12 gap-4 p-4 border-b last:border-b-0 hover:bg-muted/30 transition-colors">
+                              <div className="col-span-4">
+                                <div className="flex items-center gap-2">
+                                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-blue-100 flex-shrink-0">
+                                    <UserCheck className="size-4 text-blue-600" />
+                                  </div>
+                                  <div className="min-w-0 flex-1">
+                                    <div className="font-medium text-sm truncate" title={recipient.email}>{recipient.email}</div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="col-span-2">
+                                <div className="text-sm">{recipient.recipient_domain}</div>
+                              </div>
+                              <div className="col-span-2">
+                                <div className="text-sm font-medium">{recipient.total_emails}</div>
+                              </div>
+                              <div className="col-span-2">
+                                <div className="text-sm">
+                                  {new Date(recipient.last_seen).toLocaleDateString()}
+                                </div>
+                                <div className="text-xs text-muted-foreground">
+                                  {new Date(recipient.last_seen).toLocaleTimeString()}
+                                </div>
+                              </div>
+                              <div className="col-span-2">
+                                <Badge
+                                  variant={
+                                    recipient.status === 'active' ? 'default' :
+                                    recipient.status === 'inactive' ? 'secondary' :
+                                    'destructive'
+                                  }
+                                >
+                                  {recipient.status}
+                                </Badge>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        {audienceData.audience.length > 20 && (
+                          <div className="text-center text-sm text-muted-foreground">
+                            Showing {Math.min(audienceData.audience.length, 100)} recipients
+                          </div>
+                        )}
+                      </>
                     ) : (
                       <div className="text-center py-12">
                         <Inbox className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                         <h3 className="text-lg font-medium mb-2">No Recipients Yet</h3>
                         <p className="text-sm text-muted-foreground">Recipients will appear here once you start sending emails</p>
+                        {audienceData && (
+                          <div className="mt-4 text-xs text-muted-foreground">
+                            Debug: {JSON.stringify(audienceData)}
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
