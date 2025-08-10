@@ -87,8 +87,21 @@ export async function GET(request: NextRequest) {
       WHERE domain_id = ${domain.id}
     `;
 
-    const overview = Array.isArray(overviewStats) ? overviewStats[0] as any : {};
-    const engagement = Array.isArray(engagementRates) ? engagementRates[0] as any : {};
+    interface OverviewResult {
+      total_recipients: string | number;
+      active_recipients: string | number;
+      inactive_recipients: string | number;
+      bounced_recipients: string | number;
+    }
+
+    interface EngagementResult {
+      users_who_opened: string | number;
+      users_who_clicked: string | number;
+      total_recipients: string | number;
+    }
+
+    const overview = Array.isArray(overviewStats) ? (overviewStats[0] as OverviewResult) : {} as OverviewResult;
+    const engagement = Array.isArray(engagementRates) ? (engagementRates[0] as EngagementResult) : {} as EngagementResult;
 
     return NextResponse.json({
       audience: audienceStats,
