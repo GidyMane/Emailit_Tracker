@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button"
 import { Mail } from 'lucide-react'
-import Link from "next/link"
 import { LoginLink } from "@kinde-oss/kinde-auth-nextjs"
 
 export function LandingPage() {
