@@ -86,7 +86,7 @@ export async function GET() {
       where: {
         ...domainFilter,
         eventType: {
-          in: ['open', 'click']
+          in: ['email.loaded', 'email.link.clicked', 'open', 'click']
         },
         createdAt: {
           gte: thirtyDaysAgo
