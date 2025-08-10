@@ -1,8 +1,25 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { prisma } from "@/lib/prisma";
 
-export async function GET(request: NextRequest) {
+interface DomainWithDetails {
+  id: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+  summary: {
+    totalSent: number;
+    totalDelivered: number;
+    totalFailed: number;
+    totalOpens: number;
+    totalClicks: number;
+  } | null;
+  _count: {
+    emails: number;
+  };
+}
+
+export async function GET() {
   try {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
