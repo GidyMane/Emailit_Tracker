@@ -123,8 +123,13 @@ export async function GET() {
     const failed = eventStats.find(stat => stat.status === 'failed')?._count.status || 0;
     const bounced = eventStats.find(stat => stat.status === 'bounced')?._count.status || 0;
 
-    const opens = engagementStats.find(stat => stat.eventType === 'open')?._count.eventType || 0;
-    const clicks = engagementStats.find(stat => stat.eventType === 'click')?._count.eventType || 0;
+    const opens = engagementStats.filter(stat =>
+      stat.eventType === 'open' || stat.eventType === 'email.loaded'
+    ).reduce((sum, stat) => sum + stat._count.eventType, 0);
+
+    const clicks = engagementStats.filter(stat =>
+      stat.eventType === 'click' || stat.eventType === 'email.link.clicked'
+    ).reduce((sum, stat) => sum + stat._count.eventType, 0);
 
     // Calculate delivery rate
     const deliveryRate = totalEmails > 0 ? ((delivered / totalEmails) * 100) : 0;
