@@ -34,6 +34,7 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Bar, BarChart, Line, LineChart, ResponsiveContainer, XAxis, YAxis, CartesianGrid } from "recharts"
+import { Skeleton, CardSkeleton, ChartSkeleton, TableSkeleton, ProgressSkeleton } from "@/components/ui/skeleton"
 
 const navigation = [
   {
@@ -232,29 +233,239 @@ export function EnhancedEmailDashboard() {
   if (loading) {
     return (
       <SidebarProvider>
-        <div className="flex h-screen items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-muted-foreground">Loading dashboard data...</p>
-          </div>
-        </div>
+        <Sidebar className="border-r">
+          <SidebarHeader>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton size="lg" asChild>
+                  <div className="flex items-center gap-2">
+                    <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-blue-600 text-white">
+                      <Mail className="size-4" />
+                    </div>
+                    <div className="flex flex-col gap-0.5 leading-none">
+                      <span className="font-semibold">EmailIt</span>
+                      <span className="text-xs text-muted-foreground">Dashboard</span>
+                    </div>
+                  </div>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarHeader>
+
+          <SidebarContent>
+            {navigation.map((section) => (
+              <SidebarGroup key={section.title}>
+                <SidebarGroupLabel>{section.title}</SidebarGroupLabel>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {section.items.map((item) => (
+                      <SidebarMenuItem key={item.title}>
+                        <SidebarMenuButton asChild isActive={item.isActive}>
+                          <a href={item.url} className="flex items-center gap-2">
+                            <item.icon className="size-4" />
+                            <span>{item.title}</span>
+                          </a>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
+            ))}
+          </SidebarContent>
+
+          <SidebarFooter>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <div className="flex items-center gap-2 p-2">
+                  <Skeleton className="h-8 w-8 rounded-lg" />
+                  <div className="flex-1 space-y-1">
+                    <Skeleton className="h-4 w-20" />
+                    <Skeleton className="h-3 w-24" />
+                  </div>
+                </div>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarFooter>
+        </Sidebar>
+
+        <SidebarInset>
+          <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center gap-2 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            <div className="flex items-center gap-2 flex-1">
+              <Skeleton className="h-6 w-32" />
+              <div className="ml-auto flex items-center gap-2">
+                <div className="relative hidden sm:block">
+                  <Search className="absolute left-2 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                  <Input placeholder="Search..." className="pl-8 w-48 lg:w-64" disabled />
+                </div>
+                <Button variant="outline" size="icon" disabled>
+                  <Bell className="size-4" />
+                </Button>
+              </div>
+            </div>
+          </header>
+
+          <main className="flex-1 space-y-6 p-4 md:p-6">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="analytics">Analytics</TabsTrigger>
+                <TabsTrigger value="audience">Audience</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="overview" className="space-y-4 md:space-y-6">
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <CardSkeleton key={i} />
+                  ))}
+                </div>
+                <ProgressSkeleton />
+              </TabsContent>
+
+              <TabsContent value="analytics" className="space-y-4 md:space-y-6">
+                <ChartSkeleton />
+                <ChartSkeleton />
+              </TabsContent>
+
+              <TabsContent value="audience" className="space-y-4 md:space-y-6">
+                <div className="grid gap-6 md:grid-cols-2">
+                  <CardSkeleton />
+                  <CardSkeleton />
+                </div>
+                <TableSkeleton rows={8} />
+              </TabsContent>
+            </Tabs>
+          </main>
+        </SidebarInset>
       </SidebarProvider>
     )
   }
 
-  if (error) {
+  // Empty states with proper structure
+  const EmptyStateCard = ({ title, description, icon: Icon }: { title: string, description: string, icon: React.ComponentType<{ className?: string }> }) => (
+    <Card className="hover:shadow-md transition-shadow">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
+        <div className="p-2 rounded-lg bg-gray-100">
+          <Icon className="size-4 text-gray-600" />
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold">0</div>
+        <p className="text-sm text-muted-foreground mt-2">{description}</p>
+      </CardContent>
+    </Card>
+  )
+
+  const EmptyChart = ({ title, description }: { title: string, description: string }) => (
+    <Card>
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
+      </CardHeader>
+      <CardContent className="h-80 flex items-center justify-center">
+        <div className="text-center space-y-2">
+          <BarChart3 className="h-12 w-12 text-muted-foreground mx-auto" />
+          <p className="text-sm text-muted-foreground">No data available yet</p>
+        </div>
+      </CardContent>
+    </Card>
+  )
+
+  if (error && !domainData) {
     return (
       <SidebarProvider>
-        <div className="flex h-screen items-center justify-center">
-          <div className="text-center">
-            <XCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-            <h2 className="text-lg font-semibold mb-2">No Data Available</h2>
-            <p className="text-muted-foreground mb-4">{error}</p>
-            <Button onClick={() => window.location.reload()}>
-              Try Again
-            </Button>
-          </div>
-        </div>
+        <Sidebar className="border-r">
+          <SidebarHeader>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton size="lg" asChild>
+                  <div className="flex items-center gap-2">
+                    <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-blue-600 text-white">
+                      <Mail className="size-4" />
+                    </div>
+                    <div className="flex flex-col gap-0.5 leading-none">
+                      <span className="font-semibold">EmailIt</span>
+                      <span className="text-xs text-muted-foreground">Dashboard</span>
+                    </div>
+                  </div>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarHeader>
+
+          <SidebarContent>
+            {navigation.map((section) => (
+              <SidebarGroup key={section.title}>
+                <SidebarGroupLabel>{section.title}</SidebarGroupLabel>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {section.items.map((item) => (
+                      <SidebarMenuItem key={item.title}>
+                        <SidebarMenuButton asChild isActive={item.isActive}>
+                          <a href={item.url} className="flex items-center gap-2">
+                            <item.icon className="size-4" />
+                            <span>{item.title}</span>
+                          </a>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
+            ))}
+          </SidebarContent>
+
+          <SidebarFooter>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <div className="flex items-center gap-2 p-2">
+                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-gray-200">
+                    <span className="text-sm font-medium">U</span>
+                  </div>
+                  <div className="flex flex-col gap-0.5 leading-none">
+                    <span className="font-medium">User</span>
+                    <span className="text-xs text-muted-foreground">user@domain.com</span>
+                  </div>
+                </div>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarFooter>
+        </Sidebar>
+
+        <SidebarInset>
+          <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center gap-2 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            <div className="flex items-center gap-2 flex-1">
+              <h1 className="font-semibold">Dashboard - No Data</h1>
+              <div className="ml-auto flex items-center gap-2">
+                <div className="relative hidden sm:block">
+                  <Search className="absolute left-2 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                  <Input placeholder="Search..." className="pl-8 w-48 lg:w-64" disabled />
+                </div>
+                <Button variant="outline" size="icon" disabled>
+                  <Bell className="size-4" />
+                </Button>
+              </div>
+            </div>
+          </header>
+
+          <main className="flex-1 space-y-6 p-4 md:p-6">
+            <div className="text-center space-y-4 py-12">
+              <XCircle className="h-16 w-16 text-red-500 mx-auto" />
+              <div className="space-y-2">
+                <h2 className="text-2xl font-bold">No Data Available</h2>
+                <p className="text-muted-foreground max-w-md mx-auto">{error}</p>
+              </div>
+              <Button onClick={() => window.location.reload()} className="mt-4">
+                Try Again
+              </Button>
+            </div>
+          </main>
+        </SidebarInset>
       </SidebarProvider>
     )
   }
@@ -421,7 +632,7 @@ export function EnhancedEmailDashboard() {
           </div>
         </header>
         
-        <main className="flex-1 space-y-6 p-6">
+        <main className="flex-1 space-y-6 p-4 md:p-6">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -432,7 +643,7 @@ export function EnhancedEmailDashboard() {
             <TabsContent value="overview" className="space-y-6">
               {/* Email Summary Stats */}
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {emailStatCards.map((stat) => (
+                {emailStatCards.length > 0 ? emailStatCards.map((stat) => (
                   <Card key={stat.title} className="hover:shadow-md transition-shadow">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <CardTitle className="text-sm font-medium text-muted-foreground">{stat.title}</CardTitle>
@@ -459,40 +670,45 @@ export function EnhancedEmailDashboard() {
                       )}
                     </CardContent>
                   </Card>
-                ))}
+                )) : [
+                  <EmptyStateCard key="sent" title="Total Sent" description="No emails sent yet" icon={Send} />,
+                  <EmptyStateCard key="delivered" title="Delivered" description="No deliveries yet" icon={CheckCircle} />,
+                  <EmptyStateCard key="failed" title="Failed" description="No failures yet" icon={XCircle} />,
+                  <EmptyStateCard key="opens" title="Opens" description="No opens yet" icon={MailOpen} />,
+                  <EmptyStateCard key="clicks" title="Clicks" description="No clicks yet" icon={Zap} />,
+                  <EmptyStateCard key="pending" title="Pending" description="No pending emails" icon={Clock} />
+                ]}
               </div>
 
               {/* Delivery Rate Progress */}
-              {emailStats && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Delivery Performance</CardTitle>
-                    <CardDescription>Email delivery success rate for {domainData?.userDomain}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium">Delivery Rate</span>
-                      <span className="text-sm text-muted-foreground">{emailStats.deliveryRate}%</span>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Delivery Performance</CardTitle>
+                  <CardDescription>Email delivery success rate for {domainData?.userDomain || 'your domain'}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">Delivery Rate</span>
+                    <span className="text-sm text-muted-foreground">{emailStats?.deliveryRate || 0}%</span>
+                  </div>
+                  <Progress value={emailStats?.deliveryRate || 0} className="h-2" />
+                  <div className="grid grid-cols-2 gap-4 pt-4">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-green-600">{emailStats?.delivered?.toLocaleString() || '0'}</div>
+                      <div className="text-sm text-muted-foreground">Delivered</div>
                     </div>
-                    <Progress value={emailStats.deliveryRate} className="h-2" />
-                    <div className="grid grid-cols-2 gap-4 pt-4">
-                      <div className="text-center">
-                        <div className="text-2xl font-bold text-green-600">{emailStats.delivered.toLocaleString()}</div>
-                        <div className="text-sm text-muted-foreground">Delivered</div>
-                      </div>
-                      <div className="text-center">
-                        <div className="text-2xl font-bold text-red-600">{emailStats.failed.toLocaleString()}</div>
-                        <div className="text-sm text-muted-foreground">Failed</div>
-                      </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-red-600">{emailStats?.failed?.toLocaleString() || '0'}</div>
+                      <div className="text-sm text-muted-foreground">Failed</div>
                     </div>
-                  </CardContent>
-                </Card>
-              )}
+                  </div>
+                </CardContent>
+              </Card>
             </TabsContent>
 
-            <TabsContent value="analytics" className="space-y-6">
+            <TabsContent value="analytics" className="space-y-4 md:space-y-6">
               {/* Email Volume Chart */}
-              {eventsData?.charts?.volume && (
+              {eventsData?.charts?.volume && Array.isArray(eventsData.charts.volume) && eventsData.charts.volume.length > 0 ? (
                 <Card>
                   <CardHeader>
                     <CardTitle>Email Volume Over Time</CardTitle>
@@ -521,10 +737,15 @@ export function EnhancedEmailDashboard() {
                     </ChartContainer>
                   </CardContent>
                 </Card>
+              ) : (
+                <EmptyChart
+                  title="Email Volume Over Time"
+                  description={`Track your email sending trends and delivery rates for ${domainData?.userDomain || 'your domain'}`}
+                />
               )}
 
               {/* Engagement Chart */}
-              {eventsData?.charts?.engagement && (
+              {eventsData?.charts?.engagement && Array.isArray(eventsData.charts.engagement) && eventsData.charts.engagement.length > 0 ? (
                 <Card>
                   <CardHeader>
                     <CardTitle>Weekly Engagement</CardTitle>
@@ -551,82 +772,90 @@ export function EnhancedEmailDashboard() {
                     </ChartContainer>
                   </CardContent>
                 </Card>
+              ) : (
+                <EmptyChart
+                  title="Weekly Engagement"
+                  description={`Opens and clicks by day of the week for ${domainData?.userDomain || 'your domain'}`}
+                />
               )}
             </TabsContent>
 
-            <TabsContent value="audience" className="space-y-6">
+            <TabsContent value="audience" className="space-y-4 md:space-y-6">
               {/* Domain Distribution & Overview */}
               <div className="grid gap-6 md:grid-cols-2">
-                {audienceData?.domainDistribution && (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Recipient Domains</CardTitle>
-                      <CardDescription>Distribution of recipient email domains</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-3">
-                        {audienceData.domainDistribution.slice(0, 5).map((domain: DomainDistribution) => (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Recipient Domains</CardTitle>
+                    <CardDescription>Distribution of recipient email domains</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {audienceData?.domainDistribution && Array.isArray(audienceData.domainDistribution) && audienceData.domainDistribution.length > 0 ? (
+                        audienceData.domainDistribution.slice(0, 5).map((domain: DomainDistribution) => (
                           <div key={domain.recipient_domain} className="flex items-center justify-between">
                             <span className="text-sm font-medium">{domain.recipient_domain}</span>
                             <div className="flex items-center gap-2">
                               <span className="text-sm text-muted-foreground w-12">{domain.unique_recipients}</span>
                             </div>
                           </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                )}
+                        ))
+                      ) : (
+                        <div className="text-center py-8">
+                          <Users className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                          <p className="text-sm text-muted-foreground">No recipient domains yet</p>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
 
-                {audienceData?.overview && (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Audience Overview</CardTitle>
-                      <CardDescription>Quick stats about your email recipients</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium">Total Recipients</span>
-                        <span className="text-2xl font-bold">{audienceData.overview.totalRecipients.toLocaleString()}</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium">Active</span>
-                        <span className="text-lg font-semibold text-green-600">{audienceData.overview.activeRecipients.toLocaleString()}</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium">Inactive</span>
-                        <span className="text-lg font-semibold text-yellow-600">{audienceData.overview.inactiveRecipients.toLocaleString()}</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium">Bounced</span>
-                        <span className="text-lg font-semibold text-red-600">{audienceData.overview.bouncedRecipients.toLocaleString()}</span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                )}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Audience Overview</CardTitle>
+                    <CardDescription>Quick stats about your email recipients</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium">Total Recipients</span>
+                      <span className="text-2xl font-bold">{audienceData?.overview?.totalRecipients?.toLocaleString() || '0'}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium">Active</span>
+                      <span className="text-lg font-semibold text-green-600">{audienceData?.overview?.activeRecipients?.toLocaleString() || '0'}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium">Inactive</span>
+                      <span className="text-lg font-semibold text-yellow-600">{audienceData?.overview?.inactiveRecipients?.toLocaleString() || '0'}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium">Bounced</span>
+                      <span className="text-lg font-semibold text-red-600">{audienceData?.overview?.bouncedRecipients?.toLocaleString() || '0'}</span>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
 
               {/* Audience List */}
-              {audienceData?.audience && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Recent Recipients</CardTitle>
-                    <CardDescription>List of email addresses from recent campaigns</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      {audienceData.audience.slice(0, 10).map((recipient: Recipient) => (
-                        <div key={recipient.email} className="flex items-center justify-between p-3 rounded-lg border">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Recent Recipients</CardTitle>
+                  <CardDescription>List of email addresses from recent campaigns</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {audienceData?.audience && Array.isArray(audienceData.audience) && audienceData.audience.length > 0 ? (
+                      audienceData.audience.slice(0, 10).map((recipient: Recipient) => (
+                        <div key={recipient.email} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-lg border gap-3">
                           <div className="flex items-center gap-3">
-                            <div className="flex aspect-square size-10 items-center justify-center rounded-lg bg-blue-100">
+                            <div className="flex aspect-square size-10 items-center justify-center rounded-lg bg-blue-100 flex-shrink-0">
                               <UserCheck className="size-5 text-blue-600" />
                             </div>
-                            <div>
-                              <div className="font-medium">{recipient.email}</div>
+                            <div className="min-w-0 flex-1">
+                              <div className="font-medium truncate">{recipient.email}</div>
                               <div className="text-sm text-muted-foreground">{recipient.recipient_domain}</div>
                             </div>
                           </div>
-                          <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-4 sm:gap-6">
                             <div className="text-center">
                               <div className="text-sm font-medium">{recipient.total_emails}</div>
                               <div className="text-xs text-muted-foreground">emails</div>
@@ -637,10 +866,10 @@ export function EnhancedEmailDashboard() {
                               </div>
                               <div className="text-xs text-muted-foreground">last seen</div>
                             </div>
-                            <Badge 
+                            <Badge
                               variant={
-                                recipient.status === 'active' ? 'default' : 
-                                recipient.status === 'inactive' ? 'secondary' : 
+                                recipient.status === 'active' ? 'default' :
+                                recipient.status === 'inactive' ? 'secondary' :
                                 'destructive'
                               }
                             >
@@ -648,11 +877,17 @@ export function EnhancedEmailDashboard() {
                             </Badge>
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
+                      ))
+                    ) : (
+                      <div className="text-center py-12">
+                        <Inbox className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                        <h3 className="text-lg font-medium mb-2">No Recipients Yet</h3>
+                        <p className="text-sm text-muted-foreground">Recipients will appear here once you start sending emails</p>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
             </TabsContent>
           </Tabs>
         </main>
