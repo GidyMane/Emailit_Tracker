@@ -1,8 +1,13 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { prisma } from "@/lib/prisma";
 
-export async function GET(request: NextRequest) {
+interface Domain {
+  id: string;
+  name: string;
+}
+
+export async function GET() {
   try {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
@@ -12,7 +17,7 @@ export async function GET(request: NextRequest) {
     }
 
     const isAdmin = user.email === "muragegideon2000@gmail.com";
-    let domains: any[] = [];
+    let domains: Domain[] = [];
     let domainFilter: string | string[];
 
     if (isAdmin) {
