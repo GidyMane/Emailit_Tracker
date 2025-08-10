@@ -785,6 +785,107 @@ export function EnhancedEmailDashboard() {
               )}
             </TabsContent>
 
+            <TabsContent value="emails" className="space-y-4 md:space-y-6">
+              {/* Email List */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Email Events</CardTitle>
+                  <CardDescription>All email events and delivery status for {domainData?.userDomain || 'your domain'}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {eventsData?.events && Array.isArray(eventsData.events) && eventsData.events.length > 0 ? (
+                      <>
+                        {/* Email Events Table */}
+                        <div className="rounded-lg border">
+                          <div className="grid grid-cols-12 gap-4 p-4 font-medium text-sm text-muted-foreground border-b bg-muted/50">
+                            <div className="col-span-3">Recipient</div>
+                            <div className="col-span-3">Subject</div>
+                            <div className="col-span-2">Event Type</div>
+                            <div className="col-span-2">Status</div>
+                            <div className="col-span-2">Date</div>
+                          </div>
+                          {eventsData.events.slice(0, 50).map((event: EmailEventData) => (
+                            <div key={event.id} className="grid grid-cols-12 gap-4 p-4 border-b last:border-b-0 hover:bg-muted/30 transition-colors">
+                              <div className="col-span-3">
+                                <div className="flex items-center gap-2">
+                                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-blue-100 flex-shrink-0">
+                                    <Mail className="size-4 text-blue-600" />
+                                  </div>
+                                  <div className="min-w-0 flex-1">
+                                    <div className="font-medium text-sm truncate">{event.to}</div>
+                                    <div className="text-xs text-muted-foreground">{event.from}</div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="col-span-3">
+                                <div className="text-sm font-medium truncate" title={event.subject}>
+                                  {event.subject}
+                                </div>
+                                <div className="text-xs text-muted-foreground">ID: {event.emailId}</div>
+                              </div>
+                              <div className="col-span-2">
+                                <div className="flex items-center gap-2">
+                                  {event.eventType === 'email.loaded' && <Eye className="size-4 text-purple-600" />}
+                                  {event.eventType === 'email.link.clicked' && <MousePointer className="size-4 text-orange-600" />}
+                                  {event.eventType.includes('delivery') && <Send className="size-4 text-blue-600" />}
+                                  <span className="text-sm capitalize">
+                                    {event.eventType.replace('email.', '').replace('.', ' ')}
+                                  </span>
+                                </div>
+                              </div>
+                              <div className="col-span-2">
+                                <Badge
+                                  variant={
+                                    event.status === 'delivered' ? 'default' :
+                                    event.status === 'failed' || event.status === 'bounced' ? 'destructive' :
+                                    event.status === 'pending' ? 'secondary' :
+                                    'outline'
+                                  }
+                                >
+                                  {event.status}
+                                </Badge>
+                              </div>
+                              <div className="col-span-2">
+                                <div className="text-sm">
+                                  {new Date(event.timestamp).toLocaleDateString()}
+                                </div>
+                                <div className="text-xs text-muted-foreground">
+                                  {new Date(event.timestamp).toLocaleTimeString()}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Pagination Info */}
+                        {eventsData.pagination && (
+                          <div className="flex items-center justify-between text-sm text-muted-foreground">
+                            <div>
+                              Showing {Math.min(eventsData.pagination.offset + 1, eventsData.pagination.total)} to{' '}
+                              {Math.min(eventsData.pagination.offset + eventsData.pagination.limit, eventsData.pagination.total)} of{' '}
+                              {eventsData.pagination.total} emails
+                            </div>
+                            {eventsData.pagination.hasMore && (
+                              <Button variant="outline" size="sm">
+                                Load More
+                              </Button>
+                            )}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <div className="text-center py-12">
+                        <Mail className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                        <h3 className="text-lg font-medium mb-2">No Emails Yet</h3>
+                        <p className="text-sm text-muted-foreground">Email events will appear here once you start sending emails</p>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
             <TabsContent value="audience" className="space-y-4 md:space-y-6">
               {/* Domain Distribution & Overview */}
               <div className="grid gap-6 md:grid-cols-2">
