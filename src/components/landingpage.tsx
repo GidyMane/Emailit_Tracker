@@ -16,7 +16,7 @@ export function LandingPage() {
             <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-blue-600 text-white">
               <Mail className="size-4" />
             </div>
-            <span className="text-xl font-bold">EmailIt</span>
+            <span className="text-xl font-bold">WSDMailer</span>
           </div>
           
           <LoginLink>
@@ -38,7 +38,7 @@ export function LandingPage() {
             
             {/* Title */}
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
-              Email Marketing
+              WSDMailer
               <span className="text-blue-600"> Dashboard</span>
             </h1>
             
@@ -67,11 +67,11 @@ export function LandingPage() {
               <div className="flex aspect-square size-6 items-center justify-center rounded-lg bg-blue-600 text-white">
                 <Mail className="size-3" />
               </div>
-              <span className="font-semibold">EmailIt</span>
+              <span className="font-semibold">WSDMailer</span>
             </div>
             
             <p className="text-sm text-muted-foreground">
-              © {currentYear} EmailIt. All rights reserved.
+              © {currentYear} WSDMailer. All rights reserved.
             </p>
           </div>
         </div>
