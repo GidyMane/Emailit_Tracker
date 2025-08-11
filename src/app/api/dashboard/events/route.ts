@@ -11,8 +11,8 @@ interface DomainFilter {
   domainId?: string | { in: string[] };
 }
 
-// Helper to safely serialize BigInts
-function safeJsonResponse(data: any) {
+// Helper to safely serialize BigInts without using `any`
+function safeJsonResponse<T>(data: T): NextResponse {
   return NextResponse.json(
     JSON.parse(
       JSON.stringify(data, (_, value) =>

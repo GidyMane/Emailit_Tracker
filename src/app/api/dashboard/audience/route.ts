@@ -7,22 +7,51 @@ interface Domain {
   name: string;
 }
 
+interface AudienceRow {
+  email: string;
+  recipient_domain: string;
+  total_emails: number;
+  last_seen: Date | null;
+  delivered_count: number;
+  failed_count: number;
+  opens: number;
+  clicks: number;
+  status: string;
+}
+
+interface DomainDistributionRow {
+  recipient_domain: string;
+  unique_recipients: number;
+  total_emails: number;
+}
+
+interface OverviewStatsRow {
+  total_recipients: number;
+  active_recipients: number;
+  inactive_recipients: number;
+  bounced_recipients: number;
+}
+
+interface EngagementRatesRow {
+  users_who_opened: number;
+  users_who_clicked: number;
+  total_recipients: number;
+}
+
 /**
- * Convert nested BigInt values to Numbers (shallow/recursive).
- * NOTE: we explicitly convert BigInt -> Number here; if counts exceed
- * Number.MAX_SAFE_INTEGER you'll need a different approach.
+ * Recursively convert bigint values to numbers in a typed-safe way.
  */
-function convertBigIntToNumber(obj: any): any {
+function convertBigIntToNumber<T>(obj: T): T {
   if (Array.isArray(obj)) {
-    return obj.map(convertBigIntToNumber);
+    return obj.map(convertBigIntToNumber) as unknown as T;
   } else if (obj && typeof obj === "object") {
-    const out: any = {};
+    const out = {} as Record<string, unknown>;
     for (const [k, v] of Object.entries(obj)) {
       out[k] = convertBigIntToNumber(v);
     }
-    return out;
+    return out as T;
   } else if (typeof obj === "bigint") {
-    return Number(obj);
+    return Number(obj) as unknown as T;
   }
   return obj;
 }
@@ -35,46 +64,29 @@ export async function GET() {
     const user = await getUser();
     console.log("👤 Kinde user:", user?.email ?? "(no user)");
 
-    if (!user || !user.email) {
-      console.warn("⚠️ Unauthorized - no user/email");
+    if (!user?.email) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const isAdmin = user.email === "info@websoftdevelopment.com";
-    console.log("🔐 isAdmin:", isAdmin);
-
     let domains: Domain[] = [];
     let domainFilterId: string | null = null;
 
     if (isAdmin) {
-      console.log("📡 Admin: fetching all domains");
       domains = await prisma.domain.findMany();
-      console.log("✅ Domains count:", domains.length);
     } else {
-      const userEmailDomain = (user.email.split("@")[1] || "").toLowerCase();
-      console.log("📧 userEmailDomain:", userEmailDomain);
-
-      if (!userEmailDomain) {
-        console.warn("⚠️ Invalid user email format:", user.email);
-        return NextResponse.json({ error: "Invalid email format" }, { status: 400 });
-      }
-
+      const userEmailDomain = user.email.split("@")[1]?.toLowerCase() || "";
       const domain = await prisma.domain.findUnique({ where: { name: userEmailDomain } });
-      console.log("🔎 matched domain:", domain ?? "NOT FOUND");
-
       if (!domain) {
         return NextResponse.json(
           { error: "Domain not found", message: "No email data exists for your domain" },
           { status: 404 }
         );
       }
-
       domains = [domain];
       domainFilterId = domain.id;
     }
 
-    // ---------- Audience query ----------
-    console.log("📊 Running audience query...");
     const audienceSqlBase = `
       SELECT
         "to" AS email,
@@ -96,23 +108,15 @@ export async function GET() {
       FROM "EmailEvent"
     `;
 
-    let audienceQueryResult: any[];
-    if (isAdmin) {
-      const sql = `${audienceSqlBase} GROUP BY "to" ORDER BY MAX("timestamp") DESC LIMIT 100`;
-      console.log("SQL (admin) ->", sql);
-      audienceQueryResult = (await prisma.$queryRawUnsafe(sql)) as any[]; // safe: we built SQL ourselves for admin path
-    } else {
-      const sql = `${audienceSqlBase} WHERE "domainId" = $1 GROUP BY "to" ORDER BY MAX("timestamp") DESC LIMIT 100`;
-      console.log("SQL (user) ->", sql, "params:", domainFilterId);
-      audienceQueryResult = (await prisma.$queryRawUnsafe(sql, domainFilterId)) as any[];
-    }
-    console.log("✅ audience rows:", audienceQueryResult.length);
+    const audienceQueryResult = isAdmin
+      ? (await prisma.$queryRawUnsafe(`${audienceSqlBase} GROUP BY "to" ORDER BY MAX("timestamp") DESC LIMIT 100`)) as AudienceRow[]
+      : (await prisma.$queryRawUnsafe(
+          `${audienceSqlBase} WHERE "domainId" = $1 GROUP BY "to" ORDER BY MAX("timestamp") DESC LIMIT 100`,
+          domainFilterId
+        )) as AudienceRow[];
 
-    // ---------- Domain distribution ----------
-    console.log("📊 Running domain distribution query...");
-    let domainDistributionRaw: any[];
-    if (isAdmin) {
-      domainDistributionRaw = (await prisma.$queryRaw`
+    const domainDistributionRaw = isAdmin
+      ? (await prisma.$queryRaw`
         SELECT SPLIT_PART("to", '@', 2) AS recipient_domain,
                COUNT(DISTINCT "to") AS unique_recipients,
                COUNT(*) AS total_emails
@@ -120,9 +124,8 @@ export async function GET() {
         GROUP BY SPLIT_PART("to", '@', 2)
         ORDER BY COUNT(*) DESC
         LIMIT 10
-      `) as any[];
-    } else {
-      domainDistributionRaw = (await prisma.$queryRaw`
+      `) as DomainDistributionRow[]
+      : (await prisma.$queryRaw`
         SELECT SPLIT_PART("to", '@', 2) AS recipient_domain,
                COUNT(DISTINCT "to") AS unique_recipients,
                COUNT(*) AS total_emails
@@ -131,12 +134,8 @@ export async function GET() {
         GROUP BY SPLIT_PART("to", '@', 2)
         ORDER BY COUNT(*) DESC
         LIMIT 10
-      `) as any[];
-    }
-    console.log("✅ domainDistribution rows:", domainDistributionRaw.length);
+      `) as DomainDistributionRow[];
 
-    // ---------- Overview stats ----------
-    console.log("📊 Running overview query...");
     const overviewStats = isAdmin
       ? (await prisma.$queryRaw`
         SELECT
@@ -145,7 +144,7 @@ export async function GET() {
           COUNT(DISTINCT CASE WHEN "timestamp" <= NOW() - INTERVAL '7 days' THEN "to" END) AS inactive_recipients,
           COUNT(DISTINCT CASE WHEN "eventType" = 'email.delivery.bounce' THEN "to" END) AS bounced_recipients
         FROM "EmailEvent"
-      `) as any[]
+      `) as OverviewStatsRow[]
       : (await prisma.$queryRaw`
         SELECT
           COUNT(DISTINCT "to") AS total_recipients,
@@ -154,11 +153,8 @@ export async function GET() {
           COUNT(DISTINCT CASE WHEN "eventType" = 'email.delivery.bounce' THEN "to" END) AS bounced_recipients
         FROM "EmailEvent"
         WHERE "domainId" = ${domainFilterId}
-      `) as any[];
-    console.log("✅ overviewStats:", overviewStats);
+      `) as OverviewStatsRow[];
 
-    // ---------- Engagement rates ----------
-    console.log("📊 Running engagement rates query...");
     const engagementRatesRaw = isAdmin
       ? (await prisma.$queryRaw`
         SELECT
@@ -166,7 +162,7 @@ export async function GET() {
           COUNT(DISTINCT CASE WHEN "eventType" = 'email.link.clicked' THEN "to" END) AS users_who_clicked,
           COUNT(DISTINCT "to") AS total_recipients
         FROM "EmailEvent"
-      `) as any[]
+      `) as EngagementRatesRow[]
       : (await prisma.$queryRaw`
         SELECT
           COUNT(DISTINCT CASE WHEN "eventType" = 'email.loaded' THEN "to" END) AS users_who_opened,
@@ -174,43 +170,41 @@ export async function GET() {
           COUNT(DISTINCT "to") AS total_recipients
         FROM "EmailEvent"
         WHERE "domainId" = ${domainFilterId}
-      `) as any[];
+      `) as EngagementRatesRow[];
 
-    console.log("✅ engagementRates:", engagementRatesRaw);
-
-    // Convert bigints -> numbers for all query outputs
+    // Convert bigints → numbers
     const audienceSafe = convertBigIntToNumber(audienceQueryResult);
     const domainDistributionSafe = convertBigIntToNumber(domainDistributionRaw);
-    const overviewSafeObj = convertBigIntToNumber((overviewStats && overviewStats[0]) || {});
-    const engagementRawObj = convertBigIntToNumber((engagementRatesRaw && engagementRatesRaw[0]) || {
+    const overviewSafe = convertBigIntToNumber(overviewStats[0] || {
+      total_recipients: 0,
+      active_recipients: 0,
+      inactive_recipients: 0,
+      bounced_recipients: 0,
+    });
+    const engagementSafe = convertBigIntToNumber(engagementRatesRaw[0] || {
       users_who_opened: 0,
       users_who_clicked: 0,
       total_recipients: 0,
     });
 
-    // compute rates with numbers (safe)
-    const totalRecipientsNum = Number(engagementRawObj.total_recipients || 0);
-    const usersOpenedNum = Number(engagementRawObj.users_who_opened || 0);
-    const usersClickedNum = Number(engagementRawObj.users_who_clicked || 0);
+    const openRate = engagementSafe.total_recipients > 0
+      ? Math.round((engagementSafe.users_who_opened / engagementSafe.total_recipients) * 100)
+      : 0;
 
-    const openRate = totalRecipientsNum > 0 ? Math.round((usersOpenedNum / totalRecipientsNum) * 100) : 0;
-    const clickRate = totalRecipientsNum > 0 ? Math.round((usersClickedNum / totalRecipientsNum) * 100) : 0;
-
-    console.log("📦 Returning response (audience rows):", audienceSafe.length);
+    const clickRate = engagementSafe.total_recipients > 0
+      ? Math.round((engagementSafe.users_who_clicked / engagementSafe.total_recipients) * 100)
+      : 0;
 
     return NextResponse.json({
       audience: audienceSafe,
       domainDistribution: domainDistributionSafe,
       overview: {
-        totalRecipients: Number(overviewSafeObj.total_recipients || 0),
-        activeRecipients: Number(overviewSafeObj.active_recipients || 0),
-        inactiveRecipients: Number(overviewSafeObj.inactive_recipients || 0),
-        bouncedRecipients: Number(overviewSafeObj.bounced_recipients || 0),
+        totalRecipients: overviewSafe.total_recipients,
+        activeRecipients: overviewSafe.active_recipients,
+        inactiveRecipients: overviewSafe.inactive_recipients,
+        bouncedRecipients: overviewSafe.bounced_recipients,
       },
-      engagement: {
-        openRate,
-        clickRate,
-      },
+      engagement: { openRate, clickRate },
       domainName: isAdmin ? "All Domains" : domains[0].name,
       isAdmin,
     });
