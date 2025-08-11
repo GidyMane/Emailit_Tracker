@@ -247,7 +247,7 @@ export function EnhancedEmailDashboard() {
                       <Mail className="size-4" />
                     </div>
                     <div className="flex flex-col gap-0.5 leading-none">
-                      <span className="font-semibold">EmailIt</span>
+                      <span className="font-semibold">WSDMailer</span>
                       <span className="text-xs text-muted-foreground">Dashboard</span>
                     </div>
                   </div>
@@ -549,7 +549,7 @@ export function EnhancedEmailDashboard() {
                     <Mail className="size-4" />
                   </div>
                   <div className="flex flex-col gap-0.5 leading-none">
-                    <span className="font-semibold">EmailIt</span>
+                    <span className="font-semibold">WSDMailer</span>
                     <span className="text-xs text-muted-foreground">Dashboard</span>
                   </div>
                 </div>
