@@ -18,7 +18,7 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const isAdmin = user.email === "muragegideon2000@gmail.com";
+    const isAdmin = user.email === "info@websoftdevelopment.com";
     let domains: Domain[] = [];
 
     if (isAdmin) {
