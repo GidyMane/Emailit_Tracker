@@ -52,7 +52,7 @@ const navigation = [
       { title: "Inbox", icon: Inbox, url: "#", badge: "3" },
       { title: "Sent", icon: Send, url: "#" },
       { title: "Drafts", icon: FileText, url: "#" },
-      { title: "Automation", icon: Zap, url: "#" },
+      // { title: "Automation", icon: Zap, url: "#" },
     ]
   },
   {
@@ -85,7 +85,7 @@ export function EmailDashboard() {
                     <Mail className="size-4" />
                   </div>
                   <div className="flex flex-col gap-0.5 leading-none">
-                    <span className="font-semibold">EmailIt</span>
+                    <span className="font-semibold">WSDMailer</span>
                     <span className="text-xs text-muted-foreground">Dashboard</span>
                   </div>
                 </div>

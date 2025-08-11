@@ -53,7 +53,7 @@ const navigation = [
       { title: "Inbox", icon: Inbox, url: "#" },
       { title: "Sent", icon: Send, url: "#" },
       { title: "Drafts", icon: FileText, url: "#" },
-      { title: "Automation", icon: Zap, url: "#" },
+      // { title: "Automation", icon: Zap, url: "#" },
     ]
   }
 ]
