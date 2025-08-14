@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
             to: z.string(),
             from: z.string(),
             subject: z.string(),
-            timestamp: z.string(),
+            timestamp: z.coerce.number(),
             spam_status: z.number(),
             tag: z.string().nullable(),
           }),
