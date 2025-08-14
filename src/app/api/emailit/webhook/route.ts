@@ -28,8 +28,8 @@ export async function POST(req: NextRequest) {
           status: z.coerce.string(),
           details: z.string().optional(),
           sent_with_ssl: z.boolean().nullable().optional(),
-          timestamp: z.string(),
-          time: z.string().optional(),
+          timestamp: z.coerce.number(),
+          time: z.coerce.number().optional(),
         }),
       })
     );
