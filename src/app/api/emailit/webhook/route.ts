@@ -129,7 +129,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    return NextResponse.json({ message: "All events processed successfully." });
+    return NextResponse.json({ message: "All events processed successfully" });
   } catch (err) {
     console.error("Webhook error:", err);
     return NextResponse.json(
