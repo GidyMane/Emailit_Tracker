@@ -136,7 +136,7 @@ export function EmailDashboard() {
                     </div>
                     <div className="flex flex-col gap-0.5 leading-none">
                       <span className="font-medium">John Doe</span>
-                      <span className="text-xs text-muted-foreground">john@emailit.com</span>
+                      <span className="text-xs text-muted-foreground">john doe @emailit.com</span>
                     </div>
                     <ChevronDown className="ml-auto size-4" />
                   </SidebarMenuButton>
