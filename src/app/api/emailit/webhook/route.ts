@@ -2,78 +2,93 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
+// More relaxed Zod schema
+const EmailitPayloadSchema = z.array(
+  z.object({
+    webhook_request_id: z.string().optional(),
+    event_id: z.string().optional(),
+    type: z.string().optional(),
+    object: z
+      .object({
+        email: z
+          .object({
+            id: z.number().optional(),
+            token: z.string().optional(),
+            type: z.string().optional(),
+            message_id: z.string().optional(),
+            to: z.string().optional(),
+            from: z.string().optional(),
+            subject: z.string().optional(),
+            timestamp: z.union([z.string(), z.number()]).optional(),
+            spam_status: z.number().optional(),
+            tag: z.string().nullable().optional(),
+          })
+          .optional(),
+        status: z.string().optional(),
+        details: z.string().optional(),
+        sent_with_ssl: z.boolean().nullable().optional(),
+        timestamp: z.union([z.string(), z.number()]).optional(),
+        time: z.union([z.string(), z.number()]).optional(),
+      })
+      .passthrough(), // allow extra fields
+  })
+);
+
 export async function POST(req: NextRequest) {
   try {
     const payload = await req.json();
-
- 
-    const EmailitPayloadSchema = z.array(
-      z.object({
-        webhook_request_id: z.string(),
-        event_id: z.string(),
-        type: z.string(),
-        object: z.object({
-          email: z.object({
-            id: z.number(),
-            token: z.string(),
-            type: z.string(),
-            message_id: z.string(),
-            to: z.string(),
-            from: z.string(),
-            subject: z.string(),
-            timestamp: z.coerce.number(),
-            spam_status: z.number(),
-            tag: z.string().nullable(),
-          }),
-          status: z.coerce.string(),
-          details: z.string().optional(),
-          sent_with_ssl: z.boolean().nullable().optional(),
-          timestamp: z.coerce.number(),
-          time: z.coerce.number().optional(),
-        }),
-      })
-    );
-
     const events = EmailitPayloadSchema.parse(payload);
 
     for (const parsed of events) {
-      const domainName = parsed.object.email.from.split("@")[1].toLowerCase();
+      const email = parsed.object?.email;
+      if (!email?.from) {
+        console.warn("Missing 'from' field. Skipping event.");
+        continue;
+      }
+
+      const domainName = email.from.split("@")[1]?.toLowerCase();
+      if (!domainName) {
+        console.warn("Invalid 'from' email format. Skipping event.");
+        continue;
+      }
 
       const domain = await prisma.domain.findUnique({
         where: { name: domainName },
         include: { summary: true },
       });
-
       if (!domain) {
         console.warn(`Unknown domain: ${domainName}. Event ignored.`);
         continue;
       }
 
-      const existingEvent = await prisma.emailEvent.findFirst({
-        where: { messageId: parsed.object.email.message_id },
-      });
-
-      if (existingEvent) {
-        console.log("Duplicate email event. Skipping...");
-        continue;
+      // Avoid duplicate entries
+      if (email.message_id) {
+        const existingEvent = await prisma.emailEvent.findFirst({
+          where: { messageId: email.message_id },
+        });
+        if (existingEvent) continue;
       }
 
+      // Save event
       await prisma.emailEvent.create({
         data: {
-          emailId: parsed.object.email.id,
-          token: parsed.object.email.token,
-          messageId: parsed.object.email.message_id,
-          to: parsed.object.email.to,
-          from: parsed.object.email.from,
-          subject: parsed.object.email.subject,
-          eventType: parsed.type,
-          status: parsed.object.status,
-          spamStatus: parsed.object.email.spam_status,
-          timestamp: new Date(Number(parsed.object.email.timestamp) * 1000),
+          emailId: email.id ?? 0,
+          token: email.token ?? "",
+          messageId: email.message_id ?? "",
+          to: email.to ?? "",
+          from: email.from ?? "",
+          subject: email.subject ?? "",
+          eventType: parsed.type ?? "unknown",
+          status: parsed.object.status ?? "unknown",
+          spamStatus: email.spam_status ?? 0,
+          timestamp: email.timestamp
+            ? new Date(Number(email.timestamp) * 1000)
+            : new Date(),
           domainId: domain.id,
         },
       });
 
+      // Stats update
       const deliveryEvents = [
         "email.delivery.sent",
         "email.delivery.hardfail",
@@ -84,20 +99,18 @@ export async function POST(req: NextRequest) {
         "email.delivery.delayed",
       ];
 
-      const engagementEvents: { [key: string]: string } = {
+      const engagementEvents: Record<string, string> = {
         "email.loaded": "totalOpens",
         "email.link.clicked": "totalClicks",
       };
 
       const incrementData: Record<string, { increment: number }> = {};
 
-      if (deliveryEvents.includes(parsed.type)) {
+      if (parsed.type && deliveryEvents.includes(parsed.type)) {
         incrementData.totalSent = { increment: 1 };
-
         if (parsed.type === "email.delivery.sent") {
           incrementData.totalDelivered = { increment: 1 };
         }
-
         if (
           [
             "email.delivery.hardfail",
@@ -110,7 +123,7 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      if (parsed.type in engagementEvents) {
+      if (parsed.type && parsed.type in engagementEvents) {
         const field = engagementEvents[parsed.type];
         incrementData[field] = { increment: 1 };
       }
@@ -129,12 +142,9 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    return NextResponse.json({ message: "All events processed successfully" });
+    return NextResponse.json({ message: "Events processed successfully" });
   } catch (err) {
-    console.error("Webhook error:", err);
-    return NextResponse.json(
-      { error: "Webhook processing  failed" },
-      { status: 500 }
-    );
+    console.error("Webhook processing failed:", err);
+    return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
   }
 }
