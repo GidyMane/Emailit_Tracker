@@ -38,12 +38,12 @@ model EmailEvent {
   id           String   @id @default(uuid())
   emailId      Int
   token        String
-  messageId    String
-  to           String
-  from         String
-  subject      String
-  eventType    String
-  status       String
+  messageId    String?
+  to           String?
+  from         String?
+  subject      String?
+  eventType    String?
+  status       String?
   spamStatus   Int
   timestamp    DateTime
   domainId     String

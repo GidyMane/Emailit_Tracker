@@ -3667,12 +3667,12 @@ export namespace Prisma {
     id: string
     emailId: number
     token: string
-    messageId: string
-    to: string
-    from: string
-    subject: string
-    eventType: string
-    status: string
+    messageId: string | null
+    to: string | null
+    from: string | null
+    subject: string | null
+    eventType: string | null
+    status: string | null
     spamStatus: number
     timestamp: Date
     domainId: string
@@ -3785,12 +3785,12 @@ export namespace Prisma {
       id: string
       emailId: number
       token: string
-      messageId: string
-      to: string
-      from: string
-      subject: string
-      eventType: string
-      status: string
+      messageId: string | null
+      to: string | null
+      from: string | null
+      subject: string | null
+      eventType: string | null
+      status: string | null
       spamStatus: number
       timestamp: Date
       domainId: string
@@ -6223,12 +6223,12 @@ export namespace Prisma {
     id?: StringFilter<"EmailEvent"> | string
     emailId?: IntFilter<"EmailEvent"> | number
     token?: StringFilter<"EmailEvent"> | string
-    messageId?: StringFilter<"EmailEvent"> | string
-    to?: StringFilter<"EmailEvent"> | string
-    from?: StringFilter<"EmailEvent"> | string
-    subject?: StringFilter<"EmailEvent"> | string
-    eventType?: StringFilter<"EmailEvent"> | string
-    status?: StringFilter<"EmailEvent"> | string
+    messageId?: StringNullableFilter<"EmailEvent"> | string | null
+    to?: StringNullableFilter<"EmailEvent"> | string | null
+    from?: StringNullableFilter<"EmailEvent"> | string | null
+    subject?: StringNullableFilter<"EmailEvent"> | string | null
+    eventType?: StringNullableFilter<"EmailEvent"> | string | null
+    status?: StringNullableFilter<"EmailEvent"> | string | null
     spamStatus?: IntFilter<"EmailEvent"> | number
     timestamp?: DateTimeFilter<"EmailEvent"> | Date | string
     domainId?: StringFilter<"EmailEvent"> | string
@@ -6240,12 +6240,12 @@ export namespace Prisma {
     id?: SortOrder
     emailId?: SortOrder
     token?: SortOrder
-    messageId?: SortOrder
-    to?: SortOrder
-    from?: SortOrder
-    subject?: SortOrder
-    eventType?: SortOrder
-    status?: SortOrder
+    messageId?: SortOrderInput | SortOrder
+    to?: SortOrderInput | SortOrder
+    from?: SortOrderInput | SortOrder
+    subject?: SortOrderInput | SortOrder
+    eventType?: SortOrderInput | SortOrder
+    status?: SortOrderInput | SortOrder
     spamStatus?: SortOrder
     timestamp?: SortOrder
     domainId?: SortOrder
@@ -6260,12 +6260,12 @@ export namespace Prisma {
     NOT?: EmailEventWhereInput | EmailEventWhereInput[]
     emailId?: IntFilter<"EmailEvent"> | number
     token?: StringFilter<"EmailEvent"> | string
-    messageId?: StringFilter<"EmailEvent"> | string
-    to?: StringFilter<"EmailEvent"> | string
-    from?: StringFilter<"EmailEvent"> | string
-    subject?: StringFilter<"EmailEvent"> | string
-    eventType?: StringFilter<"EmailEvent"> | string
-    status?: StringFilter<"EmailEvent"> | string
+    messageId?: StringNullableFilter<"EmailEvent"> | string | null
+    to?: StringNullableFilter<"EmailEvent"> | string | null
+    from?: StringNullableFilter<"EmailEvent"> | string | null
+    subject?: StringNullableFilter<"EmailEvent"> | string | null
+    eventType?: StringNullableFilter<"EmailEvent"> | string | null
+    status?: StringNullableFilter<"EmailEvent"> | string | null
     spamStatus?: IntFilter<"EmailEvent"> | number
     timestamp?: DateTimeFilter<"EmailEvent"> | Date | string
     domainId?: StringFilter<"EmailEvent"> | string
@@ -6277,12 +6277,12 @@ export namespace Prisma {
     id?: SortOrder
     emailId?: SortOrder
     token?: SortOrder
-    messageId?: SortOrder
-    to?: SortOrder
-    from?: SortOrder
-    subject?: SortOrder
-    eventType?: SortOrder
-    status?: SortOrder
+    messageId?: SortOrderInput | SortOrder
+    to?: SortOrderInput | SortOrder
+    from?: SortOrderInput | SortOrder
+    subject?: SortOrderInput | SortOrder
+    eventType?: SortOrderInput | SortOrder
+    status?: SortOrderInput | SortOrder
     spamStatus?: SortOrder
     timestamp?: SortOrder
     domainId?: SortOrder
@@ -6301,12 +6301,12 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"EmailEvent"> | string
     emailId?: IntWithAggregatesFilter<"EmailEvent"> | number
     token?: StringWithAggregatesFilter<"EmailEvent"> | string
-    messageId?: StringWithAggregatesFilter<"EmailEvent"> | string
-    to?: StringWithAggregatesFilter<"EmailEvent"> | string
-    from?: StringWithAggregatesFilter<"EmailEvent"> | string
-    subject?: StringWithAggregatesFilter<"EmailEvent"> | string
-    eventType?: StringWithAggregatesFilter<"EmailEvent"> | string
-    status?: StringWithAggregatesFilter<"EmailEvent"> | string
+    messageId?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
+    to?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
+    from?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
+    subject?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
+    eventType?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
+    status?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
     spamStatus?: IntWithAggregatesFilter<"EmailEvent"> | number
     timestamp?: DateTimeWithAggregatesFilter<"EmailEvent"> | Date | string
     domainId?: StringWithAggregatesFilter<"EmailEvent"> | string
@@ -6559,12 +6559,12 @@ export namespace Prisma {
     id?: string
     emailId: number
     token: string
-    messageId: string
-    to: string
-    from: string
-    subject: string
-    eventType: string
-    status: string
+    messageId?: string | null
+    to?: string | null
+    from?: string | null
+    subject?: string | null
+    eventType?: string | null
+    status?: string | null
     spamStatus: number
     timestamp: Date | string
     createdAt?: Date | string
@@ -6575,12 +6575,12 @@ export namespace Prisma {
     id?: string
     emailId: number
     token: string
-    messageId: string
-    to: string
-    from: string
-    subject: string
-    eventType: string
-    status: string
+    messageId?: string | null
+    to?: string | null
+    from?: string | null
+    subject?: string | null
+    eventType?: string | null
+    status?: string | null
     spamStatus: number
     timestamp: Date | string
     domainId: string
@@ -6591,12 +6591,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     emailId?: IntFieldUpdateOperationsInput | number
     token?: StringFieldUpdateOperationsInput | string
-    messageId?: StringFieldUpdateOperationsInput | string
-    to?: StringFieldUpdateOperationsInput | string
-    from?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    eventType?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    messageId?: NullableStringFieldUpdateOperationsInput | string | null
+    to?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    eventType?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     spamStatus?: IntFieldUpdateOperationsInput | number
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6607,12 +6607,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     emailId?: IntFieldUpdateOperationsInput | number
     token?: StringFieldUpdateOperationsInput | string
-    messageId?: StringFieldUpdateOperationsInput | string
-    to?: StringFieldUpdateOperationsInput | string
-    from?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    eventType?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    messageId?: NullableStringFieldUpdateOperationsInput | string | null
+    to?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    eventType?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     spamStatus?: IntFieldUpdateOperationsInput | number
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     domainId?: StringFieldUpdateOperationsInput | string
@@ -6623,12 +6623,12 @@ export namespace Prisma {
     id?: string
     emailId: number
     token: string
-    messageId: string
-    to: string
-    from: string
-    subject: string
-    eventType: string
-    status: string
+    messageId?: string | null
+    to?: string | null
+    from?: string | null
+    subject?: string | null
+    eventType?: string | null
+    status?: string | null
     spamStatus: number
     timestamp: Date | string
     domainId: string
@@ -6639,12 +6639,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     emailId?: IntFieldUpdateOperationsInput | number
     token?: StringFieldUpdateOperationsInput | string
-    messageId?: StringFieldUpdateOperationsInput | string
-    to?: StringFieldUpdateOperationsInput | string
-    from?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    eventType?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    messageId?: NullableStringFieldUpdateOperationsInput | string | null
+    to?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    eventType?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     spamStatus?: IntFieldUpdateOperationsInput | number
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6654,12 +6654,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     emailId?: IntFieldUpdateOperationsInput | number
     token?: StringFieldUpdateOperationsInput | string
-    messageId?: StringFieldUpdateOperationsInput | string
-    to?: StringFieldUpdateOperationsInput | string
-    from?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    eventType?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    messageId?: NullableStringFieldUpdateOperationsInput | string | null
+    to?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    eventType?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     spamStatus?: IntFieldUpdateOperationsInput | number
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     domainId?: StringFieldUpdateOperationsInput | string
@@ -7549,12 +7549,12 @@ export namespace Prisma {
     id?: string
     emailId: number
     token: string
-    messageId: string
-    to: string
-    from: string
-    subject: string
-    eventType: string
-    status: string
+    messageId?: string | null
+    to?: string | null
+    from?: string | null
+    subject?: string | null
+    eventType?: string | null
+    status?: string | null
     spamStatus: number
     timestamp: Date | string
     createdAt?: Date | string
@@ -7564,12 +7564,12 @@ export namespace Prisma {
     id?: string
     emailId: number
     token: string
-    messageId: string
-    to: string
-    from: string
-    subject: string
-    eventType: string
-    status: string
+    messageId?: string | null
+    to?: string | null
+    from?: string | null
+    subject?: string | null
+    eventType?: string | null
+    status?: string | null
     spamStatus: number
     timestamp: Date | string
     createdAt?: Date | string
@@ -7677,12 +7677,12 @@ export namespace Prisma {
     id?: StringFilter<"EmailEvent"> | string
     emailId?: IntFilter<"EmailEvent"> | number
     token?: StringFilter<"EmailEvent"> | string
-    messageId?: StringFilter<"EmailEvent"> | string
-    to?: StringFilter<"EmailEvent"> | string
-    from?: StringFilter<"EmailEvent"> | string
-    subject?: StringFilter<"EmailEvent"> | string
-    eventType?: StringFilter<"EmailEvent"> | string
-    status?: StringFilter<"EmailEvent"> | string
+    messageId?: StringNullableFilter<"EmailEvent"> | string | null
+    to?: StringNullableFilter<"EmailEvent"> | string | null
+    from?: StringNullableFilter<"EmailEvent"> | string | null
+    subject?: StringNullableFilter<"EmailEvent"> | string | null
+    eventType?: StringNullableFilter<"EmailEvent"> | string | null
+    status?: StringNullableFilter<"EmailEvent"> | string | null
     spamStatus?: IntFilter<"EmailEvent"> | number
     timestamp?: DateTimeFilter<"EmailEvent"> | Date | string
     domainId?: StringFilter<"EmailEvent"> | string
@@ -7875,12 +7875,12 @@ export namespace Prisma {
     id?: string
     emailId: number
     token: string
-    messageId: string
-    to: string
-    from: string
-    subject: string
-    eventType: string
-    status: string
+    messageId?: string | null
+    to?: string | null
+    from?: string | null
+    subject?: string | null
+    eventType?: string | null
+    status?: string | null
     spamStatus: number
     timestamp: Date | string
     createdAt?: Date | string
@@ -7890,12 +7890,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     emailId?: IntFieldUpdateOperationsInput | number
     token?: StringFieldUpdateOperationsInput | string
-    messageId?: StringFieldUpdateOperationsInput | string
-    to?: StringFieldUpdateOperationsInput | string
-    from?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    eventType?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    messageId?: NullableStringFieldUpdateOperationsInput | string | null
+    to?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    eventType?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     spamStatus?: IntFieldUpdateOperationsInput | number
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7905,12 +7905,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     emailId?: IntFieldUpdateOperationsInput | number
     token?: StringFieldUpdateOperationsInput | string
-    messageId?: StringFieldUpdateOperationsInput | string
-    to?: StringFieldUpdateOperationsInput | string
-    from?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    eventType?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    messageId?: NullableStringFieldUpdateOperationsInput | string | null
+    to?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    eventType?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     spamStatus?: IntFieldUpdateOperationsInput | number
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7920,12 +7920,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     emailId?: IntFieldUpdateOperationsInput | number
     token?: StringFieldUpdateOperationsInput | string
-    messageId?: StringFieldUpdateOperationsInput | string
-    to?: StringFieldUpdateOperationsInput | string
-    from?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    eventType?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    messageId?: NullableStringFieldUpdateOperationsInput | string | null
+    to?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    eventType?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     spamStatus?: IntFieldUpdateOperationsInput | number
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
