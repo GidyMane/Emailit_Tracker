@@ -164,12 +164,34 @@ export async function POST(req: NextRequest) {
       if (deliveryEvents.includes(parsed.type)) {
         incrementData.totalSent = { increment: 1 };
 
-        if (successfulDeliveryEvents.includes(parsed.type)) {
-          incrementData.totalDelivered = { increment: 1 };
-        }
-
-        if (failedDeliveryEvents.includes(parsed.type)) {
-          incrementData.totalFailed = { increment: 1 };
+        // Track detailed delivery statuses
+        switch (parsed.type) {
+          case "email.delivery.sent":
+            incrementData.totalDelivered = { increment: 1 };
+            incrementData.sentCount = { increment: 1 };
+            break;
+          case "email.delivery.hardfail":
+            incrementData.totalFailed = { increment: 1 };
+            incrementData.hardfailCount = { increment: 1 };
+            break;
+          case "email.delivery.softfail":
+            incrementData.totalFailed = { increment: 1 };
+            incrementData.softfailCount = { increment: 1 };
+            break;
+          case "email.delivery.bounce":
+            incrementData.totalFailed = { increment: 1 };
+            incrementData.bounceCount = { increment: 1 };
+            break;
+          case "email.delivery.error":
+            incrementData.totalFailed = { increment: 1 };
+            incrementData.errorCount = { increment: 1 };
+            break;
+          case "email.delivery.held":
+            incrementData.heldCount = { increment: 1 };
+            break;
+          case "email.delivery.delayed":
+            incrementData.delayedCount = { increment: 1 };
+            break;
         }
       }
 
@@ -194,6 +216,13 @@ export async function POST(req: NextRequest) {
             totalFailed: incrementData.totalFailed?.increment ?? 0,
             totalOpens: incrementData.totalOpens?.increment ?? 0,
             totalClicks: incrementData.totalClicks?.increment ?? 0,
+            sentCount: incrementData.sentCount?.increment ?? 0,
+            hardfailCount: incrementData.hardfailCount?.increment ?? 0,
+            softfailCount: incrementData.softfailCount?.increment ?? 0,
+            bounceCount: incrementData.bounceCount?.increment ?? 0,
+            errorCount: incrementData.errorCount?.increment ?? 0,
+            heldCount: incrementData.heldCount?.increment ?? 0,
+            delayedCount: incrementData.delayedCount?.increment ?? 0,
           },
         });
       }
