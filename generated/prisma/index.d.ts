@@ -4665,6 +4665,13 @@ export namespace Prisma {
     totalFailed: number | null
     totalOpens: number | null
     totalClicks: number | null
+    sentCount: number | null
+    hardfailCount: number | null
+    softfailCount: number | null
+    bounceCount: number | null
+    errorCount: number | null
+    heldCount: number | null
+    delayedCount: number | null
   }
 
   export type EmailSummarySumAggregateOutputType = {
@@ -4674,6 +4681,13 @@ export namespace Prisma {
     totalFailed: number | null
     totalOpens: number | null
     totalClicks: number | null
+    sentCount: number | null
+    hardfailCount: number | null
+    softfailCount: number | null
+    bounceCount: number | null
+    errorCount: number | null
+    heldCount: number | null
+    delayedCount: number | null
   }
 
   export type EmailSummaryMinAggregateOutputType = {
@@ -4684,6 +4698,13 @@ export namespace Prisma {
     totalFailed: number | null
     totalOpens: number | null
     totalClicks: number | null
+    sentCount: number | null
+    hardfailCount: number | null
+    softfailCount: number | null
+    bounceCount: number | null
+    errorCount: number | null
+    heldCount: number | null
+    delayedCount: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -4696,6 +4717,13 @@ export namespace Prisma {
     totalFailed: number | null
     totalOpens: number | null
     totalClicks: number | null
+    sentCount: number | null
+    hardfailCount: number | null
+    softfailCount: number | null
+    bounceCount: number | null
+    errorCount: number | null
+    heldCount: number | null
+    delayedCount: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -4708,6 +4736,13 @@ export namespace Prisma {
     totalFailed: number
     totalOpens: number
     totalClicks: number
+    sentCount: number
+    hardfailCount: number
+    softfailCount: number
+    bounceCount: number
+    errorCount: number
+    heldCount: number
+    delayedCount: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -4721,6 +4756,13 @@ export namespace Prisma {
     totalFailed?: true
     totalOpens?: true
     totalClicks?: true
+    sentCount?: true
+    hardfailCount?: true
+    softfailCount?: true
+    bounceCount?: true
+    errorCount?: true
+    heldCount?: true
+    delayedCount?: true
   }
 
   export type EmailSummarySumAggregateInputType = {
@@ -4730,6 +4772,13 @@ export namespace Prisma {
     totalFailed?: true
     totalOpens?: true
     totalClicks?: true
+    sentCount?: true
+    hardfailCount?: true
+    softfailCount?: true
+    bounceCount?: true
+    errorCount?: true
+    heldCount?: true
+    delayedCount?: true
   }
 
   export type EmailSummaryMinAggregateInputType = {
@@ -4740,6 +4789,13 @@ export namespace Prisma {
     totalFailed?: true
     totalOpens?: true
     totalClicks?: true
+    sentCount?: true
+    hardfailCount?: true
+    softfailCount?: true
+    bounceCount?: true
+    errorCount?: true
+    heldCount?: true
+    delayedCount?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -4752,6 +4808,13 @@ export namespace Prisma {
     totalFailed?: true
     totalOpens?: true
     totalClicks?: true
+    sentCount?: true
+    hardfailCount?: true
+    softfailCount?: true
+    bounceCount?: true
+    errorCount?: true
+    heldCount?: true
+    delayedCount?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -4764,6 +4827,13 @@ export namespace Prisma {
     totalFailed?: true
     totalOpens?: true
     totalClicks?: true
+    sentCount?: true
+    hardfailCount?: true
+    softfailCount?: true
+    bounceCount?: true
+    errorCount?: true
+    heldCount?: true
+    delayedCount?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -4863,6 +4933,13 @@ export namespace Prisma {
     totalFailed: number
     totalOpens: number
     totalClicks: number
+    sentCount: number
+    hardfailCount: number
+    softfailCount: number
+    bounceCount: number
+    errorCount: number
+    heldCount: number
+    delayedCount: number
     createdAt: Date
     updatedAt: Date
     _count: EmailSummaryCountAggregateOutputType | null
@@ -4894,6 +4971,13 @@ export namespace Prisma {
     totalFailed?: boolean
     totalOpens?: boolean
     totalClicks?: boolean
+    sentCount?: boolean
+    hardfailCount?: boolean
+    softfailCount?: boolean
+    bounceCount?: boolean
+    errorCount?: boolean
+    heldCount?: boolean
+    delayedCount?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     domain?: boolean | DomainDefaultArgs<ExtArgs>
@@ -4907,6 +4991,13 @@ export namespace Prisma {
     totalFailed?: boolean
     totalOpens?: boolean
     totalClicks?: boolean
+    sentCount?: boolean
+    hardfailCount?: boolean
+    softfailCount?: boolean
+    bounceCount?: boolean
+    errorCount?: boolean
+    heldCount?: boolean
+    delayedCount?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     domain?: boolean | DomainDefaultArgs<ExtArgs>
@@ -4920,6 +5011,13 @@ export namespace Prisma {
     totalFailed?: boolean
     totalOpens?: boolean
     totalClicks?: boolean
+    sentCount?: boolean
+    hardfailCount?: boolean
+    softfailCount?: boolean
+    bounceCount?: boolean
+    errorCount?: boolean
+    heldCount?: boolean
+    delayedCount?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     domain?: boolean | DomainDefaultArgs<ExtArgs>
@@ -4933,11 +5031,18 @@ export namespace Prisma {
     totalFailed?: boolean
     totalOpens?: boolean
     totalClicks?: boolean
+    sentCount?: boolean
+    hardfailCount?: boolean
+    softfailCount?: boolean
+    bounceCount?: boolean
+    errorCount?: boolean
+    heldCount?: boolean
+    delayedCount?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type EmailSummaryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "domainId" | "totalSent" | "totalDelivered" | "totalFailed" | "totalOpens" | "totalClicks" | "createdAt" | "updatedAt", ExtArgs["result"]["emailSummary"]>
+  export type EmailSummaryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "domainId" | "totalSent" | "totalDelivered" | "totalFailed" | "totalOpens" | "totalClicks" | "sentCount" | "hardfailCount" | "softfailCount" | "bounceCount" | "errorCount" | "heldCount" | "delayedCount" | "createdAt" | "updatedAt", ExtArgs["result"]["emailSummary"]>
   export type EmailSummaryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     domain?: boolean | DomainDefaultArgs<ExtArgs>
   }
@@ -4961,6 +5066,13 @@ export namespace Prisma {
       totalFailed: number
       totalOpens: number
       totalClicks: number
+      sentCount: number
+      hardfailCount: number
+      softfailCount: number
+      bounceCount: number
+      errorCount: number
+      heldCount: number
+      delayedCount: number
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["emailSummary"]>
@@ -5394,6 +5506,13 @@ export namespace Prisma {
     readonly totalFailed: FieldRef<"EmailSummary", 'Int'>
     readonly totalOpens: FieldRef<"EmailSummary", 'Int'>
     readonly totalClicks: FieldRef<"EmailSummary", 'Int'>
+    readonly sentCount: FieldRef<"EmailSummary", 'Int'>
+    readonly hardfailCount: FieldRef<"EmailSummary", 'Int'>
+    readonly softfailCount: FieldRef<"EmailSummary", 'Int'>
+    readonly bounceCount: FieldRef<"EmailSummary", 'Int'>
+    readonly errorCount: FieldRef<"EmailSummary", 'Int'>
+    readonly heldCount: FieldRef<"EmailSummary", 'Int'>
+    readonly delayedCount: FieldRef<"EmailSummary", 'Int'>
     readonly createdAt: FieldRef<"EmailSummary", 'DateTime'>
     readonly updatedAt: FieldRef<"EmailSummary", 'DateTime'>
   }
@@ -5874,6 +5993,13 @@ export namespace Prisma {
     totalFailed: 'totalFailed',
     totalOpens: 'totalOpens',
     totalClicks: 'totalClicks',
+    sentCount: 'sentCount',
+    hardfailCount: 'hardfailCount',
+    softfailCount: 'softfailCount',
+    bounceCount: 'bounceCount',
+    errorCount: 'errorCount',
+    heldCount: 'heldCount',
+    delayedCount: 'delayedCount',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -6198,6 +6324,13 @@ export namespace Prisma {
     totalFailed?: IntFilter<"EmailSummary"> | number
     totalOpens?: IntFilter<"EmailSummary"> | number
     totalClicks?: IntFilter<"EmailSummary"> | number
+    sentCount?: IntFilter<"EmailSummary"> | number
+    hardfailCount?: IntFilter<"EmailSummary"> | number
+    softfailCount?: IntFilter<"EmailSummary"> | number
+    bounceCount?: IntFilter<"EmailSummary"> | number
+    errorCount?: IntFilter<"EmailSummary"> | number
+    heldCount?: IntFilter<"EmailSummary"> | number
+    delayedCount?: IntFilter<"EmailSummary"> | number
     createdAt?: DateTimeFilter<"EmailSummary"> | Date | string
     updatedAt?: DateTimeFilter<"EmailSummary"> | Date | string
     domain?: XOR<DomainScalarRelationFilter, DomainWhereInput>
@@ -6211,6 +6344,13 @@ export namespace Prisma {
     totalFailed?: SortOrder
     totalOpens?: SortOrder
     totalClicks?: SortOrder
+    sentCount?: SortOrder
+    hardfailCount?: SortOrder
+    softfailCount?: SortOrder
+    bounceCount?: SortOrder
+    errorCount?: SortOrder
+    heldCount?: SortOrder
+    delayedCount?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     domain?: DomainOrderByWithRelationInput
@@ -6227,6 +6367,13 @@ export namespace Prisma {
     totalFailed?: IntFilter<"EmailSummary"> | number
     totalOpens?: IntFilter<"EmailSummary"> | number
     totalClicks?: IntFilter<"EmailSummary"> | number
+    sentCount?: IntFilter<"EmailSummary"> | number
+    hardfailCount?: IntFilter<"EmailSummary"> | number
+    softfailCount?: IntFilter<"EmailSummary"> | number
+    bounceCount?: IntFilter<"EmailSummary"> | number
+    errorCount?: IntFilter<"EmailSummary"> | number
+    heldCount?: IntFilter<"EmailSummary"> | number
+    delayedCount?: IntFilter<"EmailSummary"> | number
     createdAt?: DateTimeFilter<"EmailSummary"> | Date | string
     updatedAt?: DateTimeFilter<"EmailSummary"> | Date | string
     domain?: XOR<DomainScalarRelationFilter, DomainWhereInput>
@@ -6240,6 +6387,13 @@ export namespace Prisma {
     totalFailed?: SortOrder
     totalOpens?: SortOrder
     totalClicks?: SortOrder
+    sentCount?: SortOrder
+    hardfailCount?: SortOrder
+    softfailCount?: SortOrder
+    bounceCount?: SortOrder
+    errorCount?: SortOrder
+    heldCount?: SortOrder
+    delayedCount?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: EmailSummaryCountOrderByAggregateInput
@@ -6260,6 +6414,13 @@ export namespace Prisma {
     totalFailed?: IntWithAggregatesFilter<"EmailSummary"> | number
     totalOpens?: IntWithAggregatesFilter<"EmailSummary"> | number
     totalClicks?: IntWithAggregatesFilter<"EmailSummary"> | number
+    sentCount?: IntWithAggregatesFilter<"EmailSummary"> | number
+    hardfailCount?: IntWithAggregatesFilter<"EmailSummary"> | number
+    softfailCount?: IntWithAggregatesFilter<"EmailSummary"> | number
+    bounceCount?: IntWithAggregatesFilter<"EmailSummary"> | number
+    errorCount?: IntWithAggregatesFilter<"EmailSummary"> | number
+    heldCount?: IntWithAggregatesFilter<"EmailSummary"> | number
+    delayedCount?: IntWithAggregatesFilter<"EmailSummary"> | number
     createdAt?: DateTimeWithAggregatesFilter<"EmailSummary"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"EmailSummary"> | Date | string
   }
@@ -6511,6 +6672,13 @@ export namespace Prisma {
     totalFailed?: number
     totalOpens?: number
     totalClicks?: number
+    sentCount?: number
+    hardfailCount?: number
+    softfailCount?: number
+    bounceCount?: number
+    errorCount?: number
+    heldCount?: number
+    delayedCount?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     domain: DomainCreateNestedOneWithoutSummaryInput
@@ -6524,6 +6692,13 @@ export namespace Prisma {
     totalFailed?: number
     totalOpens?: number
     totalClicks?: number
+    sentCount?: number
+    hardfailCount?: number
+    softfailCount?: number
+    bounceCount?: number
+    errorCount?: number
+    heldCount?: number
+    delayedCount?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -6534,6 +6709,13 @@ export namespace Prisma {
     totalFailed?: IntFieldUpdateOperationsInput | number
     totalOpens?: IntFieldUpdateOperationsInput | number
     totalClicks?: IntFieldUpdateOperationsInput | number
+    sentCount?: IntFieldUpdateOperationsInput | number
+    hardfailCount?: IntFieldUpdateOperationsInput | number
+    softfailCount?: IntFieldUpdateOperationsInput | number
+    bounceCount?: IntFieldUpdateOperationsInput | number
+    errorCount?: IntFieldUpdateOperationsInput | number
+    heldCount?: IntFieldUpdateOperationsInput | number
+    delayedCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     domain?: DomainUpdateOneRequiredWithoutSummaryNestedInput
@@ -6547,6 +6729,13 @@ export namespace Prisma {
     totalFailed?: IntFieldUpdateOperationsInput | number
     totalOpens?: IntFieldUpdateOperationsInput | number
     totalClicks?: IntFieldUpdateOperationsInput | number
+    sentCount?: IntFieldUpdateOperationsInput | number
+    hardfailCount?: IntFieldUpdateOperationsInput | number
+    softfailCount?: IntFieldUpdateOperationsInput | number
+    bounceCount?: IntFieldUpdateOperationsInput | number
+    errorCount?: IntFieldUpdateOperationsInput | number
+    heldCount?: IntFieldUpdateOperationsInput | number
+    delayedCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -6559,6 +6748,13 @@ export namespace Prisma {
     totalFailed?: number
     totalOpens?: number
     totalClicks?: number
+    sentCount?: number
+    hardfailCount?: number
+    softfailCount?: number
+    bounceCount?: number
+    errorCount?: number
+    heldCount?: number
+    delayedCount?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -6569,6 +6765,13 @@ export namespace Prisma {
     totalFailed?: IntFieldUpdateOperationsInput | number
     totalOpens?: IntFieldUpdateOperationsInput | number
     totalClicks?: IntFieldUpdateOperationsInput | number
+    sentCount?: IntFieldUpdateOperationsInput | number
+    hardfailCount?: IntFieldUpdateOperationsInput | number
+    softfailCount?: IntFieldUpdateOperationsInput | number
+    bounceCount?: IntFieldUpdateOperationsInput | number
+    errorCount?: IntFieldUpdateOperationsInput | number
+    heldCount?: IntFieldUpdateOperationsInput | number
+    delayedCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -6581,6 +6784,13 @@ export namespace Prisma {
     totalFailed?: IntFieldUpdateOperationsInput | number
     totalOpens?: IntFieldUpdateOperationsInput | number
     totalClicks?: IntFieldUpdateOperationsInput | number
+    sentCount?: IntFieldUpdateOperationsInput | number
+    hardfailCount?: IntFieldUpdateOperationsInput | number
+    softfailCount?: IntFieldUpdateOperationsInput | number
+    bounceCount?: IntFieldUpdateOperationsInput | number
+    errorCount?: IntFieldUpdateOperationsInput | number
+    heldCount?: IntFieldUpdateOperationsInput | number
+    delayedCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -6860,6 +7070,13 @@ export namespace Prisma {
     totalFailed?: SortOrder
     totalOpens?: SortOrder
     totalClicks?: SortOrder
+    sentCount?: SortOrder
+    hardfailCount?: SortOrder
+    softfailCount?: SortOrder
+    bounceCount?: SortOrder
+    errorCount?: SortOrder
+    heldCount?: SortOrder
+    delayedCount?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -6871,6 +7088,13 @@ export namespace Prisma {
     totalFailed?: SortOrder
     totalOpens?: SortOrder
     totalClicks?: SortOrder
+    sentCount?: SortOrder
+    hardfailCount?: SortOrder
+    softfailCount?: SortOrder
+    bounceCount?: SortOrder
+    errorCount?: SortOrder
+    heldCount?: SortOrder
+    delayedCount?: SortOrder
   }
 
   export type EmailSummaryMaxOrderByAggregateInput = {
@@ -6881,6 +7105,13 @@ export namespace Prisma {
     totalFailed?: SortOrder
     totalOpens?: SortOrder
     totalClicks?: SortOrder
+    sentCount?: SortOrder
+    hardfailCount?: SortOrder
+    softfailCount?: SortOrder
+    bounceCount?: SortOrder
+    errorCount?: SortOrder
+    heldCount?: SortOrder
+    delayedCount?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -6893,6 +7124,13 @@ export namespace Prisma {
     totalFailed?: SortOrder
     totalOpens?: SortOrder
     totalClicks?: SortOrder
+    sentCount?: SortOrder
+    hardfailCount?: SortOrder
+    softfailCount?: SortOrder
+    bounceCount?: SortOrder
+    errorCount?: SortOrder
+    heldCount?: SortOrder
+    delayedCount?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -6904,6 +7142,13 @@ export namespace Prisma {
     totalFailed?: SortOrder
     totalOpens?: SortOrder
     totalClicks?: SortOrder
+    sentCount?: SortOrder
+    hardfailCount?: SortOrder
+    softfailCount?: SortOrder
+    bounceCount?: SortOrder
+    errorCount?: SortOrder
+    heldCount?: SortOrder
+    delayedCount?: SortOrder
   }
 
   export type DomainCreateNestedManyWithoutUserInput = {
@@ -7346,6 +7591,13 @@ export namespace Prisma {
     totalFailed?: number
     totalOpens?: number
     totalClicks?: number
+    sentCount?: number
+    hardfailCount?: number
+    softfailCount?: number
+    bounceCount?: number
+    errorCount?: number
+    heldCount?: number
+    delayedCount?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -7357,6 +7609,13 @@ export namespace Prisma {
     totalFailed?: number
     totalOpens?: number
     totalClicks?: number
+    sentCount?: number
+    hardfailCount?: number
+    softfailCount?: number
+    bounceCount?: number
+    errorCount?: number
+    heldCount?: number
+    delayedCount?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -7447,6 +7706,13 @@ export namespace Prisma {
     totalFailed?: IntFieldUpdateOperationsInput | number
     totalOpens?: IntFieldUpdateOperationsInput | number
     totalClicks?: IntFieldUpdateOperationsInput | number
+    sentCount?: IntFieldUpdateOperationsInput | number
+    hardfailCount?: IntFieldUpdateOperationsInput | number
+    softfailCount?: IntFieldUpdateOperationsInput | number
+    bounceCount?: IntFieldUpdateOperationsInput | number
+    errorCount?: IntFieldUpdateOperationsInput | number
+    heldCount?: IntFieldUpdateOperationsInput | number
+    delayedCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7458,6 +7724,13 @@ export namespace Prisma {
     totalFailed?: IntFieldUpdateOperationsInput | number
     totalOpens?: IntFieldUpdateOperationsInput | number
     totalClicks?: IntFieldUpdateOperationsInput | number
+    sentCount?: IntFieldUpdateOperationsInput | number
+    hardfailCount?: IntFieldUpdateOperationsInput | number
+    softfailCount?: IntFieldUpdateOperationsInput | number
+    bounceCount?: IntFieldUpdateOperationsInput | number
+    errorCount?: IntFieldUpdateOperationsInput | number
+    heldCount?: IntFieldUpdateOperationsInput | number
+    delayedCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
