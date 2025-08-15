@@ -490,59 +490,133 @@ export function EnhancedEmailDashboard() {
 
   // Build email stats cards from API data
   const emailStatCards = emailStats ? [
-    { 
-      title: "Total Sent", 
-      icon: Send, 
-      value: emailStats.totalSent.toLocaleString(), 
-      change: "", 
-      trend: "up", 
-      color: "text-blue-600", 
-      bgColor: "bg-blue-100" 
+    {
+      title: "Total Sent",
+      icon: Send,
+      value: emailStats.totalSent.toLocaleString(),
+      change: "",
+      trend: "up",
+      color: "text-blue-600",
+      bgColor: "bg-blue-100"
     },
-    { 
-      title: "Delivered", 
-      icon: CheckCircle, 
-      value: emailStats.delivered.toLocaleString(), 
-      change: `${emailStats.deliveryRate}%`, 
-      trend: "up", 
-      color: "text-green-600", 
-      bgColor: "bg-green-100" 
+    {
+      title: "Delivered",
+      icon: CheckCircle,
+      value: emailStats.delivered.toLocaleString(),
+      change: `${emailStats.deliveryRate}%`,
+      trend: "up",
+      color: "text-green-600",
+      bgColor: "bg-green-100"
     },
-    { 
-      title: "Failed", 
-      icon: XCircle, 
-      value: emailStats.failed.toLocaleString(), 
-      change: "", 
-      trend: "down", 
-      color: "text-red-600", 
-      bgColor: "bg-red-100" 
+    {
+      title: "Failed",
+      icon: XCircle,
+      value: emailStats.failed.toLocaleString(),
+      change: "",
+      trend: "down",
+      color: "text-red-600",
+      bgColor: "bg-red-100"
     },
-    { 
-      title: "Opens", 
-      icon: MailOpen, 
-      value: emailStats.opens.toLocaleString(), 
-      change: "", 
-      trend: "up", 
-      color: "text-purple-600", 
-      bgColor: "bg-purple-100" 
+    {
+      title: "Opens",
+      icon: MailOpen,
+      value: emailStats.opens.toLocaleString(),
+      change: "",
+      trend: "up",
+      color: "text-purple-600",
+      bgColor: "bg-purple-100"
     },
-    { 
-      title: "Clicks", 
-      icon: Zap, 
-      value: emailStats.clicks.toLocaleString(), 
-      change: "", 
-      trend: "up", 
-      color: "text-orange-600", 
-      bgColor: "bg-orange-100" 
+    {
+      title: "Clicks",
+      icon: Zap,
+      value: emailStats.clicks.toLocaleString(),
+      change: "",
+      trend: "up",
+      color: "text-orange-600",
+      bgColor: "bg-orange-100"
     },
-    { 
-      title: "Pending", 
-      icon: Clock, 
-      value: emailStats.pending.toLocaleString(), 
-      change: "", 
-      trend: "up", 
-      color: "text-yellow-600", 
-      bgColor: "bg-yellow-100" 
+    {
+      title: "Pending",
+      icon: Clock,
+      value: emailStats.pending.toLocaleString(),
+      change: "",
+      trend: "up",
+      color: "text-yellow-600",
+      bgColor: "bg-yellow-100"
+    }
+  ] : []
+
+  // Build detailed delivery status cards
+  const detailedStatusCards = emailStats?.detailedStatus ? [
+    {
+      title: "Sent Successfully",
+      icon: CheckCircle,
+      value: emailStats.detailedStatus.sent.toLocaleString(),
+      change: "",
+      trend: "up",
+      color: "text-green-600",
+      bgColor: "bg-green-100",
+      description: "Emails successfully delivered"
+    },
+    {
+      title: "Hard Fail",
+      icon: XCircle,
+      value: emailStats.detailedStatus.hardfail.toLocaleString(),
+      change: "",
+      trend: "down",
+      color: "text-red-600",
+      bgColor: "bg-red-100",
+      description: "Permanent delivery failures"
+    },
+    {
+      title: "Soft Fail",
+      icon: Clock,
+      value: emailStats.detailedStatus.softfail.toLocaleString(),
+      change: "",
+      trend: "down",
+      color: "text-orange-600",
+      bgColor: "bg-orange-100",
+      description: "Temporary failures, will retry"
+    },
+    {
+      title: "Bounced",
+      icon: TrendingDown,
+      value: emailStats.detailedStatus.bounce.toLocaleString(),
+      change: "",
+      trend: "down",
+      color: "text-red-500",
+      bgColor: "bg-red-50",
+      description: "Emails bounced back"
+    },
+    {
+      title: "System Error",
+      icon: XCircle,
+      value: emailStats.detailedStatus.error.toLocaleString(),
+      change: "",
+      trend: "down",
+      color: "text-gray-600",
+      bgColor: "bg-gray-100",
+      description: "System errors, will retry"
+    },
+    {
+      title: "Held",
+      icon: Eye,
+      value: emailStats.detailedStatus.held.toLocaleString(),
+      change: "",
+      trend: "down",
+      color: "text-yellow-600",
+      bgColor: "bg-yellow-100",
+      description: "Account under review"
+    },
+    {
+      title: "Delayed",
+      icon: Clock,
+      value: emailStats.detailedStatus.delayed.toLocaleString(),
+      change: "",
+      trend: "down",
+      color: "text-blue-500",
+      bgColor: "bg-blue-50",
+      description: "Rate limited, delayed"
     }
   ] : []
 
