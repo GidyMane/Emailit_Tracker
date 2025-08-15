@@ -97,13 +97,30 @@ export async function POST(req: NextRequest) {
         continue;
       }
 
+      // Check for duplicate events based on event_id and message_id combination
       const existingEvent = await prisma.emailEvent.findFirst({
-        where: { messageId: parsed.object.email.message_id },
+        where: {
+          OR: [
+            { messageId: parsed.object.email.message_id, eventType: parsed.type },
+            { token: parsed.object.email.token, eventType: parsed.type }
+          ]
+        },
       });
 
       if (existingEvent) {
-        console.log("Duplicate email event. Skipping...");
+        console.log(`Duplicate email event ${parsed.type} for ${parsed.object.email.message_id}. Skipping...`);
         continue;
+      }
+
+      // Determine status based on event type
+      let status = "";
+      if (parsed.type.startsWith("email.delivery.")) {
+        // Extract status from delivery event type
+        status = parsed.type.replace("email.delivery.", "");
+      } else if (parsed.type === "email.loaded") {
+        status = "opened";
+      } else if (parsed.type === "email.link.clicked") {
+        status = "clicked";
       }
 
       await prisma.emailEvent.create({
@@ -115,13 +132,14 @@ export async function POST(req: NextRequest) {
           from: parsed.object.email.from,
           subject: parsed.object.email.subject,
           eventType: parsed.type,
-          status: parsed.object.status,
+          status: status,
           spamStatus: parsed.object.email.spam_status,
           timestamp: new Date(Number(parsed.object.email.timestamp) * 1000),
           domainId: domain.id,
         },
       });
 
+      // Define all delivery event types
       const deliveryEvents = [
         "email.delivery.sent",
         "email.delivery.hardfail",
@@ -132,49 +150,53 @@ export async function POST(req: NextRequest) {
         "email.delivery.delayed",
       ];
 
-      const engagementEvents: { [key: string]: string } = {
-        "email.loaded": "totalOpens",
-        "email.link.clicked": "totalClicks",
-      };
+      const successfulDeliveryEvents = ["email.delivery.sent"];
+      const failedDeliveryEvents = [
+        "email.delivery.hardfail",
+        "email.delivery.softfail",
+        "email.delivery.bounce",
+        "email.delivery.error"
+      ];
 
       const incrementData: Record<string, { increment: number }> = {};
 
+      // Handle delivery events
       if (deliveryEvents.includes(parsed.type)) {
         incrementData.totalSent = { increment: 1 };
 
-        if (parsed.type === "email.delivery.sent") {
+        if (successfulDeliveryEvents.includes(parsed.type)) {
           incrementData.totalDelivered = { increment: 1 };
         }
 
-        if (
-          [
-            "email.delivery.hardfail",
-            "email.delivery.softfail",
-            "email.delivery.bounce",
-            "email.delivery.error",
-          ].includes(parsed.type)
-        ) {
+        if (failedDeliveryEvents.includes(parsed.type)) {
           incrementData.totalFailed = { increment: 1 };
         }
       }
 
-      if (parsed.type in engagementEvents) {
-        const field = engagementEvents[parsed.type];
-        incrementData[field] = { increment: 1 };
+      // Handle engagement events
+      if (parsed.type === "email.loaded") {
+        incrementData.totalOpens = { increment: 1 };
       }
 
-      await prisma.emailSummary.upsert({
-        where: { domainId: domain.id },
-        update: incrementData,
-        create: {
-          domainId: domain.id,
-          totalSent: incrementData.totalSent?.increment ?? 0,
-          totalDelivered: incrementData.totalDelivered?.increment ?? 0,
-          totalFailed: incrementData.totalFailed?.increment ?? 0,
-          totalOpens: incrementData.totalOpens?.increment ?? 0,
-          totalClicks: incrementData.totalClicks?.increment ?? 0,
-        },
-      });
+      if (parsed.type === "email.link.clicked") {
+        incrementData.totalClicks = { increment: 1 };
+      }
+
+      // Update email summary
+      if (Object.keys(incrementData).length > 0) {
+        await prisma.emailSummary.upsert({
+          where: { domainId: domain.id },
+          update: incrementData,
+          create: {
+            domainId: domain.id,
+            totalSent: incrementData.totalSent?.increment ?? 0,
+            totalDelivered: incrementData.totalDelivered?.increment ?? 0,
+            totalFailed: incrementData.totalFailed?.increment ?? 0,
+            totalOpens: incrementData.totalOpens?.increment ?? 0,
+            totalClicks: incrementData.totalClicks?.increment ?? 0,
+          },
+        });
+      }
     }
 
     return NextResponse.json({ message: "All events processed successfully" });
