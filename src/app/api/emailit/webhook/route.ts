@@ -6,32 +6,80 @@ export async function POST(req: NextRequest) {
   try {
     const payload = await req.json();
 
- 
-    const EmailitPayloadSchema = z.array(
-      z.object({
-        webhook_request_id: z.string(),
-        event_id: z.string(),
-        type: z.string(),
-        object: z.object({
-          email: z.object({
-            id: z.number(),
-            token: z.string(),
-            type: z.string(),
-            message_id: z.string(),
-            to: z.string(),
-            from: z.string(),
-            subject: z.string(),
-            timestamp: z.string(),
-            spam_status: z.number(),
-            tag: z.string().nullable(),
-          }),
-          status: z.coerce.string(),
-          details: z.string().optional(),
-          sent_with_ssl: z.boolean().nullable().optional(),
-          timestamp: z.number(),
-          time: z.number().optional(),
+    // Base email object schema
+    const EmailObjectSchema = z.object({
+      id: z.number(),
+      token: z.string(),
+      type: z.string(),
+      message_id: z.string(),
+      to: z.string(),
+      from: z.string(),
+      subject: z.string(),
+      timestamp: z.string(),
+      spam_status: z.number(),
+      tag: z.string().nullable(),
+    });
+
+    // Schema for email delivery events
+    const EmailDeliverySchema = z.object({
+      webhook_request_id: z.string(),
+      event_id: z.string(),
+      type: z.enum([
+        "email.delivery.sent",
+        "email.delivery.hardfail",
+        "email.delivery.softfail",
+        "email.delivery.bounce",
+        "email.delivery.error",
+        "email.delivery.held",
+        "email.delivery.delayed"
+      ]),
+      object: z.object({
+        email: EmailObjectSchema,
+        status: z.string(),
+        details: z.string().optional(),
+        sent_with_ssl: z.boolean().optional(),
+        timestamp: z.number(),
+        time: z.number().optional(),
+      }),
+    });
+
+    // Schema for email opens
+    const EmailOpenSchema = z.object({
+      webhook_request_id: z.string(),
+      event_id: z.string(),
+      type: z.literal("email.loaded"),
+      object: z.object({
+        email: EmailObjectSchema,
+        ip_address: z.string(),
+        country: z.string().optional(),
+        city: z.string().optional(),
+        user_agent: z.string().optional(),
+        timestamp: z.number(),
+      }),
+    });
+
+    // Schema for email link clicks
+    const EmailClickSchema = z.object({
+      webhook_request_id: z.string(),
+      event_id: z.string(),
+      type: z.literal("email.link.clicked"),
+      object: z.object({
+        email: EmailObjectSchema,
+        link: z.object({
+          id: z.number(),
+          url: z.string(),
         }),
-      })
+        ip_address: z.string(),
+        country: z.string().optional(),
+        city: z.string().optional(),
+        user_agent: z.string().optional(),
+        timestamp: z.number(),
+      }),
+    });
+
+    // Union schema for all event types
+    const EmailitPayloadSchema = z.array(
+      z.union([EmailDeliverySchema, EmailOpenSchema, EmailClickSchema])
     );
 
     const events = EmailitPayloadSchema.parse(payload);
