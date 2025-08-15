@@ -3667,14 +3667,14 @@ export namespace Prisma {
     id: string
     emailId: number
     token: string
-    messageId: string | null
+    messageId: string
     to: string | null
     from: string | null
     subject: string | null
     eventType: string | null
     status: string | null
-    spamStatus: number
-    timestamp: Date
+    spamStatus: number | null
+    timestamp: Date | null
     domainId: string
     createdAt: Date
     _count: EmailEventCountAggregateOutputType | null
@@ -3785,14 +3785,14 @@ export namespace Prisma {
       id: string
       emailId: number
       token: string
-      messageId: string | null
+      messageId: string
       to: string | null
       from: string | null
       subject: string | null
       eventType: string | null
       status: string | null
-      spamStatus: number
-      timestamp: Date
+      spamStatus: number | null
+      timestamp: Date | null
       domainId: string
       createdAt: Date
     }, ExtArgs["result"]["emailEvent"]>
@@ -6223,14 +6223,14 @@ export namespace Prisma {
     id?: StringFilter<"EmailEvent"> | string
     emailId?: IntFilter<"EmailEvent"> | number
     token?: StringFilter<"EmailEvent"> | string
-    messageId?: StringNullableFilter<"EmailEvent"> | string | null
+    messageId?: StringFilter<"EmailEvent"> | string
     to?: StringNullableFilter<"EmailEvent"> | string | null
     from?: StringNullableFilter<"EmailEvent"> | string | null
     subject?: StringNullableFilter<"EmailEvent"> | string | null
     eventType?: StringNullableFilter<"EmailEvent"> | string | null
     status?: StringNullableFilter<"EmailEvent"> | string | null
-    spamStatus?: IntFilter<"EmailEvent"> | number
-    timestamp?: DateTimeFilter<"EmailEvent"> | Date | string
+    spamStatus?: IntNullableFilter<"EmailEvent"> | number | null
+    timestamp?: DateTimeNullableFilter<"EmailEvent"> | Date | string | null
     domainId?: StringFilter<"EmailEvent"> | string
     createdAt?: DateTimeFilter<"EmailEvent"> | Date | string
     domain?: XOR<DomainScalarRelationFilter, DomainWhereInput>
@@ -6240,14 +6240,14 @@ export namespace Prisma {
     id?: SortOrder
     emailId?: SortOrder
     token?: SortOrder
-    messageId?: SortOrderInput | SortOrder
+    messageId?: SortOrder
     to?: SortOrderInput | SortOrder
     from?: SortOrderInput | SortOrder
     subject?: SortOrderInput | SortOrder
     eventType?: SortOrderInput | SortOrder
     status?: SortOrderInput | SortOrder
-    spamStatus?: SortOrder
-    timestamp?: SortOrder
+    spamStatus?: SortOrderInput | SortOrder
+    timestamp?: SortOrderInput | SortOrder
     domainId?: SortOrder
     createdAt?: SortOrder
     domain?: DomainOrderByWithRelationInput
@@ -6260,14 +6260,14 @@ export namespace Prisma {
     NOT?: EmailEventWhereInput | EmailEventWhereInput[]
     emailId?: IntFilter<"EmailEvent"> | number
     token?: StringFilter<"EmailEvent"> | string
-    messageId?: StringNullableFilter<"EmailEvent"> | string | null
+    messageId?: StringFilter<"EmailEvent"> | string
     to?: StringNullableFilter<"EmailEvent"> | string | null
     from?: StringNullableFilter<"EmailEvent"> | string | null
     subject?: StringNullableFilter<"EmailEvent"> | string | null
     eventType?: StringNullableFilter<"EmailEvent"> | string | null
     status?: StringNullableFilter<"EmailEvent"> | string | null
-    spamStatus?: IntFilter<"EmailEvent"> | number
-    timestamp?: DateTimeFilter<"EmailEvent"> | Date | string
+    spamStatus?: IntNullableFilter<"EmailEvent"> | number | null
+    timestamp?: DateTimeNullableFilter<"EmailEvent"> | Date | string | null
     domainId?: StringFilter<"EmailEvent"> | string
     createdAt?: DateTimeFilter<"EmailEvent"> | Date | string
     domain?: XOR<DomainScalarRelationFilter, DomainWhereInput>
@@ -6277,14 +6277,14 @@ export namespace Prisma {
     id?: SortOrder
     emailId?: SortOrder
     token?: SortOrder
-    messageId?: SortOrderInput | SortOrder
+    messageId?: SortOrder
     to?: SortOrderInput | SortOrder
     from?: SortOrderInput | SortOrder
     subject?: SortOrderInput | SortOrder
     eventType?: SortOrderInput | SortOrder
     status?: SortOrderInput | SortOrder
-    spamStatus?: SortOrder
-    timestamp?: SortOrder
+    spamStatus?: SortOrderInput | SortOrder
+    timestamp?: SortOrderInput | SortOrder
     domainId?: SortOrder
     createdAt?: SortOrder
     _count?: EmailEventCountOrderByAggregateInput
@@ -6301,14 +6301,14 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"EmailEvent"> | string
     emailId?: IntWithAggregatesFilter<"EmailEvent"> | number
     token?: StringWithAggregatesFilter<"EmailEvent"> | string
-    messageId?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
+    messageId?: StringWithAggregatesFilter<"EmailEvent"> | string
     to?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
     from?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
     subject?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
     eventType?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
     status?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
-    spamStatus?: IntWithAggregatesFilter<"EmailEvent"> | number
-    timestamp?: DateTimeWithAggregatesFilter<"EmailEvent"> | Date | string
+    spamStatus?: IntNullableWithAggregatesFilter<"EmailEvent"> | number | null
+    timestamp?: DateTimeNullableWithAggregatesFilter<"EmailEvent"> | Date | string | null
     domainId?: StringWithAggregatesFilter<"EmailEvent"> | string
     createdAt?: DateTimeWithAggregatesFilter<"EmailEvent"> | Date | string
   }
@@ -6559,14 +6559,14 @@ export namespace Prisma {
     id?: string
     emailId: number
     token: string
-    messageId?: string | null
+    messageId: string
     to?: string | null
     from?: string | null
     subject?: string | null
     eventType?: string | null
     status?: string | null
-    spamStatus: number
-    timestamp: Date | string
+    spamStatus?: number | null
+    timestamp?: Date | string | null
     createdAt?: Date | string
     domain: DomainCreateNestedOneWithoutEmailsInput
   }
@@ -6575,14 +6575,14 @@ export namespace Prisma {
     id?: string
     emailId: number
     token: string
-    messageId?: string | null
+    messageId: string
     to?: string | null
     from?: string | null
     subject?: string | null
     eventType?: string | null
     status?: string | null
-    spamStatus: number
-    timestamp: Date | string
+    spamStatus?: number | null
+    timestamp?: Date | string | null
     domainId: string
     createdAt?: Date | string
   }
@@ -6591,14 +6591,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     emailId?: IntFieldUpdateOperationsInput | number
     token?: StringFieldUpdateOperationsInput | string
-    messageId?: NullableStringFieldUpdateOperationsInput | string | null
+    messageId?: StringFieldUpdateOperationsInput | string
     to?: NullableStringFieldUpdateOperationsInput | string | null
     from?: NullableStringFieldUpdateOperationsInput | string | null
     subject?: NullableStringFieldUpdateOperationsInput | string | null
     eventType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
-    spamStatus?: IntFieldUpdateOperationsInput | number
-    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
+    timestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     domain?: DomainUpdateOneRequiredWithoutEmailsNestedInput
   }
@@ -6607,14 +6607,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     emailId?: IntFieldUpdateOperationsInput | number
     token?: StringFieldUpdateOperationsInput | string
-    messageId?: NullableStringFieldUpdateOperationsInput | string | null
+    messageId?: StringFieldUpdateOperationsInput | string
     to?: NullableStringFieldUpdateOperationsInput | string | null
     from?: NullableStringFieldUpdateOperationsInput | string | null
     subject?: NullableStringFieldUpdateOperationsInput | string | null
     eventType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
-    spamStatus?: IntFieldUpdateOperationsInput | number
-    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
+    timestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     domainId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -6623,14 +6623,14 @@ export namespace Prisma {
     id?: string
     emailId: number
     token: string
-    messageId?: string | null
+    messageId: string
     to?: string | null
     from?: string | null
     subject?: string | null
     eventType?: string | null
     status?: string | null
-    spamStatus: number
-    timestamp: Date | string
+    spamStatus?: number | null
+    timestamp?: Date | string | null
     domainId: string
     createdAt?: Date | string
   }
@@ -6639,14 +6639,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     emailId?: IntFieldUpdateOperationsInput | number
     token?: StringFieldUpdateOperationsInput | string
-    messageId?: NullableStringFieldUpdateOperationsInput | string | null
+    messageId?: StringFieldUpdateOperationsInput | string
     to?: NullableStringFieldUpdateOperationsInput | string | null
     from?: NullableStringFieldUpdateOperationsInput | string | null
     subject?: NullableStringFieldUpdateOperationsInput | string | null
     eventType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
-    spamStatus?: IntFieldUpdateOperationsInput | number
-    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
+    timestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -6654,14 +6654,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     emailId?: IntFieldUpdateOperationsInput | number
     token?: StringFieldUpdateOperationsInput | string
-    messageId?: NullableStringFieldUpdateOperationsInput | string | null
+    messageId?: StringFieldUpdateOperationsInput | string
     to?: NullableStringFieldUpdateOperationsInput | string | null
     from?: NullableStringFieldUpdateOperationsInput | string | null
     subject?: NullableStringFieldUpdateOperationsInput | string | null
     eventType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
-    spamStatus?: IntFieldUpdateOperationsInput | number
-    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
+    timestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     domainId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -6983,6 +6983,28 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type DomainScalarRelationFilter = {
     is?: DomainWhereInput
     isNot?: DomainWhereInput
@@ -7060,6 +7082,36 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type EmailSummaryCountOrderByAggregateInput = {
@@ -7309,6 +7361,18 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
   export type DomainUpdateOneRequiredWithoutEmailsNestedInput = {
     create?: XOR<DomainCreateWithoutEmailsInput, DomainUncheckedCreateWithoutEmailsInput>
     connectOrCreate?: DomainCreateOrConnectWithoutEmailsInput
@@ -7440,6 +7504,17 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -7465,6 +7540,47 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type DomainCreateWithoutUserInput = {
@@ -7549,14 +7665,14 @@ export namespace Prisma {
     id?: string
     emailId: number
     token: string
-    messageId?: string | null
+    messageId: string
     to?: string | null
     from?: string | null
     subject?: string | null
     eventType?: string | null
     status?: string | null
-    spamStatus: number
-    timestamp: Date | string
+    spamStatus?: number | null
+    timestamp?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -7564,14 +7680,14 @@ export namespace Prisma {
     id?: string
     emailId: number
     token: string
-    messageId?: string | null
+    messageId: string
     to?: string | null
     from?: string | null
     subject?: string | null
     eventType?: string | null
     status?: string | null
-    spamStatus: number
-    timestamp: Date | string
+    spamStatus?: number | null
+    timestamp?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -7677,14 +7793,14 @@ export namespace Prisma {
     id?: StringFilter<"EmailEvent"> | string
     emailId?: IntFilter<"EmailEvent"> | number
     token?: StringFilter<"EmailEvent"> | string
-    messageId?: StringNullableFilter<"EmailEvent"> | string | null
+    messageId?: StringFilter<"EmailEvent"> | string
     to?: StringNullableFilter<"EmailEvent"> | string | null
     from?: StringNullableFilter<"EmailEvent"> | string | null
     subject?: StringNullableFilter<"EmailEvent"> | string | null
     eventType?: StringNullableFilter<"EmailEvent"> | string | null
     status?: StringNullableFilter<"EmailEvent"> | string | null
-    spamStatus?: IntFilter<"EmailEvent"> | number
-    timestamp?: DateTimeFilter<"EmailEvent"> | Date | string
+    spamStatus?: IntNullableFilter<"EmailEvent"> | number | null
+    timestamp?: DateTimeNullableFilter<"EmailEvent"> | Date | string | null
     domainId?: StringFilter<"EmailEvent"> | string
     createdAt?: DateTimeFilter<"EmailEvent"> | Date | string
   }
@@ -7875,14 +7991,14 @@ export namespace Prisma {
     id?: string
     emailId: number
     token: string
-    messageId?: string | null
+    messageId: string
     to?: string | null
     from?: string | null
     subject?: string | null
     eventType?: string | null
     status?: string | null
-    spamStatus: number
-    timestamp: Date | string
+    spamStatus?: number | null
+    timestamp?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -7890,14 +8006,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     emailId?: IntFieldUpdateOperationsInput | number
     token?: StringFieldUpdateOperationsInput | string
-    messageId?: NullableStringFieldUpdateOperationsInput | string | null
+    messageId?: StringFieldUpdateOperationsInput | string
     to?: NullableStringFieldUpdateOperationsInput | string | null
     from?: NullableStringFieldUpdateOperationsInput | string | null
     subject?: NullableStringFieldUpdateOperationsInput | string | null
     eventType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
-    spamStatus?: IntFieldUpdateOperationsInput | number
-    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
+    timestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -7905,14 +8021,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     emailId?: IntFieldUpdateOperationsInput | number
     token?: StringFieldUpdateOperationsInput | string
-    messageId?: NullableStringFieldUpdateOperationsInput | string | null
+    messageId?: StringFieldUpdateOperationsInput | string
     to?: NullableStringFieldUpdateOperationsInput | string | null
     from?: NullableStringFieldUpdateOperationsInput | string | null
     subject?: NullableStringFieldUpdateOperationsInput | string | null
     eventType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
-    spamStatus?: IntFieldUpdateOperationsInput | number
-    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
+    timestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -7920,14 +8036,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     emailId?: IntFieldUpdateOperationsInput | number
     token?: StringFieldUpdateOperationsInput | string
-    messageId?: NullableStringFieldUpdateOperationsInput | string | null
+    messageId?: StringFieldUpdateOperationsInput | string
     to?: NullableStringFieldUpdateOperationsInput | string | null
     from?: NullableStringFieldUpdateOperationsInput | string | null
     subject?: NullableStringFieldUpdateOperationsInput | string | null
     eventType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
-    spamStatus?: IntFieldUpdateOperationsInput | number
-    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
+    timestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

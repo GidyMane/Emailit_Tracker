@@ -38,14 +38,14 @@ model EmailEvent {
   id           String   @id @default(uuid())
   emailId      Int
   token        String
-  messageId    String?
+  messageId    String
   to           String?
   from         String?
   subject      String?
   eventType    String?
   status       String?
-  spamStatus   Int
-  timestamp    DateTime
+  spamStatus   Int?
+  timestamp    DateTime?
   domainId     String
   domain       Domain   @relation(fields: [domainId], references: [id])
   createdAt    DateTime @default(now())

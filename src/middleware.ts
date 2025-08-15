@@ -4,7 +4,8 @@ import { NextRequest } from "next/server";
 const publicPaths = [
   "/",
   "/api/auth/[kindeAuth]",
-  "/api/auth/kindecallback"
+  "/api/auth/kindecallback",
+  "/api/emailit/webhook" 
 ]
 
 const apiAuthPrefix = "/api/auth"

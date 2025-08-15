@@ -35,6 +35,7 @@ import { Separator } from "@/components/ui/separator"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Bar, BarChart, Line, LineChart, ResponsiveContainer, XAxis, YAxis, CartesianGrid } from "recharts"
 import { Skeleton, CardSkeleton, ChartSkeleton, TableSkeleton, ProgressSkeleton } from "@/components/ui/skeleton"
+import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs"
 
 const navigation = [
   {
@@ -695,9 +696,11 @@ export function EnhancedEmailDashboard() {
                     <Bell className="mr-2 size-4" />
                     Notifications
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    Sign out
-                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+  <LogoutLink className="text-red-500">
+    Sign out
+  </LogoutLink>
+</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </SidebarMenuItem>

@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { BarChart3, Bell, Calendar, ChevronDown, FileText, Home, Inbox, Mail, MailOpen, PieChart, Search, Send, Settings, TrendingUp, Users, Zap } from 'lucide-react'
+import { BarChart3, Bell, ChevronDown, FileText, Home, Inbox, Mail, MailOpen, PieChart, Search, Send, Settings, TrendingUp, Users, Zap } from 'lucide-react'
 import { TrendingDown } from 'lucide-react'
 
 import { Badge } from "@/components/ui/badge"
@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
-import { Progress } from "@/components/ui/progress"
+
 import {
   Sidebar,
   SidebarContent,
@@ -31,9 +31,10 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { Separator } from "@/components/ui/separator"
-import { EmailStatsCards } from "./email-stats-cards"
+
 import { EmailCharts } from "./email-charts"
 import { EmailList } from "./email-list"
+import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs";
 
 const navigation = [
   {
@@ -73,6 +74,9 @@ const stats = [
 ]
 
 export function EmailDashboard() {
+
+
+
   return (
     <SidebarProvider>
       <Sidebar className="border-r">
@@ -146,9 +150,11 @@ export function EmailDashboard() {
                     <Bell className="mr-2 size-4" />
                     Notifications
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    Sign out
-                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+  <LogoutLink className="text-red-500">
+    Sign out
+  </LogoutLink>
+</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </SidebarMenuItem>
