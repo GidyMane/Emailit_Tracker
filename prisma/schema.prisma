@@ -60,8 +60,17 @@ model EmailSummary {
   totalFailed      Int     @default(0)
   totalOpens       Int     @default(0)
   totalClicks      Int     @default(0)
+
+  // Detailed delivery status tracking
+  sentCount        Int     @default(0)     // email.delivery.sent
+  hardfailCount    Int     @default(0)     // email.delivery.hardfail
+  softfailCount    Int     @default(0)     // email.delivery.softfail
+  bounceCount      Int     @default(0)     // email.delivery.bounce
+  errorCount       Int     @default(0)     // email.delivery.error
+  heldCount        Int     @default(0)     // email.delivery.held
+  delayedCount     Int     @default(0)     // email.delivery.delayed
+
   domain           Domain  @relation(fields: [domainId], references: [id])
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 }
-
