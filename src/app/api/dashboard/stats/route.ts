@@ -143,21 +143,30 @@ export async function GET() {
       }
     });
 
+    // Process the detailed delivery event data
+    const sentCount = deliveryEventStats.find(stat => stat.eventType === 'email.delivery.sent')?._count.eventType || 0;
+    const hardfailCount = deliveryEventStats.find(stat => stat.eventType === 'email.delivery.hardfail')?._count.eventType || 0;
+    const softfailCount = deliveryEventStats.find(stat => stat.eventType === 'email.delivery.softfail')?._count.eventType || 0;
+    const bounceCount = deliveryEventStats.find(stat => stat.eventType === 'email.delivery.bounce')?._count.eventType || 0;
+    const errorCount = deliveryEventStats.find(stat => stat.eventType === 'email.delivery.error')?._count.eventType || 0;
+    const heldCount = deliveryEventStats.find(stat => stat.eventType === 'email.delivery.held')?._count.eventType || 0;
+    const delayedCount = deliveryEventStats.find(stat => stat.eventType === 'email.delivery.delayed')?._count.eventType || 0;
+
     // Process the data into the expected format
-    const delivered = eventStats.find(stat => stat.status === 'delivered')?._count.status || 0;
-    const failed = eventStats.find(stat => stat.status === 'failed')?._count.status || 0;
-    const bounced = eventStats.find(stat => stat.status === 'bounced')?._count.status || 0;
+    const delivered = eventStats.find(stat => stat.status === 'sent')?._count.status || sentCount;
+    const failed = hardfailCount + softfailCount + bounceCount + errorCount;
 
     const opens = engagementStats.filter(stat =>
-      stat.eventType === 'open' || stat.eventType === 'email.loaded'
+      stat.eventType === 'opened' || stat.eventType === 'email.loaded'
     ).reduce((sum, stat) => sum + stat._count.eventType, 0);
 
     const clicks = engagementStats.filter(stat =>
-      stat.eventType === 'click' || stat.eventType === 'email.link.clicked'
+      stat.eventType === 'clicked' || stat.eventType === 'email.link.clicked'
     ).reduce((sum, stat) => sum + stat._count.eventType, 0);
 
     // Calculate delivery rate
-    const deliveryRate = totalEmails > 0 ? ((delivered / totalEmails) * 100) : 0;
+    const totalDeliveryAttempts = sentCount + failed + heldCount + delayedCount;
+    const deliveryRate = totalDeliveryAttempts > 0 ? ((sentCount / totalDeliveryAttempts) * 100) : 0;
 
     // Aggregate summary data
     const aggregatedSummary = summaries.reduce((acc, summary) => ({
@@ -165,24 +174,48 @@ export async function GET() {
       totalDelivered: acc.totalDelivered + (summary?.totalDelivered || 0),
       totalFailed: acc.totalFailed + (summary?.totalFailed || 0),
       totalOpens: acc.totalOpens + (summary?.totalOpens || 0),
-      totalClicks: acc.totalClicks + (summary?.totalClicks || 0)
+      totalClicks: acc.totalClicks + (summary?.totalClicks || 0),
+      sentCount: acc.sentCount + (summary?.sentCount || 0),
+      hardfailCount: acc.hardfailCount + (summary?.hardfailCount || 0),
+      softfailCount: acc.softfailCount + (summary?.softfailCount || 0),
+      bounceCount: acc.bounceCount + (summary?.bounceCount || 0),
+      errorCount: acc.errorCount + (summary?.errorCount || 0),
+      heldCount: acc.heldCount + (summary?.heldCount || 0),
+      delayedCount: acc.delayedCount + (summary?.delayedCount || 0)
     }), {
       totalSent: 0,
       totalDelivered: 0,
       totalFailed: 0,
       totalOpens: 0,
-      totalClicks: 0
+      totalClicks: 0,
+      sentCount: 0,
+      hardfailCount: 0,
+      softfailCount: 0,
+      bounceCount: 0,
+      errorCount: 0,
+      heldCount: 0,
+      delayedCount: 0
     });
 
     return NextResponse.json({
       stats: {
         totalSent: totalEmails,
-        delivered,
-        failed: failed + bounced,
+        delivered: sentCount,
+        failed,
         opens,
         clicks,
         pending: pendingEmails,
-        deliveryRate: Math.round(deliveryRate * 100) / 100
+        deliveryRate: Math.round(deliveryRate * 100) / 100,
+        // Detailed delivery statuses
+        detailedStatus: {
+          sent: sentCount,
+          hardfail: hardfailCount,
+          softfail: softfailCount,
+          bounce: bounceCount,
+          error: errorCount,
+          held: heldCount,
+          delayed: delayedCount
+        }
       },
       summary: aggregatedSummary,
       domainName: isAdmin ? "All Domains" : domains[0].name,
