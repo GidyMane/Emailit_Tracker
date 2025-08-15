@@ -80,6 +80,31 @@ export async function GET() {
       }
     });
 
+    // Get detailed delivery event types
+    const deliveryEventStats = await prisma.emailEvent.groupBy({
+      by: ['eventType'],
+      where: {
+        ...domainFilter,
+        eventType: {
+          in: [
+            'email.delivery.sent',
+            'email.delivery.hardfail',
+            'email.delivery.softfail',
+            'email.delivery.bounce',
+            'email.delivery.error',
+            'email.delivery.held',
+            'email.delivery.delayed'
+          ]
+        },
+        createdAt: {
+          gte: thirtyDaysAgo
+        }
+      },
+      _count: {
+        eventType: true
+      }
+    });
+
     // Get engagement stats (opens and clicks)
     const engagementStats = await prisma.emailEvent.groupBy({
       by: ['eventType'],
