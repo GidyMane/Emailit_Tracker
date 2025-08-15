@@ -153,6 +153,7 @@ interface ChartData {
 interface EmailEventData {
   id: string;
   emailId: number;
+  messageId: string;
   to: string;
   from: string;
   subject: string;
