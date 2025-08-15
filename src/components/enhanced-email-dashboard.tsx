@@ -1000,6 +1000,118 @@ export function EnhancedEmailDashboard() {
               </Card>
             </TabsContent>
 
+            <TabsContent value="messages" className="space-y-4 md:space-y-6">
+              {/* Recent Messages */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Recent Messages</CardTitle>
+                  <CardDescription>Latest emails sent through your domain</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {eventsData?.events && Array.isArray(eventsData.events) && eventsData.events.length > 0 ? (
+                      <>
+                        {/* Messages Table */}
+                        <div className="rounded-lg border">
+                          <div className="grid grid-cols-12 gap-4 p-4 font-medium text-sm text-muted-foreground border-b bg-muted/50">
+                            <div className="col-span-3">To</div>
+                            <div className="col-span-4">Subject</div>
+                            <div className="col-span-2">Status</div>
+                            <div className="col-span-2">Sent Date</div>
+                            <div className="col-span-1">Actions</div>
+                          </div>
+                          {/* Group messages by messageId to show unique emails */}
+                          {Object.values(
+                            eventsData.events.reduce((acc: { [key: string]: EmailEventData }, event: EmailEventData) => {
+                              // Only include delivery events for messages view
+                              if (event.eventType.startsWith('email.delivery.')) {
+                                if (!acc[event.messageId] || new Date(event.timestamp) > new Date(acc[event.messageId].timestamp)) {
+                                  acc[event.messageId] = event;
+                                }
+                              }
+                              return acc;
+                            }, {})
+                          ).slice(0, 20).map((event: EmailEventData) => (
+                            <div key={event.messageId} className="grid grid-cols-12 gap-4 p-4 border-b last:border-b-0 hover:bg-muted/30 transition-colors">
+                              <div className="col-span-3">
+                                <div className="flex items-center gap-2">
+                                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-blue-100 flex-shrink-0">
+                                    <Mail className="size-4 text-blue-600" />
+                                  </div>
+                                  <div className="min-w-0 flex-1">
+                                    <div className="font-medium text-sm truncate">{event.to}</div>
+                                    <div className="text-xs text-muted-foreground">{event.from}</div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="col-span-4">
+                                <div className="text-sm font-medium truncate" title={event.subject}>
+                                  {event.subject}
+                                </div>
+                                <div className="text-xs text-muted-foreground">ID: {event.emailId}</div>
+                              </div>
+                              <div className="col-span-2">
+                                <Badge
+                                  variant={
+                                    event.status === 'sent' ? 'default' :
+                                    ['hardfail', 'softfail', 'bounce', 'error'].includes(event.status) ? 'destructive' :
+                                    ['held', 'delayed'].includes(event.status) ? 'secondary' :
+                                    'outline'
+                                  }
+                                >
+                                  {event.status === 'sent' ? 'Delivered' :
+                                   event.status === 'hardfail' ? 'Hard Fail' :
+                                   event.status === 'softfail' ? 'Soft Fail' :
+                                   event.status === 'bounce' ? 'Bounced' :
+                                   event.status === 'error' ? 'Error' :
+                                   event.status === 'held' ? 'Held' :
+                                   event.status === 'delayed' ? 'Delayed' :
+                                   event.status}
+                                </Badge>
+                              </div>
+                              <div className="col-span-2">
+                                <div className="text-sm">
+                                  {new Date(event.timestamp).toLocaleDateString()}
+                                </div>
+                                <div className="text-xs text-muted-foreground">
+                                  {new Date(event.timestamp).toLocaleTimeString()}
+                                </div>
+                              </div>
+                              <div className="col-span-1">
+                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                  <Eye className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Pagination Info */}
+                        {eventsData.pagination && (
+                          <div className="flex items-center justify-between text-sm text-muted-foreground">
+                            <div>
+                              Showing recent messages from {domainData?.userDomain || 'your domain'}
+                            </div>
+                            {eventsData.pagination.hasMore && (
+                              <Button variant="outline" size="sm">
+                                Load More Messages
+                              </Button>
+                            )}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <div className="text-center py-12">
+                        <Mail className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                        <h3 className="text-lg font-medium mb-2">No Messages Yet</h3>
+                        <p className="text-sm text-muted-foreground">Recent messages will appear here once you start sending emails</p>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
             <TabsContent value="audience" className="space-y-4 md:space-y-6">
               {/* Domain Distribution & Overview */}
               <div className="grid gap-6 md:grid-cols-2">
