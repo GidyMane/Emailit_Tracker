@@ -87,6 +87,15 @@ interface EmailStats {
   clicks: number;
   pending: number;
   deliveryRate: number;
+  detailedStatus?: {
+    sent: number;
+    hardfail: number;
+    softfail: number;
+    bounce: number;
+    error: number;
+    held: number;
+    delayed: number;
+  };
 }
 
 interface DomainDistribution {
