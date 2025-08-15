@@ -772,6 +772,32 @@ export function EnhancedEmailDashboard() {
                 ]}
               </div>
 
+              {/* Detailed Delivery Status */}
+              {detailedStatusCards.length > 0 && (
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-lg font-semibold">Detailed Delivery Status</h3>
+                    <Badge variant="outline">Last 30 days</Badge>
+                  </div>
+                  <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                    {detailedStatusCards.map((stat) => (
+                      <Card key={stat.title} className="hover:shadow-md transition-shadow">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                          <CardTitle className="text-sm font-medium text-muted-foreground">{stat.title}</CardTitle>
+                          <div className={`p-2 rounded-lg ${stat.bgColor}`}>
+                            <stat.icon className={`size-4 ${stat.color}`} />
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="text-2xl font-bold">{stat.value}</div>
+                          <p className="text-xs text-muted-foreground mt-1">{stat.description}</p>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Delivery Rate Progress */}
               <Card>
                 <CardHeader>
