@@ -808,43 +808,44 @@ export function EnhancedEmailDashboard() {
                     {eventsData?.events && Array.isArray(eventsData.events) && eventsData.events.length > 0 ? (
                       <>
                         {/* Email Events Table */}
-                        <div className="rounded-lg border">
-                          <div className="grid grid-cols-12 gap-4 p-4 font-medium text-sm text-muted-foreground border-b bg-muted/50">
-                            <div className="col-span-3">Recipient</div>
-                            <div className="col-span-3">Subject</div>
-                            <div className="col-span-2">Event Type</div>
-                            <div className="col-span-2">Status</div>
-                            <div className="col-span-2">Date</div>
-                          </div>
-                          {eventsData.events.slice(0, 50).map((event: EmailEventData) => (
-                            <div key={event.id} className="grid grid-cols-12 gap-4 p-4 border-b last:border-b-0 hover:bg-muted/30 transition-colors">
-                              <div className="col-span-3">
-                                <div className="flex items-center gap-2">
-                                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-blue-100 flex-shrink-0">
-                                    <Mail className="size-4 text-blue-600" />
+                        <div className="rounded-lg border overflow-hidden">
+                          <div className="overflow-x-auto">
+                            <div className="min-w-[800px] grid grid-cols-12 gap-4 p-3 sm:p-4 font-medium text-xs sm:text-sm text-muted-foreground border-b bg-muted/50">
+                              <div className="col-span-3">Recipient</div>
+                              <div className="col-span-3">Subject</div>
+                              <div className="col-span-2">Event Type</div>
+                              <div className="col-span-2">Status</div>
+                              <div className="col-span-2">Date</div>
+                            </div>
+                            {eventsData.events.slice(0, 50).map((event: EmailEventData) => (
+                              <div key={event.id} className="min-w-[800px] grid grid-cols-12 gap-4 p-3 sm:p-4 border-b last:border-b-0 hover:bg-muted/30 transition-colors">
+                                <div className="col-span-3">
+                                  <div className="flex items-center gap-2">
+                                    <div className="flex aspect-square size-6 sm:size-8 items-center justify-center rounded-lg bg-blue-100 flex-shrink-0">
+                                      <Mail className="size-3 sm:size-4 text-blue-600" />
+                                    </div>
+                                    <div className="min-w-0 flex-1">
+                                      <div className="font-medium text-xs sm:text-sm truncate">{event.to}</div>
+                                      <div className="text-[10px] sm:text-xs text-muted-foreground">{event.from}</div>
+                                    </div>
                                   </div>
-                                  <div className="min-w-0 flex-1">
-                                    <div className="font-medium text-sm truncate">{event.to}</div>
-                                    <div className="text-xs text-muted-foreground">{event.from}</div>
+                                </div>
+                                <div className="col-span-3">
+                                  <div className="text-xs sm:text-sm font-medium truncate" title={event.subject}>
+                                    {event.subject}
+                                  </div>
+                                  <div className="text-[10px] sm:text-xs text-muted-foreground">ID: {event.emailId}</div>
+                                </div>
+                                <div className="col-span-2">
+                                  <div className="flex items-center gap-1 sm:gap-2">
+                                    {event.eventType === 'email.loaded' && <Eye className="size-3 sm:size-4 text-purple-600" />}
+                                    {event.eventType === 'email.link.clicked' && <MousePointer className="size-3 sm:size-4 text-orange-600" />}
+                                    {event.eventType.includes('delivery') && <Send className="size-3 sm:size-4 text-blue-600" />}
+                                    <span className="text-xs sm:text-sm capitalize">
+                                      {event.eventType.replace('email.', '').replace('.', ' ')}
+                                    </span>
                                   </div>
                                 </div>
-                              </div>
-                              <div className="col-span-3">
-                                <div className="text-sm font-medium truncate" title={event.subject}>
-                                  {event.subject}
-                                </div>
-                                <div className="text-xs text-muted-foreground">ID: {event.emailId}</div>
-                              </div>
-                              <div className="col-span-2">
-                                <div className="flex items-center gap-2">
-                                  {event.eventType === 'email.loaded' && <Eye className="size-4 text-purple-600" />}
-                                  {event.eventType === 'email.link.clicked' && <MousePointer className="size-4 text-orange-600" />}
-                                  {event.eventType.includes('delivery') && <Send className="size-4 text-blue-600" />}
-                                  <span className="text-sm capitalize">
-                                    {event.eventType.replace('email.', '').replace('.', ' ')}
-                                  </span>
-                                </div>
-                              </div>
                               <div className="col-span-2">
                                 <Badge
                                   variant={
@@ -857,16 +858,17 @@ export function EnhancedEmailDashboard() {
                                   {event.status}
                                 </Badge>
                               </div>
-                              <div className="col-span-2">
-                                <div className="text-sm">
-                                  {new Date(event.timestamp).toLocaleDateString()}
-                                </div>
-                                <div className="text-xs text-muted-foreground">
-                                  {new Date(event.timestamp).toLocaleTimeString()}
+                                <div className="col-span-2">
+                                  <div className="text-xs sm:text-sm">
+                                    {new Date(event.timestamp).toLocaleDateString()}
+                                  </div>
+                                  <div className="text-[10px] sm:text-xs text-muted-foreground">
+                                    {new Date(event.timestamp).toLocaleTimeString()}
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          ))}
+                            ))}
+                          </div>
                         </div>
 
                         {/* Pagination Info */}
