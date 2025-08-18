@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  CLIENT
+}
+
+model User {
+  id        String   @id @default(uuid())
+  kindeId   String   @unique
+  email     String   @unique
+  name      String?
+  domains   Domain[] // A user can be linked to multiple domains (optional link)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Domain {
+  id        String        @id @default(uuid())
+  name      String        @unique // E.g. ryden.co.ke
+  userId    String? // Optional: allows anonymous domain ownership
+  user      User?         @relation(fields: [userId], references: [id])
+  emails    EmailEvent[]
+  summary   EmailSummary?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+model EmailEvent {
+  id         String    @id @default(uuid())
+  emailId    Int
+  token      String
+  messageId  String
+  to         String?
+  from       String?
+  subject    String?
+  eventType  String?
+  status     String?
+  spamStatus Int?
+  timestamp  DateTime?
+  domainId   String
+  domain     Domain    @relation(fields: [domainId], references: [id])
+  createdAt  DateTime  @default(now())
+}
+
+model EmailSummary {
+  id            String   @id @default(cuid())
+  domainId      String   @unique
+  domain        Domain   @relation(fields: [domainId], references: [id])
+  totalSent     Int      @default(0)
+  totalHardFail Int      @default(0)
+  totalSoftFail Int      @default(0)
+  totalBounce   Int      @default(0)
+  totalError    Int      @default(0)
+  totalHeld     Int      @default(0)
+  totalDelayed  Int      @default(0)
+  totalLoaded   Int      @default(0)
+  totalClicked  Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
