@@ -965,7 +965,7 @@ export function EnhancedEmailDashboard() {
                     {audienceData?.audience && Array.isArray(audienceData.audience) && audienceData.audience.length > 0 ? (
                       <>
                         {/* Audience Stats Summary */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-muted/30 rounded-lg mb-4">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 p-3 sm:p-4 bg-muted/30 rounded-lg mb-4">
                           <div className="text-center">
                             <div className="text-2xl font-bold">{audienceData.audience.length}</div>
                             <div className="text-sm text-muted-foreground">Total Recipients</div>
