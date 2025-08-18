@@ -1344,6 +1344,120 @@ export function EnhancedEmailDashboard() {
                 </CardContent>
               </Card>
             </TabsContent>
+
+            {audienceData?.isAdmin && (
+              <TabsContent value="domains" className="space-y-4 md:space-y-6">
+                {/* Sending Domains */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Sending Domains</CardTitle>
+                    <CardDescription>All domains configured for email sending</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {domainsData?.domains && domainsData.domains.length > 0 ? (
+                        <>
+                          {/* Domains Summary */}
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-muted/30 rounded-lg mb-4">
+                            <div className="text-center">
+                              <div className="text-2xl font-bold">{domainsData.totalDomains}</div>
+                              <div className="text-sm text-muted-foreground">Total Domains</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-2xl font-bold text-green-600">
+                                {domainsData.domains.filter(d => d.totalEmails > 0).length}
+                              </div>
+                              <div className="text-sm text-muted-foreground">Active Domains</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-2xl font-bold text-blue-600">
+                                {domainsData.domains.reduce((sum, d) => sum + d.totalEmails, 0).toLocaleString()}
+                              </div>
+                              <div className="text-sm text-muted-foreground">Total Emails Sent</div>
+                            </div>
+                          </div>
+
+                          {/* Domains Table */}
+                          <div className="rounded-lg border">
+                            <div className="grid grid-cols-12 gap-4 p-4 font-medium text-sm text-muted-foreground border-b bg-muted/50">
+                              <div className="col-span-3">Domain Name</div>
+                              <div className="col-span-2">Total Emails</div>
+                              <div className="col-span-2">Recipients</div>
+                              <div className="col-span-2">Last Activity</div>
+                              <div className="col-span-2">Status</div>
+                              <div className="col-span-1">Actions</div>
+                            </div>
+                            {domainsData.domains.map((domain) => (
+                              <div key={domain.id} className="grid grid-cols-12 gap-4 p-4 border-b last:border-b-0 hover:bg-muted/30 transition-colors">
+                                <div className="col-span-3">
+                                  <div className="flex items-center gap-2">
+                                    <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-blue-100 flex-shrink-0">
+                                      <Send className="size-4 text-blue-600" />
+                                    </div>
+                                    <div className="min-w-0 flex-1">
+                                      <div className="font-medium text-sm">{domain.name}</div>
+                                      <div className="text-xs text-muted-foreground">
+                                        Created {new Date(domain.createdAt).toLocaleDateString()}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="col-span-2">
+                                  <div className="text-sm font-medium">{domain.totalEmails.toLocaleString()}</div>
+                                  {domain.summary && (
+                                    <div className="text-xs text-muted-foreground">
+                                      {domain.summary.totalSent} sent, {domain.summary.totalLoaded} opened
+                                    </div>
+                                  )}
+                                </div>
+                                <div className="col-span-2">
+                                  <div className="text-sm font-medium">{domain.uniqueRecipients.toLocaleString()}</div>
+                                  <div className="text-xs text-muted-foreground">Unique recipients</div>
+                                </div>
+                                <div className="col-span-2">
+                                  {domain.lastEmailSent ? (
+                                    <>
+                                      <div className="text-sm">
+                                        {new Date(domain.lastEmailSent).toLocaleDateString()}
+                                      </div>
+                                      <div className="text-xs text-muted-foreground">
+                                        {new Date(domain.lastEmailSent).toLocaleTimeString()}
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <div className="text-sm text-muted-foreground">No emails sent</div>
+                                  )}
+                                </div>
+                                <div className="col-span-2">
+                                  <Badge
+                                    variant={
+                                      domain.totalEmails > 0 ? 'default' : 'secondary'
+                                    }
+                                  >
+                                    {domain.totalEmails > 0 ? 'Active' : 'Inactive'}
+                                  </Badge>
+                                </div>
+                                <div className="col-span-1">
+                                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                    <Eye className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </>
+                      ) : (
+                        <div className="text-center py-12">
+                          <Send className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                          <h3 className="text-lg font-medium mb-2">No Domains Found</h3>
+                          <p className="text-sm text-muted-foreground">No sending domains have been configured yet</p>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            )}
           </Tabs>
         </main>
       </SidebarInset>
