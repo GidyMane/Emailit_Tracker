@@ -4659,43 +4659,57 @@ export namespace Prisma {
   }
 
   export type EmailSummaryAvgAggregateOutputType = {
-    id: number | null
     totalSent: number | null
-    totalDelivered: number | null
-    totalFailed: number | null
-    totalOpens: number | null
-    totalClicks: number | null
+    totalHardFail: number | null
+    totalSoftFail: number | null
+    totalBounce: number | null
+    totalError: number | null
+    totalHeld: number | null
+    totalDelayed: number | null
+    totalLoaded: number | null
+    totalClicked: number | null
   }
 
   export type EmailSummarySumAggregateOutputType = {
-    id: number | null
     totalSent: number | null
-    totalDelivered: number | null
-    totalFailed: number | null
-    totalOpens: number | null
-    totalClicks: number | null
+    totalHardFail: number | null
+    totalSoftFail: number | null
+    totalBounce: number | null
+    totalError: number | null
+    totalHeld: number | null
+    totalDelayed: number | null
+    totalLoaded: number | null
+    totalClicked: number | null
   }
 
   export type EmailSummaryMinAggregateOutputType = {
-    id: number | null
+    id: string | null
     domainId: string | null
     totalSent: number | null
-    totalDelivered: number | null
-    totalFailed: number | null
-    totalOpens: number | null
-    totalClicks: number | null
+    totalHardFail: number | null
+    totalSoftFail: number | null
+    totalBounce: number | null
+    totalError: number | null
+    totalHeld: number | null
+    totalDelayed: number | null
+    totalLoaded: number | null
+    totalClicked: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
   export type EmailSummaryMaxAggregateOutputType = {
-    id: number | null
+    id: string | null
     domainId: string | null
     totalSent: number | null
-    totalDelivered: number | null
-    totalFailed: number | null
-    totalOpens: number | null
-    totalClicks: number | null
+    totalHardFail: number | null
+    totalSoftFail: number | null
+    totalBounce: number | null
+    totalError: number | null
+    totalHeld: number | null
+    totalDelayed: number | null
+    totalLoaded: number | null
+    totalClicked: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -4704,10 +4718,14 @@ export namespace Prisma {
     id: number
     domainId: number
     totalSent: number
-    totalDelivered: number
-    totalFailed: number
-    totalOpens: number
-    totalClicks: number
+    totalHardFail: number
+    totalSoftFail: number
+    totalBounce: number
+    totalError: number
+    totalHeld: number
+    totalDelayed: number
+    totalLoaded: number
+    totalClicked: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -4715,31 +4733,41 @@ export namespace Prisma {
 
 
   export type EmailSummaryAvgAggregateInputType = {
-    id?: true
     totalSent?: true
-    totalDelivered?: true
-    totalFailed?: true
-    totalOpens?: true
-    totalClicks?: true
+    totalHardFail?: true
+    totalSoftFail?: true
+    totalBounce?: true
+    totalError?: true
+    totalHeld?: true
+    totalDelayed?: true
+    totalLoaded?: true
+    totalClicked?: true
   }
 
   export type EmailSummarySumAggregateInputType = {
-    id?: true
     totalSent?: true
-    totalDelivered?: true
-    totalFailed?: true
-    totalOpens?: true
-    totalClicks?: true
+    totalHardFail?: true
+    totalSoftFail?: true
+    totalBounce?: true
+    totalError?: true
+    totalHeld?: true
+    totalDelayed?: true
+    totalLoaded?: true
+    totalClicked?: true
   }
 
   export type EmailSummaryMinAggregateInputType = {
     id?: true
     domainId?: true
     totalSent?: true
-    totalDelivered?: true
-    totalFailed?: true
-    totalOpens?: true
-    totalClicks?: true
+    totalHardFail?: true
+    totalSoftFail?: true
+    totalBounce?: true
+    totalError?: true
+    totalHeld?: true
+    totalDelayed?: true
+    totalLoaded?: true
+    totalClicked?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -4748,10 +4776,14 @@ export namespace Prisma {
     id?: true
     domainId?: true
     totalSent?: true
-    totalDelivered?: true
-    totalFailed?: true
-    totalOpens?: true
-    totalClicks?: true
+    totalHardFail?: true
+    totalSoftFail?: true
+    totalBounce?: true
+    totalError?: true
+    totalHeld?: true
+    totalDelayed?: true
+    totalLoaded?: true
+    totalClicked?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -4760,10 +4792,14 @@ export namespace Prisma {
     id?: true
     domainId?: true
     totalSent?: true
-    totalDelivered?: true
-    totalFailed?: true
-    totalOpens?: true
-    totalClicks?: true
+    totalHardFail?: true
+    totalSoftFail?: true
+    totalBounce?: true
+    totalError?: true
+    totalHeld?: true
+    totalDelayed?: true
+    totalLoaded?: true
+    totalClicked?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -4856,13 +4892,17 @@ export namespace Prisma {
   }
 
   export type EmailSummaryGroupByOutputType = {
-    id: number
+    id: string
     domainId: string
     totalSent: number
-    totalDelivered: number
-    totalFailed: number
-    totalOpens: number
-    totalClicks: number
+    totalHardFail: number
+    totalSoftFail: number
+    totalBounce: number
+    totalError: number
+    totalHeld: number
+    totalDelayed: number
+    totalLoaded: number
+    totalClicked: number
     createdAt: Date
     updatedAt: Date
     _count: EmailSummaryCountAggregateOutputType | null
@@ -4890,10 +4930,14 @@ export namespace Prisma {
     id?: boolean
     domainId?: boolean
     totalSent?: boolean
-    totalDelivered?: boolean
-    totalFailed?: boolean
-    totalOpens?: boolean
-    totalClicks?: boolean
+    totalHardFail?: boolean
+    totalSoftFail?: boolean
+    totalBounce?: boolean
+    totalError?: boolean
+    totalHeld?: boolean
+    totalDelayed?: boolean
+    totalLoaded?: boolean
+    totalClicked?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     domain?: boolean | DomainDefaultArgs<ExtArgs>
@@ -4903,10 +4947,14 @@ export namespace Prisma {
     id?: boolean
     domainId?: boolean
     totalSent?: boolean
-    totalDelivered?: boolean
-    totalFailed?: boolean
-    totalOpens?: boolean
-    totalClicks?: boolean
+    totalHardFail?: boolean
+    totalSoftFail?: boolean
+    totalBounce?: boolean
+    totalError?: boolean
+    totalHeld?: boolean
+    totalDelayed?: boolean
+    totalLoaded?: boolean
+    totalClicked?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     domain?: boolean | DomainDefaultArgs<ExtArgs>
@@ -4916,10 +4964,14 @@ export namespace Prisma {
     id?: boolean
     domainId?: boolean
     totalSent?: boolean
-    totalDelivered?: boolean
-    totalFailed?: boolean
-    totalOpens?: boolean
-    totalClicks?: boolean
+    totalHardFail?: boolean
+    totalSoftFail?: boolean
+    totalBounce?: boolean
+    totalError?: boolean
+    totalHeld?: boolean
+    totalDelayed?: boolean
+    totalLoaded?: boolean
+    totalClicked?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     domain?: boolean | DomainDefaultArgs<ExtArgs>
@@ -4929,15 +4981,19 @@ export namespace Prisma {
     id?: boolean
     domainId?: boolean
     totalSent?: boolean
-    totalDelivered?: boolean
-    totalFailed?: boolean
-    totalOpens?: boolean
-    totalClicks?: boolean
+    totalHardFail?: boolean
+    totalSoftFail?: boolean
+    totalBounce?: boolean
+    totalError?: boolean
+    totalHeld?: boolean
+    totalDelayed?: boolean
+    totalLoaded?: boolean
+    totalClicked?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type EmailSummaryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "domainId" | "totalSent" | "totalDelivered" | "totalFailed" | "totalOpens" | "totalClicks" | "createdAt" | "updatedAt", ExtArgs["result"]["emailSummary"]>
+  export type EmailSummaryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "domainId" | "totalSent" | "totalHardFail" | "totalSoftFail" | "totalBounce" | "totalError" | "totalHeld" | "totalDelayed" | "totalLoaded" | "totalClicked" | "createdAt" | "updatedAt", ExtArgs["result"]["emailSummary"]>
   export type EmailSummaryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     domain?: boolean | DomainDefaultArgs<ExtArgs>
   }
@@ -4954,13 +5010,17 @@ export namespace Prisma {
       domain: Prisma.$DomainPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
-      id: number
+      id: string
       domainId: string
       totalSent: number
-      totalDelivered: number
-      totalFailed: number
-      totalOpens: number
-      totalClicks: number
+      totalHardFail: number
+      totalSoftFail: number
+      totalBounce: number
+      totalError: number
+      totalHeld: number
+      totalDelayed: number
+      totalLoaded: number
+      totalClicked: number
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["emailSummary"]>
@@ -5387,13 +5447,17 @@ export namespace Prisma {
    * Fields of the EmailSummary model
    */
   interface EmailSummaryFieldRefs {
-    readonly id: FieldRef<"EmailSummary", 'Int'>
+    readonly id: FieldRef<"EmailSummary", 'String'>
     readonly domainId: FieldRef<"EmailSummary", 'String'>
     readonly totalSent: FieldRef<"EmailSummary", 'Int'>
-    readonly totalDelivered: FieldRef<"EmailSummary", 'Int'>
-    readonly totalFailed: FieldRef<"EmailSummary", 'Int'>
-    readonly totalOpens: FieldRef<"EmailSummary", 'Int'>
-    readonly totalClicks: FieldRef<"EmailSummary", 'Int'>
+    readonly totalHardFail: FieldRef<"EmailSummary", 'Int'>
+    readonly totalSoftFail: FieldRef<"EmailSummary", 'Int'>
+    readonly totalBounce: FieldRef<"EmailSummary", 'Int'>
+    readonly totalError: FieldRef<"EmailSummary", 'Int'>
+    readonly totalHeld: FieldRef<"EmailSummary", 'Int'>
+    readonly totalDelayed: FieldRef<"EmailSummary", 'Int'>
+    readonly totalLoaded: FieldRef<"EmailSummary", 'Int'>
+    readonly totalClicked: FieldRef<"EmailSummary", 'Int'>
     readonly createdAt: FieldRef<"EmailSummary", 'DateTime'>
     readonly updatedAt: FieldRef<"EmailSummary", 'DateTime'>
   }
@@ -5870,10 +5934,14 @@ export namespace Prisma {
     id: 'id',
     domainId: 'domainId',
     totalSent: 'totalSent',
-    totalDelivered: 'totalDelivered',
-    totalFailed: 'totalFailed',
-    totalOpens: 'totalOpens',
-    totalClicks: 'totalClicks',
+    totalHardFail: 'totalHardFail',
+    totalSoftFail: 'totalSoftFail',
+    totalBounce: 'totalBounce',
+    totalError: 'totalError',
+    totalHeld: 'totalHeld',
+    totalDelayed: 'totalDelayed',
+    totalLoaded: 'totalLoaded',
+    totalClicked: 'totalClicked',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -6191,13 +6259,17 @@ export namespace Prisma {
     AND?: EmailSummaryWhereInput | EmailSummaryWhereInput[]
     OR?: EmailSummaryWhereInput[]
     NOT?: EmailSummaryWhereInput | EmailSummaryWhereInput[]
-    id?: IntFilter<"EmailSummary"> | number
+    id?: StringFilter<"EmailSummary"> | string
     domainId?: StringFilter<"EmailSummary"> | string
     totalSent?: IntFilter<"EmailSummary"> | number
-    totalDelivered?: IntFilter<"EmailSummary"> | number
-    totalFailed?: IntFilter<"EmailSummary"> | number
-    totalOpens?: IntFilter<"EmailSummary"> | number
-    totalClicks?: IntFilter<"EmailSummary"> | number
+    totalHardFail?: IntFilter<"EmailSummary"> | number
+    totalSoftFail?: IntFilter<"EmailSummary"> | number
+    totalBounce?: IntFilter<"EmailSummary"> | number
+    totalError?: IntFilter<"EmailSummary"> | number
+    totalHeld?: IntFilter<"EmailSummary"> | number
+    totalDelayed?: IntFilter<"EmailSummary"> | number
+    totalLoaded?: IntFilter<"EmailSummary"> | number
+    totalClicked?: IntFilter<"EmailSummary"> | number
     createdAt?: DateTimeFilter<"EmailSummary"> | Date | string
     updatedAt?: DateTimeFilter<"EmailSummary"> | Date | string
     domain?: XOR<DomainScalarRelationFilter, DomainWhereInput>
@@ -6207,26 +6279,34 @@ export namespace Prisma {
     id?: SortOrder
     domainId?: SortOrder
     totalSent?: SortOrder
-    totalDelivered?: SortOrder
-    totalFailed?: SortOrder
-    totalOpens?: SortOrder
-    totalClicks?: SortOrder
+    totalHardFail?: SortOrder
+    totalSoftFail?: SortOrder
+    totalBounce?: SortOrder
+    totalError?: SortOrder
+    totalHeld?: SortOrder
+    totalDelayed?: SortOrder
+    totalLoaded?: SortOrder
+    totalClicked?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     domain?: DomainOrderByWithRelationInput
   }
 
   export type EmailSummaryWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
+    id?: string
     domainId?: string
     AND?: EmailSummaryWhereInput | EmailSummaryWhereInput[]
     OR?: EmailSummaryWhereInput[]
     NOT?: EmailSummaryWhereInput | EmailSummaryWhereInput[]
     totalSent?: IntFilter<"EmailSummary"> | number
-    totalDelivered?: IntFilter<"EmailSummary"> | number
-    totalFailed?: IntFilter<"EmailSummary"> | number
-    totalOpens?: IntFilter<"EmailSummary"> | number
-    totalClicks?: IntFilter<"EmailSummary"> | number
+    totalHardFail?: IntFilter<"EmailSummary"> | number
+    totalSoftFail?: IntFilter<"EmailSummary"> | number
+    totalBounce?: IntFilter<"EmailSummary"> | number
+    totalError?: IntFilter<"EmailSummary"> | number
+    totalHeld?: IntFilter<"EmailSummary"> | number
+    totalDelayed?: IntFilter<"EmailSummary"> | number
+    totalLoaded?: IntFilter<"EmailSummary"> | number
+    totalClicked?: IntFilter<"EmailSummary"> | number
     createdAt?: DateTimeFilter<"EmailSummary"> | Date | string
     updatedAt?: DateTimeFilter<"EmailSummary"> | Date | string
     domain?: XOR<DomainScalarRelationFilter, DomainWhereInput>
@@ -6236,10 +6316,14 @@ export namespace Prisma {
     id?: SortOrder
     domainId?: SortOrder
     totalSent?: SortOrder
-    totalDelivered?: SortOrder
-    totalFailed?: SortOrder
-    totalOpens?: SortOrder
-    totalClicks?: SortOrder
+    totalHardFail?: SortOrder
+    totalSoftFail?: SortOrder
+    totalBounce?: SortOrder
+    totalError?: SortOrder
+    totalHeld?: SortOrder
+    totalDelayed?: SortOrder
+    totalLoaded?: SortOrder
+    totalClicked?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: EmailSummaryCountOrderByAggregateInput
@@ -6253,13 +6337,17 @@ export namespace Prisma {
     AND?: EmailSummaryScalarWhereWithAggregatesInput | EmailSummaryScalarWhereWithAggregatesInput[]
     OR?: EmailSummaryScalarWhereWithAggregatesInput[]
     NOT?: EmailSummaryScalarWhereWithAggregatesInput | EmailSummaryScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"EmailSummary"> | number
+    id?: StringWithAggregatesFilter<"EmailSummary"> | string
     domainId?: StringWithAggregatesFilter<"EmailSummary"> | string
     totalSent?: IntWithAggregatesFilter<"EmailSummary"> | number
-    totalDelivered?: IntWithAggregatesFilter<"EmailSummary"> | number
-    totalFailed?: IntWithAggregatesFilter<"EmailSummary"> | number
-    totalOpens?: IntWithAggregatesFilter<"EmailSummary"> | number
-    totalClicks?: IntWithAggregatesFilter<"EmailSummary"> | number
+    totalHardFail?: IntWithAggregatesFilter<"EmailSummary"> | number
+    totalSoftFail?: IntWithAggregatesFilter<"EmailSummary"> | number
+    totalBounce?: IntWithAggregatesFilter<"EmailSummary"> | number
+    totalError?: IntWithAggregatesFilter<"EmailSummary"> | number
+    totalHeld?: IntWithAggregatesFilter<"EmailSummary"> | number
+    totalDelayed?: IntWithAggregatesFilter<"EmailSummary"> | number
+    totalLoaded?: IntWithAggregatesFilter<"EmailSummary"> | number
+    totalClicked?: IntWithAggregatesFilter<"EmailSummary"> | number
     createdAt?: DateTimeWithAggregatesFilter<"EmailSummary"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"EmailSummary"> | Date | string
   }
@@ -6506,81 +6594,112 @@ export namespace Prisma {
   }
 
   export type EmailSummaryCreateInput = {
+    id?: string
     totalSent?: number
-    totalDelivered?: number
-    totalFailed?: number
-    totalOpens?: number
-    totalClicks?: number
+    totalHardFail?: number
+    totalSoftFail?: number
+    totalBounce?: number
+    totalError?: number
+    totalHeld?: number
+    totalDelayed?: number
+    totalLoaded?: number
+    totalClicked?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     domain: DomainCreateNestedOneWithoutSummaryInput
   }
 
   export type EmailSummaryUncheckedCreateInput = {
-    id?: number
+    id?: string
     domainId: string
     totalSent?: number
-    totalDelivered?: number
-    totalFailed?: number
-    totalOpens?: number
-    totalClicks?: number
+    totalHardFail?: number
+    totalSoftFail?: number
+    totalBounce?: number
+    totalError?: number
+    totalHeld?: number
+    totalDelayed?: number
+    totalLoaded?: number
+    totalClicked?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type EmailSummaryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
     totalSent?: IntFieldUpdateOperationsInput | number
-    totalDelivered?: IntFieldUpdateOperationsInput | number
-    totalFailed?: IntFieldUpdateOperationsInput | number
-    totalOpens?: IntFieldUpdateOperationsInput | number
-    totalClicks?: IntFieldUpdateOperationsInput | number
+    totalHardFail?: IntFieldUpdateOperationsInput | number
+    totalSoftFail?: IntFieldUpdateOperationsInput | number
+    totalBounce?: IntFieldUpdateOperationsInput | number
+    totalError?: IntFieldUpdateOperationsInput | number
+    totalHeld?: IntFieldUpdateOperationsInput | number
+    totalDelayed?: IntFieldUpdateOperationsInput | number
+    totalLoaded?: IntFieldUpdateOperationsInput | number
+    totalClicked?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     domain?: DomainUpdateOneRequiredWithoutSummaryNestedInput
   }
 
   export type EmailSummaryUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     domainId?: StringFieldUpdateOperationsInput | string
     totalSent?: IntFieldUpdateOperationsInput | number
-    totalDelivered?: IntFieldUpdateOperationsInput | number
-    totalFailed?: IntFieldUpdateOperationsInput | number
-    totalOpens?: IntFieldUpdateOperationsInput | number
-    totalClicks?: IntFieldUpdateOperationsInput | number
+    totalHardFail?: IntFieldUpdateOperationsInput | number
+    totalSoftFail?: IntFieldUpdateOperationsInput | number
+    totalBounce?: IntFieldUpdateOperationsInput | number
+    totalError?: IntFieldUpdateOperationsInput | number
+    totalHeld?: IntFieldUpdateOperationsInput | number
+    totalDelayed?: IntFieldUpdateOperationsInput | number
+    totalLoaded?: IntFieldUpdateOperationsInput | number
+    totalClicked?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EmailSummaryCreateManyInput = {
-    id?: number
+    id?: string
     domainId: string
     totalSent?: number
-    totalDelivered?: number
-    totalFailed?: number
-    totalOpens?: number
-    totalClicks?: number
+    totalHardFail?: number
+    totalSoftFail?: number
+    totalBounce?: number
+    totalError?: number
+    totalHeld?: number
+    totalDelayed?: number
+    totalLoaded?: number
+    totalClicked?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type EmailSummaryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
     totalSent?: IntFieldUpdateOperationsInput | number
-    totalDelivered?: IntFieldUpdateOperationsInput | number
-    totalFailed?: IntFieldUpdateOperationsInput | number
-    totalOpens?: IntFieldUpdateOperationsInput | number
-    totalClicks?: IntFieldUpdateOperationsInput | number
+    totalHardFail?: IntFieldUpdateOperationsInput | number
+    totalSoftFail?: IntFieldUpdateOperationsInput | number
+    totalBounce?: IntFieldUpdateOperationsInput | number
+    totalError?: IntFieldUpdateOperationsInput | number
+    totalHeld?: IntFieldUpdateOperationsInput | number
+    totalDelayed?: IntFieldUpdateOperationsInput | number
+    totalLoaded?: IntFieldUpdateOperationsInput | number
+    totalClicked?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EmailSummaryUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     domainId?: StringFieldUpdateOperationsInput | string
     totalSent?: IntFieldUpdateOperationsInput | number
-    totalDelivered?: IntFieldUpdateOperationsInput | number
-    totalFailed?: IntFieldUpdateOperationsInput | number
-    totalOpens?: IntFieldUpdateOperationsInput | number
-    totalClicks?: IntFieldUpdateOperationsInput | number
+    totalHardFail?: IntFieldUpdateOperationsInput | number
+    totalSoftFail?: IntFieldUpdateOperationsInput | number
+    totalBounce?: IntFieldUpdateOperationsInput | number
+    totalError?: IntFieldUpdateOperationsInput | number
+    totalHeld?: IntFieldUpdateOperationsInput | number
+    totalDelayed?: IntFieldUpdateOperationsInput | number
+    totalLoaded?: IntFieldUpdateOperationsInput | number
+    totalClicked?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -6908,31 +7027,42 @@ export namespace Prisma {
     id?: SortOrder
     domainId?: SortOrder
     totalSent?: SortOrder
-    totalDelivered?: SortOrder
-    totalFailed?: SortOrder
-    totalOpens?: SortOrder
-    totalClicks?: SortOrder
+    totalHardFail?: SortOrder
+    totalSoftFail?: SortOrder
+    totalBounce?: SortOrder
+    totalError?: SortOrder
+    totalHeld?: SortOrder
+    totalDelayed?: SortOrder
+    totalLoaded?: SortOrder
+    totalClicked?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type EmailSummaryAvgOrderByAggregateInput = {
-    id?: SortOrder
     totalSent?: SortOrder
-    totalDelivered?: SortOrder
-    totalFailed?: SortOrder
-    totalOpens?: SortOrder
-    totalClicks?: SortOrder
+    totalHardFail?: SortOrder
+    totalSoftFail?: SortOrder
+    totalBounce?: SortOrder
+    totalError?: SortOrder
+    totalHeld?: SortOrder
+    totalDelayed?: SortOrder
+    totalLoaded?: SortOrder
+    totalClicked?: SortOrder
   }
 
   export type EmailSummaryMaxOrderByAggregateInput = {
     id?: SortOrder
     domainId?: SortOrder
     totalSent?: SortOrder
-    totalDelivered?: SortOrder
-    totalFailed?: SortOrder
-    totalOpens?: SortOrder
-    totalClicks?: SortOrder
+    totalHardFail?: SortOrder
+    totalSoftFail?: SortOrder
+    totalBounce?: SortOrder
+    totalError?: SortOrder
+    totalHeld?: SortOrder
+    totalDelayed?: SortOrder
+    totalLoaded?: SortOrder
+    totalClicked?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -6941,21 +7071,28 @@ export namespace Prisma {
     id?: SortOrder
     domainId?: SortOrder
     totalSent?: SortOrder
-    totalDelivered?: SortOrder
-    totalFailed?: SortOrder
-    totalOpens?: SortOrder
-    totalClicks?: SortOrder
+    totalHardFail?: SortOrder
+    totalSoftFail?: SortOrder
+    totalBounce?: SortOrder
+    totalError?: SortOrder
+    totalHeld?: SortOrder
+    totalDelayed?: SortOrder
+    totalLoaded?: SortOrder
+    totalClicked?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type EmailSummarySumOrderByAggregateInput = {
-    id?: SortOrder
     totalSent?: SortOrder
-    totalDelivered?: SortOrder
-    totalFailed?: SortOrder
-    totalOpens?: SortOrder
-    totalClicks?: SortOrder
+    totalHardFail?: SortOrder
+    totalSoftFail?: SortOrder
+    totalBounce?: SortOrder
+    totalError?: SortOrder
+    totalHeld?: SortOrder
+    totalDelayed?: SortOrder
+    totalLoaded?: SortOrder
+    totalClicked?: SortOrder
   }
 
   export type DomainCreateNestedManyWithoutUserInput = {
@@ -7457,22 +7594,31 @@ export namespace Prisma {
   }
 
   export type EmailSummaryCreateWithoutDomainInput = {
+    id?: string
     totalSent?: number
-    totalDelivered?: number
-    totalFailed?: number
-    totalOpens?: number
-    totalClicks?: number
+    totalHardFail?: number
+    totalSoftFail?: number
+    totalBounce?: number
+    totalError?: number
+    totalHeld?: number
+    totalDelayed?: number
+    totalLoaded?: number
+    totalClicked?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type EmailSummaryUncheckedCreateWithoutDomainInput = {
-    id?: number
+    id?: string
     totalSent?: number
-    totalDelivered?: number
-    totalFailed?: number
-    totalOpens?: number
-    totalClicks?: number
+    totalHardFail?: number
+    totalSoftFail?: number
+    totalBounce?: number
+    totalError?: number
+    totalHeld?: number
+    totalDelayed?: number
+    totalLoaded?: number
+    totalClicked?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -7558,22 +7704,31 @@ export namespace Prisma {
   }
 
   export type EmailSummaryUpdateWithoutDomainInput = {
+    id?: StringFieldUpdateOperationsInput | string
     totalSent?: IntFieldUpdateOperationsInput | number
-    totalDelivered?: IntFieldUpdateOperationsInput | number
-    totalFailed?: IntFieldUpdateOperationsInput | number
-    totalOpens?: IntFieldUpdateOperationsInput | number
-    totalClicks?: IntFieldUpdateOperationsInput | number
+    totalHardFail?: IntFieldUpdateOperationsInput | number
+    totalSoftFail?: IntFieldUpdateOperationsInput | number
+    totalBounce?: IntFieldUpdateOperationsInput | number
+    totalError?: IntFieldUpdateOperationsInput | number
+    totalHeld?: IntFieldUpdateOperationsInput | number
+    totalDelayed?: IntFieldUpdateOperationsInput | number
+    totalLoaded?: IntFieldUpdateOperationsInput | number
+    totalClicked?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EmailSummaryUncheckedUpdateWithoutDomainInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     totalSent?: IntFieldUpdateOperationsInput | number
-    totalDelivered?: IntFieldUpdateOperationsInput | number
-    totalFailed?: IntFieldUpdateOperationsInput | number
-    totalOpens?: IntFieldUpdateOperationsInput | number
-    totalClicks?: IntFieldUpdateOperationsInput | number
+    totalHardFail?: IntFieldUpdateOperationsInput | number
+    totalSoftFail?: IntFieldUpdateOperationsInput | number
+    totalBounce?: IntFieldUpdateOperationsInput | number
+    totalError?: IntFieldUpdateOperationsInput | number
+    totalHeld?: IntFieldUpdateOperationsInput | number
+    totalDelayed?: IntFieldUpdateOperationsInput | number
+    totalLoaded?: IntFieldUpdateOperationsInput | number
+    totalClicked?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

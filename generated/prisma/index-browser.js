@@ -157,10 +157,14 @@ exports.Prisma.EmailSummaryScalarFieldEnum = {
   id: 'id',
   domainId: 'domainId',
   totalSent: 'totalSent',
-  totalDelivered: 'totalDelivered',
-  totalFailed: 'totalFailed',
-  totalOpens: 'totalOpens',
-  totalClicks: 'totalClicks',
+  totalHardFail: 'totalHardFail',
+  totalSoftFail: 'totalSoftFail',
+  totalBounce: 'totalBounce',
+  totalError: 'totalError',
+  totalHeld: 'totalHeld',
+  totalDelayed: 'totalDelayed',
+  totalLoaded: 'totalLoaded',
+  totalClicked: 'totalClicked',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
