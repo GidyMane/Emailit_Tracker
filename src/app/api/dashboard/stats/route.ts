@@ -59,63 +59,23 @@ export async function GET() {
       }, { status: 404 });
     }
 
-    // Get summary statistics for all relevant domains using new schema
+    // Get summary statistics using new schema
     const summaries = await prisma.emailSummary.findMany({
       where: isAdmin ? { domainId: { in: domainIds } } : { domainId: domains[0].id }
     });
 
-    // Get event counts by status for the last 30 days
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
-    const eventStats = await prisma.emailEvent.groupBy({
-      by: ['status'],
-      where: {
-        ...domainFilter,
-        createdAt: {
-          gte: thirtyDaysAgo
-        }
-      },
-      _count: {
-        status: true
-      }
+    // Get total email count
+    const totalEmails = await prisma.emailEvent.count({
+      where: domainFilter
     });
 
-    // Get detailed delivery event types
-    const deliveryEventStats = await prisma.emailEvent.groupBy({
-      by: ['eventType'],
-      where: {
-        ...domainFilter,
-        eventType: {
-          in: [
-            'email.delivery.sent',
-            'email.delivery.hardfail', 
-            'email.delivery.softfail',
-            'email.delivery.bounce',
-            'email.delivery.error',
-            'email.delivery.held',
-            'email.delivery.delayed'
-          ]
-        },
-        createdAt: {
-          gte: thirtyDaysAgo
-        }
-      },
-      _count: {
-        eventType: true
-      }
-    });
-
-    // Get engagement stats (opens and clicks)
+    // Get engagement stats
     const engagementStats = await prisma.emailEvent.groupBy({
       by: ['eventType'],
       where: {
         ...domainFilter,
         eventType: {
           in: ['email.loaded', 'email.link.clicked']
-        },
-        createdAt: {
-          gte: thirtyDaysAgo
         }
       },
       _count: {
@@ -123,43 +83,8 @@ export async function GET() {
       }
     });
 
-    // Get total email count
-    const totalEmails = await prisma.emailEvent.count({
-      where: {
-        ...domainFilter,
-        createdAt: {
-          gte: thirtyDaysAgo
-        }
-      }
-    });
-
-    // Get pending emails (recent emails without delivery status)
-    const pendingEmails = await prisma.emailEvent.count({
-      where: {
-        ...domainFilter,
-        status: 'pending',
-        createdAt: {
-          gte: thirtyDaysAgo
-        }
-      }
-    });
-
-    // Process the detailed delivery event data using new schema
-    const sentCount = deliveryEventStats.find(stat => stat.eventType === 'email.delivery.sent')?._count.eventType || 0;
-    const hardfailCount = deliveryEventStats.find(stat => stat.eventType === 'email.delivery.hardfail')?._count.eventType || 0;
-    const softfailCount = deliveryEventStats.find(stat => stat.eventType === 'email.delivery.softfail')?._count.eventType || 0;
-    const bounceCount = deliveryEventStats.find(stat => stat.eventType === 'email.delivery.bounce')?._count.eventType || 0;
-    const errorCount = deliveryEventStats.find(stat => stat.eventType === 'email.delivery.error')?._count.eventType || 0;
-    const heldCount = deliveryEventStats.find(stat => stat.eventType === 'email.delivery.held')?._count.eventType || 0;
-    const delayedCount = deliveryEventStats.find(stat => stat.eventType === 'email.delivery.delayed')?._count.eventType || 0;
-
     const opens = engagementStats.find(stat => stat.eventType === 'email.loaded')?._count.eventType || 0;
     const clicks = engagementStats.find(stat => stat.eventType === 'email.link.clicked')?._count.eventType || 0;
-
-    // Calculate totals based on new schema
-    const totalDeliveryAttempts = sentCount + hardfailCount + softfailCount + bounceCount + errorCount + heldCount + delayedCount;
-    const totalFailed = hardfailCount + softfailCount + bounceCount + errorCount;
-    const deliveryRate = totalDeliveryAttempts > 0 ? ((sentCount / totalDeliveryAttempts) * 100) : 0;
 
     // Aggregate summary data using new schema fields
     const aggregatedSummary = summaries.reduce((acc, summary) => ({
@@ -184,24 +109,40 @@ export async function GET() {
       totalClicked: 0
     });
 
+    // Calculate derived stats
+    const totalDelivered = aggregatedSummary.totalSent - (
+      aggregatedSummary.totalHardFail + 
+      aggregatedSummary.totalSoftFail + 
+      aggregatedSummary.totalBounce + 
+      aggregatedSummary.totalError
+    );
+    
+    const totalFailed = aggregatedSummary.totalHardFail + 
+                       aggregatedSummary.totalSoftFail + 
+                       aggregatedSummary.totalBounce + 
+                       aggregatedSummary.totalError;
+
+    const deliveryRate = aggregatedSummary.totalSent > 0 ? 
+      ((totalDelivered / aggregatedSummary.totalSent) * 100) : 0;
+
     return NextResponse.json({
       stats: {
-        totalSent: totalEmails,
-        delivered: sentCount,
+        totalSent: aggregatedSummary.totalSent,
+        delivered: totalDelivered,
         failed: totalFailed,
-        opens,
-        clicks,
-        pending: pendingEmails,
+        opens: aggregatedSummary.totalLoaded,
+        clicks: aggregatedSummary.totalClicked,
+        pending: aggregatedSummary.totalHeld + aggregatedSummary.totalDelayed,
         deliveryRate: Math.round(deliveryRate * 100) / 100,
-        // Detailed delivery statuses using new schema
+        // Detailed breakdown using new schema
         detailedStatus: {
-          sent: sentCount,
-          hardfail: hardfailCount,
-          softfail: softfailCount,
-          bounce: bounceCount,
-          error: errorCount,
-          held: heldCount,
-          delayed: delayedCount
+          sent: totalDelivered,
+          hardfail: aggregatedSummary.totalHardFail,
+          softfail: aggregatedSummary.totalSoftFail,
+          bounce: aggregatedSummary.totalBounce,
+          error: aggregatedSummary.totalError,
+          held: aggregatedSummary.totalHeld,
+          delayed: aggregatedSummary.totalDelayed
         }
       },
       summary: aggregatedSummary,
