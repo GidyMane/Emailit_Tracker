@@ -129,6 +129,7 @@ interface AudienceData {
     clickRate: number;
   };
   domainName: string;
+  isAdmin: boolean;
 }
 
 interface VolumeData {
