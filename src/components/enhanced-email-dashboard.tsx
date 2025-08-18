@@ -178,6 +178,35 @@ interface EventsData {
   domainName: string;
 }
 
+interface DomainSummary {
+  totalSent: number;
+  totalHardFail: number;
+  totalSoftFail: number;
+  totalBounce: number;
+  totalError: number;
+  totalHeld: number;
+  totalDelayed: number;
+  totalLoaded: number;
+  totalClicked: number;
+}
+
+interface SendingDomain {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  totalEmails: number;
+  uniqueRecipients: number;
+  lastEmailSent: string | null;
+  summary: DomainSummary | null;
+}
+
+interface DomainsData {
+  domains: SendingDomain[];
+  totalDomains: number;
+  isAdmin: boolean;
+}
+
 export function EnhancedEmailDashboard() {
   const [activeTab, setActiveTab] = useState("overview")
   const [domainData, setDomainData] = useState<DomainData | null>(null)
