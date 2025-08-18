@@ -52,28 +52,6 @@ model EmailEvent {
 }
 
 model EmailSummary {
-<<<<<<< HEAD
-  id             Int    @id @default(autoincrement())
-  domainId       String @unique
-  totalSent      Int    @default(0)
-  totalDelivered Int    @default(0)
-  totalFailed    Int    @default(0)
-  totalOpens     Int    @default(0)
-  totalClicks    Int    @default(0)
-
-  // Detailed delivery status tracking
-  sentCount     Int @default(0) // email.delivery.sent
-  hardfailCount Int @default(0) // email.delivery.hardfail
-  softfailCount Int @default(0) // email.delivery.softfail
-  bounceCount   Int @default(0) // email.delivery.bounce
-  errorCount    Int @default(0) // email.delivery.error
-  heldCount     Int @default(0) // email.delivery.held
-  delayedCount  Int @default(0) // email.delivery.delayed
-
-  domain    Domain   @relation(fields: [domainId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-=======
   id            String   @id @default(cuid())
   domainId      String   @unique
   domain        Domain   @relation(fields: [domainId], references: [id])
@@ -88,5 +66,4 @@ model EmailSummary {
   totalClicked  Int      @default(0)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
->>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
 }
