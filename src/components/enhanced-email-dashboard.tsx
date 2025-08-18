@@ -213,6 +213,7 @@ export function EnhancedEmailDashboard() {
   const [emailStats, setEmailStats] = useState<EmailStats | null>(null)
   const [audienceData, setAudienceData] = useState<AudienceData | null>(null)
   const [eventsData, setEventsData] = useState<EventsData | null>(null)
+  const [domainsData, setDomainsData] = useState<DomainsData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
