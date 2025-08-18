@@ -3668,13 +3668,13 @@ export namespace Prisma {
     emailId: number
     token: string
     messageId: string
-    to: string
-    from: string
-    subject: string
-    eventType: string
-    status: string
-    spamStatus: number
-    timestamp: Date
+    to: string | null
+    from: string | null
+    subject: string | null
+    eventType: string | null
+    status: string | null
+    spamStatus: number | null
+    timestamp: Date | null
     domainId: string
     createdAt: Date
     _count: EmailEventCountAggregateOutputType | null
@@ -3786,13 +3786,13 @@ export namespace Prisma {
       emailId: number
       token: string
       messageId: string
-      to: string
-      from: string
-      subject: string
-      eventType: string
-      status: string
-      spamStatus: number
-      timestamp: Date
+      to: string | null
+      from: string | null
+      subject: string | null
+      eventType: string | null
+      status: string | null
+      spamStatus: number | null
+      timestamp: Date | null
       domainId: string
       createdAt: Date
     }, ExtArgs["result"]["emailEvent"]>
@@ -4659,8 +4659,8 @@ export namespace Prisma {
   }
 
   export type EmailSummaryAvgAggregateOutputType = {
-    id: number | null
     totalSent: number | null
+<<<<<<< HEAD
     totalDelivered: number | null
     totalFailed: number | null
     totalOpens: number | null
@@ -4672,11 +4672,21 @@ export namespace Prisma {
     errorCount: number | null
     heldCount: number | null
     delayedCount: number | null
+=======
+    totalHardFail: number | null
+    totalSoftFail: number | null
+    totalBounce: number | null
+    totalError: number | null
+    totalHeld: number | null
+    totalDelayed: number | null
+    totalLoaded: number | null
+    totalClicked: number | null
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
   }
 
   export type EmailSummarySumAggregateOutputType = {
-    id: number | null
     totalSent: number | null
+<<<<<<< HEAD
     totalDelivered: number | null
     totalFailed: number | null
     totalOpens: number | null
@@ -4688,12 +4698,23 @@ export namespace Prisma {
     errorCount: number | null
     heldCount: number | null
     delayedCount: number | null
+=======
+    totalHardFail: number | null
+    totalSoftFail: number | null
+    totalBounce: number | null
+    totalError: number | null
+    totalHeld: number | null
+    totalDelayed: number | null
+    totalLoaded: number | null
+    totalClicked: number | null
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
   }
 
   export type EmailSummaryMinAggregateOutputType = {
-    id: number | null
+    id: string | null
     domainId: string | null
     totalSent: number | null
+<<<<<<< HEAD
     totalDelivered: number | null
     totalFailed: number | null
     totalOpens: number | null
@@ -4705,14 +4726,25 @@ export namespace Prisma {
     errorCount: number | null
     heldCount: number | null
     delayedCount: number | null
+=======
+    totalHardFail: number | null
+    totalSoftFail: number | null
+    totalBounce: number | null
+    totalError: number | null
+    totalHeld: number | null
+    totalDelayed: number | null
+    totalLoaded: number | null
+    totalClicked: number | null
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt: Date | null
     updatedAt: Date | null
   }
 
   export type EmailSummaryMaxAggregateOutputType = {
-    id: number | null
+    id: string | null
     domainId: string | null
     totalSent: number | null
+<<<<<<< HEAD
     totalDelivered: number | null
     totalFailed: number | null
     totalOpens: number | null
@@ -4724,6 +4756,16 @@ export namespace Prisma {
     errorCount: number | null
     heldCount: number | null
     delayedCount: number | null
+=======
+    totalHardFail: number | null
+    totalSoftFail: number | null
+    totalBounce: number | null
+    totalError: number | null
+    totalHeld: number | null
+    totalDelayed: number | null
+    totalLoaded: number | null
+    totalClicked: number | null
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -4732,6 +4774,7 @@ export namespace Prisma {
     id: number
     domainId: number
     totalSent: number
+<<<<<<< HEAD
     totalDelivered: number
     totalFailed: number
     totalOpens: number
@@ -4743,6 +4786,16 @@ export namespace Prisma {
     errorCount: number
     heldCount: number
     delayedCount: number
+=======
+    totalHardFail: number
+    totalSoftFail: number
+    totalBounce: number
+    totalError: number
+    totalHeld: number
+    totalDelayed: number
+    totalLoaded: number
+    totalClicked: number
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt: number
     updatedAt: number
     _all: number
@@ -4750,8 +4803,8 @@ export namespace Prisma {
 
 
   export type EmailSummaryAvgAggregateInputType = {
-    id?: true
     totalSent?: true
+<<<<<<< HEAD
     totalDelivered?: true
     totalFailed?: true
     totalOpens?: true
@@ -4763,11 +4816,21 @@ export namespace Prisma {
     errorCount?: true
     heldCount?: true
     delayedCount?: true
+=======
+    totalHardFail?: true
+    totalSoftFail?: true
+    totalBounce?: true
+    totalError?: true
+    totalHeld?: true
+    totalDelayed?: true
+    totalLoaded?: true
+    totalClicked?: true
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
   }
 
   export type EmailSummarySumAggregateInputType = {
-    id?: true
     totalSent?: true
+<<<<<<< HEAD
     totalDelivered?: true
     totalFailed?: true
     totalOpens?: true
@@ -4779,12 +4842,23 @@ export namespace Prisma {
     errorCount?: true
     heldCount?: true
     delayedCount?: true
+=======
+    totalHardFail?: true
+    totalSoftFail?: true
+    totalBounce?: true
+    totalError?: true
+    totalHeld?: true
+    totalDelayed?: true
+    totalLoaded?: true
+    totalClicked?: true
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
   }
 
   export type EmailSummaryMinAggregateInputType = {
     id?: true
     domainId?: true
     totalSent?: true
+<<<<<<< HEAD
     totalDelivered?: true
     totalFailed?: true
     totalOpens?: true
@@ -4796,6 +4870,16 @@ export namespace Prisma {
     errorCount?: true
     heldCount?: true
     delayedCount?: true
+=======
+    totalHardFail?: true
+    totalSoftFail?: true
+    totalBounce?: true
+    totalError?: true
+    totalHeld?: true
+    totalDelayed?: true
+    totalLoaded?: true
+    totalClicked?: true
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt?: true
     updatedAt?: true
   }
@@ -4804,6 +4888,7 @@ export namespace Prisma {
     id?: true
     domainId?: true
     totalSent?: true
+<<<<<<< HEAD
     totalDelivered?: true
     totalFailed?: true
     totalOpens?: true
@@ -4815,6 +4900,16 @@ export namespace Prisma {
     errorCount?: true
     heldCount?: true
     delayedCount?: true
+=======
+    totalHardFail?: true
+    totalSoftFail?: true
+    totalBounce?: true
+    totalError?: true
+    totalHeld?: true
+    totalDelayed?: true
+    totalLoaded?: true
+    totalClicked?: true
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt?: true
     updatedAt?: true
   }
@@ -4823,6 +4918,7 @@ export namespace Prisma {
     id?: true
     domainId?: true
     totalSent?: true
+<<<<<<< HEAD
     totalDelivered?: true
     totalFailed?: true
     totalOpens?: true
@@ -4834,6 +4930,16 @@ export namespace Prisma {
     errorCount?: true
     heldCount?: true
     delayedCount?: true
+=======
+    totalHardFail?: true
+    totalSoftFail?: true
+    totalBounce?: true
+    totalError?: true
+    totalHeld?: true
+    totalDelayed?: true
+    totalLoaded?: true
+    totalClicked?: true
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -4926,9 +5032,10 @@ export namespace Prisma {
   }
 
   export type EmailSummaryGroupByOutputType = {
-    id: number
+    id: string
     domainId: string
     totalSent: number
+<<<<<<< HEAD
     totalDelivered: number
     totalFailed: number
     totalOpens: number
@@ -4940,6 +5047,16 @@ export namespace Prisma {
     errorCount: number
     heldCount: number
     delayedCount: number
+=======
+    totalHardFail: number
+    totalSoftFail: number
+    totalBounce: number
+    totalError: number
+    totalHeld: number
+    totalDelayed: number
+    totalLoaded: number
+    totalClicked: number
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt: Date
     updatedAt: Date
     _count: EmailSummaryCountAggregateOutputType | null
@@ -4967,6 +5084,7 @@ export namespace Prisma {
     id?: boolean
     domainId?: boolean
     totalSent?: boolean
+<<<<<<< HEAD
     totalDelivered?: boolean
     totalFailed?: boolean
     totalOpens?: boolean
@@ -4978,6 +5096,16 @@ export namespace Prisma {
     errorCount?: boolean
     heldCount?: boolean
     delayedCount?: boolean
+=======
+    totalHardFail?: boolean
+    totalSoftFail?: boolean
+    totalBounce?: boolean
+    totalError?: boolean
+    totalHeld?: boolean
+    totalDelayed?: boolean
+    totalLoaded?: boolean
+    totalClicked?: boolean
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt?: boolean
     updatedAt?: boolean
     domain?: boolean | DomainDefaultArgs<ExtArgs>
@@ -4987,6 +5115,7 @@ export namespace Prisma {
     id?: boolean
     domainId?: boolean
     totalSent?: boolean
+<<<<<<< HEAD
     totalDelivered?: boolean
     totalFailed?: boolean
     totalOpens?: boolean
@@ -4998,6 +5127,16 @@ export namespace Prisma {
     errorCount?: boolean
     heldCount?: boolean
     delayedCount?: boolean
+=======
+    totalHardFail?: boolean
+    totalSoftFail?: boolean
+    totalBounce?: boolean
+    totalError?: boolean
+    totalHeld?: boolean
+    totalDelayed?: boolean
+    totalLoaded?: boolean
+    totalClicked?: boolean
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt?: boolean
     updatedAt?: boolean
     domain?: boolean | DomainDefaultArgs<ExtArgs>
@@ -5007,6 +5146,7 @@ export namespace Prisma {
     id?: boolean
     domainId?: boolean
     totalSent?: boolean
+<<<<<<< HEAD
     totalDelivered?: boolean
     totalFailed?: boolean
     totalOpens?: boolean
@@ -5018,6 +5158,16 @@ export namespace Prisma {
     errorCount?: boolean
     heldCount?: boolean
     delayedCount?: boolean
+=======
+    totalHardFail?: boolean
+    totalSoftFail?: boolean
+    totalBounce?: boolean
+    totalError?: boolean
+    totalHeld?: boolean
+    totalDelayed?: boolean
+    totalLoaded?: boolean
+    totalClicked?: boolean
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt?: boolean
     updatedAt?: boolean
     domain?: boolean | DomainDefaultArgs<ExtArgs>
@@ -5027,6 +5177,7 @@ export namespace Prisma {
     id?: boolean
     domainId?: boolean
     totalSent?: boolean
+<<<<<<< HEAD
     totalDelivered?: boolean
     totalFailed?: boolean
     totalOpens?: boolean
@@ -5038,11 +5189,25 @@ export namespace Prisma {
     errorCount?: boolean
     heldCount?: boolean
     delayedCount?: boolean
+=======
+    totalHardFail?: boolean
+    totalSoftFail?: boolean
+    totalBounce?: boolean
+    totalError?: boolean
+    totalHeld?: boolean
+    totalDelayed?: boolean
+    totalLoaded?: boolean
+    totalClicked?: boolean
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt?: boolean
     updatedAt?: boolean
   }
 
+<<<<<<< HEAD
   export type EmailSummaryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "domainId" | "totalSent" | "totalDelivered" | "totalFailed" | "totalOpens" | "totalClicks" | "sentCount" | "hardfailCount" | "softfailCount" | "bounceCount" | "errorCount" | "heldCount" | "delayedCount" | "createdAt" | "updatedAt", ExtArgs["result"]["emailSummary"]>
+=======
+  export type EmailSummaryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "domainId" | "totalSent" | "totalHardFail" | "totalSoftFail" | "totalBounce" | "totalError" | "totalHeld" | "totalDelayed" | "totalLoaded" | "totalClicked" | "createdAt" | "updatedAt", ExtArgs["result"]["emailSummary"]>
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
   export type EmailSummaryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     domain?: boolean | DomainDefaultArgs<ExtArgs>
   }
@@ -5059,9 +5224,10 @@ export namespace Prisma {
       domain: Prisma.$DomainPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
-      id: number
+      id: string
       domainId: string
       totalSent: number
+<<<<<<< HEAD
       totalDelivered: number
       totalFailed: number
       totalOpens: number
@@ -5073,6 +5239,16 @@ export namespace Prisma {
       errorCount: number
       heldCount: number
       delayedCount: number
+=======
+      totalHardFail: number
+      totalSoftFail: number
+      totalBounce: number
+      totalError: number
+      totalHeld: number
+      totalDelayed: number
+      totalLoaded: number
+      totalClicked: number
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["emailSummary"]>
@@ -5499,9 +5675,10 @@ export namespace Prisma {
    * Fields of the EmailSummary model
    */
   interface EmailSummaryFieldRefs {
-    readonly id: FieldRef<"EmailSummary", 'Int'>
+    readonly id: FieldRef<"EmailSummary", 'String'>
     readonly domainId: FieldRef<"EmailSummary", 'String'>
     readonly totalSent: FieldRef<"EmailSummary", 'Int'>
+<<<<<<< HEAD
     readonly totalDelivered: FieldRef<"EmailSummary", 'Int'>
     readonly totalFailed: FieldRef<"EmailSummary", 'Int'>
     readonly totalOpens: FieldRef<"EmailSummary", 'Int'>
@@ -5513,6 +5690,16 @@ export namespace Prisma {
     readonly errorCount: FieldRef<"EmailSummary", 'Int'>
     readonly heldCount: FieldRef<"EmailSummary", 'Int'>
     readonly delayedCount: FieldRef<"EmailSummary", 'Int'>
+=======
+    readonly totalHardFail: FieldRef<"EmailSummary", 'Int'>
+    readonly totalSoftFail: FieldRef<"EmailSummary", 'Int'>
+    readonly totalBounce: FieldRef<"EmailSummary", 'Int'>
+    readonly totalError: FieldRef<"EmailSummary", 'Int'>
+    readonly totalHeld: FieldRef<"EmailSummary", 'Int'>
+    readonly totalDelayed: FieldRef<"EmailSummary", 'Int'>
+    readonly totalLoaded: FieldRef<"EmailSummary", 'Int'>
+    readonly totalClicked: FieldRef<"EmailSummary", 'Int'>
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     readonly createdAt: FieldRef<"EmailSummary", 'DateTime'>
     readonly updatedAt: FieldRef<"EmailSummary", 'DateTime'>
   }
@@ -5989,6 +6176,7 @@ export namespace Prisma {
     id: 'id',
     domainId: 'domainId',
     totalSent: 'totalSent',
+<<<<<<< HEAD
     totalDelivered: 'totalDelivered',
     totalFailed: 'totalFailed',
     totalOpens: 'totalOpens',
@@ -6000,6 +6188,16 @@ export namespace Prisma {
     errorCount: 'errorCount',
     heldCount: 'heldCount',
     delayedCount: 'delayedCount',
+=======
+    totalHardFail: 'totalHardFail',
+    totalSoftFail: 'totalSoftFail',
+    totalBounce: 'totalBounce',
+    totalError: 'totalError',
+    totalHeld: 'totalHeld',
+    totalDelayed: 'totalDelayed',
+    totalLoaded: 'totalLoaded',
+    totalClicked: 'totalClicked',
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -6224,13 +6422,13 @@ export namespace Prisma {
     emailId?: IntFilter<"EmailEvent"> | number
     token?: StringFilter<"EmailEvent"> | string
     messageId?: StringFilter<"EmailEvent"> | string
-    to?: StringFilter<"EmailEvent"> | string
-    from?: StringFilter<"EmailEvent"> | string
-    subject?: StringFilter<"EmailEvent"> | string
-    eventType?: StringFilter<"EmailEvent"> | string
-    status?: StringFilter<"EmailEvent"> | string
-    spamStatus?: IntFilter<"EmailEvent"> | number
-    timestamp?: DateTimeFilter<"EmailEvent"> | Date | string
+    to?: StringNullableFilter<"EmailEvent"> | string | null
+    from?: StringNullableFilter<"EmailEvent"> | string | null
+    subject?: StringNullableFilter<"EmailEvent"> | string | null
+    eventType?: StringNullableFilter<"EmailEvent"> | string | null
+    status?: StringNullableFilter<"EmailEvent"> | string | null
+    spamStatus?: IntNullableFilter<"EmailEvent"> | number | null
+    timestamp?: DateTimeNullableFilter<"EmailEvent"> | Date | string | null
     domainId?: StringFilter<"EmailEvent"> | string
     createdAt?: DateTimeFilter<"EmailEvent"> | Date | string
     domain?: XOR<DomainScalarRelationFilter, DomainWhereInput>
@@ -6241,13 +6439,13 @@ export namespace Prisma {
     emailId?: SortOrder
     token?: SortOrder
     messageId?: SortOrder
-    to?: SortOrder
-    from?: SortOrder
-    subject?: SortOrder
-    eventType?: SortOrder
-    status?: SortOrder
-    spamStatus?: SortOrder
-    timestamp?: SortOrder
+    to?: SortOrderInput | SortOrder
+    from?: SortOrderInput | SortOrder
+    subject?: SortOrderInput | SortOrder
+    eventType?: SortOrderInput | SortOrder
+    status?: SortOrderInput | SortOrder
+    spamStatus?: SortOrderInput | SortOrder
+    timestamp?: SortOrderInput | SortOrder
     domainId?: SortOrder
     createdAt?: SortOrder
     domain?: DomainOrderByWithRelationInput
@@ -6261,13 +6459,13 @@ export namespace Prisma {
     emailId?: IntFilter<"EmailEvent"> | number
     token?: StringFilter<"EmailEvent"> | string
     messageId?: StringFilter<"EmailEvent"> | string
-    to?: StringFilter<"EmailEvent"> | string
-    from?: StringFilter<"EmailEvent"> | string
-    subject?: StringFilter<"EmailEvent"> | string
-    eventType?: StringFilter<"EmailEvent"> | string
-    status?: StringFilter<"EmailEvent"> | string
-    spamStatus?: IntFilter<"EmailEvent"> | number
-    timestamp?: DateTimeFilter<"EmailEvent"> | Date | string
+    to?: StringNullableFilter<"EmailEvent"> | string | null
+    from?: StringNullableFilter<"EmailEvent"> | string | null
+    subject?: StringNullableFilter<"EmailEvent"> | string | null
+    eventType?: StringNullableFilter<"EmailEvent"> | string | null
+    status?: StringNullableFilter<"EmailEvent"> | string | null
+    spamStatus?: IntNullableFilter<"EmailEvent"> | number | null
+    timestamp?: DateTimeNullableFilter<"EmailEvent"> | Date | string | null
     domainId?: StringFilter<"EmailEvent"> | string
     createdAt?: DateTimeFilter<"EmailEvent"> | Date | string
     domain?: XOR<DomainScalarRelationFilter, DomainWhereInput>
@@ -6278,13 +6476,13 @@ export namespace Prisma {
     emailId?: SortOrder
     token?: SortOrder
     messageId?: SortOrder
-    to?: SortOrder
-    from?: SortOrder
-    subject?: SortOrder
-    eventType?: SortOrder
-    status?: SortOrder
-    spamStatus?: SortOrder
-    timestamp?: SortOrder
+    to?: SortOrderInput | SortOrder
+    from?: SortOrderInput | SortOrder
+    subject?: SortOrderInput | SortOrder
+    eventType?: SortOrderInput | SortOrder
+    status?: SortOrderInput | SortOrder
+    spamStatus?: SortOrderInput | SortOrder
+    timestamp?: SortOrderInput | SortOrder
     domainId?: SortOrder
     createdAt?: SortOrder
     _count?: EmailEventCountOrderByAggregateInput
@@ -6302,13 +6500,13 @@ export namespace Prisma {
     emailId?: IntWithAggregatesFilter<"EmailEvent"> | number
     token?: StringWithAggregatesFilter<"EmailEvent"> | string
     messageId?: StringWithAggregatesFilter<"EmailEvent"> | string
-    to?: StringWithAggregatesFilter<"EmailEvent"> | string
-    from?: StringWithAggregatesFilter<"EmailEvent"> | string
-    subject?: StringWithAggregatesFilter<"EmailEvent"> | string
-    eventType?: StringWithAggregatesFilter<"EmailEvent"> | string
-    status?: StringWithAggregatesFilter<"EmailEvent"> | string
-    spamStatus?: IntWithAggregatesFilter<"EmailEvent"> | number
-    timestamp?: DateTimeWithAggregatesFilter<"EmailEvent"> | Date | string
+    to?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
+    from?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
+    subject?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
+    eventType?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
+    status?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
+    spamStatus?: IntNullableWithAggregatesFilter<"EmailEvent"> | number | null
+    timestamp?: DateTimeNullableWithAggregatesFilter<"EmailEvent"> | Date | string | null
     domainId?: StringWithAggregatesFilter<"EmailEvent"> | string
     createdAt?: DateTimeWithAggregatesFilter<"EmailEvent"> | Date | string
   }
@@ -6317,9 +6515,10 @@ export namespace Prisma {
     AND?: EmailSummaryWhereInput | EmailSummaryWhereInput[]
     OR?: EmailSummaryWhereInput[]
     NOT?: EmailSummaryWhereInput | EmailSummaryWhereInput[]
-    id?: IntFilter<"EmailSummary"> | number
+    id?: StringFilter<"EmailSummary"> | string
     domainId?: StringFilter<"EmailSummary"> | string
     totalSent?: IntFilter<"EmailSummary"> | number
+<<<<<<< HEAD
     totalDelivered?: IntFilter<"EmailSummary"> | number
     totalFailed?: IntFilter<"EmailSummary"> | number
     totalOpens?: IntFilter<"EmailSummary"> | number
@@ -6331,6 +6530,16 @@ export namespace Prisma {
     errorCount?: IntFilter<"EmailSummary"> | number
     heldCount?: IntFilter<"EmailSummary"> | number
     delayedCount?: IntFilter<"EmailSummary"> | number
+=======
+    totalHardFail?: IntFilter<"EmailSummary"> | number
+    totalSoftFail?: IntFilter<"EmailSummary"> | number
+    totalBounce?: IntFilter<"EmailSummary"> | number
+    totalError?: IntFilter<"EmailSummary"> | number
+    totalHeld?: IntFilter<"EmailSummary"> | number
+    totalDelayed?: IntFilter<"EmailSummary"> | number
+    totalLoaded?: IntFilter<"EmailSummary"> | number
+    totalClicked?: IntFilter<"EmailSummary"> | number
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt?: DateTimeFilter<"EmailSummary"> | Date | string
     updatedAt?: DateTimeFilter<"EmailSummary"> | Date | string
     domain?: XOR<DomainScalarRelationFilter, DomainWhereInput>
@@ -6340,6 +6549,7 @@ export namespace Prisma {
     id?: SortOrder
     domainId?: SortOrder
     totalSent?: SortOrder
+<<<<<<< HEAD
     totalDelivered?: SortOrder
     totalFailed?: SortOrder
     totalOpens?: SortOrder
@@ -6351,18 +6561,29 @@ export namespace Prisma {
     errorCount?: SortOrder
     heldCount?: SortOrder
     delayedCount?: SortOrder
+=======
+    totalHardFail?: SortOrder
+    totalSoftFail?: SortOrder
+    totalBounce?: SortOrder
+    totalError?: SortOrder
+    totalHeld?: SortOrder
+    totalDelayed?: SortOrder
+    totalLoaded?: SortOrder
+    totalClicked?: SortOrder
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt?: SortOrder
     updatedAt?: SortOrder
     domain?: DomainOrderByWithRelationInput
   }
 
   export type EmailSummaryWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
+    id?: string
     domainId?: string
     AND?: EmailSummaryWhereInput | EmailSummaryWhereInput[]
     OR?: EmailSummaryWhereInput[]
     NOT?: EmailSummaryWhereInput | EmailSummaryWhereInput[]
     totalSent?: IntFilter<"EmailSummary"> | number
+<<<<<<< HEAD
     totalDelivered?: IntFilter<"EmailSummary"> | number
     totalFailed?: IntFilter<"EmailSummary"> | number
     totalOpens?: IntFilter<"EmailSummary"> | number
@@ -6374,6 +6595,16 @@ export namespace Prisma {
     errorCount?: IntFilter<"EmailSummary"> | number
     heldCount?: IntFilter<"EmailSummary"> | number
     delayedCount?: IntFilter<"EmailSummary"> | number
+=======
+    totalHardFail?: IntFilter<"EmailSummary"> | number
+    totalSoftFail?: IntFilter<"EmailSummary"> | number
+    totalBounce?: IntFilter<"EmailSummary"> | number
+    totalError?: IntFilter<"EmailSummary"> | number
+    totalHeld?: IntFilter<"EmailSummary"> | number
+    totalDelayed?: IntFilter<"EmailSummary"> | number
+    totalLoaded?: IntFilter<"EmailSummary"> | number
+    totalClicked?: IntFilter<"EmailSummary"> | number
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt?: DateTimeFilter<"EmailSummary"> | Date | string
     updatedAt?: DateTimeFilter<"EmailSummary"> | Date | string
     domain?: XOR<DomainScalarRelationFilter, DomainWhereInput>
@@ -6383,6 +6614,7 @@ export namespace Prisma {
     id?: SortOrder
     domainId?: SortOrder
     totalSent?: SortOrder
+<<<<<<< HEAD
     totalDelivered?: SortOrder
     totalFailed?: SortOrder
     totalOpens?: SortOrder
@@ -6394,6 +6626,16 @@ export namespace Prisma {
     errorCount?: SortOrder
     heldCount?: SortOrder
     delayedCount?: SortOrder
+=======
+    totalHardFail?: SortOrder
+    totalSoftFail?: SortOrder
+    totalBounce?: SortOrder
+    totalError?: SortOrder
+    totalHeld?: SortOrder
+    totalDelayed?: SortOrder
+    totalLoaded?: SortOrder
+    totalClicked?: SortOrder
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: EmailSummaryCountOrderByAggregateInput
@@ -6407,9 +6649,10 @@ export namespace Prisma {
     AND?: EmailSummaryScalarWhereWithAggregatesInput | EmailSummaryScalarWhereWithAggregatesInput[]
     OR?: EmailSummaryScalarWhereWithAggregatesInput[]
     NOT?: EmailSummaryScalarWhereWithAggregatesInput | EmailSummaryScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"EmailSummary"> | number
+    id?: StringWithAggregatesFilter<"EmailSummary"> | string
     domainId?: StringWithAggregatesFilter<"EmailSummary"> | string
     totalSent?: IntWithAggregatesFilter<"EmailSummary"> | number
+<<<<<<< HEAD
     totalDelivered?: IntWithAggregatesFilter<"EmailSummary"> | number
     totalFailed?: IntWithAggregatesFilter<"EmailSummary"> | number
     totalOpens?: IntWithAggregatesFilter<"EmailSummary"> | number
@@ -6421,6 +6664,16 @@ export namespace Prisma {
     errorCount?: IntWithAggregatesFilter<"EmailSummary"> | number
     heldCount?: IntWithAggregatesFilter<"EmailSummary"> | number
     delayedCount?: IntWithAggregatesFilter<"EmailSummary"> | number
+=======
+    totalHardFail?: IntWithAggregatesFilter<"EmailSummary"> | number
+    totalSoftFail?: IntWithAggregatesFilter<"EmailSummary"> | number
+    totalBounce?: IntWithAggregatesFilter<"EmailSummary"> | number
+    totalError?: IntWithAggregatesFilter<"EmailSummary"> | number
+    totalHeld?: IntWithAggregatesFilter<"EmailSummary"> | number
+    totalDelayed?: IntWithAggregatesFilter<"EmailSummary"> | number
+    totalLoaded?: IntWithAggregatesFilter<"EmailSummary"> | number
+    totalClicked?: IntWithAggregatesFilter<"EmailSummary"> | number
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt?: DateTimeWithAggregatesFilter<"EmailSummary"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"EmailSummary"> | Date | string
   }
@@ -6560,13 +6813,13 @@ export namespace Prisma {
     emailId: number
     token: string
     messageId: string
-    to: string
-    from: string
-    subject: string
-    eventType: string
-    status: string
-    spamStatus: number
-    timestamp: Date | string
+    to?: string | null
+    from?: string | null
+    subject?: string | null
+    eventType?: string | null
+    status?: string | null
+    spamStatus?: number | null
+    timestamp?: Date | string | null
     createdAt?: Date | string
     domain: DomainCreateNestedOneWithoutEmailsInput
   }
@@ -6576,13 +6829,13 @@ export namespace Prisma {
     emailId: number
     token: string
     messageId: string
-    to: string
-    from: string
-    subject: string
-    eventType: string
-    status: string
-    spamStatus: number
-    timestamp: Date | string
+    to?: string | null
+    from?: string | null
+    subject?: string | null
+    eventType?: string | null
+    status?: string | null
+    spamStatus?: number | null
+    timestamp?: Date | string | null
     domainId: string
     createdAt?: Date | string
   }
@@ -6592,13 +6845,13 @@ export namespace Prisma {
     emailId?: IntFieldUpdateOperationsInput | number
     token?: StringFieldUpdateOperationsInput | string
     messageId?: StringFieldUpdateOperationsInput | string
-    to?: StringFieldUpdateOperationsInput | string
-    from?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    eventType?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    spamStatus?: IntFieldUpdateOperationsInput | number
-    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    to?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    eventType?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
+    timestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     domain?: DomainUpdateOneRequiredWithoutEmailsNestedInput
   }
@@ -6608,13 +6861,13 @@ export namespace Prisma {
     emailId?: IntFieldUpdateOperationsInput | number
     token?: StringFieldUpdateOperationsInput | string
     messageId?: StringFieldUpdateOperationsInput | string
-    to?: StringFieldUpdateOperationsInput | string
-    from?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    eventType?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    spamStatus?: IntFieldUpdateOperationsInput | number
-    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    to?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    eventType?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
+    timestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     domainId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -6624,13 +6877,13 @@ export namespace Prisma {
     emailId: number
     token: string
     messageId: string
-    to: string
-    from: string
-    subject: string
-    eventType: string
-    status: string
-    spamStatus: number
-    timestamp: Date | string
+    to?: string | null
+    from?: string | null
+    subject?: string | null
+    eventType?: string | null
+    status?: string | null
+    spamStatus?: number | null
+    timestamp?: Date | string | null
     domainId: string
     createdAt?: Date | string
   }
@@ -6640,13 +6893,13 @@ export namespace Prisma {
     emailId?: IntFieldUpdateOperationsInput | number
     token?: StringFieldUpdateOperationsInput | string
     messageId?: StringFieldUpdateOperationsInput | string
-    to?: StringFieldUpdateOperationsInput | string
-    from?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    eventType?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    spamStatus?: IntFieldUpdateOperationsInput | number
-    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    to?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    eventType?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
+    timestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -6655,19 +6908,21 @@ export namespace Prisma {
     emailId?: IntFieldUpdateOperationsInput | number
     token?: StringFieldUpdateOperationsInput | string
     messageId?: StringFieldUpdateOperationsInput | string
-    to?: StringFieldUpdateOperationsInput | string
-    from?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    eventType?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    spamStatus?: IntFieldUpdateOperationsInput | number
-    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    to?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    eventType?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
+    timestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     domainId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EmailSummaryCreateInput = {
+    id?: string
     totalSent?: number
+<<<<<<< HEAD
     totalDelivered?: number
     totalFailed?: number
     totalOpens?: number
@@ -6679,15 +6934,26 @@ export namespace Prisma {
     errorCount?: number
     heldCount?: number
     delayedCount?: number
+=======
+    totalHardFail?: number
+    totalSoftFail?: number
+    totalBounce?: number
+    totalError?: number
+    totalHeld?: number
+    totalDelayed?: number
+    totalLoaded?: number
+    totalClicked?: number
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt?: Date | string
     updatedAt?: Date | string
     domain: DomainCreateNestedOneWithoutSummaryInput
   }
 
   export type EmailSummaryUncheckedCreateInput = {
-    id?: number
+    id?: string
     domainId: string
     totalSent?: number
+<<<<<<< HEAD
     totalDelivered?: number
     totalFailed?: number
     totalOpens?: number
@@ -6699,12 +6965,24 @@ export namespace Prisma {
     errorCount?: number
     heldCount?: number
     delayedCount?: number
+=======
+    totalHardFail?: number
+    totalSoftFail?: number
+    totalBounce?: number
+    totalError?: number
+    totalHeld?: number
+    totalDelayed?: number
+    totalLoaded?: number
+    totalClicked?: number
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type EmailSummaryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
     totalSent?: IntFieldUpdateOperationsInput | number
+<<<<<<< HEAD
     totalDelivered?: IntFieldUpdateOperationsInput | number
     totalFailed?: IntFieldUpdateOperationsInput | number
     totalOpens?: IntFieldUpdateOperationsInput | number
@@ -6716,15 +6994,26 @@ export namespace Prisma {
     errorCount?: IntFieldUpdateOperationsInput | number
     heldCount?: IntFieldUpdateOperationsInput | number
     delayedCount?: IntFieldUpdateOperationsInput | number
+=======
+    totalHardFail?: IntFieldUpdateOperationsInput | number
+    totalSoftFail?: IntFieldUpdateOperationsInput | number
+    totalBounce?: IntFieldUpdateOperationsInput | number
+    totalError?: IntFieldUpdateOperationsInput | number
+    totalHeld?: IntFieldUpdateOperationsInput | number
+    totalDelayed?: IntFieldUpdateOperationsInput | number
+    totalLoaded?: IntFieldUpdateOperationsInput | number
+    totalClicked?: IntFieldUpdateOperationsInput | number
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     domain?: DomainUpdateOneRequiredWithoutSummaryNestedInput
   }
 
   export type EmailSummaryUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     domainId?: StringFieldUpdateOperationsInput | string
     totalSent?: IntFieldUpdateOperationsInput | number
+<<<<<<< HEAD
     totalDelivered?: IntFieldUpdateOperationsInput | number
     totalFailed?: IntFieldUpdateOperationsInput | number
     totalOpens?: IntFieldUpdateOperationsInput | number
@@ -6736,14 +7025,25 @@ export namespace Prisma {
     errorCount?: IntFieldUpdateOperationsInput | number
     heldCount?: IntFieldUpdateOperationsInput | number
     delayedCount?: IntFieldUpdateOperationsInput | number
+=======
+    totalHardFail?: IntFieldUpdateOperationsInput | number
+    totalSoftFail?: IntFieldUpdateOperationsInput | number
+    totalBounce?: IntFieldUpdateOperationsInput | number
+    totalError?: IntFieldUpdateOperationsInput | number
+    totalHeld?: IntFieldUpdateOperationsInput | number
+    totalDelayed?: IntFieldUpdateOperationsInput | number
+    totalLoaded?: IntFieldUpdateOperationsInput | number
+    totalClicked?: IntFieldUpdateOperationsInput | number
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EmailSummaryCreateManyInput = {
-    id?: number
+    id?: string
     domainId: string
     totalSent?: number
+<<<<<<< HEAD
     totalDelivered?: number
     totalFailed?: number
     totalOpens?: number
@@ -6755,12 +7055,24 @@ export namespace Prisma {
     errorCount?: number
     heldCount?: number
     delayedCount?: number
+=======
+    totalHardFail?: number
+    totalSoftFail?: number
+    totalBounce?: number
+    totalError?: number
+    totalHeld?: number
+    totalDelayed?: number
+    totalLoaded?: number
+    totalClicked?: number
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type EmailSummaryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
     totalSent?: IntFieldUpdateOperationsInput | number
+<<<<<<< HEAD
     totalDelivered?: IntFieldUpdateOperationsInput | number
     totalFailed?: IntFieldUpdateOperationsInput | number
     totalOpens?: IntFieldUpdateOperationsInput | number
@@ -6772,14 +7084,25 @@ export namespace Prisma {
     errorCount?: IntFieldUpdateOperationsInput | number
     heldCount?: IntFieldUpdateOperationsInput | number
     delayedCount?: IntFieldUpdateOperationsInput | number
+=======
+    totalHardFail?: IntFieldUpdateOperationsInput | number
+    totalSoftFail?: IntFieldUpdateOperationsInput | number
+    totalBounce?: IntFieldUpdateOperationsInput | number
+    totalError?: IntFieldUpdateOperationsInput | number
+    totalHeld?: IntFieldUpdateOperationsInput | number
+    totalDelayed?: IntFieldUpdateOperationsInput | number
+    totalLoaded?: IntFieldUpdateOperationsInput | number
+    totalClicked?: IntFieldUpdateOperationsInput | number
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EmailSummaryUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     domainId?: StringFieldUpdateOperationsInput | string
     totalSent?: IntFieldUpdateOperationsInput | number
+<<<<<<< HEAD
     totalDelivered?: IntFieldUpdateOperationsInput | number
     totalFailed?: IntFieldUpdateOperationsInput | number
     totalOpens?: IntFieldUpdateOperationsInput | number
@@ -6791,6 +7114,16 @@ export namespace Prisma {
     errorCount?: IntFieldUpdateOperationsInput | number
     heldCount?: IntFieldUpdateOperationsInput | number
     delayedCount?: IntFieldUpdateOperationsInput | number
+=======
+    totalHardFail?: IntFieldUpdateOperationsInput | number
+    totalSoftFail?: IntFieldUpdateOperationsInput | number
+    totalBounce?: IntFieldUpdateOperationsInput | number
+    totalError?: IntFieldUpdateOperationsInput | number
+    totalHeld?: IntFieldUpdateOperationsInput | number
+    totalDelayed?: IntFieldUpdateOperationsInput | number
+    totalLoaded?: IntFieldUpdateOperationsInput | number
+    totalClicked?: IntFieldUpdateOperationsInput | number
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -6983,6 +7316,28 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type DomainScalarRelationFilter = {
     is?: DomainWhereInput
     isNot?: DomainWhereInput
@@ -7062,10 +7417,41 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
   export type EmailSummaryCountOrderByAggregateInput = {
     id?: SortOrder
     domainId?: SortOrder
     totalSent?: SortOrder
+<<<<<<< HEAD
     totalDelivered?: SortOrder
     totalFailed?: SortOrder
     totalOpens?: SortOrder
@@ -7077,13 +7463,23 @@ export namespace Prisma {
     errorCount?: SortOrder
     heldCount?: SortOrder
     delayedCount?: SortOrder
+=======
+    totalHardFail?: SortOrder
+    totalSoftFail?: SortOrder
+    totalBounce?: SortOrder
+    totalError?: SortOrder
+    totalHeld?: SortOrder
+    totalDelayed?: SortOrder
+    totalLoaded?: SortOrder
+    totalClicked?: SortOrder
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type EmailSummaryAvgOrderByAggregateInput = {
-    id?: SortOrder
     totalSent?: SortOrder
+<<<<<<< HEAD
     totalDelivered?: SortOrder
     totalFailed?: SortOrder
     totalOpens?: SortOrder
@@ -7095,12 +7491,23 @@ export namespace Prisma {
     errorCount?: SortOrder
     heldCount?: SortOrder
     delayedCount?: SortOrder
+=======
+    totalHardFail?: SortOrder
+    totalSoftFail?: SortOrder
+    totalBounce?: SortOrder
+    totalError?: SortOrder
+    totalHeld?: SortOrder
+    totalDelayed?: SortOrder
+    totalLoaded?: SortOrder
+    totalClicked?: SortOrder
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
   }
 
   export type EmailSummaryMaxOrderByAggregateInput = {
     id?: SortOrder
     domainId?: SortOrder
     totalSent?: SortOrder
+<<<<<<< HEAD
     totalDelivered?: SortOrder
     totalFailed?: SortOrder
     totalOpens?: SortOrder
@@ -7112,6 +7519,16 @@ export namespace Prisma {
     errorCount?: SortOrder
     heldCount?: SortOrder
     delayedCount?: SortOrder
+=======
+    totalHardFail?: SortOrder
+    totalSoftFail?: SortOrder
+    totalBounce?: SortOrder
+    totalError?: SortOrder
+    totalHeld?: SortOrder
+    totalDelayed?: SortOrder
+    totalLoaded?: SortOrder
+    totalClicked?: SortOrder
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -7120,6 +7537,7 @@ export namespace Prisma {
     id?: SortOrder
     domainId?: SortOrder
     totalSent?: SortOrder
+<<<<<<< HEAD
     totalDelivered?: SortOrder
     totalFailed?: SortOrder
     totalOpens?: SortOrder
@@ -7131,13 +7549,23 @@ export namespace Prisma {
     errorCount?: SortOrder
     heldCount?: SortOrder
     delayedCount?: SortOrder
+=======
+    totalHardFail?: SortOrder
+    totalSoftFail?: SortOrder
+    totalBounce?: SortOrder
+    totalError?: SortOrder
+    totalHeld?: SortOrder
+    totalDelayed?: SortOrder
+    totalLoaded?: SortOrder
+    totalClicked?: SortOrder
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type EmailSummarySumOrderByAggregateInput = {
-    id?: SortOrder
     totalSent?: SortOrder
+<<<<<<< HEAD
     totalDelivered?: SortOrder
     totalFailed?: SortOrder
     totalOpens?: SortOrder
@@ -7149,6 +7577,16 @@ export namespace Prisma {
     errorCount?: SortOrder
     heldCount?: SortOrder
     delayedCount?: SortOrder
+=======
+    totalHardFail?: SortOrder
+    totalSoftFail?: SortOrder
+    totalBounce?: SortOrder
+    totalError?: SortOrder
+    totalHeld?: SortOrder
+    totalDelayed?: SortOrder
+    totalLoaded?: SortOrder
+    totalClicked?: SortOrder
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
   }
 
   export type DomainCreateNestedManyWithoutUserInput = {
@@ -7309,6 +7747,18 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
   export type DomainUpdateOneRequiredWithoutEmailsNestedInput = {
     create?: XOR<DomainCreateWithoutEmailsInput, DomainUncheckedCreateWithoutEmailsInput>
     connectOrCreate?: DomainCreateOrConnectWithoutEmailsInput
@@ -7440,6 +7890,17 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -7465,6 +7926,47 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type DomainCreateWithoutUserInput = {
@@ -7550,13 +8052,13 @@ export namespace Prisma {
     emailId: number
     token: string
     messageId: string
-    to: string
-    from: string
-    subject: string
-    eventType: string
-    status: string
-    spamStatus: number
-    timestamp: Date | string
+    to?: string | null
+    from?: string | null
+    subject?: string | null
+    eventType?: string | null
+    status?: string | null
+    spamStatus?: number | null
+    timestamp?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -7565,13 +8067,13 @@ export namespace Prisma {
     emailId: number
     token: string
     messageId: string
-    to: string
-    from: string
-    subject: string
-    eventType: string
-    status: string
-    spamStatus: number
-    timestamp: Date | string
+    to?: string | null
+    from?: string | null
+    subject?: string | null
+    eventType?: string | null
+    status?: string | null
+    spamStatus?: number | null
+    timestamp?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -7586,7 +8088,9 @@ export namespace Prisma {
   }
 
   export type EmailSummaryCreateWithoutDomainInput = {
+    id?: string
     totalSent?: number
+<<<<<<< HEAD
     totalDelivered?: number
     totalFailed?: number
     totalOpens?: number
@@ -7598,13 +8102,24 @@ export namespace Prisma {
     errorCount?: number
     heldCount?: number
     delayedCount?: number
+=======
+    totalHardFail?: number
+    totalSoftFail?: number
+    totalBounce?: number
+    totalError?: number
+    totalHeld?: number
+    totalDelayed?: number
+    totalLoaded?: number
+    totalClicked?: number
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type EmailSummaryUncheckedCreateWithoutDomainInput = {
-    id?: number
+    id?: string
     totalSent?: number
+<<<<<<< HEAD
     totalDelivered?: number
     totalFailed?: number
     totalOpens?: number
@@ -7616,6 +8131,16 @@ export namespace Prisma {
     errorCount?: number
     heldCount?: number
     delayedCount?: number
+=======
+    totalHardFail?: number
+    totalSoftFail?: number
+    totalBounce?: number
+    totalError?: number
+    totalHeld?: number
+    totalDelayed?: number
+    totalLoaded?: number
+    totalClicked?: number
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -7678,13 +8203,13 @@ export namespace Prisma {
     emailId?: IntFilter<"EmailEvent"> | number
     token?: StringFilter<"EmailEvent"> | string
     messageId?: StringFilter<"EmailEvent"> | string
-    to?: StringFilter<"EmailEvent"> | string
-    from?: StringFilter<"EmailEvent"> | string
-    subject?: StringFilter<"EmailEvent"> | string
-    eventType?: StringFilter<"EmailEvent"> | string
-    status?: StringFilter<"EmailEvent"> | string
-    spamStatus?: IntFilter<"EmailEvent"> | number
-    timestamp?: DateTimeFilter<"EmailEvent"> | Date | string
+    to?: StringNullableFilter<"EmailEvent"> | string | null
+    from?: StringNullableFilter<"EmailEvent"> | string | null
+    subject?: StringNullableFilter<"EmailEvent"> | string | null
+    eventType?: StringNullableFilter<"EmailEvent"> | string | null
+    status?: StringNullableFilter<"EmailEvent"> | string | null
+    spamStatus?: IntNullableFilter<"EmailEvent"> | number | null
+    timestamp?: DateTimeNullableFilter<"EmailEvent"> | Date | string | null
     domainId?: StringFilter<"EmailEvent"> | string
     createdAt?: DateTimeFilter<"EmailEvent"> | Date | string
   }
@@ -7701,7 +8226,9 @@ export namespace Prisma {
   }
 
   export type EmailSummaryUpdateWithoutDomainInput = {
+    id?: StringFieldUpdateOperationsInput | string
     totalSent?: IntFieldUpdateOperationsInput | number
+<<<<<<< HEAD
     totalDelivered?: IntFieldUpdateOperationsInput | number
     totalFailed?: IntFieldUpdateOperationsInput | number
     totalOpens?: IntFieldUpdateOperationsInput | number
@@ -7713,13 +8240,24 @@ export namespace Prisma {
     errorCount?: IntFieldUpdateOperationsInput | number
     heldCount?: IntFieldUpdateOperationsInput | number
     delayedCount?: IntFieldUpdateOperationsInput | number
+=======
+    totalHardFail?: IntFieldUpdateOperationsInput | number
+    totalSoftFail?: IntFieldUpdateOperationsInput | number
+    totalBounce?: IntFieldUpdateOperationsInput | number
+    totalError?: IntFieldUpdateOperationsInput | number
+    totalHeld?: IntFieldUpdateOperationsInput | number
+    totalDelayed?: IntFieldUpdateOperationsInput | number
+    totalLoaded?: IntFieldUpdateOperationsInput | number
+    totalClicked?: IntFieldUpdateOperationsInput | number
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EmailSummaryUncheckedUpdateWithoutDomainInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     totalSent?: IntFieldUpdateOperationsInput | number
+<<<<<<< HEAD
     totalDelivered?: IntFieldUpdateOperationsInput | number
     totalFailed?: IntFieldUpdateOperationsInput | number
     totalOpens?: IntFieldUpdateOperationsInput | number
@@ -7731,6 +8269,16 @@ export namespace Prisma {
     errorCount?: IntFieldUpdateOperationsInput | number
     heldCount?: IntFieldUpdateOperationsInput | number
     delayedCount?: IntFieldUpdateOperationsInput | number
+=======
+    totalHardFail?: IntFieldUpdateOperationsInput | number
+    totalSoftFail?: IntFieldUpdateOperationsInput | number
+    totalBounce?: IntFieldUpdateOperationsInput | number
+    totalError?: IntFieldUpdateOperationsInput | number
+    totalHeld?: IntFieldUpdateOperationsInput | number
+    totalDelayed?: IntFieldUpdateOperationsInput | number
+    totalLoaded?: IntFieldUpdateOperationsInput | number
+    totalClicked?: IntFieldUpdateOperationsInput | number
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7876,13 +8424,13 @@ export namespace Prisma {
     emailId: number
     token: string
     messageId: string
-    to: string
-    from: string
-    subject: string
-    eventType: string
-    status: string
-    spamStatus: number
-    timestamp: Date | string
+    to?: string | null
+    from?: string | null
+    subject?: string | null
+    eventType?: string | null
+    status?: string | null
+    spamStatus?: number | null
+    timestamp?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -7891,13 +8439,13 @@ export namespace Prisma {
     emailId?: IntFieldUpdateOperationsInput | number
     token?: StringFieldUpdateOperationsInput | string
     messageId?: StringFieldUpdateOperationsInput | string
-    to?: StringFieldUpdateOperationsInput | string
-    from?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    eventType?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    spamStatus?: IntFieldUpdateOperationsInput | number
-    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    to?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    eventType?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
+    timestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -7906,13 +8454,13 @@ export namespace Prisma {
     emailId?: IntFieldUpdateOperationsInput | number
     token?: StringFieldUpdateOperationsInput | string
     messageId?: StringFieldUpdateOperationsInput | string
-    to?: StringFieldUpdateOperationsInput | string
-    from?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    eventType?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    spamStatus?: IntFieldUpdateOperationsInput | number
-    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    to?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    eventType?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
+    timestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -7921,13 +8469,13 @@ export namespace Prisma {
     emailId?: IntFieldUpdateOperationsInput | number
     token?: StringFieldUpdateOperationsInput | string
     messageId?: StringFieldUpdateOperationsInput | string
-    to?: StringFieldUpdateOperationsInput | string
-    from?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    eventType?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    spamStatus?: IntFieldUpdateOperationsInput | number
-    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    to?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    eventType?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
+    timestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

@@ -35,23 +35,24 @@ model Domain {
 }
 
 model EmailEvent {
-  id         String   @id @default(uuid())
+  id         String    @id @default(uuid())
   emailId    Int
   token      String
   messageId  String
-  to         String
-  from       String
-  subject    String
-  eventType  String
-  status     String
-  spamStatus Int
-  timestamp  DateTime
+  to         String?
+  from       String?
+  subject    String?
+  eventType  String?
+  status     String?
+  spamStatus Int?
+  timestamp  DateTime?
   domainId   String
-  domain     Domain   @relation(fields: [domainId], references: [id])
-  createdAt  DateTime @default(now())
+  domain     Domain    @relation(fields: [domainId], references: [id])
+  createdAt  DateTime  @default(now())
 }
 
 model EmailSummary {
+<<<<<<< HEAD
   id             Int    @id @default(autoincrement())
   domainId       String @unique
   totalSent      Int    @default(0)
@@ -72,4 +73,20 @@ model EmailSummary {
   domain    Domain   @relation(fields: [domainId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+=======
+  id            String   @id @default(cuid())
+  domainId      String   @unique
+  domain        Domain   @relation(fields: [domainId], references: [id])
+  totalSent     Int      @default(0)
+  totalHardFail Int      @default(0)
+  totalSoftFail Int      @default(0)
+  totalBounce   Int      @default(0)
+  totalError    Int      @default(0)
+  totalHeld     Int      @default(0)
+  totalDelayed  Int      @default(0)
+  totalLoaded   Int      @default(0)
+  totalClicked  Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+>>>>>>> cf3f5bd8b3647fd3b1662b2312e6f7a2b6d66311
 }
