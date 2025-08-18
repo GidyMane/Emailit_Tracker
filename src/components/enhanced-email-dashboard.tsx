@@ -754,11 +754,12 @@ export function EnhancedEmailDashboard() {
         
         <main className="flex-1 space-y-6 p-4 md:p-6">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className={`grid w-full ${audienceData?.isAdmin ? 'grid-cols-5' : 'grid-cols-4'}`}>
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="analytics">Analytics</TabsTrigger>
               <TabsTrigger value="messages">Messages</TabsTrigger>
               <TabsTrigger value="audience">Audience</TabsTrigger>
+              {audienceData?.isAdmin && <TabsTrigger value="domains">Domains</TabsTrigger>}
             </TabsList>
             
             <TabsContent value="overview" className="space-y-6">
