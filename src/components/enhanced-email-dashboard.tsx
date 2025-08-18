@@ -670,12 +670,12 @@ export function EnhancedEmailDashboard() {
                     <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
                       <div className="text-xl sm:text-2xl font-bold">{stat.value}</div>
                       {stat.change && (
-                        <div className="flex items-center space-x-2 text-sm text-muted-foreground mt-2">
+                        <div className="flex items-center space-x-2 text-xs sm:text-sm text-muted-foreground mt-2">
                           <div className="flex items-center">
                             {stat.trend === "up" ? (
-                              <TrendingUp className="size-4 text-green-500 mr-1" />
+                              <TrendingUp className="size-3 sm:size-4 text-green-500 mr-1" />
                             ) : (
-                              <TrendingDown className="size-4 text-red-500 mr-1" />
+                              <TrendingDown className="size-3 sm:size-4 text-red-500 mr-1" />
                             )}
                             <span className={stat.trend === "up" ? "text-green-500" : "text-red-500"}>
                               {stat.change}
