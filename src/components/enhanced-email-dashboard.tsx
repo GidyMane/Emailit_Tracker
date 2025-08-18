@@ -268,7 +268,7 @@ export function EnhancedEmailDashboard() {
           </SidebarHeader>
 
           <SidebarContent>
-            {navigation.map((section) => (
+            {getNavigation(audienceData?.isAdmin || false).map((section) => (
               <SidebarGroup key={section.title}>
                 <SidebarGroupLabel>{section.title}</SidebarGroupLabel>
                 <SidebarGroupContent>
@@ -417,7 +417,7 @@ export function EnhancedEmailDashboard() {
           </SidebarHeader>
 
           <SidebarContent>
-            {navigation.map((section) => (
+            {getNavigation(audienceData?.isAdmin || false).map((section) => (
               <SidebarGroup key={section.title}>
                 <SidebarGroupLabel>{section.title}</SidebarGroupLabel>
                 <SidebarGroupContent>
@@ -644,7 +644,7 @@ export function EnhancedEmailDashboard() {
         </SidebarHeader>
         
         <SidebarContent>
-          {navigation.map((section) => (
+          {getNavigation(audienceData?.isAdmin || false).map((section) => (
             <SidebarGroup key={section.title}>
               <SidebarGroupLabel>{section.title}</SidebarGroupLabel>
               <SidebarGroupContent>
