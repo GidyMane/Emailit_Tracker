@@ -5,6 +5,7 @@ import { z } from "zod";
 export async function POST(req: NextRequest) {
   try {
     const payload = await req.json();
+<<<<<<< HEAD
 
     // Base email object schema
     const EmailObjectSchema = z.object({
@@ -82,6 +83,8 @@ export async function POST(req: NextRequest) {
       z.union([EmailDeliverySchema, EmailOpenSchema, EmailClickSchema])
     );
 
+=======
+>>>>>>> refs/remotes/origin/ai_master_0718327414a9
     const events = EmailitPayloadSchema.parse(payload);
 
     for (const parsed of events) {
@@ -97,6 +100,7 @@ export async function POST(req: NextRequest) {
         continue;
       }
 
+<<<<<<< HEAD
       // Check for duplicate events based on event_id and message_id combination
       const existingEvent = await prisma.emailEvent.findFirst({
         where: { 
@@ -135,10 +139,36 @@ export async function POST(req: NextRequest) {
           status: status,
           spamStatus: parsed.object.email.spam_status,
           timestamp: new Date(Number(parsed.object.email.timestamp) * 1000),
+=======
+      // Avoid duplicate entries
+      if (email.message_id) {
+        const existingEvent = await prisma.emailEvent.findFirst({
+          where: { messageId: email.message_id },
+        });
+        if (existingEvent) continue;
+      }
+
+      // Save event
+      await prisma.emailEvent.create({
+        data: {
+          emailId: email.id ?? 0,
+          token: email.token ?? "",
+          messageId: email.message_id ?? "",
+          to: email.to ?? "",
+          from: email.from ?? "",
+          subject: email.subject ?? "",
+          eventType: parsed.type ?? "unknown",
+          status: parsed.object.status ?? "unknown",
+          spamStatus: email.spam_status ?? 0,
+          timestamp: email.timestamp
+            ? new Date(Number(email.timestamp) * 1000)
+            : new Date(),
+>>>>>>> refs/remotes/origin/ai_master_0718327414a9
           domainId: domain.id,
         },
       });
 
+<<<<<<< HEAD
       // Update EmailSummary based on new schema structure
       const incrementData: Record<string, { increment: number }> = {};
 
@@ -179,6 +209,46 @@ export async function POST(req: NextRequest) {
 
       if (parsed.type === "email.link.clicked") {
         incrementData.totalClicked = { increment: 1 };
+=======
+      // Stats update
+      const deliveryEvents = [
+        "email.delivery.sent",
+        "email.delivery.hardfail",
+        "email.delivery.softfail",
+        "email.delivery.bounce",
+        "email.delivery.error",
+        "email.delivery.held",
+        "email.delivery.delayed",
+      ];
+
+      const engagementEvents: Record<string, string> = {
+        "email.loaded": "totalOpens",
+        "email.link.clicked": "totalClicks",
+      };
+
+      const incrementData: Record<string, { increment: number }> = {};
+
+      if (parsed.type && deliveryEvents.includes(parsed.type)) {
+        incrementData.totalSent = { increment: 1 };
+        if (parsed.type === "email.delivery.sent") {
+          incrementData.totalDelivered = { increment: 1 };
+        }
+        if (
+          [
+            "email.delivery.hardfail",
+            "email.delivery.softfail",
+            "email.delivery.bounce",
+            "email.delivery.error",
+          ].includes(parsed.type)
+        ) {
+          incrementData.totalFailed = { increment: 1 };
+        }
+      }
+
+      if (parsed.type && parsed.type in engagementEvents) {
+        const field = engagementEvents[parsed.type];
+        incrementData[field] = { increment: 1 };
+>>>>>>> refs/remotes/origin/ai_master_0718327414a9
       }
 
       // Update email summary with new schema
