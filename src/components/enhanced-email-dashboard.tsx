@@ -264,6 +264,16 @@ export function EnhancedEmailDashboard() {
         console.log('Events Data:', eventsResult)
         setEventsData(eventsResult)
 
+        // Fetch domains data for admin users
+        if (audienceResult?.isAdmin) {
+          const domainsResponse = await fetch('/api/dashboard/domains')
+          if (domainsResponse.ok) {
+            const domainsResult = await domainsResponse.json()
+            console.log('Domains Data:', domainsResult)
+            setDomainsData(domainsResult)
+          }
+        }
+
       } catch (err) {
         console.error('Error fetching dashboard data:', err)
         setError(err instanceof Error ? err.message : 'Failed to load dashboard data')
