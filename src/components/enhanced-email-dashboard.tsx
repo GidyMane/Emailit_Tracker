@@ -275,12 +275,20 @@ export function EnhancedEmailDashboard() {
                   <SidebarMenu>
                     {section.items.map((item) => (
                       <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton asChild isActive={item.isActive}>
-                          <a href={item.url} className="flex items-center gap-2">
-                            <item.icon className="size-4" />
-                            <span>{item.title}</span>
-                          </a>
-                        </SidebarMenuButton>
+                        <SidebarMenuButton
+                        isActive={item.tab ? activeTab === item.tab : item.isActive}
+                        onClick={() => {
+                          if (item.tab) {
+                            setActiveTab(item.tab)
+                          }
+                        }}
+                        className={item.tab ? "cursor-pointer" : ""}
+                      >
+                        <div className="flex items-center gap-2">
+                          <item.icon className="size-4" />
+                          <span>{item.title}</span>
+                        </div>
+                      </SidebarMenuButton>
                       </SidebarMenuItem>
                     ))}
                   </SidebarMenu>
@@ -424,12 +432,20 @@ export function EnhancedEmailDashboard() {
                   <SidebarMenu>
                     {section.items.map((item) => (
                       <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton asChild isActive={item.isActive}>
-                          <a href={item.url} className="flex items-center gap-2">
-                            <item.icon className="size-4" />
-                            <span>{item.title}</span>
-                          </a>
-                        </SidebarMenuButton>
+                        <SidebarMenuButton
+                        isActive={item.tab ? activeTab === item.tab : item.isActive}
+                        onClick={() => {
+                          if (item.tab) {
+                            setActiveTab(item.tab)
+                          }
+                        }}
+                        className={item.tab ? "cursor-pointer" : ""}
+                      >
+                        <div className="flex items-center gap-2">
+                          <item.icon className="size-4" />
+                          <span>{item.title}</span>
+                        </div>
+                      </SidebarMenuButton>
                       </SidebarMenuItem>
                     ))}
                   </SidebarMenu>
@@ -651,11 +667,19 @@ export function EnhancedEmailDashboard() {
                 <SidebarMenu>
                   {section.items.map((item) => (
                     <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton asChild isActive={item.isActive}>
-                        <a href={item.url} className="flex items-center gap-2">
+                      <SidebarMenuButton
+                        isActive={item.tab ? activeTab === item.tab : item.isActive}
+                        onClick={() => {
+                          if (item.tab) {
+                            setActiveTab(item.tab)
+                          }
+                        }}
+                        className={item.tab ? "cursor-pointer" : ""}
+                      >
+                        <div className="flex items-center gap-2">
                           <item.icon className="size-4" />
                           <span>{item.title}</span>
-                        </a>
+                        </div>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   ))}
