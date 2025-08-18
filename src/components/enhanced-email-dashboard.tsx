@@ -658,17 +658,17 @@ export function EnhancedEmailDashboard() {
             
             <TabsContent value="overview" className="space-y-6">
               {/* Email Summary Stats */}
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                 {emailStatCards.length > 0 ? emailStatCards.map((stat) => (
                   <Card key={stat.title} className="hover:shadow-md transition-shadow">
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                      <CardTitle className="text-sm font-medium text-muted-foreground">{stat.title}</CardTitle>
-                      <div className={`p-2 rounded-lg ${stat.bgColor}`}>
-                        <stat.icon className={`size-4 ${stat.color}`} />
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 sm:px-6 pt-4 sm:pt-6">
+                      <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">{stat.title}</CardTitle>
+                      <div className={`p-1.5 sm:p-2 rounded-lg ${stat.bgColor}`}>
+                        <stat.icon className={`size-3 sm:size-4 ${stat.color}`} />
                       </div>
                     </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl font-bold">{stat.value}</div>
+                    <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
+                      <div className="text-xl sm:text-2xl font-bold">{stat.value}</div>
                       {stat.change && (
                         <div className="flex items-center space-x-2 text-sm text-muted-foreground mt-2">
                           <div className="flex items-center">
