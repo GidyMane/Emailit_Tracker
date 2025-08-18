@@ -375,7 +375,7 @@ export function EnhancedEmailDashboard() {
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
-      <CardContent className="h-80 flex items-center justify-center">
+      <CardContent className="h-64 sm:h-80 flex items-center justify-center">
         <div className="text-center space-y-2">
           <BarChart3 className="h-12 w-12 text-muted-foreground mx-auto" />
           <p className="text-sm text-muted-foreground">No data available yet</p>
