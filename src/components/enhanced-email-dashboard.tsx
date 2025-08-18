@@ -773,7 +773,7 @@ export function EnhancedEmailDashboard() {
                         opens: { label: "Opens", color: "#8b5cf6" },
                         clicks: { label: "Clicks", color: "#f59e0b" }
                       }}
-                      className="h-80"
+                      className="h-64 sm:h-80"
                     >
                       <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={eventsData.charts.engagement} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
