@@ -37,24 +37,24 @@ import { Bar, BarChart, Line, LineChart, ResponsiveContainer, XAxis, YAxis, Cart
 import { Skeleton, CardSkeleton, ChartSkeleton, TableSkeleton, ProgressSkeleton } from "@/components/ui/skeleton"
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs"
 
-const navigation = [
+const getNavigation = (isAdmin: boolean = false) => [
   {
     title: "Main Navigation",
     items: [
-      { title: "Dashboard", icon: Home, url: "#", isActive: true },
+      { title: "Dashboard", tab: "overview", icon: Home, isActive: true },
       { title: "Campaigns", icon: Mail, url: "#" },
       { title: "Templates", icon: FileText, url: "#" },
-      { title: "Audience", icon: Users, url: "#" },
-      { title: "Analytics", icon: BarChart3, url: "#" },
+      { title: "Audience", tab: "audience", icon: Users },
+      { title: "Analytics", tab: "analytics", icon: BarChart3 },
+      ...(isAdmin ? [{ title: "Sending Domains", tab: "domains", icon: Send }] : []),
     ]
   },
   {
     title: "Email Tools",
     items: [
       { title: "Inbox", icon: Inbox, url: "#" },
-      { title: "Sent", icon: Send, url: "#" },
+      { title: "Sent", tab: "messages", icon: Send },
       { title: "Drafts", icon: FileText, url: "#" },
-      // { title: "Automation", icon: Zap, url: "#" },
     ]
   }
 ]
