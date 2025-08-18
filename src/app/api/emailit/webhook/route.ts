@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
-// More relaxed Zod schema
+// Relaxed Zod schema
 const EmailitPayloadSchema = z.array(
   z.object({
     webhook_request_id: z.string().optional(),
@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
         continue;
       }
 
-      // Avoid duplicate entries
+      // Avoid duplicate entries by messageId
       if (email.message_id) {
         const existingEvent = await prisma.emailEvent.findFirst({
           where: { messageId: email.message_id },
@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
         if (existingEvent) continue;
       }
 
-      // Save event
+      // Save raw event
       await prisma.emailEvent.create({
         data: {
           emailId: email.id ?? 0,
@@ -88,44 +88,39 @@ export async function POST(req: NextRequest) {
         },
       });
 
-      // Stats update
-      const deliveryEvents = [
-        "email.delivery.sent",
-        "email.delivery.hardfail",
-        "email.delivery.softfail",
-        "email.delivery.bounce",
-        "email.delivery.error",
-        "email.delivery.held",
-        "email.delivery.delayed",
-      ];
-
-      const engagementEvents: Record<string, string> = {
-        "email.loaded": "totalOpens",
-        "email.link.clicked": "totalClicks",
-      };
-
+      // --- Stats update ---
       const incrementData: Record<string, { increment: number }> = {};
 
-      if (parsed.type && deliveryEvents.includes(parsed.type)) {
-        incrementData.totalSent = { increment: 1 };
-        if (parsed.type === "email.delivery.sent") {
-          incrementData.totalDelivered = { increment: 1 };
-        }
-        if (
-          [
-            "email.delivery.hardfail",
-            "email.delivery.softfail",
-            "email.delivery.bounce",
-            "email.delivery.error",
-          ].includes(parsed.type)
-        ) {
-          incrementData.totalFailed = { increment: 1 };
-        }
-      }
-
-      if (parsed.type && parsed.type in engagementEvents) {
-        const field = engagementEvents[parsed.type];
-        incrementData[field] = { increment: 1 };
+      switch (parsed.type) {
+        case "email.delivery.sent":
+          incrementData.totalSent = { increment: 1 };
+          break;
+        case "email.delivery.hardfail":
+          incrementData.totalHardFail = { increment: 1 };
+          break;
+        case "email.delivery.softfail":
+          incrementData.totalSoftFail = { increment: 1 };
+          break;
+        case "email.delivery.bounce":
+          incrementData.totalBounce = { increment: 1 };
+          break;
+        case "email.delivery.error":
+          incrementData.totalError = { increment: 1 };
+          break;
+        case "email.delivery.held":
+          incrementData.totalHeld = { increment: 1 };
+          break;
+        case "email.delivery.delayed":
+          incrementData.totalDelayed = { increment: 1 };
+          break;
+        case "email.loaded":
+          incrementData.totalLoaded = { increment: 1 };
+          break;
+        case "email.link.clicked":
+          incrementData.totalClicked = { increment: 1 };
+          break;
+        default:
+          console.warn(`Unhandled event type: ${parsed.type}`);
       }
 
       await prisma.emailSummary.upsert({
@@ -134,10 +129,14 @@ export async function POST(req: NextRequest) {
         create: {
           domainId: domain.id,
           totalSent: incrementData.totalSent?.increment ?? 0,
-          totalDelivered: incrementData.totalDelivered?.increment ?? 0,
-          totalFailed: incrementData.totalFailed?.increment ?? 0,
-          totalOpens: incrementData.totalOpens?.increment ?? 0,
-          totalClicks: incrementData.totalClicks?.increment ?? 0,
+          totalHardFail: incrementData.totalHardFail?.increment ?? 0,
+          totalSoftFail: incrementData.totalSoftFail?.increment ?? 0,
+          totalBounce: incrementData.totalBounce?.increment ?? 0,
+          totalError: incrementData.totalError?.increment ?? 0,
+          totalHeld: incrementData.totalHeld?.increment ?? 0,
+          totalDelayed: incrementData.totalDelayed?.increment ?? 0,
+          totalLoaded: incrementData.totalLoaded?.increment ?? 0,
+          totalClicked: incrementData.totalClicked?.increment ?? 0,
         },
       });
     }
