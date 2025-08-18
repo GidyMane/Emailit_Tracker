@@ -625,19 +625,23 @@ export function EnhancedEmailDashboard() {
       </Sidebar>
       
       <SidebarInset>
-        <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center gap-2 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4">
+        <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center gap-2 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-3 sm:px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
-          <div className="flex items-center gap-2 flex-1">
-            <h1 className="font-semibold">
-              Dashboard - {domainData?.userDomain || 'Domain'}
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <h1 className="font-semibold text-sm sm:text-base truncate">
+              <span className="hidden sm:inline">Dashboard - {domainData?.userDomain || 'Domain'}</span>
+              <span className="sm:hidden">{domainData?.userDomain || 'Dashboard'}</span>
             </h1>
-            <div className="ml-auto flex items-center gap-2">
-              <div className="relative hidden sm:block">
+            <div className="ml-auto flex items-center gap-1 sm:gap-2">
+              <div className="relative hidden md:block">
                 <Search className="absolute left-2 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                <Input placeholder="Search..." className="pl-8 w-48 lg:w-64" />
+                <Input placeholder="Search..." className="pl-8 w-36 lg:w-48 xl:w-64" />
               </div>
-              <Button variant="outline" size="icon">
+              <Button variant="outline" size="icon" className="h-9 w-9 sm:h-10 sm:w-10 md:hidden">
+                <Search className="size-4" />
+              </Button>
+              <Button variant="outline" size="icon" className="h-9 w-9 sm:h-10 sm:w-10">
                 <Bell className="size-4" />
               </Button>
             </div>
