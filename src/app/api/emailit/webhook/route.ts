@@ -2,70 +2,58 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
-// Flexible Email schema
-const EmailObjectSchema = z
-  .object({
+// Flexible email object
+const EmailObjectSchema = z.object({
+  id: z.union([z.string(), z.number()]).optional(),
+  token: z.string().optional().nullable(),
+  type: z.string().optional().nullable(),
+  message_id: z.string().optional().nullable(),
+  to: z.string().optional().nullable(),
+  from: z.string().optional().nullable(),
+  subject: z.string().optional().nullable(),
+  timestamp: z.union([z.string(), z.number()]).optional(),
+  spam_status: z.union([z.string(), z.number()]).optional().nullable(),
+  tag: z.string().optional().nullable(),
+}).passthrough(); // allow extra keys
+
+// Flexible event object
+const EventObjectSchema = z.object({
+  email: EmailObjectSchema.optional(),
+  status: z.string().optional(),
+  details: z.string().optional(),
+  sent_with_ssl: z.union([z.boolean(), z.string(), z.number()]).optional().nullable(),
+  timestamp: z.union([z.number(), z.string()]).optional(),
+  time: z.union([z.string(), z.number()]).optional(),
+  ip_address: z.string().optional(),
+  country: z.string().optional().nullable(),
+  city: z.string().optional().nullable(),
+  user_agent: z.string().optional(),
+  link: z.object({
     id: z.union([z.string(), z.number()]).optional(),
-    token: z.string().optional().nullable(),
-    type: z.string().optional().nullable(),
-    message_id: z.string().optional().nullable(),
-    to: z.string().optional().nullable(),
-    from: z.string().optional().nullable(),
-    subject: z.string().optional().nullable(),
-    timestamp: z.union([z.string(), z.number(), z.date()]).optional(),
-    spam_status: z.union([z.string(), z.number()]).optional().nullable(),
-    tag: z.string().optional().nullable(),
-  })
-  .passthrough();
+    url: z.string().optional(),
+  }).optional(),
+}).passthrough();
 
 // Flexible payload schema
-const EmailitPayloadSchema = z
-  .array(
-    z
-      .object({
-        webhook_request_id: z.string().optional(),
-        event_id: z.string().optional(),
-        type: z.string().optional(),
-        object: z
-          .object({
-            email: EmailObjectSchema.optional(),
-            status: z.string().optional(),
-            details: z.string().optional(),
-            sent_with_ssl: z.union([z.boolean(), z.string(), z.number()])
-              .optional()
-              .nullable(),
-            timestamp: z.union([z.string(), z.number(), z.date()]).optional(),
-            time: z.union([z.string(), z.number()]).optional(),
-
-            // Engagement events
-            ip_address: z.string().optional(),
-            country: z.string().optional(),
-            city: z.string().optional(),
-            user_agent: z.string().optional(),
-
-            // Click events
-            link: z
-              .object({
-                id: z.union([z.string(), z.number()]).optional(),
-                url: z.string().optional(),
-              })
-              .optional(),
-          })
-          .passthrough(),
-      })
-      .passthrough()
-  )
-
+const EmailitPayloadSchema = z.array(
+  z.object({
+    webhook_request_id: z.string().optional(),
+    event_id: z.string().optional(),
+    type: z.string().optional(),
+    object: EventObjectSchema,
+  }).passthrough()
+);
 
 export async function POST(req: NextRequest) {
   try {
     const payload = await req.json();
     const events = EmailitPayloadSchema.parse(payload);
 
-    for (const parsed of events) {
-      const email = parsed.object?.email;
+    for (const event of events) {
+      const email = event.object.email;
+
       if (!email?.from) {
-        console.warn("Missing 'from' field, skipping event");
+        console.warn("Event skipped: missing email.from");
         continue;
       }
 
@@ -84,7 +72,7 @@ export async function POST(req: NextRequest) {
         continue;
       }
 
-      // Avoid duplicate entries by messageId
+      // Avoid duplicates
       if (email.message_id) {
         const existingEvent = await prisma.emailEvent.findFirst({
           where: { messageId: email.message_id },
@@ -101,23 +89,24 @@ export async function POST(req: NextRequest) {
           to: email.to ?? "",
           from: email.from ?? "",
           subject: email.subject ?? "",
-          eventType: parsed.type ?? "unknown",
-          status: parsed.object.status ?? "unknown",
+          eventType: event.type ?? "unknown",
+          status: event.object.status ?? "unknown",
           spamStatus: Number(email.spam_status) || 0,
           timestamp: email.timestamp
             ? new Date(Number(email.timestamp) * 1000)
             : new Date(),
           domainId: domain.id,
+       
         },
       });
 
-      // --- Stats update ---
+      // Update summary counts
       const incrementData: Record<string, { increment: number }> = {};
 
-      if (parsed.type?.startsWith("email.delivery.")) {
+      if (event.type?.startsWith("email.delivery.")) {
         incrementData.totalSent = { increment: 1 };
 
-        switch (parsed.type) {
+        switch (event.type) {
           case "email.delivery.hardfail":
             incrementData.totalHardFail = { increment: 1 };
             break;
@@ -139,11 +128,11 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      if (parsed.type === "email.loaded") {
+      if (event.type === "email.loaded") {
         incrementData.totalLoaded = { increment: 1 };
       }
 
-      if (parsed.type === "email.link.clicked") {
+      if (event.type === "email.link.clicked") {
         incrementData.totalClicked = { increment: 1 };
       }
 
