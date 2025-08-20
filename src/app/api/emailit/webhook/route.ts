@@ -25,7 +25,7 @@ const EmailitPayloadSchema = z.array(
       email: EmailObjectSchema,
       status: z.string().optional(),
       details: z.string().optional(),
-      sent_with_ssl: z.boolean().optional(),
+      sent_with_ssl: z.union([z.boolean(), z.string(), z.number()]).nullable().optional(),
       timestamp: z.number(),
       time: z.number().optional(),
       // For engagement events
