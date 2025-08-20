@@ -51,7 +51,6 @@ model EmailEvent {
   createdAt    DateTime @default(now())
 }
 
-
 model EmailSummary {
   id            String   @id @default(cuid())
   domainId      String   @unique
@@ -68,4 +67,3 @@ model EmailSummary {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
-
