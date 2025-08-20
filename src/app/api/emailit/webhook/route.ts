@@ -96,44 +96,40 @@ export async function POST(req: NextRequest) {
             ? new Date(Number(email.timestamp) * 1000)
             : new Date(),
           domainId: domain.id,
-       
         },
       });
 
       // Update summary counts
       const incrementData: Record<string, { increment: number }> = {};
 
-      if (event.type?.startsWith("email.delivery.")) {
-        incrementData.totalSent = { increment: 1 };
-
-        switch (event.type) {
-          case "email.delivery.hardfail":
-            incrementData.totalHardFail = { increment: 1 };
-            break;
-          case "email.delivery.softfail":
-            incrementData.totalSoftFail = { increment: 1 };
-            break;
-          case "email.delivery.bounce":
-            incrementData.totalBounce = { increment: 1 };
-            break;
-          case "email.delivery.error":
-            incrementData.totalError = { increment: 1 };
-            break;
-          case "email.delivery.held":
-            incrementData.totalHeld = { increment: 1 };
-            break;
-          case "email.delivery.delayed":
-            incrementData.totalDelayed = { increment: 1 };
-            break;
-        }
-      }
-
-      if (event.type === "email.loaded") {
-        incrementData.totalLoaded = { increment: 1 };
-      }
-
-      if (event.type === "email.link.clicked") {
-        incrementData.totalClicked = { increment: 1 };
+      switch (event.type) {
+        case "email.delivery.sent":
+          incrementData.totalSent = { increment: 1 };
+          break;
+        case "email.delivery.hardfail":
+          incrementData.totalHardFail = { increment: 1 };
+          break;
+        case "email.delivery.softfail":
+          incrementData.totalSoftFail = { increment: 1 };
+          break;
+        case "email.delivery.bounce":
+          incrementData.totalBounce = { increment: 1 };
+          break;
+        case "email.delivery.error":
+          incrementData.totalError = { increment: 1 };
+          break;
+        case "email.delivery.held":
+          incrementData.totalHeld = { increment: 1 };
+          break;
+        case "email.delivery.delayed":
+          incrementData.totalDelayed = { increment: 1 };
+          break;
+        case "email.loaded":
+          incrementData.totalLoaded = { increment: 1 };
+          break;
+        case "email.link.clicked":
+          incrementData.totalClicked = { increment: 1 };
+          break;
       }
 
       if (Object.keys(incrementData).length > 0) {
