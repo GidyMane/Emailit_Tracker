@@ -8,9 +8,10 @@ const publicPaths = [
   "/api/emailit/sending-domains",
   "/api/qstash/emailit",
   "/api/emailit",
+  ""
 ]
 
-const apiAuthPrefix = "/api/auth"
+const apiAuthPrefix = "/api"
 
 export default function middleware(req: NextRequest) {
   const { nextUrl } = req;
