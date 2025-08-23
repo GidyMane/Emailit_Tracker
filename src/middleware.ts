@@ -5,7 +5,9 @@ const publicPaths = [
   "/",
   "/api/auth/[kindeAuth]",
   "/api/auth/kindecallback",
-  "/api/emailit/webhook" 
+  "/api/emailit/sending-domains",
+  "/api/qstash/emailit",
+  "/api/emailit",
 ]
 
 const apiAuthPrefix = "/api/auth"
