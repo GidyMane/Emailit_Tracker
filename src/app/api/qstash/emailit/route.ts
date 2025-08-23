@@ -4,13 +4,27 @@ import { prisma } from "@/lib/prisma";
 
 async function handler(req: NextRequest) {
   try {
-    const body = await req.json();
+    const body = await req.json().catch(() => null);
+    if (!body) {
+      return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+    }
 
     const { event_id, type, object } = body;
-    const emailObj = object.email;
+    const emailObj = object;
+
+    if (!emailObj || !emailObj.from) {
+      return NextResponse.json(
+        { error: "Invalid payload: missing email object" },
+        { status: 400 }
+      );
+    }
+
+    const domainName = emailObj.from.includes("@")
+      ? emailObj.from.split("@")[1]
+      : "unknown";
 
     await prisma.$transaction(async (tx) => {
-      
+      // Upsert email
       const email = await tx.email.upsert({
         where: { messageId: emailObj.message_id },
         update: {
@@ -29,20 +43,22 @@ async function handler(req: NextRequest) {
           spamStatus: emailObj.spam_status,
           domain: {
             connectOrCreate: {
-              where: { name: emailObj.from.split("@")[1] },
-              create: { name: emailObj.from.split("@")[1] },
+              where: { name: domainName },
+              create: { name: domainName },
             },
           },
         },
       });
 
-
+      // Insert event
       await tx.emailEvent.create({
         data: {
           eventId: event_id,
           type,
           status: object.status ?? null,
-          occurredAt: new Date(object.timestamp * 1000),
+          occurredAt: object.timestamp
+            ? new Date(object.timestamp * 1000)
+            : new Date(),
           emailId: email.id,
           ipAddress: object.ip_address ?? null,
           country: object.country ?? null,
@@ -54,8 +70,7 @@ async function handler(req: NextRequest) {
         },
       });
 
-      // Update EmailSummary counters
-      const domainName = emailObj.from.split("@")[1];
+      // Update domain summary
       const domain = await tx.domain.findUnique({
         where: { name: domainName },
       });
@@ -92,7 +107,7 @@ async function handler(req: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("QStash consumer error:", error);
+    console.error(" QStash consumer error:", error);
     return NextResponse.json(
       { error: "Failed to process event" },
       { status: 500 }
@@ -100,5 +115,5 @@ async function handler(req: NextRequest) {
   }
 }
 
-export const POST = verifySignatureAppRouter(handler);
 
+export const POST = verifySignatureAppRouter(handler);
