@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
 
     
     const result = await client.publishJSON({
-      url: `https://emailit-tracker.vercel.app/api/qstash/emailit`, // the processor route
+      url: `https://emailit-tracker.vercel.app/api/test`, // the processor route
       body,
     });
 
