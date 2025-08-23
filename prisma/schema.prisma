@@ -18,37 +18,67 @@ model User {
   kindeId   String   @unique
   email     String   @unique
   name      String?
-  domains   Domain[] // A user can be linked to multiple domains (optional link)
+  domains   Domain[] 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Domain {
-  id        String         @id @default(uuid())
-  name      String         @unique         // E.g. ryden.co.ke
-  userId    String?                           // Optional: allows anonymous domain ownership
-  user      User?         @relation(fields: [userId], references: [id])
-  emails    EmailEvent[]
+  id        String       @id @default(uuid())
+  name      String       @unique
+  userId    String?
+  user      User?        @relation(fields: [userId], references: [id])
+  emails    Email[]      
   summary   EmailSummary?
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+}
+
+model Email {
+  id         String       @id @default(uuid())
+  emailId    Int          
+  token      String
+  messageId  String       @unique 
+  to         String?
+  from       String?
+  subject    String?
+  spamStatus Int?
+  domainId   String
+  domain     Domain       @relation(fields: [domainId], references: [id])
+
+
+  deliveryStatus String?  
+  sentAt         DateTime?
+  firstOpenAt    DateTime?
+  firstClickAt   DateTime?
+
+  events     EmailEvent[] 
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
 }
 
 model EmailEvent {
-  id           String   @id @default(uuid())
-  emailId      Int
-  token        String
-  messageId    String
-  to           String?
-  from         String?
-  subject      String?
-  eventType    String?
-  status       String?
-  spamStatus   Int?
-  timestamp    DateTime?
-  domainId     String
-  domain       Domain   @relation(fields: [domainId], references: [id])
-  createdAt    DateTime @default(now())
+  id        String   @id @default(uuid())
+  eventId   String   @unique   
+  type      String            
+  status    String?           
+  occurredAt DateTime
+
+
+  emailId    String
+  email      Email   @relation(fields: [emailId], references: [id])
+
+  ipAddress  String?
+  country    String?
+  city       String?
+  userAgent  String?
+
+  linkId     String?
+  linkUrl    String?
+
+  rawPayload Json
+
+  createdAt  DateTime @default(now())
 }
 
 model EmailSummary {

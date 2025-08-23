@@ -6197,12 +6197,12 @@ export namespace Prisma {
 
   export type EmailEventWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    messageId?: string
     AND?: EmailEventWhereInput | EmailEventWhereInput[]
     OR?: EmailEventWhereInput[]
     NOT?: EmailEventWhereInput | EmailEventWhereInput[]
     emailId?: IntFilter<"EmailEvent"> | number
     token?: StringFilter<"EmailEvent"> | string
-    messageId?: StringFilter<"EmailEvent"> | string
     to?: StringNullableFilter<"EmailEvent"> | string | null
     from?: StringNullableFilter<"EmailEvent"> | string | null
     subject?: StringNullableFilter<"EmailEvent"> | string | null
@@ -6213,7 +6213,7 @@ export namespace Prisma {
     domainId?: StringFilter<"EmailEvent"> | string
     createdAt?: DateTimeFilter<"EmailEvent"> | Date | string
     domain?: XOR<DomainScalarRelationFilter, DomainWhereInput>
-  }, "id">
+  }, "id" | "messageId">
 
   export type EmailEventOrderByWithAggregationInput = {
     id?: SortOrder

@@ -38,7 +38,7 @@ model EmailEvent {
   id         String    @id @default(uuid())
   emailId    Int
   token      String
-  messageId  String
+  messageId  String    @unique
   to         String?
   from       String?
   subject    String?
