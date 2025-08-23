@@ -137,7 +137,7 @@ exports.Prisma.DomainScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.EmailEventScalarFieldEnum = {
+exports.Prisma.EmailScalarFieldEnum = {
   id: 'id',
   emailId: 'emailId',
   token: 'token',
@@ -145,11 +145,30 @@ exports.Prisma.EmailEventScalarFieldEnum = {
   to: 'to',
   from: 'from',
   subject: 'subject',
-  eventType: 'eventType',
-  status: 'status',
   spamStatus: 'spamStatus',
-  timestamp: 'timestamp',
   domainId: 'domainId',
+  deliveryStatus: 'deliveryStatus',
+  sentAt: 'sentAt',
+  firstOpenAt: 'firstOpenAt',
+  firstClickAt: 'firstClickAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.EmailEventScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  type: 'type',
+  status: 'status',
+  occurredAt: 'occurredAt',
+  emailId: 'emailId',
+  ipAddress: 'ipAddress',
+  country: 'country',
+  city: 'city',
+  userAgent: 'userAgent',
+  linkId: 'linkId',
+  linkUrl: 'linkUrl',
+  rawPayload: 'rawPayload',
   createdAt: 'createdAt'
 };
 
@@ -174,6 +193,10 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
+};
+
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -184,10 +207,17 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+
 
 exports.Prisma.ModelName = {
   User: 'User',
   Domain: 'Domain',
+  Email: 'Email',
   EmailEvent: 'EmailEvent',
   EmailSummary: 'EmailSummary'
 };
