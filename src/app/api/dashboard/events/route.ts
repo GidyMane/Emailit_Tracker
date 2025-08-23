@@ -8,7 +8,9 @@ interface Domain {
 }
 
 interface DomainFilter {
-  domainId?: string | { in: string[] };
+  email?: {
+    domainId?: string | { in: string[] };
+  };
 }
 
 // Helper to safely serialize BigInts without using `any`
@@ -32,14 +34,14 @@ export async function GET(request: NextRequest) {
     }
 
     const adminEmails = ["info@websoftdevelopment.com", "muragegideon2000@gmail.com"];
-
     const isAdmin = adminEmails.includes(user.email);
+
     let domains: Domain[] = [];
     let domainFilter: DomainFilter;
 
     if (isAdmin) {
       domains = await prisma.domain.findMany();
-      domainFilter = { domainId: { in: domains.map(d => d.id) } };
+      domainFilter = { email: { domainId: { in: domains.map((d) => d.id) } } };
     } else {
       const userEmailDomain = user.email.split("@")[1];
       if (!userEmailDomain) {
@@ -55,7 +57,7 @@ export async function GET(request: NextRequest) {
       }
 
       domains = [domain];
-      domainFilter = { domainId: domain.id };
+      domainFilter = { email: { domainId: domain.id } };
     }
 
     const url = new URL(request.url);
@@ -76,98 +78,113 @@ export async function GET(request: NextRequest) {
 
     const whereClause = {
       ...domainFilter,
-      timestamp: dateFilter,
-      ...(eventType && eventType !== "all" ? { eventType } : {})
+      occurredAt: dateFilter,
+      ...(eventType && eventType !== "all" ? { type: eventType } : {}),
     };
 
+    // ✅ fetch paginated events
     const events = await prisma.emailEvent.findMany({
       where: whereClause,
-      orderBy: { timestamp: "desc" },
+      include: {
+        email: { select: { to: true, from: true, subject: true } },
+      },
+      orderBy: { occurredAt: "desc" },
       take: limit,
-      skip: offset
+      skip: offset,
     });
 
     const totalCount = await prisma.emailEvent.count({ where: whereClause });
 
+    // charts (30d)
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
+    const domainIds = domains.map((d) => d.id);
+
+    // ✅ aggregate using relations
     const volumeData = isAdmin
-      ? await prisma.$queryRaw`
-        SELECT DATE(timestamp) as date,
+      ? await prisma.$queryRawUnsafe(`
+        SELECT DATE(e."occurredAt") as date,
                COUNT(*) as total,
-               COUNT(CASE WHEN status = 'delivered' THEN 1 END) as delivered,
-               COUNT(CASE WHEN status = 'failed' OR status = 'bounced' THEN 1 END) as failed,
-               COUNT(CASE WHEN "eventType" = 'open' THEN 1 END) as opens,
-               COUNT(CASE WHEN "eventType" = 'click' THEN 1 END) as clicks
-        FROM "EmailEvent"
-        WHERE "domainId" = ANY(${domains.map(d => d.id)}::text[])
-          AND timestamp >= ${thirtyDaysAgo}
-        GROUP BY DATE(timestamp)
-        ORDER BY DATE(timestamp)`
-      : await prisma.$queryRaw`
-        SELECT DATE(timestamp) as date,
+               COUNT(CASE WHEN e.status = 'delivered' THEN 1 END) as delivered,
+               COUNT(CASE WHEN e.status IN ('failed','bounced') THEN 1 END) as failed,
+               COUNT(CASE WHEN e.type = 'open' THEN 1 END) as opens,
+               COUNT(CASE WHEN e.type = 'click' THEN 1 END) as clicks
+        FROM "EmailEvent" e
+        INNER JOIN "Email" em ON e."emailId" = em.id
+        WHERE em."domainId" = ANY($1)
+          AND e."occurredAt" >= $2
+        GROUP BY DATE(e."occurredAt")
+        ORDER BY DATE(e."occurredAt")
+      `, domainIds, thirtyDaysAgo)
+      : await prisma.$queryRawUnsafe(`
+        SELECT DATE(e."occurredAt") as date,
                COUNT(*) as total,
-               COUNT(CASE WHEN status = 'delivered' THEN 1 END) as delivered,
-               COUNT(CASE WHEN status = 'failed' OR status = 'bounced' THEN 1 END) as failed,
-               COUNT(CASE WHEN "eventType" = 'open' THEN 1 END) as opens,
-               COUNT(CASE WHEN "eventType" = 'click' THEN 1 END) as clicks
-        FROM "EmailEvent"
-        WHERE "domainId" = ${domains[0].id}
-          AND timestamp >= ${thirtyDaysAgo}
-        GROUP BY DATE(timestamp)
-        ORDER BY DATE(timestamp)`;
+               COUNT(CASE WHEN e.status = 'delivered' THEN 1 END) as delivered,
+               COUNT(CASE WHEN e.status IN ('failed','bounced') THEN 1 END) as failed,
+               COUNT(CASE WHEN e.type = 'open' THEN 1 END) as opens,
+               COUNT(CASE WHEN e.type = 'click' THEN 1 END) as clicks
+        FROM "EmailEvent" e
+        INNER JOIN "Email" em ON e."emailId" = em.id
+        WHERE em."domainId" = $1
+          AND e."occurredAt" >= $2
+        GROUP BY DATE(e."occurredAt")
+        ORDER BY DATE(e."occurredAt")
+      `, domains[0].id, thirtyDaysAgo);
 
     const engagementData = isAdmin
-      ? await prisma.$queryRaw`
-        SELECT EXTRACT(DOW FROM timestamp) as day_of_week,
-               TO_CHAR(timestamp, 'Day') as day_name,
-               COUNT(CASE WHEN "eventType" = 'open' THEN 1 END) as opens,
-               COUNT(CASE WHEN "eventType" = 'click' THEN 1 END) as clicks
-        FROM "EmailEvent"
-        WHERE "domainId" = ANY(${domains.map(d => d.id)}::text[])
-          AND timestamp >= ${thirtyDaysAgo}
-          AND "eventType" IN ('open', 'click')
-        GROUP BY EXTRACT(DOW FROM timestamp), TO_CHAR(timestamp, 'Day')
-        ORDER BY EXTRACT(DOW FROM timestamp)`
-      : await prisma.$queryRaw`
-        SELECT EXTRACT(DOW FROM timestamp) as day_of_week,
-               TO_CHAR(timestamp, 'Day') as day_name,
-               COUNT(CASE WHEN "eventType" = 'open' THEN 1 END) as opens,
-               COUNT(CASE WHEN "eventType" = 'click' THEN 1 END) as clicks
-        FROM "EmailEvent"
-        WHERE "domainId" = ${domains[0].id}
-          AND timestamp >= ${thirtyDaysAgo}
-          AND "eventType" IN ('open', 'click')
-        GROUP BY EXTRACT(DOW FROM timestamp), TO_CHAR(timestamp, 'Day')
-        ORDER BY EXTRACT(DOW FROM timestamp)`;
+      ? await prisma.$queryRawUnsafe(`
+        SELECT EXTRACT(DOW FROM e."occurredAt") as day_of_week,
+               TO_CHAR(e."occurredAt", 'Day') as day_name,
+               COUNT(CASE WHEN e.type = 'open' THEN 1 END) as opens,
+               COUNT(CASE WHEN e.type = 'click' THEN 1 END) as clicks
+        FROM "EmailEvent" e
+        INNER JOIN "Email" em ON e."emailId" = em.id
+        WHERE em."domainId" = ANY($1)
+          AND e."occurredAt" >= $2
+          AND e.type IN ('open','click')
+        GROUP BY EXTRACT(DOW FROM e."occurredAt"), TO_CHAR(e."occurredAt", 'Day')
+        ORDER BY EXTRACT(DOW FROM e."occurredAt")
+      `, domainIds, thirtyDaysAgo)
+      : await prisma.$queryRawUnsafe(`
+        SELECT EXTRACT(DOW FROM e."occurredAt") as day_of_week,
+               TO_CHAR(e."occurredAt", 'Day') as day_name,
+               COUNT(CASE WHEN e.type = 'open' THEN 1 END) as opens,
+               COUNT(CASE WHEN e.type = 'click' THEN 1 END) as clicks
+        FROM "EmailEvent" e
+        INNER JOIN "Email" em ON e."emailId" = em.id
+        WHERE em."domainId" = $1
+          AND e."occurredAt" >= $2
+          AND e.type IN ('open','click')
+        GROUP BY EXTRACT(DOW FROM e."occurredAt"), TO_CHAR(e."occurredAt", 'Day')
+        ORDER BY EXTRACT(DOW FROM e."occurredAt")
+      `, domains[0].id, thirtyDaysAgo);
 
     return safeJsonResponse({
-      events: events.map(event => ({
+      events: events.map((event) => ({
         id: event.id,
         emailId: event.emailId,
-        to: event.to,
-        from: event.from,
-        subject: event.subject,
-        eventType: event.eventType,
+        to: event.email?.to,
+        from: event.email?.from,
+        subject: event.email?.subject,
+        eventType: event.type,
         status: event.status,
-        timestamp: event.timestamp,
-        createdAt: event.createdAt
+        timestamp: event.occurredAt,
+        createdAt: event.createdAt,
       })),
       pagination: {
         total: totalCount,
         limit,
         offset,
-        hasMore: totalCount > offset + limit
+        hasMore: totalCount > offset + limit,
       },
       charts: {
         volume: volumeData,
-        engagement: engagementData
+        engagement: engagementData,
       },
       domainName: isAdmin ? "All Domains" : domains[0].name,
-      isAdmin
+      isAdmin,
     });
-
   } catch (error) {
     console.error("Error fetching email events:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

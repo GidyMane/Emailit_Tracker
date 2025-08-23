@@ -11,7 +11,7 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Check if user is admin
+    //  Check if user is admin
     const adminEmails = ["info@websoftdevelopment.com", "muragegideon2000@gmail.com"];
     const isAdmin = adminEmails.includes(user.email);
 
@@ -19,41 +19,50 @@ export async function GET() {
       return NextResponse.json({ error: "Access denied" }, { status: 403 });
     }
 
-    // Fetch all domains with their email counts and summary info
+    //  Fetch domains with summary + email count
     const domains = await prisma.domain.findMany({
       include: {
         summary: true,
         _count: {
           select: {
-            emails: true
-          }
-        }
+            emails: true,
+          },
+        },
       },
       orderBy: {
-        createdAt: 'desc'
-      }
+        createdAt: "desc",
+      },
     });
 
-    // Get domain statistics
     const domainStats = await Promise.all(
       domains.map(async (domain) => {
+        // Count all events for emails under this domain
         const totalEmails = await prisma.emailEvent.count({
-          where: { domainId: domain.id }
-        });
-
-        const lastEmail = await prisma.emailEvent.findFirst({
-          where: { domainId: domain.id },
-          orderBy: { timestamp: 'desc' },
-          select: { timestamp: true }
-        });
-
-        const uniqueRecipients = await prisma.emailEvent.groupBy({
-          by: ['to'],
-          where: { 
-            domainId: domain.id,
-            to: { not: null }
+          where: {
+            email: {
+              domainId: domain.id,
+            },
           },
-          _count: true
+        });
+
+        // Get last email event for this domain
+        const lastEmail = await prisma.emailEvent.findFirst({
+          where: {
+            email: {
+              domainId: domain.id,
+            },
+          },
+          orderBy: { occurredAt: "desc" },
+          select: { occurredAt: true },
+        });
+
+        // Count unique recipients (`to`) for emails in this domain
+        const uniqueRecipients = await prisma.email.groupBy({
+          by: ["to"],
+          where: {
+            domainId: domain.id,
+            to: { not: null },
+          },
         });
 
         return {
@@ -63,18 +72,20 @@ export async function GET() {
           updatedAt: domain.updatedAt,
           totalEmails,
           uniqueRecipients: uniqueRecipients.length,
-          lastEmailSent: lastEmail?.timestamp || null,
-          summary: domain.summary ? {
-            totalSent: domain.summary.totalSent,
-            totalHardFail: domain.summary.totalHardFail,
-            totalSoftFail: domain.summary.totalSoftFail,
-            totalBounce: domain.summary.totalBounce,
-            totalError: domain.summary.totalError,
-            totalHeld: domain.summary.totalHeld,
-            totalDelayed: domain.summary.totalDelayed,
-            totalLoaded: domain.summary.totalLoaded,
-            totalClicked: domain.summary.totalClicked
-          } : null
+          lastEmailSent: lastEmail?.occurredAt || null,
+          summary: domain.summary
+            ? {
+                totalSent: domain.summary.totalSent,
+                totalHardFail: domain.summary.totalHardFail,
+                totalSoftFail: domain.summary.totalSoftFail,
+                totalBounce: domain.summary.totalBounce,
+                totalError: domain.summary.totalError,
+                totalHeld: domain.summary.totalHeld,
+                totalDelayed: domain.summary.totalDelayed,
+                totalLoaded: domain.summary.totalLoaded,
+                totalClicked: domain.summary.totalClicked,
+              }
+            : null,
         };
       })
     );
@@ -82,9 +93,8 @@ export async function GET() {
     return NextResponse.json({
       domains: domainStats,
       totalDomains: domains.length,
-      isAdmin
+      isAdmin,
     });
-
   } catch (error) {
     console.error("Error fetching domains:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
