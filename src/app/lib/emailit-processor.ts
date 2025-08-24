@@ -141,7 +141,7 @@ export async function processEmailitEvent(payload: EmailitWebhookPayload) {
         userAgent,
         linkId,
         linkUrl,
-        rawPayload: payload as any,
+        rawPayload: payload as unknown as Record<string, unknown>,
       },
     });
 
