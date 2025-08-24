@@ -837,14 +837,16 @@ export function EnhancedEmailDashboard() {
                       )}
                     </CardContent>
                   </Card>
-                )) : [
-                  <EmptyStateCard key="sent" title="Total Sent" description="No emails sent yet" icon={Send} />,
-                  <EmptyStateCard key="delivered" title="Delivered" description="No deliveries yet" icon={CheckCircle} />,
-                  <EmptyStateCard key="failed" title="Failed" description="No failures yet" icon={XCircle} />,
-                  <EmptyStateCard key="opens" title="Opens" description="No opens yet" icon={MailOpen} />,
-                  <EmptyStateCard key="clicks" title="Clicks" description="No clicks yet" icon={Zap} />,
-                  <EmptyStateCard key="pending" title="Pending" description="No pending emails" icon={Clock} />
-                ]}
+                )) : (
+                  <>
+                    <EmptyStateCard key="sent" title="Total Sent" description="No emails sent yet" icon={Send} />
+                    <EmptyStateCard key="delivered" title="Delivered" description="No deliveries yet" icon={CheckCircle} />
+                    <EmptyStateCard key="failed" title="Failed" description="No failures yet" icon={XCircle} />
+                    <EmptyStateCard key="opens" title="Opens" description="No opens yet" icon={MailOpen} />
+                    <EmptyStateCard key="clicks" title="Clicks" description="No clicks yet" icon={Zap} />
+                    <EmptyStateCard key="pending" title="Pending" description="No pending emails" icon={Clock} />
+                  </>
+                )}
               </div>
 
               {/* Detailed Delivery Status */}
