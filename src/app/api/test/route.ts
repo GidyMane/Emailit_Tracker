@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
     try {
       const r = await processEmailitEvent(evt);
       results.push({ ok: true, eventId: r.eventId, type: r.type });
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Error processing event:", err);
       results.push({ ok: false, error: err.message });
     }
