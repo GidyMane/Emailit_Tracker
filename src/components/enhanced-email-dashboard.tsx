@@ -797,14 +797,6 @@ export function EnhancedEmailDashboard() {
           </div>
         </header>
         
-<<<<<<< HEAD
-        <main className="flex-1 space-y-4 sm:space-y-6 p-3 sm:p-4 md:p-6">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
-              <TabsTrigger value="analytics" className="text-xs sm:text-sm">Analytics</TabsTrigger>
-              <TabsTrigger value="audience" className="text-xs sm:text-sm">Audience</TabsTrigger>
-=======
         <main className="flex-1 space-y-6 p-4 md:p-6">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
             <TabsList className={`grid w-full ${audienceData?.isAdmin ? 'grid-cols-5' : 'grid-cols-4'}`}>
@@ -813,7 +805,6 @@ export function EnhancedEmailDashboard() {
               <TabsTrigger value="messages">Messages</TabsTrigger>
               <TabsTrigger value="audience">Audience</TabsTrigger>
               {audienceData?.isAdmin && <TabsTrigger value="domains">Domains</TabsTrigger>}
->>>>>>> refs/remotes/origin/master
             </TabsList>
             
             <TabsContent value="overview" className="space-y-6">
