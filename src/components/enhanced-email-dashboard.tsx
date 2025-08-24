@@ -37,24 +37,24 @@ import { Bar, BarChart, Line, LineChart, ResponsiveContainer, XAxis, YAxis, Cart
 import { Skeleton, CardSkeleton, ChartSkeleton, TableSkeleton, ProgressSkeleton } from "@/components/ui/skeleton"
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs"
 
-const navigation = [
+const getNavigation = (isAdmin: boolean = false) => [
   {
     title: "Main Navigation",
     items: [
-      { title: "Dashboard", icon: Home, url: "#", isActive: true },
+      { title: "Dashboard", tab: "overview", icon: Home, isActive: true },
       { title: "Campaigns", icon: Mail, url: "#" },
       { title: "Templates", icon: FileText, url: "#" },
-      { title: "Audience", icon: Users, url: "#" },
-      { title: "Analytics", icon: BarChart3, url: "#" },
+      { title: "Audience", tab: "audience", icon: Users },
+      { title: "Analytics", tab: "analytics", icon: BarChart3 },
+      ...(isAdmin ? [{ title: "Sending Domains", tab: "domains", icon: Send }] : []),
     ]
   },
   {
     title: "Email Tools",
     items: [
       { title: "Inbox", icon: Inbox, url: "#" },
-      { title: "Sent", icon: Send, url: "#" },
+      { title: "Sent", tab: "messages", icon: Send },
       { title: "Drafts", icon: FileText, url: "#" },
-      // { title: "Automation", icon: Zap, url: "#" },
     ]
   }
 ]
@@ -88,6 +88,15 @@ interface EmailStats {
   clicks: number;
   pending: number;
   deliveryRate: number;
+  detailedStatus?: {
+    sent: number;
+    hardfail: number;
+    softfail: number;
+    bounce: number;
+    error: number;
+    held: number;
+    delayed: number;
+  };
 }
 
 interface DomainDistribution {
@@ -120,6 +129,7 @@ interface AudienceData {
     clickRate: number;
   };
   domainName: string;
+  isAdmin: boolean;
 }
 
 interface VolumeData {
@@ -145,6 +155,7 @@ interface ChartData {
 interface EmailEventData {
   id: string;
   emailId: number;
+  messageId: string;
   to: string;
   from: string;
   subject: string;
@@ -168,12 +179,42 @@ interface EventsData {
   domainName: string;
 }
 
+interface DomainSummary {
+  totalSent: number;
+  totalHardFail: number;
+  totalSoftFail: number;
+  totalBounce: number;
+  totalError: number;
+  totalHeld: number;
+  totalDelayed: number;
+  totalLoaded: number;
+  totalClicked: number;
+}
+
+interface SendingDomain {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  totalEmails: number;
+  uniqueRecipients: number;
+  lastEmailSent: string | null;
+  summary: DomainSummary | null;
+}
+
+interface DomainsData {
+  domains: SendingDomain[];
+  totalDomains: number;
+  isAdmin: boolean;
+}
+
 export function EnhancedEmailDashboard() {
   const [activeTab, setActiveTab] = useState("overview")
   const [domainData, setDomainData] = useState<DomainData | null>(null)
   const [emailStats, setEmailStats] = useState<EmailStats | null>(null)
   const [audienceData, setAudienceData] = useState<AudienceData | null>(null)
   const [eventsData, setEventsData] = useState<EventsData | null>(null)
+  const [domainsData, setDomainsData] = useState<DomainsData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -224,6 +265,16 @@ export function EnhancedEmailDashboard() {
         console.log('Events Data:', eventsResult)
         setEventsData(eventsResult)
 
+        // Fetch domains data for admin users
+        if (audienceResult?.isAdmin) {
+          const domainsResponse = await fetch('/api/dashboard/domains')
+          if (domainsResponse.ok) {
+            const domainsResult = await domainsResponse.json()
+            console.log('Domains Data:', domainsResult)
+            setDomainsData(domainsResult)
+          }
+        }
+
       } catch (err) {
         console.error('Error fetching dashboard data:', err)
         setError(err instanceof Error ? err.message : 'Failed to load dashboard data')
@@ -258,19 +309,27 @@ export function EnhancedEmailDashboard() {
           </SidebarHeader>
 
           <SidebarContent>
-            {navigation.map((section) => (
+            {getNavigation(audienceData?.isAdmin || false).map((section) => (
               <SidebarGroup key={section.title}>
                 <SidebarGroupLabel>{section.title}</SidebarGroupLabel>
                 <SidebarGroupContent>
                   <SidebarMenu>
                     {section.items.map((item) => (
                       <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton asChild isActive={item.isActive}>
-                          <a href={item.url} className="flex items-center gap-2">
-                            <item.icon className="size-4" />
-                            <span>{item.title}</span>
-                          </a>
-                        </SidebarMenuButton>
+                        <SidebarMenuButton
+                        isActive={item.tab ? activeTab === item.tab : item.isActive}
+                        onClick={() => {
+                          if (item.tab) {
+                            setActiveTab(item.tab)
+                          }
+                        }}
+                        className={item.tab ? "cursor-pointer" : ""}
+                      >
+                        <div className="flex items-center gap-2">
+                          <item.icon className="size-4" />
+                          <span>{item.title}</span>
+                        </div>
+                      </SidebarMenuButton>
                       </SidebarMenuItem>
                     ))}
                   </SidebarMenu>
@@ -407,19 +466,27 @@ export function EnhancedEmailDashboard() {
           </SidebarHeader>
 
           <SidebarContent>
-            {navigation.map((section) => (
+            {getNavigation(audienceData?.isAdmin || false).map((section) => (
               <SidebarGroup key={section.title}>
                 <SidebarGroupLabel>{section.title}</SidebarGroupLabel>
                 <SidebarGroupContent>
                   <SidebarMenu>
                     {section.items.map((item) => (
                       <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton asChild isActive={item.isActive}>
-                          <a href={item.url} className="flex items-center gap-2">
-                            <item.icon className="size-4" />
-                            <span>{item.title}</span>
-                          </a>
-                        </SidebarMenuButton>
+                        <SidebarMenuButton
+                        isActive={item.tab ? activeTab === item.tab : item.isActive}
+                        onClick={() => {
+                          if (item.tab) {
+                            setActiveTab(item.tab)
+                          }
+                        }}
+                        className={item.tab ? "cursor-pointer" : ""}
+                      >
+                        <div className="flex items-center gap-2">
+                          <item.icon className="size-4" />
+                          <span>{item.title}</span>
+                        </div>
+                      </SidebarMenuButton>
                       </SidebarMenuItem>
                     ))}
                   </SidebarMenu>
@@ -482,59 +549,133 @@ export function EnhancedEmailDashboard() {
 
   // Build email stats cards from API data
   const emailStatCards = emailStats ? [
-    { 
-      title: "Total Sent", 
-      icon: Send, 
-      value: emailStats.totalSent.toLocaleString(), 
-      change: "", 
-      trend: "up", 
-      color: "text-blue-600", 
-      bgColor: "bg-blue-100" 
+    {
+      title: "Total Sent",
+      icon: Send,
+      value: emailStats.totalSent.toLocaleString(),
+      change: "",
+      trend: "up",
+      color: "text-blue-600",
+      bgColor: "bg-blue-100"
     },
-    { 
-      title: "Delivered", 
-      icon: CheckCircle, 
-      value: emailStats.delivered.toLocaleString(), 
-      change: `${emailStats.deliveryRate}%`, 
-      trend: "up", 
-      color: "text-green-600", 
-      bgColor: "bg-green-100" 
+    {
+      title: "Delivered",
+      icon: CheckCircle,
+      value: emailStats.delivered.toLocaleString(),
+      change: `${emailStats.deliveryRate}%`,
+      trend: "up",
+      color: "text-green-600",
+      bgColor: "bg-green-100"
     },
-    { 
-      title: "Failed", 
-      icon: XCircle, 
-      value: emailStats.failed.toLocaleString(), 
-      change: "", 
-      trend: "down", 
-      color: "text-red-600", 
-      bgColor: "bg-red-100" 
+    {
+      title: "Failed",
+      icon: XCircle,
+      value: emailStats.failed.toLocaleString(),
+      change: "",
+      trend: "down",
+      color: "text-red-600",
+      bgColor: "bg-red-100"
     },
-    { 
-      title: "Opens", 
-      icon: MailOpen, 
-      value: emailStats.opens.toLocaleString(), 
-      change: "", 
-      trend: "up", 
-      color: "text-purple-600", 
-      bgColor: "bg-purple-100" 
+    {
+      title: "Opens",
+      icon: MailOpen,
+      value: emailStats.opens.toLocaleString(),
+      change: "",
+      trend: "up",
+      color: "text-purple-600",
+      bgColor: "bg-purple-100"
     },
-    { 
-      title: "Clicks", 
-      icon: Zap, 
-      value: emailStats.clicks.toLocaleString(), 
-      change: "", 
-      trend: "up", 
-      color: "text-orange-600", 
-      bgColor: "bg-orange-100" 
+    {
+      title: "Clicks",
+      icon: Zap,
+      value: emailStats.clicks.toLocaleString(),
+      change: "",
+      trend: "up",
+      color: "text-orange-600",
+      bgColor: "bg-orange-100"
     },
-    { 
-      title: "Pending", 
-      icon: Clock, 
-      value: emailStats.pending.toLocaleString(), 
-      change: "", 
-      trend: "up", 
-      color: "text-yellow-600", 
-      bgColor: "bg-yellow-100" 
+    {
+      title: "Pending",
+      icon: Clock,
+      value: emailStats.pending.toLocaleString(),
+      change: "",
+      trend: "up",
+      color: "text-yellow-600",
+      bgColor: "bg-yellow-100"
+    }
+  ] : []
+
+  // Build detailed delivery status cards
+  const detailedStatusCards = emailStats?.detailedStatus ? [
+    {
+      title: "Sent Successfully",
+      icon: CheckCircle,
+      value: emailStats.detailedStatus.sent.toLocaleString(),
+      change: "",
+      trend: "up",
+      color: "text-green-600",
+      bgColor: "bg-green-100",
+      description: "Emails successfully delivered"
+    },
+    {
+      title: "Hard Fail",
+      icon: XCircle,
+      value: emailStats.detailedStatus.hardfail.toLocaleString(),
+      change: "",
+      trend: "down",
+      color: "text-red-600",
+      bgColor: "bg-red-100",
+      description: "Permanent delivery failures"
+    },
+    {
+      title: "Soft Fail",
+      icon: Clock,
+      value: emailStats.detailedStatus.softfail.toLocaleString(),
+      change: "",
+      trend: "down",
+      color: "text-orange-600",
+      bgColor: "bg-orange-100",
+      description: "Temporary failures, will retry"
+    },
+    {
+      title: "Bounced",
+      icon: TrendingDown,
+      value: emailStats.detailedStatus.bounce.toLocaleString(),
+      change: "",
+      trend: "down",
+      color: "text-red-500",
+      bgColor: "bg-red-50",
+      description: "Emails bounced back"
+    },
+    {
+      title: "System Error",
+      icon: XCircle,
+      value: emailStats.detailedStatus.error.toLocaleString(),
+      change: "",
+      trend: "down",
+      color: "text-gray-600",
+      bgColor: "bg-gray-100",
+      description: "System errors, will retry"
+    },
+    {
+      title: "Held",
+      icon: Eye,
+      value: emailStats.detailedStatus.held.toLocaleString(),
+      change: "",
+      trend: "down",
+      color: "text-yellow-600",
+      bgColor: "bg-yellow-100",
+      description: "Account under review"
+    },
+    {
+      title: "Delayed",
+      icon: Clock,
+      value: emailStats.detailedStatus.delayed.toLocaleString(),
+      change: "",
+      trend: "down",
+      color: "text-blue-500",
+      bgColor: "bg-blue-50",
+      description: "Rate limited, delayed"
     }
   ] : []
 
@@ -560,18 +701,26 @@ export function EnhancedEmailDashboard() {
         </SidebarHeader>
         
         <SidebarContent>
-          {navigation.map((section) => (
+          {getNavigation(audienceData?.isAdmin || false).map((section) => (
             <SidebarGroup key={section.title}>
               <SidebarGroupLabel>{section.title}</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
                   {section.items.map((item) => (
                     <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton asChild isActive={item.isActive}>
-                        <a href={item.url} className="flex items-center gap-2">
+                      <SidebarMenuButton
+                        isActive={item.tab ? activeTab === item.tab : item.isActive}
+                        onClick={() => {
+                          if (item.tab) {
+                            setActiveTab(item.tab)
+                          }
+                        }}
+                        className={item.tab ? "cursor-pointer" : ""}
+                      >
+                        <div className="flex items-center gap-2">
                           <item.icon className="size-4" />
                           <span>{item.title}</span>
-                        </a>
+                        </div>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   ))}
@@ -648,12 +797,23 @@ export function EnhancedEmailDashboard() {
           </div>
         </header>
         
+<<<<<<< HEAD
         <main className="flex-1 space-y-4 sm:space-y-6 p-3 sm:p-4 md:p-6">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
               <TabsTrigger value="analytics" className="text-xs sm:text-sm">Analytics</TabsTrigger>
               <TabsTrigger value="audience" className="text-xs sm:text-sm">Audience</TabsTrigger>
+=======
+        <main className="flex-1 space-y-6 p-4 md:p-6">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+            <TabsList className={`grid w-full ${audienceData?.isAdmin ? 'grid-cols-5' : 'grid-cols-4'}`}>
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="analytics">Analytics</TabsTrigger>
+              <TabsTrigger value="messages">Messages</TabsTrigger>
+              <TabsTrigger value="audience">Audience</TabsTrigger>
+              {audienceData?.isAdmin && <TabsTrigger value="domains">Domains</TabsTrigger>}
+>>>>>>> refs/remotes/origin/master
             </TabsList>
             
             <TabsContent value="overview" className="space-y-6">
@@ -695,6 +855,32 @@ export function EnhancedEmailDashboard() {
                   <EmptyStateCard key="pending" title="Pending" description="No pending emails" icon={Clock} />
                 ]}
               </div>
+
+              {/* Detailed Delivery Status */}
+              {detailedStatusCards.length > 0 && (
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-lg font-semibold">Detailed Delivery Status</h3>
+                    <Badge variant="outline">Last 30 days</Badge>
+                  </div>
+                  <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                    {detailedStatusCards.map((stat) => (
+                      <Card key={stat.title} className="hover:shadow-md transition-shadow">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                          <CardTitle className="text-sm font-medium text-muted-foreground">{stat.title}</CardTitle>
+                          <div className={`p-2 rounded-lg ${stat.bgColor}`}>
+                            <stat.icon className={`size-4 ${stat.color}`} />
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="text-2xl font-bold">{stat.value}</div>
+                          <p className="text-xs text-muted-foreground mt-1">{stat.description}</p>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Delivery Rate Progress */}
               <Card>
@@ -899,6 +1085,118 @@ export function EnhancedEmailDashboard() {
               </Card>
             </TabsContent>
 
+            <TabsContent value="messages" className="space-y-4 md:space-y-6">
+              {/* Recent Messages */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Recent Messages</CardTitle>
+                  <CardDescription>Latest emails sent through your domain</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {eventsData?.events && Array.isArray(eventsData.events) && eventsData.events.length > 0 ? (
+                      <>
+                        {/* Messages Table */}
+                        <div className="rounded-lg border">
+                          <div className="grid grid-cols-12 gap-4 p-4 font-medium text-sm text-muted-foreground border-b bg-muted/50">
+                            <div className="col-span-3">To</div>
+                            <div className="col-span-4">Subject</div>
+                            <div className="col-span-2">Status</div>
+                            <div className="col-span-2">Sent Date</div>
+                            <div className="col-span-1">Actions</div>
+                          </div>
+                          {/* Group messages by messageId to show unique emails */}
+                          {Object.values(
+                            eventsData.events.reduce((acc: { [key: string]: EmailEventData }, event: EmailEventData) => {
+                              // Only include delivery events for messages view
+                              if (event.eventType.startsWith('email.delivery.')) {
+                                if (!acc[event.messageId] || new Date(event.timestamp) > new Date(acc[event.messageId].timestamp)) {
+                                  acc[event.messageId] = event;
+                                }
+                              }
+                              return acc;
+                            }, {})
+                          ).slice(0, 20).map((event: EmailEventData) => (
+                            <div key={event.messageId} className="grid grid-cols-12 gap-4 p-4 border-b last:border-b-0 hover:bg-muted/30 transition-colors">
+                              <div className="col-span-3">
+                                <div className="flex items-center gap-2">
+                                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-blue-100 flex-shrink-0">
+                                    <Mail className="size-4 text-blue-600" />
+                                  </div>
+                                  <div className="min-w-0 flex-1">
+                                    <div className="font-medium text-sm truncate">{event.to}</div>
+                                    <div className="text-xs text-muted-foreground">{event.from}</div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="col-span-4">
+                                <div className="text-sm font-medium truncate" title={event.subject}>
+                                  {event.subject}
+                                </div>
+                                <div className="text-xs text-muted-foreground">ID: {event.emailId}</div>
+                              </div>
+                              <div className="col-span-2">
+                                <Badge
+                                  variant={
+                                    event.status === 'sent' ? 'default' :
+                                    ['hardfail', 'softfail', 'bounce', 'error'].includes(event.status) ? 'destructive' :
+                                    ['held', 'delayed'].includes(event.status) ? 'secondary' :
+                                    'outline'
+                                  }
+                                >
+                                  {event.status === 'sent' ? 'Delivered' :
+                                   event.status === 'hardfail' ? 'Hard Fail' :
+                                   event.status === 'softfail' ? 'Soft Fail' :
+                                   event.status === 'bounce' ? 'Bounced' :
+                                   event.status === 'error' ? 'Error' :
+                                   event.status === 'held' ? 'Held' :
+                                   event.status === 'delayed' ? 'Delayed' :
+                                   event.status}
+                                </Badge>
+                              </div>
+                              <div className="col-span-2">
+                                <div className="text-sm">
+                                  {new Date(event.timestamp).toLocaleDateString()}
+                                </div>
+                                <div className="text-xs text-muted-foreground">
+                                  {new Date(event.timestamp).toLocaleTimeString()}
+                                </div>
+                              </div>
+                              <div className="col-span-1">
+                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                  <Eye className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Pagination Info */}
+                        {eventsData.pagination && (
+                          <div className="flex items-center justify-between text-sm text-muted-foreground">
+                            <div>
+                              Showing recent messages from {domainData?.userDomain || 'your domain'}
+                            </div>
+                            {eventsData.pagination.hasMore && (
+                              <Button variant="outline" size="sm">
+                                Load More Messages
+                              </Button>
+                            )}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <div className="text-center py-12">
+                        <Mail className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                        <h3 className="text-lg font-medium mb-2">No Messages Yet</h3>
+                        <p className="text-sm text-muted-foreground">Recent messages will appear here once you start sending emails</p>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
             <TabsContent value="audience" className="space-y-4 md:space-y-6">
               {/* Domain Distribution & Overview */}
               <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
@@ -1065,6 +1363,120 @@ export function EnhancedEmailDashboard() {
                 </CardContent>
               </Card>
             </TabsContent>
+
+            {audienceData?.isAdmin && (
+              <TabsContent value="domains" className="space-y-4 md:space-y-6">
+                {/* Sending Domains */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Sending Domains</CardTitle>
+                    <CardDescription>All domains configured for email sending</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {domainsData?.domains && domainsData.domains.length > 0 ? (
+                        <>
+                          {/* Domains Summary */}
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-muted/30 rounded-lg mb-4">
+                            <div className="text-center">
+                              <div className="text-2xl font-bold">{domainsData.totalDomains}</div>
+                              <div className="text-sm text-muted-foreground">Total Domains</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-2xl font-bold text-green-600">
+                                {domainsData.domains.filter(d => d.totalEmails > 0).length}
+                              </div>
+                              <div className="text-sm text-muted-foreground">Active Domains</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-2xl font-bold text-blue-600">
+                                {domainsData.domains.reduce((sum, d) => sum + d.totalEmails, 0).toLocaleString()}
+                              </div>
+                              <div className="text-sm text-muted-foreground">Total Emails Sent</div>
+                            </div>
+                          </div>
+
+                          {/* Domains Table */}
+                          <div className="rounded-lg border">
+                            <div className="grid grid-cols-12 gap-4 p-4 font-medium text-sm text-muted-foreground border-b bg-muted/50">
+                              <div className="col-span-3">Domain Name</div>
+                              <div className="col-span-2">Total Emails</div>
+                              <div className="col-span-2">Recipients</div>
+                              <div className="col-span-2">Last Activity</div>
+                              <div className="col-span-2">Status</div>
+                              <div className="col-span-1">Actions</div>
+                            </div>
+                            {domainsData.domains.map((domain) => (
+                              <div key={domain.id} className="grid grid-cols-12 gap-4 p-4 border-b last:border-b-0 hover:bg-muted/30 transition-colors">
+                                <div className="col-span-3">
+                                  <div className="flex items-center gap-2">
+                                    <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-blue-100 flex-shrink-0">
+                                      <Send className="size-4 text-blue-600" />
+                                    </div>
+                                    <div className="min-w-0 flex-1">
+                                      <div className="font-medium text-sm">{domain.name}</div>
+                                      <div className="text-xs text-muted-foreground">
+                                        Created {new Date(domain.createdAt).toLocaleDateString()}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="col-span-2">
+                                  <div className="text-sm font-medium">{domain.totalEmails.toLocaleString()}</div>
+                                  {domain.summary && (
+                                    <div className="text-xs text-muted-foreground">
+                                      {domain.summary.totalSent} sent, {domain.summary.totalLoaded} opened
+                                    </div>
+                                  )}
+                                </div>
+                                <div className="col-span-2">
+                                  <div className="text-sm font-medium">{domain.uniqueRecipients.toLocaleString()}</div>
+                                  <div className="text-xs text-muted-foreground">Unique recipients</div>
+                                </div>
+                                <div className="col-span-2">
+                                  {domain.lastEmailSent ? (
+                                    <>
+                                      <div className="text-sm">
+                                        {new Date(domain.lastEmailSent).toLocaleDateString()}
+                                      </div>
+                                      <div className="text-xs text-muted-foreground">
+                                        {new Date(domain.lastEmailSent).toLocaleTimeString()}
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <div className="text-sm text-muted-foreground">No emails sent</div>
+                                  )}
+                                </div>
+                                <div className="col-span-2">
+                                  <Badge
+                                    variant={
+                                      domain.totalEmails > 0 ? 'default' : 'secondary'
+                                    }
+                                  >
+                                    {domain.totalEmails > 0 ? 'Active' : 'Inactive'}
+                                  </Badge>
+                                </div>
+                                <div className="col-span-1">
+                                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                    <Eye className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </>
+                      ) : (
+                        <div className="text-center py-12">
+                          <Send className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                          <h3 className="text-lg font-medium mb-2">No Domains Found</h3>
+                          <p className="text-sm text-muted-foreground">No sending domains have been configured yet</p>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            )}
           </Tabs>
         </main>
       </SidebarInset>

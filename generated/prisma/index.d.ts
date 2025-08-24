@@ -24,6 +24,11 @@ export type User = $Result.DefaultSelection<Prisma.$UserPayload>
  */
 export type Domain = $Result.DefaultSelection<Prisma.$DomainPayload>
 /**
+ * Model Email
+ * 
+ */
+export type Email = $Result.DefaultSelection<Prisma.$EmailPayload>
+/**
  * Model EmailEvent
  * 
  */
@@ -195,6 +200,16 @@ export class PrismaClient<
     * ```
     */
   get domain(): Prisma.DomainDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.email`: Exposes CRUD operations for the **Email** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Emails
+    * const emails = await prisma.email.findMany()
+    * ```
+    */
+  get email(): Prisma.EmailDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.emailEvent`: Exposes CRUD operations for the **EmailEvent** model.
@@ -657,6 +672,7 @@ export namespace Prisma {
   export const ModelName: {
     User: 'User',
     Domain: 'Domain',
+    Email: 'Email',
     EmailEvent: 'EmailEvent',
     EmailSummary: 'EmailSummary'
   };
@@ -677,7 +693,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "domain" | "emailEvent" | "emailSummary"
+      modelProps: "user" | "domain" | "email" | "emailEvent" | "emailSummary"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -826,6 +842,80 @@ export namespace Prisma {
           count: {
             args: Prisma.DomainCountArgs<ExtArgs>
             result: $Utils.Optional<DomainCountAggregateOutputType> | number
+          }
+        }
+      }
+      Email: {
+        payload: Prisma.$EmailPayload<ExtArgs>
+        fields: Prisma.EmailFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EmailFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EmailFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailPayload>
+          }
+          findFirst: {
+            args: Prisma.EmailFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EmailFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailPayload>
+          }
+          findMany: {
+            args: Prisma.EmailFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailPayload>[]
+          }
+          create: {
+            args: Prisma.EmailCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailPayload>
+          }
+          createMany: {
+            args: Prisma.EmailCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EmailCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailPayload>[]
+          }
+          delete: {
+            args: Prisma.EmailDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailPayload>
+          }
+          update: {
+            args: Prisma.EmailUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailPayload>
+          }
+          deleteMany: {
+            args: Prisma.EmailDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EmailUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.EmailUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailPayload>[]
+          }
+          upsert: {
+            args: Prisma.EmailUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailPayload>
+          }
+          aggregate: {
+            args: Prisma.EmailAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEmail>
+          }
+          groupBy: {
+            args: Prisma.EmailGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EmailGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EmailCountArgs<ExtArgs>
+            result: $Utils.Optional<EmailCountAggregateOutputType> | number
           }
         }
       }
@@ -1071,6 +1161,7 @@ export namespace Prisma {
   export type GlobalOmitConfig = {
     user?: UserOmit
     domain?: DomainOmit
+    email?: EmailOmit
     emailEvent?: EmailEventOmit
     emailSummary?: EmailSummaryOmit
   }
@@ -1225,6 +1316,37 @@ export namespace Prisma {
    * DomainCountOutputType without action
    */
   export type DomainCountOutputTypeCountEmailsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmailWhereInput
+  }
+
+
+  /**
+   * Count Type EmailCountOutputType
+   */
+
+  export type EmailCountOutputType = {
+    events: number
+  }
+
+  export type EmailCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    events?: boolean | EmailCountOutputTypeCountEventsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * EmailCountOutputType without action
+   */
+  export type EmailCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailCountOutputType
+     */
+    select?: EmailCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * EmailCountOutputType without action
+   */
+  export type EmailCountOutputTypeCountEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: EmailEventWhereInput
   }
 
@@ -2530,7 +2652,7 @@ export namespace Prisma {
     name: "Domain"
     objects: {
       user: Prisma.$UserPayload<ExtArgs> | null
-      emails: Prisma.$EmailEventPayload<ExtArgs>[]
+      emails: Prisma.$EmailPayload<ExtArgs>[]
       summary: Prisma.$EmailSummaryPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -2934,7 +3056,7 @@ export namespace Prisma {
   export interface Prisma__DomainClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends Domain$userArgs<ExtArgs> = {}>(args?: Subset<T, Domain$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    emails<T extends Domain$emailsArgs<ExtArgs> = {}>(args?: Subset<T, Domain$emailsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    emails<T extends Domain$emailsArgs<ExtArgs> = {}>(args?: Subset<T, Domain$emailsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     summary<T extends Domain$summaryArgs<ExtArgs> = {}>(args?: Subset<T, Domain$summaryArgs<ExtArgs>>): Prisma__EmailSummaryClient<$Result.GetResult<Prisma.$EmailSummaryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -3389,23 +3511,23 @@ export namespace Prisma {
    */
   export type Domain$emailsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the EmailEvent
+     * Select specific fields to fetch from the Email
      */
-    select?: EmailEventSelect<ExtArgs> | null
+    select?: EmailSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the EmailEvent
+     * Omit specific fields from the Email
      */
-    omit?: EmailEventOmit<ExtArgs> | null
+    omit?: EmailOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: EmailEventInclude<ExtArgs> | null
-    where?: EmailEventWhereInput
-    orderBy?: EmailEventOrderByWithRelationInput | EmailEventOrderByWithRelationInput[]
-    cursor?: EmailEventWhereUniqueInput
+    include?: EmailInclude<ExtArgs> | null
+    where?: EmailWhereInput
+    orderBy?: EmailOrderByWithRelationInput | EmailOrderByWithRelationInput[]
+    cursor?: EmailWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: EmailEventScalarFieldEnum | EmailEventScalarFieldEnum[]
+    distinct?: EmailScalarFieldEnum | EmailScalarFieldEnum[]
   }
 
   /**
@@ -3447,28 +3569,28 @@ export namespace Prisma {
 
 
   /**
-   * Model EmailEvent
+   * Model Email
    */
 
-  export type AggregateEmailEvent = {
-    _count: EmailEventCountAggregateOutputType | null
-    _avg: EmailEventAvgAggregateOutputType | null
-    _sum: EmailEventSumAggregateOutputType | null
-    _min: EmailEventMinAggregateOutputType | null
-    _max: EmailEventMaxAggregateOutputType | null
+  export type AggregateEmail = {
+    _count: EmailCountAggregateOutputType | null
+    _avg: EmailAvgAggregateOutputType | null
+    _sum: EmailSumAggregateOutputType | null
+    _min: EmailMinAggregateOutputType | null
+    _max: EmailMaxAggregateOutputType | null
   }
 
-  export type EmailEventAvgAggregateOutputType = {
+  export type EmailAvgAggregateOutputType = {
     emailId: number | null
     spamStatus: number | null
   }
 
-  export type EmailEventSumAggregateOutputType = {
+  export type EmailSumAggregateOutputType = {
     emailId: number | null
     spamStatus: number | null
   }
 
-  export type EmailEventMinAggregateOutputType = {
+  export type EmailMinAggregateOutputType = {
     id: string | null
     emailId: number | null
     token: string | null
@@ -3476,15 +3598,17 @@ export namespace Prisma {
     to: string | null
     from: string | null
     subject: string | null
-    eventType: string | null
-    status: string | null
     spamStatus: number | null
-    timestamp: Date | null
     domainId: string | null
+    deliveryStatus: string | null
+    sentAt: Date | null
+    firstOpenAt: Date | null
+    firstClickAt: Date | null
     createdAt: Date | null
+    updatedAt: Date | null
   }
 
-  export type EmailEventMaxAggregateOutputType = {
+  export type EmailMaxAggregateOutputType = {
     id: string | null
     emailId: number | null
     token: string | null
@@ -3492,15 +3616,17 @@ export namespace Prisma {
     to: string | null
     from: string | null
     subject: string | null
-    eventType: string | null
-    status: string | null
     spamStatus: number | null
-    timestamp: Date | null
     domainId: string | null
+    deliveryStatus: string | null
+    sentAt: Date | null
+    firstOpenAt: Date | null
+    firstClickAt: Date | null
     createdAt: Date | null
+    updatedAt: Date | null
   }
 
-  export type EmailEventCountAggregateOutputType = {
+  export type EmailCountAggregateOutputType = {
     id: number
     emailId: number
     token: number
@@ -3508,71 +3634,1303 @@ export namespace Prisma {
     to: number
     from: number
     subject: number
-    eventType: number
-    status: number
     spamStatus: number
-    timestamp: number
     domainId: number
+    deliveryStatus: number
+    sentAt: number
+    firstOpenAt: number
+    firstClickAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type EmailAvgAggregateInputType = {
+    emailId?: true
+    spamStatus?: true
+  }
+
+  export type EmailSumAggregateInputType = {
+    emailId?: true
+    spamStatus?: true
+  }
+
+  export type EmailMinAggregateInputType = {
+    id?: true
+    emailId?: true
+    token?: true
+    messageId?: true
+    to?: true
+    from?: true
+    subject?: true
+    spamStatus?: true
+    domainId?: true
+    deliveryStatus?: true
+    sentAt?: true
+    firstOpenAt?: true
+    firstClickAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EmailMaxAggregateInputType = {
+    id?: true
+    emailId?: true
+    token?: true
+    messageId?: true
+    to?: true
+    from?: true
+    subject?: true
+    spamStatus?: true
+    domainId?: true
+    deliveryStatus?: true
+    sentAt?: true
+    firstOpenAt?: true
+    firstClickAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EmailCountAggregateInputType = {
+    id?: true
+    emailId?: true
+    token?: true
+    messageId?: true
+    to?: true
+    from?: true
+    subject?: true
+    spamStatus?: true
+    domainId?: true
+    deliveryStatus?: true
+    sentAt?: true
+    firstOpenAt?: true
+    firstClickAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type EmailAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Email to aggregate.
+     */
+    where?: EmailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Emails to fetch.
+     */
+    orderBy?: EmailOrderByWithRelationInput | EmailOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EmailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Emails from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Emails.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Emails
+    **/
+    _count?: true | EmailCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: EmailAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EmailSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EmailMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EmailMaxAggregateInputType
+  }
+
+  export type GetEmailAggregateType<T extends EmailAggregateArgs> = {
+        [P in keyof T & keyof AggregateEmail]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEmail[P]>
+      : GetScalarType<T[P], AggregateEmail[P]>
+  }
+
+
+
+
+  export type EmailGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmailWhereInput
+    orderBy?: EmailOrderByWithAggregationInput | EmailOrderByWithAggregationInput[]
+    by: EmailScalarFieldEnum[] | EmailScalarFieldEnum
+    having?: EmailScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EmailCountAggregateInputType | true
+    _avg?: EmailAvgAggregateInputType
+    _sum?: EmailSumAggregateInputType
+    _min?: EmailMinAggregateInputType
+    _max?: EmailMaxAggregateInputType
+  }
+
+  export type EmailGroupByOutputType = {
+    id: string
+    emailId: number
+    token: string
+    messageId: string
+    to: string | null
+    from: string | null
+    subject: string | null
+    spamStatus: number | null
+    domainId: string
+    deliveryStatus: string | null
+    sentAt: Date | null
+    firstOpenAt: Date | null
+    firstClickAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: EmailCountAggregateOutputType | null
+    _avg: EmailAvgAggregateOutputType | null
+    _sum: EmailSumAggregateOutputType | null
+    _min: EmailMinAggregateOutputType | null
+    _max: EmailMaxAggregateOutputType | null
+  }
+
+  type GetEmailGroupByPayload<T extends EmailGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EmailGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EmailGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EmailGroupByOutputType[P]>
+            : GetScalarType<T[P], EmailGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EmailSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    emailId?: boolean
+    token?: boolean
+    messageId?: boolean
+    to?: boolean
+    from?: boolean
+    subject?: boolean
+    spamStatus?: boolean
+    domainId?: boolean
+    deliveryStatus?: boolean
+    sentAt?: boolean
+    firstOpenAt?: boolean
+    firstClickAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    domain?: boolean | DomainDefaultArgs<ExtArgs>
+    events?: boolean | Email$eventsArgs<ExtArgs>
+    _count?: boolean | EmailCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["email"]>
+
+  export type EmailSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    emailId?: boolean
+    token?: boolean
+    messageId?: boolean
+    to?: boolean
+    from?: boolean
+    subject?: boolean
+    spamStatus?: boolean
+    domainId?: boolean
+    deliveryStatus?: boolean
+    sentAt?: boolean
+    firstOpenAt?: boolean
+    firstClickAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    domain?: boolean | DomainDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["email"]>
+
+  export type EmailSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    emailId?: boolean
+    token?: boolean
+    messageId?: boolean
+    to?: boolean
+    from?: boolean
+    subject?: boolean
+    spamStatus?: boolean
+    domainId?: boolean
+    deliveryStatus?: boolean
+    sentAt?: boolean
+    firstOpenAt?: boolean
+    firstClickAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    domain?: boolean | DomainDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["email"]>
+
+  export type EmailSelectScalar = {
+    id?: boolean
+    emailId?: boolean
+    token?: boolean
+    messageId?: boolean
+    to?: boolean
+    from?: boolean
+    subject?: boolean
+    spamStatus?: boolean
+    domainId?: boolean
+    deliveryStatus?: boolean
+    sentAt?: boolean
+    firstOpenAt?: boolean
+    firstClickAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type EmailOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "emailId" | "token" | "messageId" | "to" | "from" | "subject" | "spamStatus" | "domainId" | "deliveryStatus" | "sentAt" | "firstOpenAt" | "firstClickAt" | "createdAt" | "updatedAt", ExtArgs["result"]["email"]>
+  export type EmailInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    domain?: boolean | DomainDefaultArgs<ExtArgs>
+    events?: boolean | Email$eventsArgs<ExtArgs>
+    _count?: boolean | EmailCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type EmailIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    domain?: boolean | DomainDefaultArgs<ExtArgs>
+  }
+  export type EmailIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    domain?: boolean | DomainDefaultArgs<ExtArgs>
+  }
+
+  export type $EmailPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Email"
+    objects: {
+      domain: Prisma.$DomainPayload<ExtArgs>
+      events: Prisma.$EmailEventPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      emailId: number
+      token: string
+      messageId: string
+      to: string | null
+      from: string | null
+      subject: string | null
+      spamStatus: number | null
+      domainId: string
+      deliveryStatus: string | null
+      sentAt: Date | null
+      firstOpenAt: Date | null
+      firstClickAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["email"]>
+    composites: {}
+  }
+
+  type EmailGetPayload<S extends boolean | null | undefined | EmailDefaultArgs> = $Result.GetResult<Prisma.$EmailPayload, S>
+
+  type EmailCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EmailFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EmailCountAggregateInputType | true
+    }
+
+  export interface EmailDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Email'], meta: { name: 'Email' } }
+    /**
+     * Find zero or one Email that matches the filter.
+     * @param {EmailFindUniqueArgs} args - Arguments to find a Email
+     * @example
+     * // Get one Email
+     * const email = await prisma.email.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EmailFindUniqueArgs>(args: SelectSubset<T, EmailFindUniqueArgs<ExtArgs>>): Prisma__EmailClient<$Result.GetResult<Prisma.$EmailPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Email that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EmailFindUniqueOrThrowArgs} args - Arguments to find a Email
+     * @example
+     * // Get one Email
+     * const email = await prisma.email.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EmailFindUniqueOrThrowArgs>(args: SelectSubset<T, EmailFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EmailClient<$Result.GetResult<Prisma.$EmailPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Email that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailFindFirstArgs} args - Arguments to find a Email
+     * @example
+     * // Get one Email
+     * const email = await prisma.email.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EmailFindFirstArgs>(args?: SelectSubset<T, EmailFindFirstArgs<ExtArgs>>): Prisma__EmailClient<$Result.GetResult<Prisma.$EmailPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Email that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailFindFirstOrThrowArgs} args - Arguments to find a Email
+     * @example
+     * // Get one Email
+     * const email = await prisma.email.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EmailFindFirstOrThrowArgs>(args?: SelectSubset<T, EmailFindFirstOrThrowArgs<ExtArgs>>): Prisma__EmailClient<$Result.GetResult<Prisma.$EmailPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Emails that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Emails
+     * const emails = await prisma.email.findMany()
+     * 
+     * // Get first 10 Emails
+     * const emails = await prisma.email.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const emailWithIdOnly = await prisma.email.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EmailFindManyArgs>(args?: SelectSubset<T, EmailFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Email.
+     * @param {EmailCreateArgs} args - Arguments to create a Email.
+     * @example
+     * // Create one Email
+     * const Email = await prisma.email.create({
+     *   data: {
+     *     // ... data to create a Email
+     *   }
+     * })
+     * 
+     */
+    create<T extends EmailCreateArgs>(args: SelectSubset<T, EmailCreateArgs<ExtArgs>>): Prisma__EmailClient<$Result.GetResult<Prisma.$EmailPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Emails.
+     * @param {EmailCreateManyArgs} args - Arguments to create many Emails.
+     * @example
+     * // Create many Emails
+     * const email = await prisma.email.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EmailCreateManyArgs>(args?: SelectSubset<T, EmailCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Emails and returns the data saved in the database.
+     * @param {EmailCreateManyAndReturnArgs} args - Arguments to create many Emails.
+     * @example
+     * // Create many Emails
+     * const email = await prisma.email.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Emails and only return the `id`
+     * const emailWithIdOnly = await prisma.email.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EmailCreateManyAndReturnArgs>(args?: SelectSubset<T, EmailCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Email.
+     * @param {EmailDeleteArgs} args - Arguments to delete one Email.
+     * @example
+     * // Delete one Email
+     * const Email = await prisma.email.delete({
+     *   where: {
+     *     // ... filter to delete one Email
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EmailDeleteArgs>(args: SelectSubset<T, EmailDeleteArgs<ExtArgs>>): Prisma__EmailClient<$Result.GetResult<Prisma.$EmailPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Email.
+     * @param {EmailUpdateArgs} args - Arguments to update one Email.
+     * @example
+     * // Update one Email
+     * const email = await prisma.email.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EmailUpdateArgs>(args: SelectSubset<T, EmailUpdateArgs<ExtArgs>>): Prisma__EmailClient<$Result.GetResult<Prisma.$EmailPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Emails.
+     * @param {EmailDeleteManyArgs} args - Arguments to filter Emails to delete.
+     * @example
+     * // Delete a few Emails
+     * const { count } = await prisma.email.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EmailDeleteManyArgs>(args?: SelectSubset<T, EmailDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Emails.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Emails
+     * const email = await prisma.email.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EmailUpdateManyArgs>(args: SelectSubset<T, EmailUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Emails and returns the data updated in the database.
+     * @param {EmailUpdateManyAndReturnArgs} args - Arguments to update many Emails.
+     * @example
+     * // Update many Emails
+     * const email = await prisma.email.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Emails and only return the `id`
+     * const emailWithIdOnly = await prisma.email.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends EmailUpdateManyAndReturnArgs>(args: SelectSubset<T, EmailUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Email.
+     * @param {EmailUpsertArgs} args - Arguments to update or create a Email.
+     * @example
+     * // Update or create a Email
+     * const email = await prisma.email.upsert({
+     *   create: {
+     *     // ... data to create a Email
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Email we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EmailUpsertArgs>(args: SelectSubset<T, EmailUpsertArgs<ExtArgs>>): Prisma__EmailClient<$Result.GetResult<Prisma.$EmailPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Emails.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailCountArgs} args - Arguments to filter Emails to count.
+     * @example
+     * // Count the number of Emails
+     * const count = await prisma.email.count({
+     *   where: {
+     *     // ... the filter for the Emails we want to count
+     *   }
+     * })
+    **/
+    count<T extends EmailCountArgs>(
+      args?: Subset<T, EmailCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EmailCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Email.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EmailAggregateArgs>(args: Subset<T, EmailAggregateArgs>): Prisma.PrismaPromise<GetEmailAggregateType<T>>
+
+    /**
+     * Group by Email.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EmailGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EmailGroupByArgs['orderBy'] }
+        : { orderBy?: EmailGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EmailGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEmailGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Email model
+   */
+  readonly fields: EmailFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Email.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EmailClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    domain<T extends DomainDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DomainDefaultArgs<ExtArgs>>): Prisma__DomainClient<$Result.GetResult<Prisma.$DomainPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    events<T extends Email$eventsArgs<ExtArgs> = {}>(args?: Subset<T, Email$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Email model
+   */
+  interface EmailFieldRefs {
+    readonly id: FieldRef<"Email", 'String'>
+    readonly emailId: FieldRef<"Email", 'Int'>
+    readonly token: FieldRef<"Email", 'String'>
+    readonly messageId: FieldRef<"Email", 'String'>
+    readonly to: FieldRef<"Email", 'String'>
+    readonly from: FieldRef<"Email", 'String'>
+    readonly subject: FieldRef<"Email", 'String'>
+    readonly spamStatus: FieldRef<"Email", 'Int'>
+    readonly domainId: FieldRef<"Email", 'String'>
+    readonly deliveryStatus: FieldRef<"Email", 'String'>
+    readonly sentAt: FieldRef<"Email", 'DateTime'>
+    readonly firstOpenAt: FieldRef<"Email", 'DateTime'>
+    readonly firstClickAt: FieldRef<"Email", 'DateTime'>
+    readonly createdAt: FieldRef<"Email", 'DateTime'>
+    readonly updatedAt: FieldRef<"Email", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Email findUnique
+   */
+  export type EmailFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Email
+     */
+    select?: EmailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Email
+     */
+    omit?: EmailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailInclude<ExtArgs> | null
+    /**
+     * Filter, which Email to fetch.
+     */
+    where: EmailWhereUniqueInput
+  }
+
+  /**
+   * Email findUniqueOrThrow
+   */
+  export type EmailFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Email
+     */
+    select?: EmailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Email
+     */
+    omit?: EmailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailInclude<ExtArgs> | null
+    /**
+     * Filter, which Email to fetch.
+     */
+    where: EmailWhereUniqueInput
+  }
+
+  /**
+   * Email findFirst
+   */
+  export type EmailFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Email
+     */
+    select?: EmailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Email
+     */
+    omit?: EmailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailInclude<ExtArgs> | null
+    /**
+     * Filter, which Email to fetch.
+     */
+    where?: EmailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Emails to fetch.
+     */
+    orderBy?: EmailOrderByWithRelationInput | EmailOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Emails.
+     */
+    cursor?: EmailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Emails from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Emails.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Emails.
+     */
+    distinct?: EmailScalarFieldEnum | EmailScalarFieldEnum[]
+  }
+
+  /**
+   * Email findFirstOrThrow
+   */
+  export type EmailFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Email
+     */
+    select?: EmailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Email
+     */
+    omit?: EmailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailInclude<ExtArgs> | null
+    /**
+     * Filter, which Email to fetch.
+     */
+    where?: EmailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Emails to fetch.
+     */
+    orderBy?: EmailOrderByWithRelationInput | EmailOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Emails.
+     */
+    cursor?: EmailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Emails from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Emails.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Emails.
+     */
+    distinct?: EmailScalarFieldEnum | EmailScalarFieldEnum[]
+  }
+
+  /**
+   * Email findMany
+   */
+  export type EmailFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Email
+     */
+    select?: EmailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Email
+     */
+    omit?: EmailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailInclude<ExtArgs> | null
+    /**
+     * Filter, which Emails to fetch.
+     */
+    where?: EmailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Emails to fetch.
+     */
+    orderBy?: EmailOrderByWithRelationInput | EmailOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Emails.
+     */
+    cursor?: EmailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Emails from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Emails.
+     */
+    skip?: number
+    distinct?: EmailScalarFieldEnum | EmailScalarFieldEnum[]
+  }
+
+  /**
+   * Email create
+   */
+  export type EmailCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Email
+     */
+    select?: EmailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Email
+     */
+    omit?: EmailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Email.
+     */
+    data: XOR<EmailCreateInput, EmailUncheckedCreateInput>
+  }
+
+  /**
+   * Email createMany
+   */
+  export type EmailCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Emails.
+     */
+    data: EmailCreateManyInput | EmailCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Email createManyAndReturn
+   */
+  export type EmailCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Email
+     */
+    select?: EmailSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Email
+     */
+    omit?: EmailOmit<ExtArgs> | null
+    /**
+     * The data used to create many Emails.
+     */
+    data: EmailCreateManyInput | EmailCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Email update
+   */
+  export type EmailUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Email
+     */
+    select?: EmailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Email
+     */
+    omit?: EmailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Email.
+     */
+    data: XOR<EmailUpdateInput, EmailUncheckedUpdateInput>
+    /**
+     * Choose, which Email to update.
+     */
+    where: EmailWhereUniqueInput
+  }
+
+  /**
+   * Email updateMany
+   */
+  export type EmailUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Emails.
+     */
+    data: XOR<EmailUpdateManyMutationInput, EmailUncheckedUpdateManyInput>
+    /**
+     * Filter which Emails to update
+     */
+    where?: EmailWhereInput
+    /**
+     * Limit how many Emails to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Email updateManyAndReturn
+   */
+  export type EmailUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Email
+     */
+    select?: EmailSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Email
+     */
+    omit?: EmailOmit<ExtArgs> | null
+    /**
+     * The data used to update Emails.
+     */
+    data: XOR<EmailUpdateManyMutationInput, EmailUncheckedUpdateManyInput>
+    /**
+     * Filter which Emails to update
+     */
+    where?: EmailWhereInput
+    /**
+     * Limit how many Emails to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Email upsert
+   */
+  export type EmailUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Email
+     */
+    select?: EmailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Email
+     */
+    omit?: EmailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Email to update in case it exists.
+     */
+    where: EmailWhereUniqueInput
+    /**
+     * In case the Email found by the `where` argument doesn't exist, create a new Email with this data.
+     */
+    create: XOR<EmailCreateInput, EmailUncheckedCreateInput>
+    /**
+     * In case the Email was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EmailUpdateInput, EmailUncheckedUpdateInput>
+  }
+
+  /**
+   * Email delete
+   */
+  export type EmailDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Email
+     */
+    select?: EmailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Email
+     */
+    omit?: EmailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailInclude<ExtArgs> | null
+    /**
+     * Filter which Email to delete.
+     */
+    where: EmailWhereUniqueInput
+  }
+
+  /**
+   * Email deleteMany
+   */
+  export type EmailDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Emails to delete
+     */
+    where?: EmailWhereInput
+    /**
+     * Limit how many Emails to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Email.events
+   */
+  export type Email$eventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailEvent
+     */
+    select?: EmailEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailEvent
+     */
+    omit?: EmailEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailEventInclude<ExtArgs> | null
+    where?: EmailEventWhereInput
+    orderBy?: EmailEventOrderByWithRelationInput | EmailEventOrderByWithRelationInput[]
+    cursor?: EmailEventWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EmailEventScalarFieldEnum | EmailEventScalarFieldEnum[]
+  }
+
+  /**
+   * Email without action
+   */
+  export type EmailDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Email
+     */
+    select?: EmailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Email
+     */
+    omit?: EmailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EmailEvent
+   */
+
+  export type AggregateEmailEvent = {
+    _count: EmailEventCountAggregateOutputType | null
+    _min: EmailEventMinAggregateOutputType | null
+    _max: EmailEventMaxAggregateOutputType | null
+  }
+
+  export type EmailEventMinAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    type: string | null
+    status: string | null
+    occurredAt: Date | null
+    emailId: string | null
+    ipAddress: string | null
+    country: string | null
+    city: string | null
+    userAgent: string | null
+    linkId: string | null
+    linkUrl: string | null
+    createdAt: Date | null
+  }
+
+  export type EmailEventMaxAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    type: string | null
+    status: string | null
+    occurredAt: Date | null
+    emailId: string | null
+    ipAddress: string | null
+    country: string | null
+    city: string | null
+    userAgent: string | null
+    linkId: string | null
+    linkUrl: string | null
+    createdAt: Date | null
+  }
+
+  export type EmailEventCountAggregateOutputType = {
+    id: number
+    eventId: number
+    type: number
+    status: number
+    occurredAt: number
+    emailId: number
+    ipAddress: number
+    country: number
+    city: number
+    userAgent: number
+    linkId: number
+    linkUrl: number
+    rawPayload: number
     createdAt: number
     _all: number
   }
 
 
-  export type EmailEventAvgAggregateInputType = {
-    emailId?: true
-    spamStatus?: true
-  }
-
-  export type EmailEventSumAggregateInputType = {
-    emailId?: true
-    spamStatus?: true
-  }
-
   export type EmailEventMinAggregateInputType = {
     id?: true
-    emailId?: true
-    token?: true
-    messageId?: true
-    to?: true
-    from?: true
-    subject?: true
-    eventType?: true
+    eventId?: true
+    type?: true
     status?: true
-    spamStatus?: true
-    timestamp?: true
-    domainId?: true
+    occurredAt?: true
+    emailId?: true
+    ipAddress?: true
+    country?: true
+    city?: true
+    userAgent?: true
+    linkId?: true
+    linkUrl?: true
     createdAt?: true
   }
 
   export type EmailEventMaxAggregateInputType = {
     id?: true
-    emailId?: true
-    token?: true
-    messageId?: true
-    to?: true
-    from?: true
-    subject?: true
-    eventType?: true
+    eventId?: true
+    type?: true
     status?: true
-    spamStatus?: true
-    timestamp?: true
-    domainId?: true
+    occurredAt?: true
+    emailId?: true
+    ipAddress?: true
+    country?: true
+    city?: true
+    userAgent?: true
+    linkId?: true
+    linkUrl?: true
     createdAt?: true
   }
 
   export type EmailEventCountAggregateInputType = {
     id?: true
-    emailId?: true
-    token?: true
-    messageId?: true
-    to?: true
-    from?: true
-    subject?: true
-    eventType?: true
+    eventId?: true
+    type?: true
     status?: true
-    spamStatus?: true
-    timestamp?: true
-    domainId?: true
+    occurredAt?: true
+    emailId?: true
+    ipAddress?: true
+    country?: true
+    city?: true
+    userAgent?: true
+    linkId?: true
+    linkUrl?: true
+    rawPayload?: true
     createdAt?: true
     _all?: true
   }
@@ -3615,18 +4973,6 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Select which fields to average
-    **/
-    _avg?: EmailEventAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: EmailEventSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
      * Select which fields to find the minimum value
     **/
     _min?: EmailEventMinAggregateInputType
@@ -3657,29 +5003,26 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: EmailEventCountAggregateInputType | true
-    _avg?: EmailEventAvgAggregateInputType
-    _sum?: EmailEventSumAggregateInputType
     _min?: EmailEventMinAggregateInputType
     _max?: EmailEventMaxAggregateInputType
   }
 
   export type EmailEventGroupByOutputType = {
     id: string
-    emailId: number
-    token: string
-    messageId: string
-    to: string | null
-    from: string | null
-    subject: string | null
-    eventType: string | null
+    eventId: string
+    type: string
     status: string | null
-    spamStatus: number | null
-    timestamp: Date | null
-    domainId: string
+    occurredAt: Date
+    emailId: string
+    ipAddress: string | null
+    country: string | null
+    city: string | null
+    userAgent: string | null
+    linkId: string | null
+    linkUrl: string | null
+    rawPayload: JsonValue
     createdAt: Date
     _count: EmailEventCountAggregateOutputType | null
-    _avg: EmailEventAvgAggregateOutputType | null
-    _sum: EmailEventSumAggregateOutputType | null
     _min: EmailEventMinAggregateOutputType | null
     _max: EmailEventMaxAggregateOutputType | null
   }
@@ -3700,100 +5043,105 @@ export namespace Prisma {
 
   export type EmailEventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    emailId?: boolean
-    token?: boolean
-    messageId?: boolean
-    to?: boolean
-    from?: boolean
-    subject?: boolean
-    eventType?: boolean
+    eventId?: boolean
+    type?: boolean
     status?: boolean
-    spamStatus?: boolean
-    timestamp?: boolean
-    domainId?: boolean
+    occurredAt?: boolean
+    emailId?: boolean
+    ipAddress?: boolean
+    country?: boolean
+    city?: boolean
+    userAgent?: boolean
+    linkId?: boolean
+    linkUrl?: boolean
+    rawPayload?: boolean
     createdAt?: boolean
-    domain?: boolean | DomainDefaultArgs<ExtArgs>
+    email?: boolean | EmailDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["emailEvent"]>
 
   export type EmailEventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    emailId?: boolean
-    token?: boolean
-    messageId?: boolean
-    to?: boolean
-    from?: boolean
-    subject?: boolean
-    eventType?: boolean
+    eventId?: boolean
+    type?: boolean
     status?: boolean
-    spamStatus?: boolean
-    timestamp?: boolean
-    domainId?: boolean
+    occurredAt?: boolean
+    emailId?: boolean
+    ipAddress?: boolean
+    country?: boolean
+    city?: boolean
+    userAgent?: boolean
+    linkId?: boolean
+    linkUrl?: boolean
+    rawPayload?: boolean
     createdAt?: boolean
-    domain?: boolean | DomainDefaultArgs<ExtArgs>
+    email?: boolean | EmailDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["emailEvent"]>
 
   export type EmailEventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    emailId?: boolean
-    token?: boolean
-    messageId?: boolean
-    to?: boolean
-    from?: boolean
-    subject?: boolean
-    eventType?: boolean
+    eventId?: boolean
+    type?: boolean
     status?: boolean
-    spamStatus?: boolean
-    timestamp?: boolean
-    domainId?: boolean
+    occurredAt?: boolean
+    emailId?: boolean
+    ipAddress?: boolean
+    country?: boolean
+    city?: boolean
+    userAgent?: boolean
+    linkId?: boolean
+    linkUrl?: boolean
+    rawPayload?: boolean
     createdAt?: boolean
-    domain?: boolean | DomainDefaultArgs<ExtArgs>
+    email?: boolean | EmailDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["emailEvent"]>
 
   export type EmailEventSelectScalar = {
     id?: boolean
-    emailId?: boolean
-    token?: boolean
-    messageId?: boolean
-    to?: boolean
-    from?: boolean
-    subject?: boolean
-    eventType?: boolean
+    eventId?: boolean
+    type?: boolean
     status?: boolean
-    spamStatus?: boolean
-    timestamp?: boolean
-    domainId?: boolean
+    occurredAt?: boolean
+    emailId?: boolean
+    ipAddress?: boolean
+    country?: boolean
+    city?: boolean
+    userAgent?: boolean
+    linkId?: boolean
+    linkUrl?: boolean
+    rawPayload?: boolean
     createdAt?: boolean
   }
 
-  export type EmailEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "emailId" | "token" | "messageId" | "to" | "from" | "subject" | "eventType" | "status" | "spamStatus" | "timestamp" | "domainId" | "createdAt", ExtArgs["result"]["emailEvent"]>
+  export type EmailEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "type" | "status" | "occurredAt" | "emailId" | "ipAddress" | "country" | "city" | "userAgent" | "linkId" | "linkUrl" | "rawPayload" | "createdAt", ExtArgs["result"]["emailEvent"]>
   export type EmailEventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    domain?: boolean | DomainDefaultArgs<ExtArgs>
+    email?: boolean | EmailDefaultArgs<ExtArgs>
   }
   export type EmailEventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    domain?: boolean | DomainDefaultArgs<ExtArgs>
+    email?: boolean | EmailDefaultArgs<ExtArgs>
   }
   export type EmailEventIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    domain?: boolean | DomainDefaultArgs<ExtArgs>
+    email?: boolean | EmailDefaultArgs<ExtArgs>
   }
 
   export type $EmailEventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "EmailEvent"
     objects: {
-      domain: Prisma.$DomainPayload<ExtArgs>
+      email: Prisma.$EmailPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      emailId: number
-      token: string
-      messageId: string
-      to: string | null
-      from: string | null
-      subject: string | null
-      eventType: string | null
+      eventId: string
+      type: string
       status: string | null
-      spamStatus: number | null
-      timestamp: Date | null
-      domainId: string
+      occurredAt: Date
+      emailId: string
+      ipAddress: string | null
+      country: string | null
+      city: string | null
+      userAgent: string | null
+      linkId: string | null
+      linkUrl: string | null
+      rawPayload: Prisma.JsonValue
       createdAt: Date
     }, ExtArgs["result"]["emailEvent"]>
     composites: {}
@@ -4189,7 +5537,7 @@ export namespace Prisma {
    */
   export interface Prisma__EmailEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    domain<T extends DomainDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DomainDefaultArgs<ExtArgs>>): Prisma__DomainClient<$Result.GetResult<Prisma.$DomainPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    email<T extends EmailDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EmailDefaultArgs<ExtArgs>>): Prisma__EmailClient<$Result.GetResult<Prisma.$EmailPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4220,17 +5568,18 @@ export namespace Prisma {
    */
   interface EmailEventFieldRefs {
     readonly id: FieldRef<"EmailEvent", 'String'>
-    readonly emailId: FieldRef<"EmailEvent", 'Int'>
-    readonly token: FieldRef<"EmailEvent", 'String'>
-    readonly messageId: FieldRef<"EmailEvent", 'String'>
-    readonly to: FieldRef<"EmailEvent", 'String'>
-    readonly from: FieldRef<"EmailEvent", 'String'>
-    readonly subject: FieldRef<"EmailEvent", 'String'>
-    readonly eventType: FieldRef<"EmailEvent", 'String'>
+    readonly eventId: FieldRef<"EmailEvent", 'String'>
+    readonly type: FieldRef<"EmailEvent", 'String'>
     readonly status: FieldRef<"EmailEvent", 'String'>
-    readonly spamStatus: FieldRef<"EmailEvent", 'Int'>
-    readonly timestamp: FieldRef<"EmailEvent", 'DateTime'>
-    readonly domainId: FieldRef<"EmailEvent", 'String'>
+    readonly occurredAt: FieldRef<"EmailEvent", 'DateTime'>
+    readonly emailId: FieldRef<"EmailEvent", 'String'>
+    readonly ipAddress: FieldRef<"EmailEvent", 'String'>
+    readonly country: FieldRef<"EmailEvent", 'String'>
+    readonly city: FieldRef<"EmailEvent", 'String'>
+    readonly userAgent: FieldRef<"EmailEvent", 'String'>
+    readonly linkId: FieldRef<"EmailEvent", 'String'>
+    readonly linkUrl: FieldRef<"EmailEvent", 'String'>
+    readonly rawPayload: FieldRef<"EmailEvent", 'Json'>
     readonly createdAt: FieldRef<"EmailEvent", 'DateTime'>
   }
     
@@ -5911,7 +7260,7 @@ export namespace Prisma {
   export type DomainScalarFieldEnum = (typeof DomainScalarFieldEnum)[keyof typeof DomainScalarFieldEnum]
 
 
-  export const EmailEventScalarFieldEnum: {
+  export const EmailScalarFieldEnum: {
     id: 'id',
     emailId: 'emailId',
     token: 'token',
@@ -5919,11 +7268,33 @@ export namespace Prisma {
     to: 'to',
     from: 'from',
     subject: 'subject',
-    eventType: 'eventType',
-    status: 'status',
     spamStatus: 'spamStatus',
-    timestamp: 'timestamp',
     domainId: 'domainId',
+    deliveryStatus: 'deliveryStatus',
+    sentAt: 'sentAt',
+    firstOpenAt: 'firstOpenAt',
+    firstClickAt: 'firstClickAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type EmailScalarFieldEnum = (typeof EmailScalarFieldEnum)[keyof typeof EmailScalarFieldEnum]
+
+
+  export const EmailEventScalarFieldEnum: {
+    id: 'id',
+    eventId: 'eventId',
+    type: 'type',
+    status: 'status',
+    occurredAt: 'occurredAt',
+    emailId: 'emailId',
+    ipAddress: 'ipAddress',
+    country: 'country',
+    city: 'city',
+    userAgent: 'userAgent',
+    linkId: 'linkId',
+    linkUrl: 'linkUrl',
+    rawPayload: 'rawPayload',
     createdAt: 'createdAt'
   };
 
@@ -5957,6 +7328,13 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+  export const JsonNullValueInput: {
+    JsonNull: typeof JsonNull
+  };
+
+  export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
   export const QueryMode: {
     default: 'default',
     insensitive: 'insensitive'
@@ -5971,6 +7349,15 @@ export namespace Prisma {
   };
 
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
   /**
@@ -6017,6 +7404,20 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -6107,7 +7508,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Domain"> | Date | string
     updatedAt?: DateTimeFilter<"Domain"> | Date | string
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    emails?: EmailEventListRelationFilter
+    emails?: EmailListRelationFilter
     summary?: XOR<EmailSummaryNullableScalarRelationFilter, EmailSummaryWhereInput> | null
   }
 
@@ -6118,7 +7519,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
-    emails?: EmailEventOrderByRelationAggregateInput
+    emails?: EmailOrderByRelationAggregateInput
     summary?: EmailSummaryOrderByWithRelationInput
   }
 
@@ -6132,7 +7533,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Domain"> | Date | string
     updatedAt?: DateTimeFilter<"Domain"> | Date | string
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    emails?: EmailEventListRelationFilter
+    emails?: EmailListRelationFilter
     summary?: XOR<EmailSummaryNullableScalarRelationFilter, EmailSummaryWhereInput> | null
   }, "id" | "name">
 
@@ -6158,82 +7559,194 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Domain"> | Date | string
   }
 
+  export type EmailWhereInput = {
+    AND?: EmailWhereInput | EmailWhereInput[]
+    OR?: EmailWhereInput[]
+    NOT?: EmailWhereInput | EmailWhereInput[]
+    id?: StringFilter<"Email"> | string
+    emailId?: IntFilter<"Email"> | number
+    token?: StringFilter<"Email"> | string
+    messageId?: StringFilter<"Email"> | string
+    to?: StringNullableFilter<"Email"> | string | null
+    from?: StringNullableFilter<"Email"> | string | null
+    subject?: StringNullableFilter<"Email"> | string | null
+    spamStatus?: IntNullableFilter<"Email"> | number | null
+    domainId?: StringFilter<"Email"> | string
+    deliveryStatus?: StringNullableFilter<"Email"> | string | null
+    sentAt?: DateTimeNullableFilter<"Email"> | Date | string | null
+    firstOpenAt?: DateTimeNullableFilter<"Email"> | Date | string | null
+    firstClickAt?: DateTimeNullableFilter<"Email"> | Date | string | null
+    createdAt?: DateTimeFilter<"Email"> | Date | string
+    updatedAt?: DateTimeFilter<"Email"> | Date | string
+    domain?: XOR<DomainScalarRelationFilter, DomainWhereInput>
+    events?: EmailEventListRelationFilter
+  }
+
+  export type EmailOrderByWithRelationInput = {
+    id?: SortOrder
+    emailId?: SortOrder
+    token?: SortOrder
+    messageId?: SortOrder
+    to?: SortOrderInput | SortOrder
+    from?: SortOrderInput | SortOrder
+    subject?: SortOrderInput | SortOrder
+    spamStatus?: SortOrderInput | SortOrder
+    domainId?: SortOrder
+    deliveryStatus?: SortOrderInput | SortOrder
+    sentAt?: SortOrderInput | SortOrder
+    firstOpenAt?: SortOrderInput | SortOrder
+    firstClickAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    domain?: DomainOrderByWithRelationInput
+    events?: EmailEventOrderByRelationAggregateInput
+  }
+
+  export type EmailWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    messageId?: string
+    AND?: EmailWhereInput | EmailWhereInput[]
+    OR?: EmailWhereInput[]
+    NOT?: EmailWhereInput | EmailWhereInput[]
+    emailId?: IntFilter<"Email"> | number
+    token?: StringFilter<"Email"> | string
+    to?: StringNullableFilter<"Email"> | string | null
+    from?: StringNullableFilter<"Email"> | string | null
+    subject?: StringNullableFilter<"Email"> | string | null
+    spamStatus?: IntNullableFilter<"Email"> | number | null
+    domainId?: StringFilter<"Email"> | string
+    deliveryStatus?: StringNullableFilter<"Email"> | string | null
+    sentAt?: DateTimeNullableFilter<"Email"> | Date | string | null
+    firstOpenAt?: DateTimeNullableFilter<"Email"> | Date | string | null
+    firstClickAt?: DateTimeNullableFilter<"Email"> | Date | string | null
+    createdAt?: DateTimeFilter<"Email"> | Date | string
+    updatedAt?: DateTimeFilter<"Email"> | Date | string
+    domain?: XOR<DomainScalarRelationFilter, DomainWhereInput>
+    events?: EmailEventListRelationFilter
+  }, "id" | "messageId">
+
+  export type EmailOrderByWithAggregationInput = {
+    id?: SortOrder
+    emailId?: SortOrder
+    token?: SortOrder
+    messageId?: SortOrder
+    to?: SortOrderInput | SortOrder
+    from?: SortOrderInput | SortOrder
+    subject?: SortOrderInput | SortOrder
+    spamStatus?: SortOrderInput | SortOrder
+    domainId?: SortOrder
+    deliveryStatus?: SortOrderInput | SortOrder
+    sentAt?: SortOrderInput | SortOrder
+    firstOpenAt?: SortOrderInput | SortOrder
+    firstClickAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: EmailCountOrderByAggregateInput
+    _avg?: EmailAvgOrderByAggregateInput
+    _max?: EmailMaxOrderByAggregateInput
+    _min?: EmailMinOrderByAggregateInput
+    _sum?: EmailSumOrderByAggregateInput
+  }
+
+  export type EmailScalarWhereWithAggregatesInput = {
+    AND?: EmailScalarWhereWithAggregatesInput | EmailScalarWhereWithAggregatesInput[]
+    OR?: EmailScalarWhereWithAggregatesInput[]
+    NOT?: EmailScalarWhereWithAggregatesInput | EmailScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Email"> | string
+    emailId?: IntWithAggregatesFilter<"Email"> | number
+    token?: StringWithAggregatesFilter<"Email"> | string
+    messageId?: StringWithAggregatesFilter<"Email"> | string
+    to?: StringNullableWithAggregatesFilter<"Email"> | string | null
+    from?: StringNullableWithAggregatesFilter<"Email"> | string | null
+    subject?: StringNullableWithAggregatesFilter<"Email"> | string | null
+    spamStatus?: IntNullableWithAggregatesFilter<"Email"> | number | null
+    domainId?: StringWithAggregatesFilter<"Email"> | string
+    deliveryStatus?: StringNullableWithAggregatesFilter<"Email"> | string | null
+    sentAt?: DateTimeNullableWithAggregatesFilter<"Email"> | Date | string | null
+    firstOpenAt?: DateTimeNullableWithAggregatesFilter<"Email"> | Date | string | null
+    firstClickAt?: DateTimeNullableWithAggregatesFilter<"Email"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Email"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Email"> | Date | string
+  }
+
   export type EmailEventWhereInput = {
     AND?: EmailEventWhereInput | EmailEventWhereInput[]
     OR?: EmailEventWhereInput[]
     NOT?: EmailEventWhereInput | EmailEventWhereInput[]
     id?: StringFilter<"EmailEvent"> | string
-    emailId?: IntFilter<"EmailEvent"> | number
-    token?: StringFilter<"EmailEvent"> | string
-    messageId?: StringFilter<"EmailEvent"> | string
-    to?: StringNullableFilter<"EmailEvent"> | string | null
-    from?: StringNullableFilter<"EmailEvent"> | string | null
-    subject?: StringNullableFilter<"EmailEvent"> | string | null
-    eventType?: StringNullableFilter<"EmailEvent"> | string | null
+    eventId?: StringFilter<"EmailEvent"> | string
+    type?: StringFilter<"EmailEvent"> | string
     status?: StringNullableFilter<"EmailEvent"> | string | null
-    spamStatus?: IntNullableFilter<"EmailEvent"> | number | null
-    timestamp?: DateTimeNullableFilter<"EmailEvent"> | Date | string | null
-    domainId?: StringFilter<"EmailEvent"> | string
+    occurredAt?: DateTimeFilter<"EmailEvent"> | Date | string
+    emailId?: StringFilter<"EmailEvent"> | string
+    ipAddress?: StringNullableFilter<"EmailEvent"> | string | null
+    country?: StringNullableFilter<"EmailEvent"> | string | null
+    city?: StringNullableFilter<"EmailEvent"> | string | null
+    userAgent?: StringNullableFilter<"EmailEvent"> | string | null
+    linkId?: StringNullableFilter<"EmailEvent"> | string | null
+    linkUrl?: StringNullableFilter<"EmailEvent"> | string | null
+    rawPayload?: JsonFilter<"EmailEvent">
     createdAt?: DateTimeFilter<"EmailEvent"> | Date | string
-    domain?: XOR<DomainScalarRelationFilter, DomainWhereInput>
+    email?: XOR<EmailScalarRelationFilter, EmailWhereInput>
   }
 
   export type EmailEventOrderByWithRelationInput = {
     id?: SortOrder
-    emailId?: SortOrder
-    token?: SortOrder
-    messageId?: SortOrder
-    to?: SortOrderInput | SortOrder
-    from?: SortOrderInput | SortOrder
-    subject?: SortOrderInput | SortOrder
-    eventType?: SortOrderInput | SortOrder
+    eventId?: SortOrder
+    type?: SortOrder
     status?: SortOrderInput | SortOrder
-    spamStatus?: SortOrderInput | SortOrder
-    timestamp?: SortOrderInput | SortOrder
-    domainId?: SortOrder
+    occurredAt?: SortOrder
+    emailId?: SortOrder
+    ipAddress?: SortOrderInput | SortOrder
+    country?: SortOrderInput | SortOrder
+    city?: SortOrderInput | SortOrder
+    userAgent?: SortOrderInput | SortOrder
+    linkId?: SortOrderInput | SortOrder
+    linkUrl?: SortOrderInput | SortOrder
+    rawPayload?: SortOrder
     createdAt?: SortOrder
-    domain?: DomainOrderByWithRelationInput
+    email?: EmailOrderByWithRelationInput
   }
 
   export type EmailEventWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    eventId?: string
     AND?: EmailEventWhereInput | EmailEventWhereInput[]
     OR?: EmailEventWhereInput[]
     NOT?: EmailEventWhereInput | EmailEventWhereInput[]
-    emailId?: IntFilter<"EmailEvent"> | number
-    token?: StringFilter<"EmailEvent"> | string
-    messageId?: StringFilter<"EmailEvent"> | string
-    to?: StringNullableFilter<"EmailEvent"> | string | null
-    from?: StringNullableFilter<"EmailEvent"> | string | null
-    subject?: StringNullableFilter<"EmailEvent"> | string | null
-    eventType?: StringNullableFilter<"EmailEvent"> | string | null
+    type?: StringFilter<"EmailEvent"> | string
     status?: StringNullableFilter<"EmailEvent"> | string | null
-    spamStatus?: IntNullableFilter<"EmailEvent"> | number | null
-    timestamp?: DateTimeNullableFilter<"EmailEvent"> | Date | string | null
-    domainId?: StringFilter<"EmailEvent"> | string
+    occurredAt?: DateTimeFilter<"EmailEvent"> | Date | string
+    emailId?: StringFilter<"EmailEvent"> | string
+    ipAddress?: StringNullableFilter<"EmailEvent"> | string | null
+    country?: StringNullableFilter<"EmailEvent"> | string | null
+    city?: StringNullableFilter<"EmailEvent"> | string | null
+    userAgent?: StringNullableFilter<"EmailEvent"> | string | null
+    linkId?: StringNullableFilter<"EmailEvent"> | string | null
+    linkUrl?: StringNullableFilter<"EmailEvent"> | string | null
+    rawPayload?: JsonFilter<"EmailEvent">
     createdAt?: DateTimeFilter<"EmailEvent"> | Date | string
-    domain?: XOR<DomainScalarRelationFilter, DomainWhereInput>
-  }, "id">
+    email?: XOR<EmailScalarRelationFilter, EmailWhereInput>
+  }, "id" | "eventId">
 
   export type EmailEventOrderByWithAggregationInput = {
     id?: SortOrder
-    emailId?: SortOrder
-    token?: SortOrder
-    messageId?: SortOrder
-    to?: SortOrderInput | SortOrder
-    from?: SortOrderInput | SortOrder
-    subject?: SortOrderInput | SortOrder
-    eventType?: SortOrderInput | SortOrder
+    eventId?: SortOrder
+    type?: SortOrder
     status?: SortOrderInput | SortOrder
-    spamStatus?: SortOrderInput | SortOrder
-    timestamp?: SortOrderInput | SortOrder
-    domainId?: SortOrder
+    occurredAt?: SortOrder
+    emailId?: SortOrder
+    ipAddress?: SortOrderInput | SortOrder
+    country?: SortOrderInput | SortOrder
+    city?: SortOrderInput | SortOrder
+    userAgent?: SortOrderInput | SortOrder
+    linkId?: SortOrderInput | SortOrder
+    linkUrl?: SortOrderInput | SortOrder
+    rawPayload?: SortOrder
     createdAt?: SortOrder
     _count?: EmailEventCountOrderByAggregateInput
-    _avg?: EmailEventAvgOrderByAggregateInput
     _max?: EmailEventMaxOrderByAggregateInput
     _min?: EmailEventMinOrderByAggregateInput
-    _sum?: EmailEventSumOrderByAggregateInput
   }
 
   export type EmailEventScalarWhereWithAggregatesInput = {
@@ -6241,17 +7754,18 @@ export namespace Prisma {
     OR?: EmailEventScalarWhereWithAggregatesInput[]
     NOT?: EmailEventScalarWhereWithAggregatesInput | EmailEventScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"EmailEvent"> | string
-    emailId?: IntWithAggregatesFilter<"EmailEvent"> | number
-    token?: StringWithAggregatesFilter<"EmailEvent"> | string
-    messageId?: StringWithAggregatesFilter<"EmailEvent"> | string
-    to?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
-    from?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
-    subject?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
-    eventType?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
+    eventId?: StringWithAggregatesFilter<"EmailEvent"> | string
+    type?: StringWithAggregatesFilter<"EmailEvent"> | string
     status?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
-    spamStatus?: IntNullableWithAggregatesFilter<"EmailEvent"> | number | null
-    timestamp?: DateTimeNullableWithAggregatesFilter<"EmailEvent"> | Date | string | null
-    domainId?: StringWithAggregatesFilter<"EmailEvent"> | string
+    occurredAt?: DateTimeWithAggregatesFilter<"EmailEvent"> | Date | string
+    emailId?: StringWithAggregatesFilter<"EmailEvent"> | string
+    ipAddress?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
+    country?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
+    city?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
+    userAgent?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
+    linkId?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
+    linkUrl?: StringNullableWithAggregatesFilter<"EmailEvent"> | string | null
+    rawPayload?: JsonWithAggregatesFilter<"EmailEvent">
     createdAt?: DateTimeWithAggregatesFilter<"EmailEvent"> | Date | string
   }
 
@@ -6425,7 +7939,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutDomainsInput
-    emails?: EmailEventCreateNestedManyWithoutDomainInput
+    emails?: EmailCreateNestedManyWithoutDomainInput
     summary?: EmailSummaryCreateNestedOneWithoutDomainInput
   }
 
@@ -6435,7 +7949,7 @@ export namespace Prisma {
     userId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    emails?: EmailEventUncheckedCreateNestedManyWithoutDomainInput
+    emails?: EmailUncheckedCreateNestedManyWithoutDomainInput
     summary?: EmailSummaryUncheckedCreateNestedOneWithoutDomainInput
   }
 
@@ -6445,7 +7959,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutDomainsNestedInput
-    emails?: EmailEventUpdateManyWithoutDomainNestedInput
+    emails?: EmailUpdateManyWithoutDomainNestedInput
     summary?: EmailSummaryUpdateOneWithoutDomainNestedInput
   }
 
@@ -6455,7 +7969,7 @@ export namespace Prisma {
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    emails?: EmailEventUncheckedUpdateManyWithoutDomainNestedInput
+    emails?: EmailUncheckedUpdateManyWithoutDomainNestedInput
     summary?: EmailSummaryUncheckedUpdateOneWithoutDomainNestedInput
   }
 
@@ -6482,7 +7996,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type EmailEventCreateInput = {
+  export type EmailCreateInput = {
     id?: string
     emailId: number
     token: string
@@ -6490,106 +8004,242 @@ export namespace Prisma {
     to?: string | null
     from?: string | null
     subject?: string | null
-    eventType?: string | null
-    status?: string | null
     spamStatus?: number | null
-    timestamp?: Date | string | null
+    deliveryStatus?: string | null
+    sentAt?: Date | string | null
+    firstOpenAt?: Date | string | null
+    firstClickAt?: Date | string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
     domain: DomainCreateNestedOneWithoutEmailsInput
+    events?: EmailEventCreateNestedManyWithoutEmailInput
+  }
+
+  export type EmailUncheckedCreateInput = {
+    id?: string
+    emailId: number
+    token: string
+    messageId: string
+    to?: string | null
+    from?: string | null
+    subject?: string | null
+    spamStatus?: number | null
+    domainId: string
+    deliveryStatus?: string | null
+    sentAt?: Date | string | null
+    firstOpenAt?: Date | string | null
+    firstClickAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    events?: EmailEventUncheckedCreateNestedManyWithoutEmailInput
+  }
+
+  export type EmailUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emailId?: IntFieldUpdateOperationsInput | number
+    token?: StringFieldUpdateOperationsInput | string
+    messageId?: StringFieldUpdateOperationsInput | string
+    to?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
+    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstOpenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstClickAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    domain?: DomainUpdateOneRequiredWithoutEmailsNestedInput
+    events?: EmailEventUpdateManyWithoutEmailNestedInput
+  }
+
+  export type EmailUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emailId?: IntFieldUpdateOperationsInput | number
+    token?: StringFieldUpdateOperationsInput | string
+    messageId?: StringFieldUpdateOperationsInput | string
+    to?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
+    domainId?: StringFieldUpdateOperationsInput | string
+    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstOpenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstClickAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    events?: EmailEventUncheckedUpdateManyWithoutEmailNestedInput
+  }
+
+  export type EmailCreateManyInput = {
+    id?: string
+    emailId: number
+    token: string
+    messageId: string
+    to?: string | null
+    from?: string | null
+    subject?: string | null
+    spamStatus?: number | null
+    domainId: string
+    deliveryStatus?: string | null
+    sentAt?: Date | string | null
+    firstOpenAt?: Date | string | null
+    firstClickAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emailId?: IntFieldUpdateOperationsInput | number
+    token?: StringFieldUpdateOperationsInput | string
+    messageId?: StringFieldUpdateOperationsInput | string
+    to?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
+    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstOpenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstClickAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emailId?: IntFieldUpdateOperationsInput | number
+    token?: StringFieldUpdateOperationsInput | string
+    messageId?: StringFieldUpdateOperationsInput | string
+    to?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
+    domainId?: StringFieldUpdateOperationsInput | string
+    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstOpenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstClickAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailEventCreateInput = {
+    id?: string
+    eventId: string
+    type: string
+    status?: string | null
+    occurredAt: Date | string
+    ipAddress?: string | null
+    country?: string | null
+    city?: string | null
+    userAgent?: string | null
+    linkId?: string | null
+    linkUrl?: string | null
+    rawPayload: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    email: EmailCreateNestedOneWithoutEventsInput
   }
 
   export type EmailEventUncheckedCreateInput = {
     id?: string
-    emailId: number
-    token: string
-    messageId: string
-    to?: string | null
-    from?: string | null
-    subject?: string | null
-    eventType?: string | null
+    eventId: string
+    type: string
     status?: string | null
-    spamStatus?: number | null
-    timestamp?: Date | string | null
-    domainId: string
+    occurredAt: Date | string
+    emailId: string
+    ipAddress?: string | null
+    country?: string | null
+    city?: string | null
+    userAgent?: string | null
+    linkId?: string | null
+    linkUrl?: string | null
+    rawPayload: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
 
   export type EmailEventUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    emailId?: IntFieldUpdateOperationsInput | number
-    token?: StringFieldUpdateOperationsInput | string
-    messageId?: StringFieldUpdateOperationsInput | string
-    to?: NullableStringFieldUpdateOperationsInput | string | null
-    from?: NullableStringFieldUpdateOperationsInput | string | null
-    subject?: NullableStringFieldUpdateOperationsInput | string | null
-    eventType?: NullableStringFieldUpdateOperationsInput | string | null
+    eventId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     status?: NullableStringFieldUpdateOperationsInput | string | null
-    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
-    timestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    occurredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    linkId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rawPayload?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    domain?: DomainUpdateOneRequiredWithoutEmailsNestedInput
+    email?: EmailUpdateOneRequiredWithoutEventsNestedInput
   }
 
   export type EmailEventUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    emailId?: IntFieldUpdateOperationsInput | number
-    token?: StringFieldUpdateOperationsInput | string
-    messageId?: StringFieldUpdateOperationsInput | string
-    to?: NullableStringFieldUpdateOperationsInput | string | null
-    from?: NullableStringFieldUpdateOperationsInput | string | null
-    subject?: NullableStringFieldUpdateOperationsInput | string | null
-    eventType?: NullableStringFieldUpdateOperationsInput | string | null
+    eventId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     status?: NullableStringFieldUpdateOperationsInput | string | null
-    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
-    timestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    domainId?: StringFieldUpdateOperationsInput | string
+    occurredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    emailId?: StringFieldUpdateOperationsInput | string
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    linkId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rawPayload?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EmailEventCreateManyInput = {
     id?: string
-    emailId: number
-    token: string
-    messageId: string
-    to?: string | null
-    from?: string | null
-    subject?: string | null
-    eventType?: string | null
+    eventId: string
+    type: string
     status?: string | null
-    spamStatus?: number | null
-    timestamp?: Date | string | null
-    domainId: string
+    occurredAt: Date | string
+    emailId: string
+    ipAddress?: string | null
+    country?: string | null
+    city?: string | null
+    userAgent?: string | null
+    linkId?: string | null
+    linkUrl?: string | null
+    rawPayload: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
 
   export type EmailEventUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    emailId?: IntFieldUpdateOperationsInput | number
-    token?: StringFieldUpdateOperationsInput | string
-    messageId?: StringFieldUpdateOperationsInput | string
-    to?: NullableStringFieldUpdateOperationsInput | string | null
-    from?: NullableStringFieldUpdateOperationsInput | string | null
-    subject?: NullableStringFieldUpdateOperationsInput | string | null
-    eventType?: NullableStringFieldUpdateOperationsInput | string | null
+    eventId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     status?: NullableStringFieldUpdateOperationsInput | string | null
-    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
-    timestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    occurredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    linkId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rawPayload?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EmailEventUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    emailId?: IntFieldUpdateOperationsInput | number
-    token?: StringFieldUpdateOperationsInput | string
-    messageId?: StringFieldUpdateOperationsInput | string
-    to?: NullableStringFieldUpdateOperationsInput | string | null
-    from?: NullableStringFieldUpdateOperationsInput | string | null
-    subject?: NullableStringFieldUpdateOperationsInput | string | null
-    eventType?: NullableStringFieldUpdateOperationsInput | string | null
+    eventId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     status?: NullableStringFieldUpdateOperationsInput | string | null
-    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
-    timestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    domainId?: StringFieldUpdateOperationsInput | string
+    occurredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    emailId?: StringFieldUpdateOperationsInput | string
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    linkId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rawPayload?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -6842,10 +8492,10 @@ export namespace Prisma {
     isNot?: UserWhereInput | null
   }
 
-  export type EmailEventListRelationFilter = {
-    every?: EmailEventWhereInput
-    some?: EmailEventWhereInput
-    none?: EmailEventWhereInput
+  export type EmailListRelationFilter = {
+    every?: EmailWhereInput
+    some?: EmailWhereInput
+    none?: EmailWhereInput
   }
 
   export type EmailSummaryNullableScalarRelationFilter = {
@@ -6853,7 +8503,7 @@ export namespace Prisma {
     isNot?: EmailSummaryWhereInput | null
   }
 
-  export type EmailEventOrderByRelationAggregateInput = {
+  export type EmailOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -6919,7 +8569,17 @@ export namespace Prisma {
     isNot?: DomainWhereInput
   }
 
-  export type EmailEventCountOrderByAggregateInput = {
+  export type EmailEventListRelationFilter = {
+    every?: EmailEventWhereInput
+    some?: EmailEventWhereInput
+    none?: EmailEventWhereInput
+  }
+
+  export type EmailEventOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EmailCountOrderByAggregateInput = {
     id?: SortOrder
     emailId?: SortOrder
     token?: SortOrder
@@ -6927,20 +8587,22 @@ export namespace Prisma {
     to?: SortOrder
     from?: SortOrder
     subject?: SortOrder
-    eventType?: SortOrder
-    status?: SortOrder
     spamStatus?: SortOrder
-    timestamp?: SortOrder
     domainId?: SortOrder
+    deliveryStatus?: SortOrder
+    sentAt?: SortOrder
+    firstOpenAt?: SortOrder
+    firstClickAt?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
-  export type EmailEventAvgOrderByAggregateInput = {
+  export type EmailAvgOrderByAggregateInput = {
     emailId?: SortOrder
     spamStatus?: SortOrder
   }
 
-  export type EmailEventMaxOrderByAggregateInput = {
+  export type EmailMaxOrderByAggregateInput = {
     id?: SortOrder
     emailId?: SortOrder
     token?: SortOrder
@@ -6948,15 +8610,17 @@ export namespace Prisma {
     to?: SortOrder
     from?: SortOrder
     subject?: SortOrder
-    eventType?: SortOrder
-    status?: SortOrder
     spamStatus?: SortOrder
-    timestamp?: SortOrder
     domainId?: SortOrder
+    deliveryStatus?: SortOrder
+    sentAt?: SortOrder
+    firstOpenAt?: SortOrder
+    firstClickAt?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
-  export type EmailEventMinOrderByAggregateInput = {
+  export type EmailMinOrderByAggregateInput = {
     id?: SortOrder
     emailId?: SortOrder
     token?: SortOrder
@@ -6964,15 +8628,17 @@ export namespace Prisma {
     to?: SortOrder
     from?: SortOrder
     subject?: SortOrder
-    eventType?: SortOrder
-    status?: SortOrder
     spamStatus?: SortOrder
-    timestamp?: SortOrder
     domainId?: SortOrder
+    deliveryStatus?: SortOrder
+    sentAt?: SortOrder
+    firstOpenAt?: SortOrder
+    firstClickAt?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
-  export type EmailEventSumOrderByAggregateInput = {
+  export type EmailSumOrderByAggregateInput = {
     emailId?: SortOrder
     spamStatus?: SortOrder
   }
@@ -7021,6 +8687,109 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+  export type JsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type EmailScalarRelationFilter = {
+    is?: EmailWhereInput
+    isNot?: EmailWhereInput
+  }
+
+  export type EmailEventCountOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    type?: SortOrder
+    status?: SortOrder
+    occurredAt?: SortOrder
+    emailId?: SortOrder
+    ipAddress?: SortOrder
+    country?: SortOrder
+    city?: SortOrder
+    userAgent?: SortOrder
+    linkId?: SortOrder
+    linkUrl?: SortOrder
+    rawPayload?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EmailEventMaxOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    type?: SortOrder
+    status?: SortOrder
+    occurredAt?: SortOrder
+    emailId?: SortOrder
+    ipAddress?: SortOrder
+    country?: SortOrder
+    city?: SortOrder
+    userAgent?: SortOrder
+    linkId?: SortOrder
+    linkUrl?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EmailEventMinOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    type?: SortOrder
+    status?: SortOrder
+    occurredAt?: SortOrder
+    emailId?: SortOrder
+    ipAddress?: SortOrder
+    country?: SortOrder
+    city?: SortOrder
+    userAgent?: SortOrder
+    linkId?: SortOrder
+    linkUrl?: SortOrder
+    createdAt?: SortOrder
+  }
+  export type JsonWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedJsonFilter<$PrismaModel>
+    _max?: NestedJsonFilter<$PrismaModel>
   }
 
   export type EmailSummaryCountOrderByAggregateInput = {
@@ -7155,11 +8924,11 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type EmailEventCreateNestedManyWithoutDomainInput = {
-    create?: XOR<EmailEventCreateWithoutDomainInput, EmailEventUncheckedCreateWithoutDomainInput> | EmailEventCreateWithoutDomainInput[] | EmailEventUncheckedCreateWithoutDomainInput[]
-    connectOrCreate?: EmailEventCreateOrConnectWithoutDomainInput | EmailEventCreateOrConnectWithoutDomainInput[]
-    createMany?: EmailEventCreateManyDomainInputEnvelope
-    connect?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
+  export type EmailCreateNestedManyWithoutDomainInput = {
+    create?: XOR<EmailCreateWithoutDomainInput, EmailUncheckedCreateWithoutDomainInput> | EmailCreateWithoutDomainInput[] | EmailUncheckedCreateWithoutDomainInput[]
+    connectOrCreate?: EmailCreateOrConnectWithoutDomainInput | EmailCreateOrConnectWithoutDomainInput[]
+    createMany?: EmailCreateManyDomainInputEnvelope
+    connect?: EmailWhereUniqueInput | EmailWhereUniqueInput[]
   }
 
   export type EmailSummaryCreateNestedOneWithoutDomainInput = {
@@ -7168,11 +8937,11 @@ export namespace Prisma {
     connect?: EmailSummaryWhereUniqueInput
   }
 
-  export type EmailEventUncheckedCreateNestedManyWithoutDomainInput = {
-    create?: XOR<EmailEventCreateWithoutDomainInput, EmailEventUncheckedCreateWithoutDomainInput> | EmailEventCreateWithoutDomainInput[] | EmailEventUncheckedCreateWithoutDomainInput[]
-    connectOrCreate?: EmailEventCreateOrConnectWithoutDomainInput | EmailEventCreateOrConnectWithoutDomainInput[]
-    createMany?: EmailEventCreateManyDomainInputEnvelope
-    connect?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
+  export type EmailUncheckedCreateNestedManyWithoutDomainInput = {
+    create?: XOR<EmailCreateWithoutDomainInput, EmailUncheckedCreateWithoutDomainInput> | EmailCreateWithoutDomainInput[] | EmailUncheckedCreateWithoutDomainInput[]
+    connectOrCreate?: EmailCreateOrConnectWithoutDomainInput | EmailCreateOrConnectWithoutDomainInput[]
+    createMany?: EmailCreateManyDomainInputEnvelope
+    connect?: EmailWhereUniqueInput | EmailWhereUniqueInput[]
   }
 
   export type EmailSummaryUncheckedCreateNestedOneWithoutDomainInput = {
@@ -7191,18 +8960,18 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDomainsInput, UserUpdateWithoutDomainsInput>, UserUncheckedUpdateWithoutDomainsInput>
   }
 
-  export type EmailEventUpdateManyWithoutDomainNestedInput = {
-    create?: XOR<EmailEventCreateWithoutDomainInput, EmailEventUncheckedCreateWithoutDomainInput> | EmailEventCreateWithoutDomainInput[] | EmailEventUncheckedCreateWithoutDomainInput[]
-    connectOrCreate?: EmailEventCreateOrConnectWithoutDomainInput | EmailEventCreateOrConnectWithoutDomainInput[]
-    upsert?: EmailEventUpsertWithWhereUniqueWithoutDomainInput | EmailEventUpsertWithWhereUniqueWithoutDomainInput[]
-    createMany?: EmailEventCreateManyDomainInputEnvelope
-    set?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
-    disconnect?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
-    delete?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
-    connect?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
-    update?: EmailEventUpdateWithWhereUniqueWithoutDomainInput | EmailEventUpdateWithWhereUniqueWithoutDomainInput[]
-    updateMany?: EmailEventUpdateManyWithWhereWithoutDomainInput | EmailEventUpdateManyWithWhereWithoutDomainInput[]
-    deleteMany?: EmailEventScalarWhereInput | EmailEventScalarWhereInput[]
+  export type EmailUpdateManyWithoutDomainNestedInput = {
+    create?: XOR<EmailCreateWithoutDomainInput, EmailUncheckedCreateWithoutDomainInput> | EmailCreateWithoutDomainInput[] | EmailUncheckedCreateWithoutDomainInput[]
+    connectOrCreate?: EmailCreateOrConnectWithoutDomainInput | EmailCreateOrConnectWithoutDomainInput[]
+    upsert?: EmailUpsertWithWhereUniqueWithoutDomainInput | EmailUpsertWithWhereUniqueWithoutDomainInput[]
+    createMany?: EmailCreateManyDomainInputEnvelope
+    set?: EmailWhereUniqueInput | EmailWhereUniqueInput[]
+    disconnect?: EmailWhereUniqueInput | EmailWhereUniqueInput[]
+    delete?: EmailWhereUniqueInput | EmailWhereUniqueInput[]
+    connect?: EmailWhereUniqueInput | EmailWhereUniqueInput[]
+    update?: EmailUpdateWithWhereUniqueWithoutDomainInput | EmailUpdateWithWhereUniqueWithoutDomainInput[]
+    updateMany?: EmailUpdateManyWithWhereWithoutDomainInput | EmailUpdateManyWithWhereWithoutDomainInput[]
+    deleteMany?: EmailScalarWhereInput | EmailScalarWhereInput[]
   }
 
   export type EmailSummaryUpdateOneWithoutDomainNestedInput = {
@@ -7215,18 +8984,18 @@ export namespace Prisma {
     update?: XOR<XOR<EmailSummaryUpdateToOneWithWhereWithoutDomainInput, EmailSummaryUpdateWithoutDomainInput>, EmailSummaryUncheckedUpdateWithoutDomainInput>
   }
 
-  export type EmailEventUncheckedUpdateManyWithoutDomainNestedInput = {
-    create?: XOR<EmailEventCreateWithoutDomainInput, EmailEventUncheckedCreateWithoutDomainInput> | EmailEventCreateWithoutDomainInput[] | EmailEventUncheckedCreateWithoutDomainInput[]
-    connectOrCreate?: EmailEventCreateOrConnectWithoutDomainInput | EmailEventCreateOrConnectWithoutDomainInput[]
-    upsert?: EmailEventUpsertWithWhereUniqueWithoutDomainInput | EmailEventUpsertWithWhereUniqueWithoutDomainInput[]
-    createMany?: EmailEventCreateManyDomainInputEnvelope
-    set?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
-    disconnect?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
-    delete?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
-    connect?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
-    update?: EmailEventUpdateWithWhereUniqueWithoutDomainInput | EmailEventUpdateWithWhereUniqueWithoutDomainInput[]
-    updateMany?: EmailEventUpdateManyWithWhereWithoutDomainInput | EmailEventUpdateManyWithWhereWithoutDomainInput[]
-    deleteMany?: EmailEventScalarWhereInput | EmailEventScalarWhereInput[]
+  export type EmailUncheckedUpdateManyWithoutDomainNestedInput = {
+    create?: XOR<EmailCreateWithoutDomainInput, EmailUncheckedCreateWithoutDomainInput> | EmailCreateWithoutDomainInput[] | EmailUncheckedCreateWithoutDomainInput[]
+    connectOrCreate?: EmailCreateOrConnectWithoutDomainInput | EmailCreateOrConnectWithoutDomainInput[]
+    upsert?: EmailUpsertWithWhereUniqueWithoutDomainInput | EmailUpsertWithWhereUniqueWithoutDomainInput[]
+    createMany?: EmailCreateManyDomainInputEnvelope
+    set?: EmailWhereUniqueInput | EmailWhereUniqueInput[]
+    disconnect?: EmailWhereUniqueInput | EmailWhereUniqueInput[]
+    delete?: EmailWhereUniqueInput | EmailWhereUniqueInput[]
+    connect?: EmailWhereUniqueInput | EmailWhereUniqueInput[]
+    update?: EmailUpdateWithWhereUniqueWithoutDomainInput | EmailUpdateWithWhereUniqueWithoutDomainInput[]
+    updateMany?: EmailUpdateManyWithWhereWithoutDomainInput | EmailUpdateManyWithWhereWithoutDomainInput[]
+    deleteMany?: EmailScalarWhereInput | EmailScalarWhereInput[]
   }
 
   export type EmailSummaryUncheckedUpdateOneWithoutDomainNestedInput = {
@@ -7243,6 +9012,20 @@ export namespace Prisma {
     create?: XOR<DomainCreateWithoutEmailsInput, DomainUncheckedCreateWithoutEmailsInput>
     connectOrCreate?: DomainCreateOrConnectWithoutEmailsInput
     connect?: DomainWhereUniqueInput
+  }
+
+  export type EmailEventCreateNestedManyWithoutEmailInput = {
+    create?: XOR<EmailEventCreateWithoutEmailInput, EmailEventUncheckedCreateWithoutEmailInput> | EmailEventCreateWithoutEmailInput[] | EmailEventUncheckedCreateWithoutEmailInput[]
+    connectOrCreate?: EmailEventCreateOrConnectWithoutEmailInput | EmailEventCreateOrConnectWithoutEmailInput[]
+    createMany?: EmailEventCreateManyEmailInputEnvelope
+    connect?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
+  }
+
+  export type EmailEventUncheckedCreateNestedManyWithoutEmailInput = {
+    create?: XOR<EmailEventCreateWithoutEmailInput, EmailEventUncheckedCreateWithoutEmailInput> | EmailEventCreateWithoutEmailInput[] | EmailEventUncheckedCreateWithoutEmailInput[]
+    connectOrCreate?: EmailEventCreateOrConnectWithoutEmailInput | EmailEventCreateOrConnectWithoutEmailInput[]
+    createMany?: EmailEventCreateManyEmailInputEnvelope
+    connect?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -7271,6 +9054,48 @@ export namespace Prisma {
     upsert?: DomainUpsertWithoutEmailsInput
     connect?: DomainWhereUniqueInput
     update?: XOR<XOR<DomainUpdateToOneWithWhereWithoutEmailsInput, DomainUpdateWithoutEmailsInput>, DomainUncheckedUpdateWithoutEmailsInput>
+  }
+
+  export type EmailEventUpdateManyWithoutEmailNestedInput = {
+    create?: XOR<EmailEventCreateWithoutEmailInput, EmailEventUncheckedCreateWithoutEmailInput> | EmailEventCreateWithoutEmailInput[] | EmailEventUncheckedCreateWithoutEmailInput[]
+    connectOrCreate?: EmailEventCreateOrConnectWithoutEmailInput | EmailEventCreateOrConnectWithoutEmailInput[]
+    upsert?: EmailEventUpsertWithWhereUniqueWithoutEmailInput | EmailEventUpsertWithWhereUniqueWithoutEmailInput[]
+    createMany?: EmailEventCreateManyEmailInputEnvelope
+    set?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
+    disconnect?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
+    delete?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
+    connect?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
+    update?: EmailEventUpdateWithWhereUniqueWithoutEmailInput | EmailEventUpdateWithWhereUniqueWithoutEmailInput[]
+    updateMany?: EmailEventUpdateManyWithWhereWithoutEmailInput | EmailEventUpdateManyWithWhereWithoutEmailInput[]
+    deleteMany?: EmailEventScalarWhereInput | EmailEventScalarWhereInput[]
+  }
+
+  export type EmailEventUncheckedUpdateManyWithoutEmailNestedInput = {
+    create?: XOR<EmailEventCreateWithoutEmailInput, EmailEventUncheckedCreateWithoutEmailInput> | EmailEventCreateWithoutEmailInput[] | EmailEventUncheckedCreateWithoutEmailInput[]
+    connectOrCreate?: EmailEventCreateOrConnectWithoutEmailInput | EmailEventCreateOrConnectWithoutEmailInput[]
+    upsert?: EmailEventUpsertWithWhereUniqueWithoutEmailInput | EmailEventUpsertWithWhereUniqueWithoutEmailInput[]
+    createMany?: EmailEventCreateManyEmailInputEnvelope
+    set?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
+    disconnect?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
+    delete?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
+    connect?: EmailEventWhereUniqueInput | EmailEventWhereUniqueInput[]
+    update?: EmailEventUpdateWithWhereUniqueWithoutEmailInput | EmailEventUpdateWithWhereUniqueWithoutEmailInput[]
+    updateMany?: EmailEventUpdateManyWithWhereWithoutEmailInput | EmailEventUpdateManyWithWhereWithoutEmailInput[]
+    deleteMany?: EmailEventScalarWhereInput | EmailEventScalarWhereInput[]
+  }
+
+  export type EmailCreateNestedOneWithoutEventsInput = {
+    create?: XOR<EmailCreateWithoutEventsInput, EmailUncheckedCreateWithoutEventsInput>
+    connectOrCreate?: EmailCreateOrConnectWithoutEventsInput
+    connect?: EmailWhereUniqueInput
+  }
+
+  export type EmailUpdateOneRequiredWithoutEventsNestedInput = {
+    create?: XOR<EmailCreateWithoutEventsInput, EmailUncheckedCreateWithoutEventsInput>
+    connectOrCreate?: EmailCreateOrConnectWithoutEventsInput
+    upsert?: EmailUpsertWithoutEventsInput
+    connect?: EmailWhereUniqueInput
+    update?: XOR<XOR<EmailUpdateToOneWithWhereWithoutEventsInput, EmailUpdateWithoutEventsInput>, EmailUncheckedUpdateWithoutEventsInput>
   }
 
   export type DomainCreateNestedOneWithoutSummaryInput = {
@@ -7474,13 +9299,36 @@ export namespace Prisma {
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
+  export type NestedJsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type DomainCreateWithoutUserInput = {
     id?: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    emails?: EmailEventCreateNestedManyWithoutDomainInput
+    emails?: EmailCreateNestedManyWithoutDomainInput
     summary?: EmailSummaryCreateNestedOneWithoutDomainInput
   }
 
@@ -7489,7 +9337,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    emails?: EmailEventUncheckedCreateNestedManyWithoutDomainInput
+    emails?: EmailUncheckedCreateNestedManyWithoutDomainInput
     summary?: EmailSummaryUncheckedCreateNestedOneWithoutDomainInput
   }
 
@@ -7553,7 +9401,7 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutDomainsInput, UserUncheckedCreateWithoutDomainsInput>
   }
 
-  export type EmailEventCreateWithoutDomainInput = {
+  export type EmailCreateWithoutDomainInput = {
     id?: string
     emailId: number
     token: string
@@ -7561,14 +9409,17 @@ export namespace Prisma {
     to?: string | null
     from?: string | null
     subject?: string | null
-    eventType?: string | null
-    status?: string | null
     spamStatus?: number | null
-    timestamp?: Date | string | null
+    deliveryStatus?: string | null
+    sentAt?: Date | string | null
+    firstOpenAt?: Date | string | null
+    firstClickAt?: Date | string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
+    events?: EmailEventCreateNestedManyWithoutEmailInput
   }
 
-  export type EmailEventUncheckedCreateWithoutDomainInput = {
+  export type EmailUncheckedCreateWithoutDomainInput = {
     id?: string
     emailId: number
     token: string
@@ -7576,20 +9427,23 @@ export namespace Prisma {
     to?: string | null
     from?: string | null
     subject?: string | null
-    eventType?: string | null
-    status?: string | null
     spamStatus?: number | null
-    timestamp?: Date | string | null
+    deliveryStatus?: string | null
+    sentAt?: Date | string | null
+    firstOpenAt?: Date | string | null
+    firstClickAt?: Date | string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
+    events?: EmailEventUncheckedCreateNestedManyWithoutEmailInput
   }
 
-  export type EmailEventCreateOrConnectWithoutDomainInput = {
-    where: EmailEventWhereUniqueInput
-    create: XOR<EmailEventCreateWithoutDomainInput, EmailEventUncheckedCreateWithoutDomainInput>
+  export type EmailCreateOrConnectWithoutDomainInput = {
+    where: EmailWhereUniqueInput
+    create: XOR<EmailCreateWithoutDomainInput, EmailUncheckedCreateWithoutDomainInput>
   }
 
-  export type EmailEventCreateManyDomainInputEnvelope = {
-    data: EmailEventCreateManyDomainInput | EmailEventCreateManyDomainInput[]
+  export type EmailCreateManyDomainInputEnvelope = {
+    data: EmailCreateManyDomainInput | EmailCreateManyDomainInput[]
     skipDuplicates?: boolean
   }
 
@@ -7657,39 +9511,41 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type EmailEventUpsertWithWhereUniqueWithoutDomainInput = {
-    where: EmailEventWhereUniqueInput
-    update: XOR<EmailEventUpdateWithoutDomainInput, EmailEventUncheckedUpdateWithoutDomainInput>
-    create: XOR<EmailEventCreateWithoutDomainInput, EmailEventUncheckedCreateWithoutDomainInput>
+  export type EmailUpsertWithWhereUniqueWithoutDomainInput = {
+    where: EmailWhereUniqueInput
+    update: XOR<EmailUpdateWithoutDomainInput, EmailUncheckedUpdateWithoutDomainInput>
+    create: XOR<EmailCreateWithoutDomainInput, EmailUncheckedCreateWithoutDomainInput>
   }
 
-  export type EmailEventUpdateWithWhereUniqueWithoutDomainInput = {
-    where: EmailEventWhereUniqueInput
-    data: XOR<EmailEventUpdateWithoutDomainInput, EmailEventUncheckedUpdateWithoutDomainInput>
+  export type EmailUpdateWithWhereUniqueWithoutDomainInput = {
+    where: EmailWhereUniqueInput
+    data: XOR<EmailUpdateWithoutDomainInput, EmailUncheckedUpdateWithoutDomainInput>
   }
 
-  export type EmailEventUpdateManyWithWhereWithoutDomainInput = {
-    where: EmailEventScalarWhereInput
-    data: XOR<EmailEventUpdateManyMutationInput, EmailEventUncheckedUpdateManyWithoutDomainInput>
+  export type EmailUpdateManyWithWhereWithoutDomainInput = {
+    where: EmailScalarWhereInput
+    data: XOR<EmailUpdateManyMutationInput, EmailUncheckedUpdateManyWithoutDomainInput>
   }
 
-  export type EmailEventScalarWhereInput = {
-    AND?: EmailEventScalarWhereInput | EmailEventScalarWhereInput[]
-    OR?: EmailEventScalarWhereInput[]
-    NOT?: EmailEventScalarWhereInput | EmailEventScalarWhereInput[]
-    id?: StringFilter<"EmailEvent"> | string
-    emailId?: IntFilter<"EmailEvent"> | number
-    token?: StringFilter<"EmailEvent"> | string
-    messageId?: StringFilter<"EmailEvent"> | string
-    to?: StringNullableFilter<"EmailEvent"> | string | null
-    from?: StringNullableFilter<"EmailEvent"> | string | null
-    subject?: StringNullableFilter<"EmailEvent"> | string | null
-    eventType?: StringNullableFilter<"EmailEvent"> | string | null
-    status?: StringNullableFilter<"EmailEvent"> | string | null
-    spamStatus?: IntNullableFilter<"EmailEvent"> | number | null
-    timestamp?: DateTimeNullableFilter<"EmailEvent"> | Date | string | null
-    domainId?: StringFilter<"EmailEvent"> | string
-    createdAt?: DateTimeFilter<"EmailEvent"> | Date | string
+  export type EmailScalarWhereInput = {
+    AND?: EmailScalarWhereInput | EmailScalarWhereInput[]
+    OR?: EmailScalarWhereInput[]
+    NOT?: EmailScalarWhereInput | EmailScalarWhereInput[]
+    id?: StringFilter<"Email"> | string
+    emailId?: IntFilter<"Email"> | number
+    token?: StringFilter<"Email"> | string
+    messageId?: StringFilter<"Email"> | string
+    to?: StringNullableFilter<"Email"> | string | null
+    from?: StringNullableFilter<"Email"> | string | null
+    subject?: StringNullableFilter<"Email"> | string | null
+    spamStatus?: IntNullableFilter<"Email"> | number | null
+    domainId?: StringFilter<"Email"> | string
+    deliveryStatus?: StringNullableFilter<"Email"> | string | null
+    sentAt?: DateTimeNullableFilter<"Email"> | Date | string | null
+    firstOpenAt?: DateTimeNullableFilter<"Email"> | Date | string | null
+    firstClickAt?: DateTimeNullableFilter<"Email"> | Date | string | null
+    createdAt?: DateTimeFilter<"Email"> | Date | string
+    updatedAt?: DateTimeFilter<"Email"> | Date | string
   }
 
   export type EmailSummaryUpsertWithoutDomainInput = {
@@ -7756,6 +9612,48 @@ export namespace Prisma {
     create: XOR<DomainCreateWithoutEmailsInput, DomainUncheckedCreateWithoutEmailsInput>
   }
 
+  export type EmailEventCreateWithoutEmailInput = {
+    id?: string
+    eventId: string
+    type: string
+    status?: string | null
+    occurredAt: Date | string
+    ipAddress?: string | null
+    country?: string | null
+    city?: string | null
+    userAgent?: string | null
+    linkId?: string | null
+    linkUrl?: string | null
+    rawPayload: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type EmailEventUncheckedCreateWithoutEmailInput = {
+    id?: string
+    eventId: string
+    type: string
+    status?: string | null
+    occurredAt: Date | string
+    ipAddress?: string | null
+    country?: string | null
+    city?: string | null
+    userAgent?: string | null
+    linkId?: string | null
+    linkUrl?: string | null
+    rawPayload: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type EmailEventCreateOrConnectWithoutEmailInput = {
+    where: EmailEventWhereUniqueInput
+    create: XOR<EmailEventCreateWithoutEmailInput, EmailEventUncheckedCreateWithoutEmailInput>
+  }
+
+  export type EmailEventCreateManyEmailInputEnvelope = {
+    data: EmailEventCreateManyEmailInput | EmailEventCreateManyEmailInput[]
+    skipDuplicates?: boolean
+  }
+
   export type DomainUpsertWithoutEmailsInput = {
     update: XOR<DomainUpdateWithoutEmailsInput, DomainUncheckedUpdateWithoutEmailsInput>
     create: XOR<DomainCreateWithoutEmailsInput, DomainUncheckedCreateWithoutEmailsInput>
@@ -7785,13 +9683,137 @@ export namespace Prisma {
     summary?: EmailSummaryUncheckedUpdateOneWithoutDomainNestedInput
   }
 
+  export type EmailEventUpsertWithWhereUniqueWithoutEmailInput = {
+    where: EmailEventWhereUniqueInput
+    update: XOR<EmailEventUpdateWithoutEmailInput, EmailEventUncheckedUpdateWithoutEmailInput>
+    create: XOR<EmailEventCreateWithoutEmailInput, EmailEventUncheckedCreateWithoutEmailInput>
+  }
+
+  export type EmailEventUpdateWithWhereUniqueWithoutEmailInput = {
+    where: EmailEventWhereUniqueInput
+    data: XOR<EmailEventUpdateWithoutEmailInput, EmailEventUncheckedUpdateWithoutEmailInput>
+  }
+
+  export type EmailEventUpdateManyWithWhereWithoutEmailInput = {
+    where: EmailEventScalarWhereInput
+    data: XOR<EmailEventUpdateManyMutationInput, EmailEventUncheckedUpdateManyWithoutEmailInput>
+  }
+
+  export type EmailEventScalarWhereInput = {
+    AND?: EmailEventScalarWhereInput | EmailEventScalarWhereInput[]
+    OR?: EmailEventScalarWhereInput[]
+    NOT?: EmailEventScalarWhereInput | EmailEventScalarWhereInput[]
+    id?: StringFilter<"EmailEvent"> | string
+    eventId?: StringFilter<"EmailEvent"> | string
+    type?: StringFilter<"EmailEvent"> | string
+    status?: StringNullableFilter<"EmailEvent"> | string | null
+    occurredAt?: DateTimeFilter<"EmailEvent"> | Date | string
+    emailId?: StringFilter<"EmailEvent"> | string
+    ipAddress?: StringNullableFilter<"EmailEvent"> | string | null
+    country?: StringNullableFilter<"EmailEvent"> | string | null
+    city?: StringNullableFilter<"EmailEvent"> | string | null
+    userAgent?: StringNullableFilter<"EmailEvent"> | string | null
+    linkId?: StringNullableFilter<"EmailEvent"> | string | null
+    linkUrl?: StringNullableFilter<"EmailEvent"> | string | null
+    rawPayload?: JsonFilter<"EmailEvent">
+    createdAt?: DateTimeFilter<"EmailEvent"> | Date | string
+  }
+
+  export type EmailCreateWithoutEventsInput = {
+    id?: string
+    emailId: number
+    token: string
+    messageId: string
+    to?: string | null
+    from?: string | null
+    subject?: string | null
+    spamStatus?: number | null
+    deliveryStatus?: string | null
+    sentAt?: Date | string | null
+    firstOpenAt?: Date | string | null
+    firstClickAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    domain: DomainCreateNestedOneWithoutEmailsInput
+  }
+
+  export type EmailUncheckedCreateWithoutEventsInput = {
+    id?: string
+    emailId: number
+    token: string
+    messageId: string
+    to?: string | null
+    from?: string | null
+    subject?: string | null
+    spamStatus?: number | null
+    domainId: string
+    deliveryStatus?: string | null
+    sentAt?: Date | string | null
+    firstOpenAt?: Date | string | null
+    firstClickAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailCreateOrConnectWithoutEventsInput = {
+    where: EmailWhereUniqueInput
+    create: XOR<EmailCreateWithoutEventsInput, EmailUncheckedCreateWithoutEventsInput>
+  }
+
+  export type EmailUpsertWithoutEventsInput = {
+    update: XOR<EmailUpdateWithoutEventsInput, EmailUncheckedUpdateWithoutEventsInput>
+    create: XOR<EmailCreateWithoutEventsInput, EmailUncheckedCreateWithoutEventsInput>
+    where?: EmailWhereInput
+  }
+
+  export type EmailUpdateToOneWithWhereWithoutEventsInput = {
+    where?: EmailWhereInput
+    data: XOR<EmailUpdateWithoutEventsInput, EmailUncheckedUpdateWithoutEventsInput>
+  }
+
+  export type EmailUpdateWithoutEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emailId?: IntFieldUpdateOperationsInput | number
+    token?: StringFieldUpdateOperationsInput | string
+    messageId?: StringFieldUpdateOperationsInput | string
+    to?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
+    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstOpenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstClickAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    domain?: DomainUpdateOneRequiredWithoutEmailsNestedInput
+  }
+
+  export type EmailUncheckedUpdateWithoutEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emailId?: IntFieldUpdateOperationsInput | number
+    token?: StringFieldUpdateOperationsInput | string
+    messageId?: StringFieldUpdateOperationsInput | string
+    to?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
+    domainId?: StringFieldUpdateOperationsInput | string
+    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstOpenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstClickAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type DomainCreateWithoutSummaryInput = {
     id?: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutDomainsInput
-    emails?: EmailEventCreateNestedManyWithoutDomainInput
+    emails?: EmailCreateNestedManyWithoutDomainInput
   }
 
   export type DomainUncheckedCreateWithoutSummaryInput = {
@@ -7800,7 +9822,7 @@ export namespace Prisma {
     userId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    emails?: EmailEventUncheckedCreateNestedManyWithoutDomainInput
+    emails?: EmailUncheckedCreateNestedManyWithoutDomainInput
   }
 
   export type DomainCreateOrConnectWithoutSummaryInput = {
@@ -7825,7 +9847,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutDomainsNestedInput
-    emails?: EmailEventUpdateManyWithoutDomainNestedInput
+    emails?: EmailUpdateManyWithoutDomainNestedInput
   }
 
   export type DomainUncheckedUpdateWithoutSummaryInput = {
@@ -7834,7 +9856,7 @@ export namespace Prisma {
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    emails?: EmailEventUncheckedUpdateManyWithoutDomainNestedInput
+    emails?: EmailUncheckedUpdateManyWithoutDomainNestedInput
   }
 
   export type DomainCreateManyUserInput = {
@@ -7849,7 +9871,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    emails?: EmailEventUpdateManyWithoutDomainNestedInput
+    emails?: EmailUpdateManyWithoutDomainNestedInput
     summary?: EmailSummaryUpdateOneWithoutDomainNestedInput
   }
 
@@ -7858,7 +9880,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    emails?: EmailEventUncheckedUpdateManyWithoutDomainNestedInput
+    emails?: EmailUncheckedUpdateManyWithoutDomainNestedInput
     summary?: EmailSummaryUncheckedUpdateOneWithoutDomainNestedInput
   }
 
@@ -7869,7 +9891,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type EmailEventCreateManyDomainInput = {
+  export type EmailCreateManyDomainInput = {
     id?: string
     emailId: number
     token: string
@@ -7877,55 +9899,129 @@ export namespace Prisma {
     to?: string | null
     from?: string | null
     subject?: string | null
-    eventType?: string | null
-    status?: string | null
     spamStatus?: number | null
-    timestamp?: Date | string | null
+    deliveryStatus?: string | null
+    sentAt?: Date | string | null
+    firstOpenAt?: Date | string | null
+    firstClickAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailUpdateWithoutDomainInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emailId?: IntFieldUpdateOperationsInput | number
+    token?: StringFieldUpdateOperationsInput | string
+    messageId?: StringFieldUpdateOperationsInput | string
+    to?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
+    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstOpenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstClickAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    events?: EmailEventUpdateManyWithoutEmailNestedInput
+  }
+
+  export type EmailUncheckedUpdateWithoutDomainInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emailId?: IntFieldUpdateOperationsInput | number
+    token?: StringFieldUpdateOperationsInput | string
+    messageId?: StringFieldUpdateOperationsInput | string
+    to?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
+    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstOpenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstClickAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    events?: EmailEventUncheckedUpdateManyWithoutEmailNestedInput
+  }
+
+  export type EmailUncheckedUpdateManyWithoutDomainInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emailId?: IntFieldUpdateOperationsInput | number
+    token?: StringFieldUpdateOperationsInput | string
+    messageId?: StringFieldUpdateOperationsInput | string
+    to?: NullableStringFieldUpdateOperationsInput | string | null
+    from?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
+    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstOpenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstClickAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailEventCreateManyEmailInput = {
+    id?: string
+    eventId: string
+    type: string
+    status?: string | null
+    occurredAt: Date | string
+    ipAddress?: string | null
+    country?: string | null
+    city?: string | null
+    userAgent?: string | null
+    linkId?: string | null
+    linkUrl?: string | null
+    rawPayload: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
 
-  export type EmailEventUpdateWithoutDomainInput = {
+  export type EmailEventUpdateWithoutEmailInput = {
     id?: StringFieldUpdateOperationsInput | string
-    emailId?: IntFieldUpdateOperationsInput | number
-    token?: StringFieldUpdateOperationsInput | string
-    messageId?: StringFieldUpdateOperationsInput | string
-    to?: NullableStringFieldUpdateOperationsInput | string | null
-    from?: NullableStringFieldUpdateOperationsInput | string | null
-    subject?: NullableStringFieldUpdateOperationsInput | string | null
-    eventType?: NullableStringFieldUpdateOperationsInput | string | null
+    eventId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     status?: NullableStringFieldUpdateOperationsInput | string | null
-    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
-    timestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    occurredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    linkId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rawPayload?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type EmailEventUncheckedUpdateWithoutDomainInput = {
+  export type EmailEventUncheckedUpdateWithoutEmailInput = {
     id?: StringFieldUpdateOperationsInput | string
-    emailId?: IntFieldUpdateOperationsInput | number
-    token?: StringFieldUpdateOperationsInput | string
-    messageId?: StringFieldUpdateOperationsInput | string
-    to?: NullableStringFieldUpdateOperationsInput | string | null
-    from?: NullableStringFieldUpdateOperationsInput | string | null
-    subject?: NullableStringFieldUpdateOperationsInput | string | null
-    eventType?: NullableStringFieldUpdateOperationsInput | string | null
+    eventId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     status?: NullableStringFieldUpdateOperationsInput | string | null
-    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
-    timestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    occurredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    linkId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rawPayload?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type EmailEventUncheckedUpdateManyWithoutDomainInput = {
+  export type EmailEventUncheckedUpdateManyWithoutEmailInput = {
     id?: StringFieldUpdateOperationsInput | string
-    emailId?: IntFieldUpdateOperationsInput | number
-    token?: StringFieldUpdateOperationsInput | string
-    messageId?: StringFieldUpdateOperationsInput | string
-    to?: NullableStringFieldUpdateOperationsInput | string | null
-    from?: NullableStringFieldUpdateOperationsInput | string | null
-    subject?: NullableStringFieldUpdateOperationsInput | string | null
-    eventType?: NullableStringFieldUpdateOperationsInput | string | null
+    eventId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     status?: NullableStringFieldUpdateOperationsInput | string | null
-    spamStatus?: NullableIntFieldUpdateOperationsInput | number | null
-    timestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    occurredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    linkId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rawPayload?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
