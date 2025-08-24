@@ -1,5 +1,53 @@
 import { prisma } from "@/lib/prisma";
 
+// Types for webhook payload
+interface EmailitWebhookPayload {
+  event_id?: string;
+  type: string;
+  object?: {
+    email?: {
+      message_id?: string;
+      id?: number;
+      token?: string;
+      from?: string;
+      to?: string;
+      subject?: string;
+      spam_status?: string;
+    };
+    timestamp?: number;
+    status?: string;
+    ip_address?: string;
+    country?: string;
+    city?: string;
+    user_agent?: string;
+    link?: {
+      id?: string;
+      url?: string;
+    };
+  };
+}
+
+// Interface for EmailSummary fields
+interface EmailSummaryFields {
+  totalSent: number;
+  totalHardFail: number;
+  totalSoftFail: number;
+  totalBounce: number;
+  totalError: number;
+  totalHeld: number;
+  totalDelayed: number;
+  totalLoaded: number;
+  totalClicked: number;
+}
+
+// Type for email update fields
+type EmailUpdateFields = {
+  deliveryStatus?: string;
+  sentAt?: Date;
+  firstOpenAt?: Date;
+  firstClickAt?: Date;
+};
+
 const DELIVERY_STATUS_MAP: Record<string, string> = {
   "email.delivery.sent": "sent",
   "email.delivery.hardfail": "hardfail",
@@ -10,7 +58,7 @@ const DELIVERY_STATUS_MAP: Record<string, string> = {
   "email.delivery.delayed": "delayed",
 };
 
-const SUMMARY_FIELD_MAP: Record<string, keyof any> = {
+const SUMMARY_FIELD_MAP: Record<string, keyof EmailSummaryFields> = {
   sent: "totalSent",
   hardfail: "totalHardFail",
   softfail: "totalSoftFail",
@@ -20,7 +68,7 @@ const SUMMARY_FIELD_MAP: Record<string, keyof any> = {
   delayed: "totalDelayed",
 };
 
-export async function processEmailitEvent(payload: any) {
+export async function processEmailitEvent(payload: EmailitWebhookPayload) {
   const eventId = String(payload.event_id ?? crypto.randomUUID());
   const type = payload.type;
   const obj = payload.object ?? {};
@@ -98,7 +146,7 @@ export async function processEmailitEvent(payload: any) {
     });
 
     // 4) Update email state
-    const updates: Record<string, any> = {};
+    const updates: EmailUpdateFields = {};
     let newStatus: string | null = null;
 
     if (type.startsWith("email.delivery.")) {
