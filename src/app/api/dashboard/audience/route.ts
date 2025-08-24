@@ -38,9 +38,7 @@ interface EngagementRatesRow {
   total_recipients: number;
 }
 
-/**
- * Recursively convert bigint values to numbers in a typed-safe way.
- */
+
 function convertBigIntToNumber<T>(obj: T): T {
   if (Array.isArray(obj)) {
     return obj.map(convertBigIntToNumber) as unknown as T;
@@ -68,7 +66,10 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const adminEmails = ["info@websoftdevelopment.com", "muragegideon2000@gmail.com"];
+    const adminEmails = [
+      "info@websoftdevelopment.com",
+      "muragegideon2000@gmail.com",
+    ];
 
     const isAdmin = adminEmails.includes(user.email);
     let domains: Domain[] = [];
@@ -77,11 +78,17 @@ export async function GET() {
     if (isAdmin) {
       domains = await prisma.domain.findMany();
     } else {
-      const userEmailDomain = user.email.split("@")[1]?.toLowerCase() || "";
-      const domain = await prisma.domain.findUnique({ where: { name: userEmailDomain } });
+      const userEmailDomain =
+        user.email.split("@")[1]?.toLowerCase() || "";
+      const domain = await prisma.domain.findUnique({
+        where: { name: userEmailDomain },
+      });
       if (!domain) {
         return NextResponse.json(
-          { error: "Domain not found", message: "No email data exists for your domain" },
+          {
+            error: "Domain not found",
+            message: "No email data exists for your domain",
+          },
           { status: 404 }
         );
       }
@@ -91,90 +98,102 @@ export async function GET() {
 
     const audienceSqlBase = `
       SELECT
-        "to" AS email,
-        SPLIT_PART("to", '@', 2) AS recipient_domain,
+        em."to" AS email,
+        SPLIT_PART(em."to", '@', 2) AS recipient_domain,
         COUNT(*) AS total_emails,
-        MAX("timestamp") AS last_seen,
-        COUNT(CASE WHEN "eventType" = 'email.delivery.sent' THEN 1 END) AS delivered_count,
-        COUNT(CASE WHEN "eventType" IN (
+        MAX(e."occurredAt") AS last_seen,
+        COUNT(CASE WHEN e."type" = 'email.delivery.sent' THEN 1 END) AS delivered_count,
+        COUNT(CASE WHEN e."type" IN (
           'email.delivery.hardfail', 'email.delivery.softfail',
           'email.delivery.bounce', 'email.delivery.error'
         ) THEN 1 END) AS failed_count,
-        COUNT(CASE WHEN "eventType" = 'email.loaded' THEN 1 END) AS opens,
-        COUNT(CASE WHEN "eventType" = 'email.link.clicked' THEN 1 END) AS clicks,
+        COUNT(CASE WHEN e."type" = 'email.loaded' THEN 1 END) AS opens,
+        COUNT(CASE WHEN e."type" = 'email.link.clicked' THEN 1 END) AS clicks,
         CASE
-          WHEN COUNT(CASE WHEN "eventType" = 'email.delivery.bounce' THEN 1 END) > 0 THEN 'bounced'
-          WHEN MAX("timestamp") > NOW() - INTERVAL '7 days' THEN 'active'
+          WHEN COUNT(CASE WHEN e."type" = 'email.delivery.bounce' THEN 1 END) > 0 THEN 'bounced'
+          WHEN MAX(e."occurredAt") > NOW() - INTERVAL '7 days' THEN 'active'
           ELSE 'inactive'
         END AS status
-      FROM "EmailEvent"
+      FROM "EmailEvent" e
+      JOIN "Email" em ON e."emailId" = em."id"
     `;
 
     const audienceQueryResult = isAdmin
-      ? (await prisma.$queryRawUnsafe(`${audienceSqlBase} GROUP BY "to" ORDER BY MAX("timestamp") DESC LIMIT 100`)) as AudienceRow[]
+      ? (await prisma.$queryRawUnsafe(
+          `${audienceSqlBase} GROUP BY em."to" ORDER BY MAX(e."occurredAt") DESC LIMIT 100`
+        )) as AudienceRow[]
       : (await prisma.$queryRawUnsafe(
-          `${audienceSqlBase} WHERE "domainId" = $1 GROUP BY "to" ORDER BY MAX("timestamp") DESC LIMIT 100`,
+          `${audienceSqlBase} WHERE em."domainId" = $1 GROUP BY em."to" ORDER BY MAX(e."occurredAt") DESC LIMIT 100`,
           domainFilterId
         )) as AudienceRow[];
 
+    
     const domainDistributionRaw = isAdmin
       ? (await prisma.$queryRaw`
-        SELECT SPLIT_PART("to", '@', 2) AS recipient_domain,
-               COUNT(DISTINCT "to") AS unique_recipients,
+        SELECT SPLIT_PART(em."to", '@', 2) AS recipient_domain,
+               COUNT(DISTINCT em."to") AS unique_recipients,
                COUNT(*) AS total_emails
-        FROM "EmailEvent"
-        GROUP BY SPLIT_PART("to", '@', 2)
+        FROM "EmailEvent" e
+        JOIN "Email" em ON e."emailId" = em."id"
+        GROUP BY SPLIT_PART(em."to", '@', 2)
         ORDER BY COUNT(*) DESC
         LIMIT 10
       `) as DomainDistributionRow[]
       : (await prisma.$queryRaw`
-        SELECT SPLIT_PART("to", '@', 2) AS recipient_domain,
-               COUNT(DISTINCT "to") AS unique_recipients,
+        SELECT SPLIT_PART(em."to", '@', 2) AS recipient_domain,
+               COUNT(DISTINCT em."to") AS unique_recipients,
                COUNT(*) AS total_emails
-        FROM "EmailEvent"
-        WHERE "domainId" = ${domainFilterId}
-        GROUP BY SPLIT_PART("to", '@', 2)
+        FROM "EmailEvent" e
+        JOIN "Email" em ON e."emailId" = em."id"
+        WHERE em."domainId" = ${domainFilterId}
+        GROUP BY SPLIT_PART(em."to", '@', 2)
         ORDER BY COUNT(*) DESC
         LIMIT 10
       `) as DomainDistributionRow[];
 
+ 
     const overviewStats = isAdmin
       ? (await prisma.$queryRaw`
         SELECT
-          COUNT(DISTINCT "to") AS total_recipients,
-          COUNT(DISTINCT CASE WHEN "timestamp" > NOW() - INTERVAL '7 days' THEN "to" END) AS active_recipients,
-          COUNT(DISTINCT CASE WHEN "timestamp" <= NOW() - INTERVAL '7 days' THEN "to" END) AS inactive_recipients,
-          COUNT(DISTINCT CASE WHEN "eventType" = 'email.delivery.bounce' THEN "to" END) AS bounced_recipients
-        FROM "EmailEvent"
+          COUNT(DISTINCT em."to") AS total_recipients,
+          COUNT(DISTINCT CASE WHEN e."occurredAt" > NOW() - INTERVAL '7 days' THEN em."to" END) AS active_recipients,
+          COUNT(DISTINCT CASE WHEN e."occurredAt" <= NOW() - INTERVAL '7 days' THEN em."to" END) AS inactive_recipients,
+          COUNT(DISTINCT CASE WHEN e."type" = 'email.delivery.bounce' THEN em."to" END) AS bounced_recipients
+        FROM "EmailEvent" e
+        JOIN "Email" em ON e."emailId" = em."id"
       `) as OverviewStatsRow[]
       : (await prisma.$queryRaw`
         SELECT
-          COUNT(DISTINCT "to") AS total_recipients,
-          COUNT(DISTINCT CASE WHEN "timestamp" > NOW() - INTERVAL '7 days' THEN "to" END) AS active_recipients,
-          COUNT(DISTINCT CASE WHEN "timestamp" <= NOW() - INTERVAL '7 days' THEN "to" END) AS inactive_recipients,
-          COUNT(DISTINCT CASE WHEN "eventType" = 'email.delivery.bounce' THEN "to" END) AS bounced_recipients
-        FROM "EmailEvent"
-        WHERE "domainId" = ${domainFilterId}
+          COUNT(DISTINCT em."to") AS total_recipients,
+          COUNT(DISTINCT CASE WHEN e."occurredAt" > NOW() - INTERVAL '7 days' THEN em."to" END) AS active_recipients,
+          COUNT(DISTINCT CASE WHEN e."occurredAt" <= NOW() - INTERVAL '7 days' THEN em."to" END) AS inactive_recipients,
+          COUNT(DISTINCT CASE WHEN e."type" = 'email.delivery.bounce' THEN em."to" END) AS bounced_recipients
+        FROM "EmailEvent" e
+        JOIN "Email" em ON e."emailId" = em."id"
+        WHERE em."domainId" = ${domainFilterId}
       `) as OverviewStatsRow[];
 
+ 
     const engagementRatesRaw = isAdmin
       ? (await prisma.$queryRaw`
         SELECT
-          COUNT(DISTINCT CASE WHEN "eventType" = 'email.loaded' THEN "to" END) AS users_who_opened,
-          COUNT(DISTINCT CASE WHEN "eventType" = 'email.link.clicked' THEN "to" END) AS users_who_clicked,
-          COUNT(DISTINCT "to") AS total_recipients
-        FROM "EmailEvent"
+          COUNT(DISTINCT CASE WHEN e."type" = 'email.loaded' THEN em."to" END) AS users_who_opened,
+          COUNT(DISTINCT CASE WHEN e."type" = 'email.link.clicked' THEN em."to" END) AS users_who_clicked,
+          COUNT(DISTINCT em."to") AS total_recipients
+        FROM "EmailEvent" e
+        JOIN "Email" em ON e."emailId" = em."id"
       `) as EngagementRatesRow[]
       : (await prisma.$queryRaw`
         SELECT
-          COUNT(DISTINCT CASE WHEN "eventType" = 'email.loaded' THEN "to" END) AS users_who_opened,
-          COUNT(DISTINCT CASE WHEN "eventType" = 'email.link.clicked' THEN "to" END) AS users_who_clicked,
-          COUNT(DISTINCT "to") AS total_recipients
-        FROM "EmailEvent"
-        WHERE "domainId" = ${domainFilterId}
+          COUNT(DISTINCT CASE WHEN e."type" = 'email.loaded' THEN em."to" END) AS users_who_opened,
+          COUNT(DISTINCT CASE WHEN e."type" = 'email.link.clicked' THEN em."to" END) AS users_who_clicked,
+          COUNT(DISTINCT em."to") AS total_recipients
+        FROM "EmailEvent" e
+        JOIN "Email" em ON e."emailId" = em."id"
+        WHERE em."domainId" = ${domainFilterId}
       `) as EngagementRatesRow[];
 
-    // Convert bigints → numbers
+    
     const audienceSafe = convertBigIntToNumber(audienceQueryResult);
     const domainDistributionSafe = convertBigIntToNumber(domainDistributionRaw);
     const overviewSafe = convertBigIntToNumber(overviewStats[0] || {
@@ -189,13 +208,23 @@ export async function GET() {
       total_recipients: 0,
     });
 
-    const openRate = engagementSafe.total_recipients > 0
-      ? Math.round((engagementSafe.users_who_opened / engagementSafe.total_recipients) * 100)
-      : 0;
+    const openRate =
+      engagementSafe.total_recipients > 0
+        ? Math.round(
+            (engagementSafe.users_who_opened /
+              engagementSafe.total_recipients) *
+              100
+          )
+        : 0;
 
-    const clickRate = engagementSafe.total_recipients > 0
-      ? Math.round((engagementSafe.users_who_clicked / engagementSafe.total_recipients) * 100)
-      : 0;
+    const clickRate =
+      engagementSafe.total_recipients > 0
+        ? Math.round(
+            (engagementSafe.users_who_clicked /
+              engagementSafe.total_recipients) *
+              100
+          )
+        : 0;
 
     return NextResponse.json({
       audience: audienceSafe,
@@ -211,7 +240,10 @@ export async function GET() {
       isAdmin,
     });
   } catch (err) {
-    console.error("❌ Error fetching audience data:", err);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    console.error(" Error fetching audience data:", err);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
