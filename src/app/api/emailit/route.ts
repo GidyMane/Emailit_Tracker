@@ -6,8 +6,8 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
 
     // Load from env
-    // const qstashUrl = process.env.QSTASH_URL || "https://qstash.upstash.io";
-    const qstashUrl = "http://127.0.0.1:8080";
+    const qstashUrl = process.env.QSTASH_URL || "https://qstash.upstash.io";
+    // const qstashUrl = "http://127.0.0.1:8080";
     const qstashToken = process.env.QSTASH_TOKEN!;
 
     if (!qstashToken) {
@@ -15,7 +15,8 @@ export async function POST(req: NextRequest) {
     }
 
     // The endpoint you want QStash to forward messages to
-    const targetUrl = "http://localhost:3000/api/test"; // change to your deployed URL
+    // const targetUrl = "http://localhost:3000/api/test"; // change to your deployed URL
+    const targetUrl = "https://emailit-tracker.vercel.app/api/test";
 
     // Send to QStash
     const res = await axios.post(
