@@ -115,7 +115,7 @@ export async function processEmailitEvent(payload: EmailitWebhookPayload) {
         to: emailObj.to,
         from: emailObj.from,
         subject: emailObj.subject,
-        spamStatus: emailObj.spam_status ?? null,
+        spamStatus: emailObj.spam_status ? parseInt(emailObj.spam_status, 10) : null,
         domainId: domain.id,
       },
       select: {
