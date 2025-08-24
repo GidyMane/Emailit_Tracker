@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 export async function POST(req: NextRequest) {
   try {
@@ -37,8 +37,15 @@ export async function POST(req: NextRequest) {
       success: true,
       qstashMessageId: result,
     });
-  } catch (error: any) {
-    console.error("Webhook enqueue error:", error.response?.data || error.message);
+  } catch (error: unknown) {
+    if (error instanceof AxiosError) {
+      console.error("Webhook enqueue error (axios):", error.response?.data || error.message);
+    } else if (error instanceof Error) {
+      console.error("Webhook enqueue error (general):", error.message);
+    } else {
+      console.error("Webhook enqueue error (unknown):", error);
+    }
+
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
