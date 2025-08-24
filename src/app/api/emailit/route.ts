@@ -37,7 +37,10 @@ export async function POST(req: NextRequest) {
       qstashMessageId: result,
     });
   } catch (error: unknown) {
-    console.error("Webhook enqueue error:", error.response?.data || error.message);
+    console.error("Webhook enqueue error:",
+      error instanceof Error ? error.message :
+      typeof error === 'object' && error && 'response' in error ? (error as any).response?.data :
+      String(error));
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
