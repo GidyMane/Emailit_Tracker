@@ -211,11 +211,68 @@ export default function AnalyticsPage() {
     <div className="space-y-6 p-4 md:p-6">
       {/* Page Header */}
       <div className="space-y-2">
-        <h1 className="text-2xl font-bold">Analytics</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold">Enhanced Analytics</h1>
         <p className="text-muted-foreground">
-          Detailed analytics and performance metrics for {domainData?.userDomain || 'your domain'}
+          Comprehensive email delivery analytics and performance insights for {domainData?.userDomain || 'your domain'}
         </p>
       </div>
+
+      {/* Key Metrics Cards */}
+      {statsData && (
+        <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
+          <Card className="hover:shadow-md transition-shadow">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Total Sent</CardTitle>
+              <div className="p-2 rounded-lg bg-blue-100">
+                <BarChart3 className="h-4 w-4 text-blue-600" />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-xl sm:text-2xl font-bold">{statsData.totalSent.toLocaleString()}</div>
+              <p className="text-xs text-muted-foreground mt-1">All time emails</p>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-md transition-shadow">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Delivery Rate</CardTitle>
+              <div className="p-2 rounded-lg bg-green-100">
+                <TrendingUp className="h-4 w-4 text-green-600" />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-xl sm:text-2xl font-bold">{statsData.deliveryRate.toFixed(1)}%</div>
+              <p className="text-xs text-muted-foreground mt-1">{statsData.delivered.toLocaleString()} delivered</p>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-md transition-shadow">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Open Rate</CardTitle>
+              <div className="p-2 rounded-lg bg-purple-100">
+                <TrendingUp className="h-4 w-4 text-purple-600" />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-xl sm:text-2xl font-bold">{statsData.openRate.toFixed(1)}%</div>
+              <p className="text-xs text-muted-foreground mt-1">{statsData.opens.toLocaleString()} opens</p>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-md transition-shadow">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Click Rate</CardTitle>
+              <div className="p-2 rounded-lg bg-orange-100">
+                <TrendingUp className="h-4 w-4 text-orange-600" />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-xl sm:text-2xl font-bold">{statsData.clickRate.toFixed(1)}%</div>
+              <p className="text-xs text-muted-foreground mt-1">{statsData.clicks.toLocaleString()} clicks</p>
+            </CardContent>
+          </Card>
+        </div>
+      )}
 
       {/* Email Volume Chart */}
       {eventsData?.charts?.volume && Array.isArray(eventsData.charts.volume) && eventsData.charts.volume.length > 0 ? (
