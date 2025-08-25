@@ -506,67 +506,205 @@ export default function DashboardOverview() {
         </Card>
       </div>
 
-      {/* Delivery Issues from Database */}
-      {issueCards.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5" />
-              Delivery Issues
-            </CardTitle>
-            <CardDescription>
-              Issues from your database that may affect deliverability
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
-              {issueCards.map((issue) => (
-                <div key={issue.title} className="flex items-center justify-between p-3 border rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <issue.icon className={`h-4 w-4 ${issue.color}`} />
-                    <div>
-                      <div className="font-medium text-sm">{issue.title}</div>
-                      <div className="text-xs text-muted-foreground">{issue.description}</div>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-bold">{issue.value}</div>
-                    <div className="text-xs text-muted-foreground">{issue.action}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Engagement Breakdown from Database */}
+      {/* Complete Email Status Breakdown */}
       <Card>
         <CardHeader>
-          <CardTitle>Recipient Engagement</CardTitle>
-          <CardDescription>How recipients interact with your emails (from database)</CardDescription>
+          <CardTitle className="flex items-center gap-2">
+            <Target className="h-5 w-5" />
+            Email Status Breakdown
+          </CardTitle>
+          <CardDescription>
+            Complete overview of all email delivery statuses from your database
+          </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2">
-            <div>
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-medium">Recipients Who Opened</span>
-                <span className="text-sm text-muted-foreground">{stats.recipientOpenRate.toFixed(1)}%</span>
+        <CardContent>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {/* Successful Delivery */}
+            <div className="flex items-center justify-between p-4 border rounded-lg bg-green-50">
+              <div className="flex items-center gap-3">
+                <CheckCircle className="h-5 w-5 text-green-600" />
+                <div>
+                  <div className="font-medium text-sm">Successfully Sent</div>
+                  <div className="text-xs text-muted-foreground">Email has been sent to the recipient</div>
+                </div>
               </div>
-              <Progress value={stats.recipientOpenRate} className="h-2" />
-              <div className="text-xs text-muted-foreground mt-1">
-                {engagement.recipientsWhoOpened.toLocaleString()} of {engagement.totalRecipients.toLocaleString()} recipients
+              <div className="text-right">
+                <div className="font-bold text-lg text-green-600">{stats.detailedStatus.sent.toLocaleString()}</div>
+                <div className="text-xs text-muted-foreground">Delivered successfully</div>
               </div>
             </div>
-            <div>
-              <div className="flex justify-between items-center mb-2">
+
+            {/* Hard Failures */}
+            <div className="flex items-center justify-between p-4 border rounded-lg bg-red-50">
+              <div className="flex items-center gap-3">
+                <XCircle className="h-5 w-5 text-red-600" />
+                <div>
+                  <div className="font-medium text-sm">Hard Failures</div>
+                  <div className="text-xs text-muted-foreground">Email could not be delivered to the recipient</div>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="font-bold text-lg text-red-600">{stats.detailedStatus.hardfail.toLocaleString()}</div>
+                <div className="text-xs text-muted-foreground">Permanent failures</div>
+              </div>
+            </div>
+
+            {/* Soft Failures */}
+            <div className="flex items-center justify-between p-4 border rounded-lg bg-yellow-50">
+              <div className="flex items-center gap-3">
+                <RefreshCw className="h-5 w-5 text-yellow-600" />
+                <div>
+                  <div className="font-medium text-sm">Soft Failures</div>
+                  <div className="text-xs text-muted-foreground">Email could not be temporarily delivered, will retry later</div>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="font-bold text-lg text-yellow-600">{stats.detailedStatus.softfail.toLocaleString()}</div>
+                <div className="text-xs text-muted-foreground">Temporary issues</div>
+              </div>
+            </div>
+
+            {/* Bounces */}
+            <div className="flex items-center justify-between p-4 border rounded-lg bg-orange-50">
+              <div className="flex items-center gap-3">
+                <TrendingDown className="h-5 w-5 text-orange-600" />
+                <div>
+                  <div className="font-medium text-sm">Bounced</div>
+                  <div className="text-xs text-muted-foreground">Email could not be delivered</div>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="font-bold text-lg text-orange-600">{stats.detailedStatus.bounce.toLocaleString()}</div>
+                <div className="text-xs text-muted-foreground">Rejected by server</div>
+              </div>
+            </div>
+
+            {/* System Errors */}
+            <div className="flex items-center justify-between p-4 border rounded-lg bg-purple-50">
+              <div className="flex items-center gap-3">
+                <AlertTriangle className="h-5 w-5 text-purple-600" />
+                <div>
+                  <div className="font-medium text-sm">System Errors</div>
+                  <div className="text-xs text-muted-foreground">System error occurred while trying to send, will retry later</div>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="font-bold text-lg text-purple-600">{stats.detailedStatus.error.toLocaleString()}</div>
+                <div className="text-xs text-muted-foreground">System issues</div>
+              </div>
+            </div>
+
+            {/* Held Emails */}
+            <div className="flex items-center justify-between p-4 border rounded-lg bg-red-50">
+              <div className="flex items-center gap-3">
+                <Shield className="h-5 w-5 text-red-600" />
+                <div>
+                  <div className="font-medium text-sm">Held</div>
+                  <div className="text-xs text-muted-foreground">Email has been held, account could be blocked, limited or under review</div>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="font-bold text-lg text-red-600">{stats.detailedStatus.held.toLocaleString()}</div>
+                <div className="text-xs text-muted-foreground">Account issues</div>
+              </div>
+            </div>
+
+            {/* Delayed Emails */}
+            <div className="flex items-center justify-between p-4 border rounded-lg bg-blue-50">
+              <div className="flex items-center gap-3">
+                <Clock className="h-5 w-5 text-blue-600" />
+                <div>
+                  <div className="font-medium text-sm">Delayed</div>
+                  <div className="text-xs text-muted-foreground">Email has been delayed, likely due to your rate limit</div>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="font-bold text-lg text-blue-600">{stats.detailedStatus.delayed.toLocaleString()}</div>
+                <div className="text-xs text-muted-foreground">Rate limited</div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Enhanced Engagement Breakdown with Detailed Explanations */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Eye className="h-5 w-5" />
+            Recipient Engagement Insights
+          </CardTitle>
+          <CardDescription>How recipients interact with your emails - tracked from database events</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Email Opens Section */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 mb-2">
+              <MailOpen className="h-4 w-4 text-purple-600" />
+              <h4 className="font-semibold text-sm">Email Opens (email.loaded)</h4>
+            </div>
+            <div className="bg-purple-50 p-4 rounded-lg space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium">Recipients Who Opened</span>
+                <span className="text-lg font-bold text-purple-600">{stats.recipientOpenRate.toFixed(1)}%</span>
+              </div>
+              <Progress value={stats.recipientOpenRate} className="h-3" />
+              <div className="text-xs text-muted-foreground">
+                {engagement.recipientsWhoOpened.toLocaleString()} of {engagement.totalRecipients.toLocaleString()} recipients opened your emails
+              </div>
+              <div className="mt-3 p-3 bg-white rounded border text-xs space-y-1">
+                <div className="font-medium text-gray-800">How it's tracked:</div>
+                <div className="text-gray-600">Through a tiny invisible tracking pixel (image) embedded in the email. When the email client loads that image, the system counts it as an "open".</div>
+                <div className="font-medium text-gray-800 mt-2">What this tells you:</div>
+                <div className="text-gray-600">• How many recipients actually saw your email</div>
+                <div className="text-gray-600">• Your open rate (percentage of delivered emails that were opened)</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Email Clicks Section */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 mb-2">
+              <MousePointer className="h-4 w-4 text-orange-600" />
+              <h4 className="font-semibold text-sm">Email Link Clicks (email.link.clicked)</h4>
+            </div>
+            <div className="bg-orange-50 p-4 rounded-lg space-y-2">
+              <div className="flex justify-between items-center">
                 <span className="text-sm font-medium">Recipients Who Clicked</span>
-                <span className="text-sm text-muted-foreground">{stats.recipientClickRate.toFixed(1)}%</span>
+                <span className="text-lg font-bold text-orange-600">{stats.recipientClickRate.toFixed(1)}%</span>
               </div>
-              <Progress value={stats.recipientClickRate} className="h-2" />
-              <div className="text-xs text-muted-foreground mt-1">
-                {engagement.recipientsWhoClicked.toLocaleString()} of {engagement.totalRecipients.toLocaleString()} recipients
+              <Progress value={stats.recipientClickRate} className="h-3" />
+              <div className="text-xs text-muted-foreground">
+                {engagement.recipientsWhoClicked.toLocaleString()} of {engagement.totalRecipients.toLocaleString()} recipients clicked links in your emails
               </div>
+              <div className="mt-3 p-3 bg-white rounded border text-xs space-y-1">
+                <div className="font-medium text-gray-800">How it's tracked:</div>
+                <div className="text-gray-600">Emailit wraps links with a tracking redirect. When the user clicks, the redirect logs the event before taking them to the destination.</div>
+                <div className="font-medium text-gray-800 mt-2">What this tells you:</div>
+                <div className="text-gray-600">• Which links people are most interested in</div>
+                <div className="text-gray-600">• Your click-through rate (CTR)</div>
+                <div className="text-gray-600">• Engagement quality — clicks are a stronger indicator of interest than opens</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Stats Summary */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-purple-600">{stats.opens.toLocaleString()}</div>
+              <div className="text-xs text-muted-foreground">Total Opens</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-orange-600">{stats.clicks.toLocaleString()}</div>
+              <div className="text-xs text-muted-foreground">Total Clicks</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-blue-600">{stats.openRate.toFixed(1)}%</div>
+              <div className="text-xs text-muted-foreground">Open Rate</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-green-600">{stats.clickRate.toFixed(1)}%</div>
+              <div className="text-xs text-muted-foreground">Click Rate</div>
             </div>
           </div>
         </CardContent>
