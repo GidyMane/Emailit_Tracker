@@ -125,6 +125,13 @@ export default function AnalyticsPage() {
         const eventsResult = await eventsResponse.json()
         setEventsData(eventsResult)
 
+        // Fetch stats data for pie charts
+        const statsResponse = await fetch('/api/dashboard/stats')
+        if (statsResponse.ok) {
+          const statsResult = await statsResponse.json()
+          setStatsData(statsResult.stats)
+        }
+
       } catch (err) {
         console.error('Error fetching analytics data:', err)
         setError(err instanceof Error ? err.message : 'Failed to load analytics data')
