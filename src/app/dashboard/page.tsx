@@ -42,7 +42,7 @@ interface DomainData {
     id: string;
     name: string;
     emailCount: number;
-    summary: any;
+    summary: unknown;
     createdAt: string;
     updatedAt: string;
   };
