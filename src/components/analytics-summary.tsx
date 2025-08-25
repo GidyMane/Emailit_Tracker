@@ -1,9 +1,10 @@
 "use client"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ChartTooltip } from "@/components/ui/chart"
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Pie, PieChart, Cell, ResponsiveContainer } from "recharts"
-import { Eye, MousePointer, CheckCircle, XCircle, AlertCircle, Mail } from 'lucide-react'
+import { Eye, MousePointer, CheckCircle, XCircle, AlertCircle, Mail, Clock } from 'lucide-react'
+import { Badge } from "@/components/ui/badge"
 
 interface AnalyticsSummaryProps {
   stats: {
@@ -82,11 +83,7 @@ export function AnalyticsSummary({ stats, className }: AnalyticsSummaryProps) {
     { name: 'Not Opened', value: Math.max(0, stats.totalSent - stats.opens), color: COLORS.gray, icon: Mail }
   ].filter(item => item.value > 0)
 
-  interface PieLabelProps {
-    percent: number;
-  }
-
-  const renderLabel = ({ percent }: PieLabelProps) => {
+  const renderLabel = ({ percent }: any) => {
     if (percent < 0.05) return null;
     return `${(percent * 100).toFixed(0)}%`;
   };
