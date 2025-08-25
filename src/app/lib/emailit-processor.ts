@@ -58,7 +58,20 @@ const DELIVERY_STATUS_MAP: Record<string, string> = {
   "email.delivery.delayed": "delayed",
 };
 
+<<<<<<< HEAD
 const SUMMARY_FIELD_MAP: Record<string, keyof EmailSummaryFields> = {
+=======
+const SUMMARY_FIELD_MAP: Record<
+  string,
+  | "totalSent"
+  | "totalHardFail"
+  | "totalSoftFail"
+  | "totalBounce"
+  | "totalError"
+  | "totalHeld"
+  | "totalDelayed"
+> = {
+>>>>>>> refs/remotes/origin/master
   sent: "totalSent",
   hardfail: "totalHardFail",
   softfail: "totalSoftFail",
@@ -68,12 +81,53 @@ const SUMMARY_FIELD_MAP: Record<string, keyof EmailSummaryFields> = {
   delayed: "totalDelayed",
 };
 
+<<<<<<< HEAD
 export async function processEmailitEvent(payload: EmailitWebhookPayload) {
+=======
+interface EmailObject {
+  id?: number;
+  token?: string;
+  type?: string;
+  message_id?: string;
+  to?: string;
+  from?: string;
+  subject?: string;
+  timestamp?: string | number;
+  spam_status?: number;
+  tag?: string | null;
+}
+
+interface EventPayload {
+  webhook_request_id: string;
+  event_id: string;
+  type: string;
+  object: {
+    email?: EmailObject;
+    status?: string;
+    details?: string;
+    sent_with_ssl?: boolean;
+    timestamp?: number;
+    time?: number;
+
+    ip_address?: string;
+    country?: string;
+    city?: string;
+    user_agent?: string;
+
+    link?: {
+      id?: number | string;
+      url?: string;
+    };
+  };
+}
+
+export async function processEmailitEvent(payload: EventPayload) {
+>>>>>>> refs/remotes/origin/master
   const eventId = String(payload.event_id ?? crypto.randomUUID());
   const type = payload.type;
   const obj = payload.object ?? {};
 
-  // Email details
+
   const emailObj = obj.email ?? {};
   if (!emailObj.message_id) {
     throw new Error("Webhook payload missing email.message_id");
@@ -127,7 +181,7 @@ export async function processEmailitEvent(payload: EmailitWebhookPayload) {
       },
     });
 
-    // 3) Always create event (no duplicate checks)
+    // 3) Always create event
     await tx.emailEvent.create({
       data: {
         eventId,
@@ -141,12 +195,20 @@ export async function processEmailitEvent(payload: EmailitWebhookPayload) {
         userAgent,
         linkId,
         linkUrl,
+<<<<<<< HEAD
         rawPayload: payload as unknown as Record<string, unknown>,
+=======
+        rawPayload: payload as unknown as object, // Prisma Json type accepts object
+>>>>>>> refs/remotes/origin/master
       },
     });
 
     // 4) Update email state
+<<<<<<< HEAD
     const updates: EmailUpdateFields = {};
+=======
+    const updates: Record<string, unknown> = {};
+>>>>>>> refs/remotes/origin/master
     let newStatus: string | null = null;
 
     if (type.startsWith("email.delivery.")) {

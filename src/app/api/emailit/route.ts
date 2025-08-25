@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
     // Load from env
-    // const qstashUrl = process.env.QSTASH_URL || "https://qstash.upstash.io";
-    const qstashUrl = "http://127.0.0.1:8080";
+    const qstashUrl = process.env.QSTASH_URL || "https://qstash.upstash.io";
+    // const qstashUrl = "http://127.0.0.1:8080";
     const qstashToken = process.env.QSTASH_TOKEN!;
 
     if (!qstashToken) {
@@ -15,7 +15,8 @@ export async function POST(req: NextRequest) {
     }
 
     // The endpoint you want QStash to forward messages to
-    const targetUrl = "http://localhost:3000/api/test"; // change to your deployed URL
+    // const targetUrl = "http://localhost:3000/api/test"; // change to your deployed URL
+    const targetUrl = "https://emailit-tracker.vercel.app/api/test";
 
     // Send to QStash
     const res = await axios.post(
@@ -37,6 +38,7 @@ export async function POST(req: NextRequest) {
       qstashMessageId: result,
     });
   } catch (error: unknown) {
+<<<<<<< HEAD
     const errorMessage = error instanceof Error
       ? error.message
       : String(error);
@@ -52,6 +54,16 @@ export async function POST(req: NextRequest) {
         : null;
 
     console.error("Webhook enqueue error:", errorData || errorMessage);
+=======
+    if (error instanceof AxiosError) {
+      console.error("Webhook enqueue error (axios):", error.response?.data || error.message);
+    } else if (error instanceof Error) {
+      console.error("Webhook enqueue error (general):", error.message);
+    } else {
+      console.error("Webhook enqueue error (unknown):", error);
+    }
+
+>>>>>>> refs/remotes/origin/master
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
