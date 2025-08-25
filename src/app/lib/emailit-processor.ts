@@ -161,7 +161,7 @@ export async function processEmailitEvent(payload: EventPayload) {
         to: emailObj.to,
         from: emailObj.from,
         subject: emailObj.subject,
-        spamStatus: emailObj.spam_status ? parseInt(emailObj.spam_status, 10) : null,
+        spamStatus: emailObj.spam_status ? Number(emailObj.spam_status) : null,
         domainId: domain.id,
       },
       select: {
