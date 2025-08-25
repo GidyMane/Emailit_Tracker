@@ -241,7 +241,7 @@ export default function DashboardOverview() {
 
   const { stats, engagement, isAdmin, domainName, domainsCount } = statsData
 
-  // Build client-friendly main stats from database
+ 
   const clientStatCards = [
     {
       title: "Emails Delivered",
@@ -321,7 +321,7 @@ export default function DashboardOverview() {
     }
   ]
 
-  // Delivery issues breakdown from database
+ 
   const issueCards = [
     {
       title: "Hard Failures",
@@ -394,7 +394,7 @@ export default function DashboardOverview() {
         </div>
       </div>
 
-      {/* Main Statistics from Database */}
+    
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {statsCards.map((stat) => (
           <Card key={stat.title} className="hover:shadow-md transition-shadow">
@@ -460,7 +460,7 @@ export default function DashboardOverview() {
               Recent Activity
             </CardTitle>
             <CardDescription>
-              Email activity from your database over recent periods
+              Email activity over recent periods
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -514,7 +514,7 @@ export default function DashboardOverview() {
             Email Status Breakdown
           </CardTitle>
           <CardDescription>
-            Complete overview of all email delivery statuses from your database
+            Complete overview of all email delivery statuses
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -634,14 +634,14 @@ export default function DashboardOverview() {
             <Eye className="h-5 w-5" />
             Recipient Engagement Insights
           </CardTitle>
-          <CardDescription>How recipients interact with your emails - tracked from database events</CardDescription>
+          <CardDescription>How recipients interact with your emails</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Email Opens Section */}
           <div className="space-y-3">
             <div className="flex items-center gap-2 mb-2">
               <MailOpen className="h-4 w-4 text-purple-600" />
-              <h4 className="font-semibold text-sm">Email Opens (email.loaded)</h4>
+              <h4 className="font-semibold text-sm">Email Opens</h4>
             </div>
             <div className="bg-purple-50 p-4 rounded-lg space-y-2">
               <div className="flex justify-between items-center">
@@ -652,13 +652,13 @@ export default function DashboardOverview() {
               <div className="text-xs text-muted-foreground">
                 {engagement.recipientsWhoOpened.toLocaleString()} of {engagement.totalRecipients.toLocaleString()} recipients opened your emails
               </div>
-              <div className="mt-3 p-3 bg-white rounded border text-xs space-y-1">
+              {/* <div className="mt-3 p-3 bg-white rounded border text-xs space-y-1">
                 <div className="font-medium text-gray-800">How it's tracked:</div>
                 <div className="text-gray-600">Through a tiny invisible tracking pixel (image) embedded in the email. When the email client loads that image, the system counts it as an "open".</div>
                 <div className="font-medium text-gray-800 mt-2">What this tells you:</div>
                 <div className="text-gray-600">• How many recipients actually saw your email</div>
                 <div className="text-gray-600">• Your open rate (percentage of delivered emails that were opened)</div>
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -666,7 +666,7 @@ export default function DashboardOverview() {
           <div className="space-y-3">
             <div className="flex items-center gap-2 mb-2">
               <MousePointer className="h-4 w-4 text-orange-600" />
-              <h4 className="font-semibold text-sm">Email Link Clicks (email.link.clicked)</h4>
+              <h4 className="font-semibold text-sm">Email Link Clicks</h4>
             </div>
             <div className="bg-orange-50 p-4 rounded-lg space-y-2">
               <div className="flex justify-between items-center">
@@ -677,14 +677,14 @@ export default function DashboardOverview() {
               <div className="text-xs text-muted-foreground">
                 {engagement.recipientsWhoClicked.toLocaleString()} of {engagement.totalRecipients.toLocaleString()} recipients clicked links in your emails
               </div>
-              <div className="mt-3 p-3 bg-white rounded border text-xs space-y-1">
+              {/* <div className="mt-3 p-3 bg-white rounded border text-xs space-y-1">
                 <div className="font-medium text-gray-800">How it's tracked:</div>
                 <div className="text-gray-600">Emailit wraps links with a tracking redirect. When the user clicks, the redirect logs the event before taking them to the destination.</div>
                 <div className="font-medium text-gray-800 mt-2">What this tells you:</div>
                 <div className="text-gray-600">• Which links people are most interested in</div>
                 <div className="text-gray-600">• Your click-through rate (CTR)</div>
                 <div className="text-gray-600">• Engagement quality — clicks are a stronger indicator of interest than opens</div>
-              </div>
+              </div> */}
             </div>
           </div>
 
