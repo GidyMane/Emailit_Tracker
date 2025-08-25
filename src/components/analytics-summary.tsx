@@ -83,7 +83,11 @@ export function AnalyticsSummary({ stats, className }: AnalyticsSummaryProps) {
     { name: 'Not Opened', value: Math.max(0, stats.totalSent - stats.opens), color: COLORS.gray, icon: Mail }
   ].filter(item => item.value > 0)
 
-  const renderLabel = ({ percent }: any) => {
+  interface PieLabelProps {
+    percent: number;
+  }
+
+  const renderLabel = ({ percent }: PieLabelProps) => {
     if (percent < 0.05) return null;
     return `${(percent * 100).toFixed(0)}%`;
   };
