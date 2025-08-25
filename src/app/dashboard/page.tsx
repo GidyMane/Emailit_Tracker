@@ -96,7 +96,7 @@ interface StatsResponse {
     openRate: number;
     clickRate: number;
   };
-  summary: any;
+  summary: number;
   domainName: string;
   isAdmin: boolean;
   domainsCount: number;
