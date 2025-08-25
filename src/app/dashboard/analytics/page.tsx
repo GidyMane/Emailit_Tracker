@@ -6,8 +6,9 @@ import { BarChart3, TrendingUp } from 'lucide-react'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { Bar, BarChart, Line, LineChart, ResponsiveContainer, XAxis, YAxis, CartesianGrid } from "recharts"
+import { Bar, BarChart, Line, LineChart, Pie, PieChart, Cell, ResponsiveContainer, XAxis, YAxis, CartesianGrid } from "recharts"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 interface VolumeData {
   date: string;
@@ -36,6 +37,38 @@ interface EventsData {
 
 interface DomainData {
   userDomain: string;
+}
+
+interface EmailStats {
+  totalSent: number;
+  delivered: number;
+  failed: number;
+  opens: number;
+  clicks: number;
+  deliveryRate: number;
+  openRate: number;
+  clickRate: number;
+}
+
+// Define proper types for pie chart label props
+interface PieLabelProps {
+  cx: number;
+  cy: number;
+  midAngle: number;
+  innerRadius: number;
+  outerRadius: number;
+  percent: number;
+  value: number;
+}
+
+// Chart colors
+const CHART_COLORS = {
+  success: '#10b981',
+  danger: '#ef4444',
+  warning: '#f59e0b',
+  purple: '#8b5cf6',
+  blue: '#3b82f6',
+  gray: '#6b7280'
 }
 
 export default function AnalyticsPage() {
