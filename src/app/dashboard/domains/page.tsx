@@ -2,15 +2,14 @@
 
 import * as React from "react"
 import { useState, useEffect } from "react"
-import { 
-  Send, 
-  Eye, 
+import {
+  Send,
+  Eye,
   Plus,
   Search,
   Filter,
   BarChart3,
-  Users,
-  Calendar
+  Users
 } from 'lucide-react'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
