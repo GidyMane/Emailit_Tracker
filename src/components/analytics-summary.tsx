@@ -1,10 +1,9 @@
 "use client"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
+import { ChartTooltip } from "@/components/ui/chart"
 import { Pie, PieChart, Cell, ResponsiveContainer } from "recharts"
-import { Eye, MousePointer, CheckCircle, XCircle, AlertCircle, Mail, Clock } from 'lucide-react'
-import { Badge } from "@/components/ui/badge"
+import { Eye, MousePointer, CheckCircle, XCircle, AlertCircle, Mail } from 'lucide-react'
 
 interface AnalyticsSummaryProps {
   stats: {
