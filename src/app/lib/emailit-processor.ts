@@ -58,9 +58,6 @@ const DELIVERY_STATUS_MAP: Record<string, string> = {
   "email.delivery.delayed": "delayed",
 };
 
-<<<<<<< HEAD
-const SUMMARY_FIELD_MAP: Record<string, keyof EmailSummaryFields> = {
-=======
 const SUMMARY_FIELD_MAP: Record<
   string,
   | "totalSent"
@@ -71,7 +68,6 @@ const SUMMARY_FIELD_MAP: Record<
   | "totalHeld"
   | "totalDelayed"
 > = {
->>>>>>> refs/remotes/origin/master
   sent: "totalSent",
   hardfail: "totalHardFail",
   softfail: "totalSoftFail",
@@ -81,9 +77,6 @@ const SUMMARY_FIELD_MAP: Record<
   delayed: "totalDelayed",
 };
 
-<<<<<<< HEAD
-export async function processEmailitEvent(payload: EmailitWebhookPayload) {
-=======
 interface EmailObject {
   id?: number;
   token?: string;
@@ -122,7 +115,6 @@ interface EventPayload {
 }
 
 export async function processEmailitEvent(payload: EventPayload) {
->>>>>>> refs/remotes/origin/master
   const eventId = String(payload.event_id ?? crypto.randomUUID());
   const type = payload.type;
   const obj = payload.object ?? {};
@@ -195,20 +187,12 @@ export async function processEmailitEvent(payload: EventPayload) {
         userAgent,
         linkId,
         linkUrl,
-<<<<<<< HEAD
-        rawPayload: payload as unknown as Record<string, unknown>,
-=======
         rawPayload: payload as unknown as object, // Prisma Json type accepts object
->>>>>>> refs/remotes/origin/master
       },
     });
 
     // 4) Update email state
-<<<<<<< HEAD
-    const updates: EmailUpdateFields = {};
-=======
     const updates: Record<string, unknown> = {};
->>>>>>> refs/remotes/origin/master
     let newStatus: string | null = null;
 
     if (type.startsWith("email.delivery.")) {
