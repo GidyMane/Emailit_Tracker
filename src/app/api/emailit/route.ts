@@ -38,23 +38,6 @@ export async function POST(req: NextRequest) {
       qstashMessageId: result,
     });
   } catch (error: unknown) {
-<<<<<<< HEAD
-    const errorMessage = error instanceof Error
-      ? error.message
-      : String(error);
-
-    // Check if it's an axios error with response data
-    const errorData = error &&
-      typeof error === 'object' &&
-      'response' in error &&
-      error.response &&
-      typeof error.response === 'object' &&
-      'data' in error.response
-        ? error.response.data
-        : null;
-
-    console.error("Webhook enqueue error:", errorData || errorMessage);
-=======
     if (error instanceof AxiosError) {
       console.error("Webhook enqueue error (axios):", error.response?.data || error.message);
     } else if (error instanceof Error) {
@@ -63,7 +46,6 @@ export async function POST(req: NextRequest) {
       console.error("Webhook enqueue error (unknown):", error);
     }
 
->>>>>>> refs/remotes/origin/master
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
