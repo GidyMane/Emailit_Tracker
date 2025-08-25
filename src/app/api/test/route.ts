@@ -13,11 +13,6 @@ export async function POST(req: NextRequest) {
       const r = await processEmailitEvent(evt);
       results.push({ ok: true, eventId: r.eventId, type: r.type });
     } catch (err: unknown) {
-<<<<<<< HEAD
-      console.error("Error processing event:", err);
-      const errorMessage = err instanceof Error ? err.message : String(err);
-      results.push({ ok: false, error: errorMessage });
-=======
       if (err instanceof Error) {
         console.error("Error processing event:", err.message);
         results.push({ ok: false, error: err.message });
@@ -25,7 +20,6 @@ export async function POST(req: NextRequest) {
         console.error("Error processing event (unknown):", err);
         results.push({ ok: false, error: "Unknown error" });
       }
->>>>>>> refs/remotes/origin/master
     }
   }
 
