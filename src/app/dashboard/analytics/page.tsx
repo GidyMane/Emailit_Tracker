@@ -6,9 +6,8 @@ import { BarChart3, TrendingUp } from 'lucide-react'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { Bar, BarChart, Line, LineChart, Pie, PieChart, Cell, ResponsiveContainer, XAxis, YAxis, CartesianGrid } from "recharts"
+import { Bar, BarChart, Line, LineChart, ResponsiveContainer, XAxis, YAxis, CartesianGrid } from "recharts"
 import { Skeleton } from "@/components/ui/skeleton"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 interface VolumeData {
   date: string;
@@ -39,70 +38,11 @@ interface DomainData {
   userDomain: string;
 }
 
-interface EmailStats {
-  totalSent: number;
-  delivered: number;
-  failed: number;
-  opens: number;
-  clicks: number;
-  deliveryRate: number;
-  openRate: number;
-  clickRate: number;
-}
-
-// Define proper types for pie chart label props
-interface PieLabelProps {
-  cx: number;
-  cy: number;
-  midAngle: number;
-  innerRadius: number;
-  outerRadius: number;
-  percent: number;
-  value: number;
-}
-
-// Chart colors
-const CHART_COLORS = {
-  success: '#10b981',
-  danger: '#ef4444',
-  warning: '#f59e0b',
-  purple: '#8b5cf6',
-  blue: '#3b82f6',
-  gray: '#6b7280'
-}
-
 export default function AnalyticsPage() {
   const [eventsData, setEventsData] = useState<EventsData | null>(null)
   const [domainData, setDomainData] = useState<DomainData | null>(null)
-  const [statsData, setStatsData] = useState<EmailStats | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [activeTab, setActiveTab] = useState("overview")
-
-  // Custom label renderer for pie charts
-  const renderPieLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: PieLabelProps) => {
-    const RADIAN = Math.PI / 180
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.5
-    const x = cx + radius * Math.cos(-midAngle * RADIAN)
-    const y = cy + radius * Math.sin(-midAngle * RADIAN)
-
-    if (percent < 0.05) return null // Don't show label for very small slices
-
-    return (
-      <text
-        x={x}
-        y={y}
-        fill="white"
-        textAnchor={x > cx ? 'start' : 'end'}
-        dominantBaseline="central"
-        fontSize="12"
-        fontWeight="bold"
-        className="drop-shadow-sm"
-      >
-        {`${(percent * 100).toFixed(0)}%`}
-      </text>
-    )
-  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -124,13 +64,6 @@ export default function AnalyticsPage() {
         }
         const eventsResult = await eventsResponse.json()
         setEventsData(eventsResult)
-
-        // Fetch stats data for pie charts
-        const statsResponse = await fetch('/api/dashboard/stats')
-        if (statsResponse.ok) {
-          const statsResult = await statsResponse.json()
-          setStatsData(statsResult.stats)
-        }
 
       } catch (err) {
         console.error('Error fetching analytics data:', err)
@@ -211,68 +144,11 @@ export default function AnalyticsPage() {
     <div className="space-y-6 p-4 md:p-6">
       {/* Page Header */}
       <div className="space-y-2">
-        <h1 className="text-2xl sm:text-3xl font-bold">Enhanced Analytics</h1>
+        <h1 className="text-2xl font-bold">Analytics Dashboard</h1>
         <p className="text-muted-foreground">
-          Comprehensive email delivery analytics and performance insights for {domainData?.userDomain || 'your domain'}
+          Email analytics and performance metrics for {domainData?.userDomain || 'your domain'}
         </p>
       </div>
-
-      {/* Key Metrics Cards */}
-      {statsData && (
-        <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
-          <Card className="hover:shadow-md transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Total Sent</CardTitle>
-              <div className="p-2 rounded-lg bg-blue-100">
-                <BarChart3 className="h-4 w-4 text-blue-600" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-xl sm:text-2xl font-bold">{statsData.totalSent.toLocaleString()}</div>
-              <p className="text-xs text-muted-foreground mt-1">All time emails</p>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-md transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Delivery Rate</CardTitle>
-              <div className="p-2 rounded-lg bg-green-100">
-                <TrendingUp className="h-4 w-4 text-green-600" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-xl sm:text-2xl font-bold">{statsData.deliveryRate.toFixed(1)}%</div>
-              <p className="text-xs text-muted-foreground mt-1">{statsData.delivered.toLocaleString()} delivered</p>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-md transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Open Rate</CardTitle>
-              <div className="p-2 rounded-lg bg-purple-100">
-                <TrendingUp className="h-4 w-4 text-purple-600" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-xl sm:text-2xl font-bold">{statsData.openRate.toFixed(1)}%</div>
-              <p className="text-xs text-muted-foreground mt-1">{statsData.opens.toLocaleString()} opens</p>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-md transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Click Rate</CardTitle>
-              <div className="p-2 rounded-lg bg-orange-100">
-                <TrendingUp className="h-4 w-4 text-orange-600" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-xl sm:text-2xl font-bold">{statsData.clickRate.toFixed(1)}%</div>
-              <p className="text-xs text-muted-foreground mt-1">{statsData.clicks.toLocaleString()} clicks</p>
-            </CardContent>
-          </Card>
-        </div>
-      )}
 
       {/* Email Volume Chart */}
       {eventsData?.charts?.volume && Array.isArray(eventsData.charts.volume) && eventsData.charts.volume.length > 0 ? (
@@ -346,169 +222,9 @@ export default function AnalyticsPage() {
         />
       )}
 
-      {/* Pie Chart Analytics */}
-      {statsData && (
-        <div className="grid gap-6 lg:grid-cols-2 mb-6">
-          {/* Delivery Status Pie Chart */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Delivery Status Distribution</CardTitle>
-              <CardDescription>Visual breakdown of email delivery outcomes</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="h-64 sm:h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={[
-                        { name: 'Delivered', value: statsData.delivered, color: CHART_COLORS.success },
-                        { name: 'Failed', value: statsData.failed, color: CHART_COLORS.danger }
-                      ].filter(item => item.value > 0)}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      label={renderPieLabel}
-                      outerRadius="80%"
-                      innerRadius="40%"
-                      fill="#8884d8"
-                      dataKey="value"
-                      stroke="#ffffff"
-                      strokeWidth={2}
-                    >
-                      {[{ color: CHART_COLORS.success }, { color: CHART_COLORS.danger }].map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <ChartTooltip
-                      content={({ active, payload }) => {
-                        if (active && payload && payload.length) {
-                          const data = payload[0].payload
-                          return (
-                            <div className="bg-white p-3 border rounded shadow-lg">
-                              <div className="flex items-center gap-2 mb-1">
-                                <div
-                                  className="w-3 h-3 rounded"
-                                  style={{ backgroundColor: data.color }}
-                                />
-                                <span className="font-medium">{data.name}</span>
-                              </div>
-                              <p className="text-lg font-bold">{data.value.toLocaleString()}</p>
-                              <p className="text-sm text-gray-600">
-                                {((data.value / statsData.totalSent) * 100).toFixed(1)}% of total
-                              </p>
-                            </div>
-                          )
-                        }
-                        return null
-                      }}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-
-              {/* Delivery Legend */}
-              <div className="mt-4 space-y-2">
-                <div className="flex items-center justify-between p-2 bg-green-50 rounded">
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded bg-green-500" />
-                    <span className="text-sm font-medium">Delivered</span>
-                  </div>
-                  <span className="text-sm font-bold">{statsData.delivered.toLocaleString()}</span>
-                </div>
-                <div className="flex items-center justify-between p-2 bg-red-50 rounded">
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded bg-red-500" />
-                    <span className="text-sm font-medium">Failed</span>
-                  </div>
-                  <span className="text-sm font-bold">{statsData.failed.toLocaleString()}</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Engagement Pie Chart */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Email Engagement</CardTitle>
-              <CardDescription>Opens vs clicks vs unopened emails</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="h-64 sm:h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={[
-                        { name: 'Opened', value: statsData.opens, color: CHART_COLORS.purple },
-                        { name: 'Clicked', value: statsData.clicks, color: CHART_COLORS.warning },
-                        { name: 'Not Opened', value: Math.max(0, statsData.totalSent - statsData.opens), color: CHART_COLORS.gray }
-                      ].filter(item => item.value > 0)}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      label={renderPieLabel}
-                      outerRadius="80%"
-                      innerRadius="40%"
-                      fill="#8884d8"
-                      dataKey="value"
-                      stroke="#ffffff"
-                      strokeWidth={2}
-                    >
-                      {[{ color: CHART_COLORS.purple }, { color: CHART_COLORS.warning }, { color: CHART_COLORS.gray }].map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <ChartTooltip
-                      content={({ active, payload }) => {
-                        if (active && payload && payload.length) {
-                          const data = payload[0].payload
-                          return (
-                            <div className="bg-white p-3 border rounded shadow-lg">
-                              <div className="flex items-center gap-2 mb-1">
-                                <div
-                                  className="w-3 h-3 rounded"
-                                  style={{ backgroundColor: data.color }}
-                                />
-                                <span className="font-medium">{data.name}</span>
-                              </div>
-                              <p className="text-lg font-bold">{data.value.toLocaleString()}</p>
-                              <p className="text-sm text-gray-600">
-                                {((data.value / statsData.totalSent) * 100).toFixed(1)}% of total
-                              </p>
-                            </div>
-                          )
-                        }
-                        return null
-                      }}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-
-              {/* Engagement Metrics */}
-              <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-                <div className="p-2 bg-purple-50 rounded">
-                  <div className="text-sm font-bold text-purple-600">{statsData.openRate.toFixed(1)}%</div>
-                  <div className="text-xs text-muted-foreground">Open Rate</div>
-                </div>
-                <div className="p-2 bg-orange-50 rounded">
-                  <div className="text-sm font-bold text-orange-600">{statsData.clickRate.toFixed(1)}%</div>
-                  <div className="text-xs text-muted-foreground">Click Rate</div>
-                </div>
-                <div className="p-2 bg-blue-50 rounded">
-                  <div className="text-sm font-bold text-blue-600">
-                    {statsData.opens > 0 ? ((statsData.clicks / statsData.opens) * 100).toFixed(1) : 0}%
-                  </div>
-                  <div className="text-xs text-muted-foreground">Click-to-Open</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
-
-      {/* Additional Analytics Cards */}
+      {/* Performance Metrics Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
+        <Card className="hover:shadow-md transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Open Rate</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
@@ -526,7 +242,7 @@ export default function AnalyticsPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="hover:shadow-md transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Click Rate</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
@@ -544,7 +260,7 @@ export default function AnalyticsPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="hover:shadow-md transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Peak Day</CardTitle>
             <BarChart3 className="h-4 w-4 text-muted-foreground" />
@@ -564,7 +280,7 @@ export default function AnalyticsPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="hover:shadow-md transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Delivery Rate</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
