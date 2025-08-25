@@ -74,8 +74,35 @@ const CHART_COLORS = {
 export default function AnalyticsPage() {
   const [eventsData, setEventsData] = useState<EventsData | null>(null)
   const [domainData, setDomainData] = useState<DomainData | null>(null)
+  const [statsData, setStatsData] = useState<EmailStats | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [activeTab, setActiveTab] = useState("overview")
+
+  // Custom label renderer for pie charts
+  const renderPieLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: PieLabelProps) => {
+    const RADIAN = Math.PI / 180
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5
+    const x = cx + radius * Math.cos(-midAngle * RADIAN)
+    const y = cy + radius * Math.sin(-midAngle * RADIAN)
+
+    if (percent < 0.05) return null // Don't show label for very small slices
+
+    return (
+      <text
+        x={x}
+        y={y}
+        fill="white"
+        textAnchor={x > cx ? 'start' : 'end'}
+        dominantBaseline="central"
+        fontSize="12"
+        fontWeight="bold"
+        className="drop-shadow-sm"
+      >
+        {`${(percent * 100).toFixed(0)}%`}
+      </text>
+    )
+  }
 
   useEffect(() => {
     const fetchData = async () => {
