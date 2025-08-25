@@ -2,11 +2,9 @@
 
 import * as React from "react"
 import { useState, useEffect } from "react"
-import { 
-  Mail, 
-  Eye, 
-  MousePointer, 
-  Send, 
+import {
+  Mail,
+  Eye,
   Search,
   Filter
 } from 'lucide-react'
