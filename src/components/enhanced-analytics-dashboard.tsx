@@ -188,14 +188,15 @@ export function EnhancedAnalyticsDashboard() {
     if (percent < 0.05) return null; // Don't show label for very small slices
 
     return (
-      <text 
-        x={x} 
-        y={y} 
-        fill="white" 
-        textAnchor={x > cx ? 'start' : 'end'} 
+      <text
+        x={x}
+        y={y}
+        fill="white"
+        textAnchor={x > cx ? 'start' : 'end'}
         dominantBaseline="central"
         fontSize="12"
         fontWeight="bold"
+        className="drop-shadow-sm"
       >
         {`${(percent * 100).toFixed(0)}%`}
       </text>
@@ -307,7 +308,7 @@ export function EnhancedAnalyticsDashboard() {
       </div>
 
       {/* Key Metrics Cards */}
-      <div className="grid gap-4 grid-cols-2 md:grid-cols-4 lg:grid-cols-4">
+      <div className="grid gap-3 sm:gap-4 grid-cols-1 xs:grid-cols-2 md:grid-cols-4">
         <Card className="hover:shadow-md transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Total Sent</CardTitle>
@@ -372,9 +373,9 @@ export function EnhancedAnalyticsDashboard() {
       {/* Chart Tabs */}
       <Tabs value={activeChartTab} onValueChange={setActiveChartTab} className="space-y-6">
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="delivery">Delivery Status</TabsTrigger>
-          <TabsTrigger value="engagement">Engagement</TabsTrigger>
+          <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
+          <TabsTrigger value="delivery" className="text-xs sm:text-sm">Delivery</TabsTrigger>
+          <TabsTrigger value="engagement" className="text-xs sm:text-sm">Engagement</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
@@ -504,9 +505,12 @@ export function EnhancedAnalyticsDashboard() {
                             cy="50%"
                             labelLine={false}
                             label={renderCustomizedLabel}
-                            outerRadius={80}
+                            outerRadius={"80%"}
+                            innerRadius={"40%"}
                             fill="#8884d8"
                             dataKey="value"
+                            stroke="#ffffff"
+                            strokeWidth={2}
                           >
                             {deliveryStatusData.map((entry, index) => (
                               <Cell key={`cell-${index}`} fill={entry.color} />
@@ -692,9 +696,12 @@ export function EnhancedAnalyticsDashboard() {
                             cy="50%"
                             labelLine={false}
                             label={renderCustomizedLabel}
-                            outerRadius={80}
+                            outerRadius={"80%"}
+                            innerRadius={"40%"}
                             fill="#8884d8"
                             dataKey="value"
+                            stroke="#ffffff"
+                            strokeWidth={2}
                           >
                             {engagementData.map((entry, index) => (
                               <Cell key={`cell-${index}`} fill={entry.color} />
