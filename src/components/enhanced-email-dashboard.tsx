@@ -434,7 +434,7 @@ export function EnhancedEmailDashboard() {
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
-      <CardContent className="h-80 flex items-center justify-center">
+      <CardContent className="h-64 sm:h-80 flex items-center justify-center">
         <div className="text-center space-y-2">
           <BarChart3 className="h-12 w-12 text-muted-foreground mx-auto" />
           <p className="text-sm text-muted-foreground">No data available yet</p>
@@ -774,19 +774,23 @@ export function EnhancedEmailDashboard() {
       </Sidebar>
       
       <SidebarInset>
-        <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center gap-2 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4">
+        <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center gap-2 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-3 sm:px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
-          <div className="flex items-center gap-2 flex-1">
-            <h1 className="font-semibold">
-              Dashboard - {domainData?.userDomain || 'Domain'}
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <h1 className="font-semibold text-sm sm:text-base truncate">
+              <span className="hidden sm:inline">Dashboard - {domainData?.userDomain || 'Domain'}</span>
+              <span className="sm:hidden">{domainData?.userDomain || 'Dashboard'}</span>
             </h1>
-            <div className="ml-auto flex items-center gap-2">
-              <div className="relative hidden sm:block">
+            <div className="ml-auto flex items-center gap-1 sm:gap-2">
+              <div className="relative hidden md:block">
                 <Search className="absolute left-2 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                <Input placeholder="Search..." className="pl-8 w-48 lg:w-64" />
+                <Input placeholder="Search..." className="pl-8 w-36 lg:w-48 xl:w-64" />
               </div>
-              <Button variant="outline" size="icon">
+              <Button variant="outline" size="icon" className="h-9 w-9 sm:h-10 sm:w-10 md:hidden">
+                <Search className="size-4" />
+              </Button>
+              <Button variant="outline" size="icon" className="h-9 w-9 sm:h-10 sm:w-10">
                 <Bell className="size-4" />
               </Button>
             </div>
@@ -805,24 +809,24 @@ export function EnhancedEmailDashboard() {
             
             <TabsContent value="overview" className="space-y-6">
               {/* Email Summary Stats */}
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                 {emailStatCards.length > 0 ? emailStatCards.map((stat) => (
                   <Card key={stat.title} className="hover:shadow-md transition-shadow">
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                      <CardTitle className="text-sm font-medium text-muted-foreground">{stat.title}</CardTitle>
-                      <div className={`p-2 rounded-lg ${stat.bgColor}`}>
-                        <stat.icon className={`size-4 ${stat.color}`} />
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 sm:px-6 pt-4 sm:pt-6">
+                      <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">{stat.title}</CardTitle>
+                      <div className={`p-1.5 sm:p-2 rounded-lg ${stat.bgColor}`}>
+                        <stat.icon className={`size-3 sm:size-4 ${stat.color}`} />
                       </div>
                     </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl font-bold">{stat.value}</div>
+                    <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
+                      <div className="text-xl sm:text-2xl font-bold">{stat.value}</div>
                       {stat.change && (
-                        <div className="flex items-center space-x-2 text-sm text-muted-foreground mt-2">
+                        <div className="flex items-center space-x-2 text-xs sm:text-sm text-muted-foreground mt-2">
                           <div className="flex items-center">
                             {stat.trend === "up" ? (
-                              <TrendingUp className="size-4 text-green-500 mr-1" />
+                              <TrendingUp className="size-3 sm:size-4 text-green-500 mr-1" />
                             ) : (
-                              <TrendingDown className="size-4 text-red-500 mr-1" />
+                              <TrendingDown className="size-3 sm:size-4 text-red-500 mr-1" />
                             )}
                             <span className={stat.trend === "up" ? "text-green-500" : "text-red-500"}>
                               {stat.change}
@@ -833,14 +837,16 @@ export function EnhancedEmailDashboard() {
                       )}
                     </CardContent>
                   </Card>
-                )) : [
-                  <EmptyStateCard key="sent" title="Total Sent" description="No emails sent yet" icon={Send} />,
-                  <EmptyStateCard key="delivered" title="Delivered" description="No deliveries yet" icon={CheckCircle} />,
-                  <EmptyStateCard key="failed" title="Failed" description="No failures yet" icon={XCircle} />,
-                  <EmptyStateCard key="opens" title="Opens" description="No opens yet" icon={MailOpen} />,
-                  <EmptyStateCard key="clicks" title="Clicks" description="No clicks yet" icon={Zap} />,
-                  <EmptyStateCard key="pending" title="Pending" description="No pending emails" icon={Clock} />
-                ]}
+                )) : (
+                  <>
+                    <EmptyStateCard key="sent" title="Total Sent" description="No emails sent yet" icon={Send} />
+                    <EmptyStateCard key="delivered" title="Delivered" description="No deliveries yet" icon={CheckCircle} />
+                    <EmptyStateCard key="failed" title="Failed" description="No failures yet" icon={XCircle} />
+                    <EmptyStateCard key="opens" title="Opens" description="No opens yet" icon={MailOpen} />
+                    <EmptyStateCard key="clicks" title="Clicks" description="No clicks yet" icon={Zap} />
+                    <EmptyStateCard key="pending" title="Pending" description="No pending emails" icon={Clock} />
+                  </>
+                )}
               </div>
 
               {/* Detailed Delivery Status */}
@@ -910,7 +916,7 @@ export function EnhancedEmailDashboard() {
                         delivered: { label: "Delivered", color: "#10b981" },
                         failed: { label: "Failed", color: "#ef4444" }
                       }}
-                      className="h-80"
+                      className="h-64 sm:h-80"
                     >
                       <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={eventsData.charts.volume} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
@@ -946,7 +952,7 @@ export function EnhancedEmailDashboard() {
                         opens: { label: "Opens", color: "#8b5cf6" },
                         clicks: { label: "Clicks", color: "#f59e0b" }
                       }}
-                      className="h-80"
+                      className="h-64 sm:h-80"
                     >
                       <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={eventsData.charts.engagement} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
@@ -981,43 +987,44 @@ export function EnhancedEmailDashboard() {
                     {eventsData?.events && Array.isArray(eventsData.events) && eventsData.events.length > 0 ? (
                       <>
                         {/* Email Events Table */}
-                        <div className="rounded-lg border">
-                          <div className="grid grid-cols-12 gap-4 p-4 font-medium text-sm text-muted-foreground border-b bg-muted/50">
-                            <div className="col-span-3">Recipient</div>
-                            <div className="col-span-3">Subject</div>
-                            <div className="col-span-2">Event Type</div>
-                            <div className="col-span-2">Status</div>
-                            <div className="col-span-2">Date</div>
-                          </div>
-                          {eventsData.events.slice(0, 50).map((event: EmailEventData) => (
-                            <div key={event.id} className="grid grid-cols-12 gap-4 p-4 border-b last:border-b-0 hover:bg-muted/30 transition-colors">
-                              <div className="col-span-3">
-                                <div className="flex items-center gap-2">
-                                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-blue-100 flex-shrink-0">
-                                    <Mail className="size-4 text-blue-600" />
+                        <div className="rounded-lg border overflow-hidden">
+                          <div className="overflow-x-auto">
+                            <div className="min-w-[800px] grid grid-cols-12 gap-4 p-3 sm:p-4 font-medium text-xs sm:text-sm text-muted-foreground border-b bg-muted/50">
+                              <div className="col-span-3">Recipient</div>
+                              <div className="col-span-3">Subject</div>
+                              <div className="col-span-2">Event Type</div>
+                              <div className="col-span-2">Status</div>
+                              <div className="col-span-2">Date</div>
+                            </div>
+                            {eventsData.events.slice(0, 50).map((event: EmailEventData) => (
+                              <div key={event.id} className="min-w-[800px] grid grid-cols-12 gap-4 p-3 sm:p-4 border-b last:border-b-0 hover:bg-muted/30 transition-colors">
+                                <div className="col-span-3">
+                                  <div className="flex items-center gap-2">
+                                    <div className="flex aspect-square size-6 sm:size-8 items-center justify-center rounded-lg bg-blue-100 flex-shrink-0">
+                                      <Mail className="size-3 sm:size-4 text-blue-600" />
+                                    </div>
+                                    <div className="min-w-0 flex-1">
+                                      <div className="font-medium text-xs sm:text-sm truncate">{event.to}</div>
+                                      <div className="text-[10px] sm:text-xs text-muted-foreground">{event.from}</div>
+                                    </div>
                                   </div>
-                                  <div className="min-w-0 flex-1">
-                                    <div className="font-medium text-sm truncate">{event.to}</div>
-                                    <div className="text-xs text-muted-foreground">{event.from}</div>
+                                </div>
+                                <div className="col-span-3">
+                                  <div className="text-xs sm:text-sm font-medium truncate" title={event.subject}>
+                                    {event.subject}
+                                  </div>
+                                  <div className="text-[10px] sm:text-xs text-muted-foreground">ID: {event.emailId}</div>
+                                </div>
+                                <div className="col-span-2">
+                                  <div className="flex items-center gap-1 sm:gap-2">
+                                    {event.eventType === 'email.loaded' && <Eye className="size-3 sm:size-4 text-purple-600" />}
+                                    {event.eventType === 'email.link.clicked' && <MousePointer className="size-3 sm:size-4 text-orange-600" />}
+                                    {event.eventType.includes('delivery') && <Send className="size-3 sm:size-4 text-blue-600" />}
+                                    <span className="text-xs sm:text-sm capitalize">
+                                      {event.eventType.replace('email.', '').replace('.', ' ')}
+                                    </span>
                                   </div>
                                 </div>
-                              </div>
-                              <div className="col-span-3">
-                                <div className="text-sm font-medium truncate" title={event.subject}>
-                                  {event.subject}
-                                </div>
-                                <div className="text-xs text-muted-foreground">ID: {event.emailId}</div>
-                              </div>
-                              <div className="col-span-2">
-                                <div className="flex items-center gap-2">
-                                  {event.eventType === 'email.loaded' && <Eye className="size-4 text-purple-600" />}
-                                  {event.eventType === 'email.link.clicked' && <MousePointer className="size-4 text-orange-600" />}
-                                  {event.eventType.includes('delivery') && <Send className="size-4 text-blue-600" />}
-                                  <span className="text-sm capitalize">
-                                    {event.eventType.replace('email.', '').replace('.', ' ')}
-                                  </span>
-                                </div>
-                              </div>
                               <div className="col-span-2">
                                 <Badge
                                   variant={
@@ -1030,16 +1037,17 @@ export function EnhancedEmailDashboard() {
                                   {event.status}
                                 </Badge>
                               </div>
-                              <div className="col-span-2">
-                                <div className="text-sm">
-                                  {new Date(event.timestamp).toLocaleDateString()}
-                                </div>
-                                <div className="text-xs text-muted-foreground">
-                                  {new Date(event.timestamp).toLocaleTimeString()}
+                                <div className="col-span-2">
+                                  <div className="text-xs sm:text-sm">
+                                    {new Date(event.timestamp).toLocaleDateString()}
+                                  </div>
+                                  <div className="text-[10px] sm:text-xs text-muted-foreground">
+                                    {new Date(event.timestamp).toLocaleTimeString()}
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          ))}
+                            ))}
+                          </div>
                         </div>
 
                         {/* Pagination Info */}
@@ -1184,7 +1192,7 @@ export function EnhancedEmailDashboard() {
 
             <TabsContent value="audience" className="space-y-4 md:space-y-6">
               {/* Domain Distribution & Overview */}
-              <div className="grid gap-6 md:grid-cols-2">
+              <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
                 <Card>
                   <CardHeader>
                     <CardTitle>Recipient Domains</CardTitle>
@@ -1248,7 +1256,7 @@ export function EnhancedEmailDashboard() {
                     {audienceData?.audience && Array.isArray(audienceData.audience) && audienceData.audience.length > 0 ? (
                       <>
                         {/* Audience Stats Summary */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-muted/30 rounded-lg mb-4">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 p-3 sm:p-4 bg-muted/30 rounded-lg mb-4">
                           <div className="text-center">
                             <div className="text-2xl font-bold">{audienceData.audience.length}</div>
                             <div className="text-sm text-muted-foreground">Total Recipients</div>
@@ -1274,53 +1282,56 @@ export function EnhancedEmailDashboard() {
                         </div>
 
                         {/* Recipients Table */}
-                        <div className="rounded-lg border">
-                          <div className="grid grid-cols-12 gap-4 p-4 font-medium text-sm text-muted-foreground border-b bg-muted/50">
-                            <div className="col-span-4">Email Address</div>
-                            <div className="col-span-2">Domain</div>
-                            <div className="col-span-2">Total Emails</div>
-                            <div className="col-span-2">Last Seen</div>
-                            <div className="col-span-2">Status</div>
-                          </div>
-                          {audienceData.audience.map((recipient: Recipient) => (
-                            <div key={recipient.email} className="grid grid-cols-12 gap-4 p-4 border-b last:border-b-0 hover:bg-muted/30 transition-colors">
-                              <div className="col-span-4">
-                                <div className="flex items-center gap-2">
-                                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-blue-100 flex-shrink-0">
-                                    <UserCheck className="size-4 text-blue-600" />
-                                  </div>
-                                  <div className="min-w-0 flex-1">
-                                    <div className="font-medium text-sm truncate" title={recipient.email}>{recipient.email}</div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="col-span-2">
-                                <div className="text-sm">{recipient.recipient_domain}</div>
-                              </div>
-                              <div className="col-span-2">
-                                <div className="text-sm font-medium">{recipient.total_emails}</div>
-                              </div>
-                              <div className="col-span-2">
-                                <div className="text-sm">
-                                  {new Date(recipient.last_seen).toLocaleDateString()}
-                                </div>
-                                <div className="text-xs text-muted-foreground">
-                                  {new Date(recipient.last_seen).toLocaleTimeString()}
-                                </div>
-                              </div>
-                              <div className="col-span-2">
-                                <Badge
-                                  variant={
-                                    recipient.status === 'active' ? 'default' :
-                                    recipient.status === 'inactive' ? 'secondary' :
-                                    'destructive'
-                                  }
-                                >
-                                  {recipient.status}
-                                </Badge>
-                              </div>
+                        <div className="rounded-lg border overflow-hidden">
+                          <div className="overflow-x-auto">
+                            <div className="min-w-[700px] grid grid-cols-12 gap-4 p-3 sm:p-4 font-medium text-xs sm:text-sm text-muted-foreground border-b bg-muted/50">
+                              <div className="col-span-4">Email Address</div>
+                              <div className="col-span-2">Domain</div>
+                              <div className="col-span-2">Total Emails</div>
+                              <div className="col-span-2">Last Seen</div>
+                              <div className="col-span-2">Status</div>
                             </div>
-                          ))}
+                            {audienceData.audience.map((recipient: Recipient) => (
+                              <div key={recipient.email} className="min-w-[700px] grid grid-cols-12 gap-4 p-3 sm:p-4 border-b last:border-b-0 hover:bg-muted/30 transition-colors">
+                                <div className="col-span-4">
+                                  <div className="flex items-center gap-2">
+                                    <div className="flex aspect-square size-6 sm:size-8 items-center justify-center rounded-lg bg-blue-100 flex-shrink-0">
+                                      <UserCheck className="size-3 sm:size-4 text-blue-600" />
+                                    </div>
+                                    <div className="min-w-0 flex-1">
+                                      <div className="font-medium text-xs sm:text-sm truncate" title={recipient.email}>{recipient.email}</div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="col-span-2">
+                                  <div className="text-xs sm:text-sm">{recipient.recipient_domain}</div>
+                                </div>
+                                <div className="col-span-2">
+                                  <div className="text-xs sm:text-sm font-medium">{recipient.total_emails}</div>
+                                </div>
+                                <div className="col-span-2">
+                                  <div className="text-xs sm:text-sm">
+                                    {new Date(recipient.last_seen).toLocaleDateString()}
+                                  </div>
+                                  <div className="text-[10px] sm:text-xs text-muted-foreground">
+                                    {new Date(recipient.last_seen).toLocaleTimeString()}
+                                  </div>
+                                </div>
+                                <div className="col-span-2">
+                                  <Badge
+                                    variant={
+                                      recipient.status === 'active' ? 'default' :
+                                      recipient.status === 'inactive' ? 'secondary' :
+                                      'destructive'
+                                    }
+                                    className="text-xs"
+                                  >
+                                    {recipient.status}
+                                  </Badge>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
                         </div>
 
                         {audienceData.audience.length > 20 && (

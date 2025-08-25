@@ -1,5 +1,53 @@
 import { prisma } from "@/lib/prisma";
 
+// Types for webhook payload
+interface EmailitWebhookPayload {
+  event_id?: string;
+  type: string;
+  object?: {
+    email?: {
+      message_id?: string;
+      id?: number;
+      token?: string;
+      from?: string;
+      to?: string;
+      subject?: string;
+      spam_status?: string;
+    };
+    timestamp?: number;
+    status?: string;
+    ip_address?: string;
+    country?: string;
+    city?: string;
+    user_agent?: string;
+    link?: {
+      id?: string;
+      url?: string;
+    };
+  };
+}
+
+// Interface for EmailSummary fields
+interface EmailSummaryFields {
+  totalSent: number;
+  totalHardFail: number;
+  totalSoftFail: number;
+  totalBounce: number;
+  totalError: number;
+  totalHeld: number;
+  totalDelayed: number;
+  totalLoaded: number;
+  totalClicked: number;
+}
+
+// Type for email update fields
+type EmailUpdateFields = {
+  deliveryStatus?: string;
+  sentAt?: Date;
+  firstOpenAt?: Date;
+  firstClickAt?: Date;
+};
+
 const DELIVERY_STATUS_MAP: Record<string, string> = {
   "email.delivery.sent": "sent",
   "email.delivery.hardfail": "hardfail",
@@ -113,7 +161,7 @@ export async function processEmailitEvent(payload: EventPayload) {
         to: emailObj.to,
         from: emailObj.from,
         subject: emailObj.subject,
-        spamStatus: emailObj.spam_status ?? null,
+        spamStatus: emailObj.spam_status ? Number(emailObj.spam_status) : null,
         domainId: domain.id,
       },
       select: {

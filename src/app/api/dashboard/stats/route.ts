@@ -23,10 +23,8 @@ export async function GET() {
     let domains: Domain[] = [];
 
     if (isAdmin) {
-      // Admin: fetch all domains
       domains = await prisma.domain.findMany();
     } else {
-      // Non-admin: only their domain
       const userEmailDomain = user.email.split("@")[1];
       if (!userEmailDomain) {
         return NextResponse.json({ error: "Invalid email format" }, { status: 400 });
@@ -58,12 +56,11 @@ export async function GET() {
       ? { domainId: { in: domainIds } }
       : { domainId: domains[0].id };
 
-    // Pull summaries
+    // Summaries from EmailSummary
     const summaries = await prisma.emailSummary.findMany({
       where: domainFilter,
     });
 
-    // Aggregate summary fields
     const aggregatedSummary = summaries.reduce(
       (acc, s) => ({
         totalSent: acc.totalSent + (s?.totalSent || 0),
@@ -89,13 +86,15 @@ export async function GET() {
       }
     );
 
-    // Derived stats
-    const totalDelivered =
+    // Delivery metrics
+    const totalDelivered = Math.max(
+      0,
       aggregatedSummary.totalSent -
-      (aggregatedSummary.totalHardFail +
-        aggregatedSummary.totalSoftFail +
-        aggregatedSummary.totalBounce +
-        aggregatedSummary.totalError);
+        (aggregatedSummary.totalHardFail +
+          aggregatedSummary.totalSoftFail +
+          aggregatedSummary.totalBounce +
+          aggregatedSummary.totalError)
+    );
 
     const totalFailed =
       aggregatedSummary.totalHardFail +
@@ -108,6 +107,72 @@ export async function GET() {
         ? (totalDelivered / aggregatedSummary.totalSent) * 100
         : 0;
 
+    const openRate =
+      aggregatedSummary.totalSent > 0
+        ? (aggregatedSummary.totalLoaded / aggregatedSummary.totalSent) * 100
+        : 0;
+
+    const clickRate =
+      aggregatedSummary.totalSent > 0
+        ? (aggregatedSummary.totalClicked / aggregatedSummary.totalSent) * 100
+        : 0;
+
+    // Safe SQL cast to int
+    const domainFilterString = isAdmin
+      ? `WHERE em."domainId" IN (${domainIds.map((id) => `'${id}'`).join(",")})`
+      : `WHERE em."domainId" = '${domains[0].id}'`;
+
+    const recentActivityQuery = `
+      SELECT 
+        COUNT(DISTINCT CASE WHEN e."occurredAt" >= NOW() - INTERVAL '7 days' THEN em."id" END)::int as emails_last_7_days,
+        COUNT(DISTINCT CASE WHEN e."occurredAt" >= NOW() - INTERVAL '24 hours' THEN em."id" END)::int as emails_last_24_hours,
+        COUNT(DISTINCT CASE WHEN e."type" = 'email.loaded' AND e."occurredAt" >= NOW() - INTERVAL '7 days' THEN e."id" END)::int as opens_last_7_days,
+        COUNT(DISTINCT CASE WHEN e."type" = 'email.link.clicked' AND e."occurredAt" >= NOW() - INTERVAL '7 days' THEN e."id" END)::int as clicks_last_7_days,
+        COUNT(DISTINCT em."to")::int as unique_recipients
+      FROM "EmailEvent" e
+      JOIN "Email" em ON e."emailId" = em."id"
+      ${domainFilterString}
+    `;
+
+    const [recentActivity] = await prisma.$queryRawUnsafe<
+      {
+        emails_last_7_days: number;
+        emails_last_24_hours: number;
+        opens_last_7_days: number;
+        clicks_last_7_days: number;
+        unique_recipients: number;
+      }[]
+    >(recentActivityQuery);
+
+    const engagementQuery = `
+      SELECT 
+        COUNT(DISTINCT CASE WHEN e."type" = 'email.loaded' THEN em."to" END)::int as recipients_who_opened,
+        COUNT(DISTINCT CASE WHEN e."type" = 'email.link.clicked' THEN em."to" END)::int as recipients_who_clicked,
+        COUNT(DISTINCT em."to")::int as total_recipients
+      FROM "EmailEvent" e
+      JOIN "Email" em ON e."emailId" = em."id"
+      ${domainFilterString}
+    `;
+
+    const [engagement] = await prisma.$queryRawUnsafe<
+      {
+        recipients_who_opened: number;
+        recipients_who_clicked: number;
+        total_recipients: number;
+      }[]
+    >(engagementQuery);
+
+    // Engagement metrics
+    const recipientOpenRate =
+      engagement.total_recipients > 0
+        ? (engagement.recipients_who_opened / engagement.total_recipients) * 100
+        : 0;
+
+    const recipientClickRate =
+      engagement.total_recipients > 0
+        ? (engagement.recipients_who_clicked / engagement.total_recipients) * 100
+        : 0;
+
     return NextResponse.json({
       stats: {
         totalSent: aggregatedSummary.totalSent,
@@ -116,7 +181,21 @@ export async function GET() {
         opens: aggregatedSummary.totalLoaded,
         clicks: aggregatedSummary.totalClicked,
         pending: aggregatedSummary.totalHeld + aggregatedSummary.totalDelayed,
+
         deliveryRate: Math.round(deliveryRate * 100) / 100,
+        openRate: Math.round(openRate * 100) / 100,
+        clickRate: Math.round(clickRate * 100) / 100,
+        recipientOpenRate: Math.round(recipientOpenRate * 100) / 100,
+        recipientClickRate: Math.round(recipientClickRate * 100) / 100,
+
+        recentActivity: {
+          emailsLast7Days: recentActivity?.emails_last_7_days || 0,
+          emailsLast24Hours: recentActivity?.emails_last_24_hours || 0,
+          opensLast7Days: recentActivity?.opens_last_7_days || 0,
+          clicksLast7Days: recentActivity?.clicks_last_7_days || 0,
+          uniqueRecipients: recentActivity?.unique_recipients || 0,
+        },
+
         detailedStatus: {
           sent: totalDelivered,
           hardfail: aggregatedSummary.totalHardFail,
@@ -127,10 +206,20 @@ export async function GET() {
           delayed: aggregatedSummary.totalDelayed,
         },
       },
+
       summary: aggregatedSummary,
+
+      engagement: {
+        recipientsWhoOpened: engagement?.recipients_who_opened || 0,
+        recipientsWhoClicked: engagement?.recipients_who_clicked || 0,
+        totalRecipients: engagement?.total_recipients || 0,
+        openRate: recipientOpenRate,
+        clickRate: recipientClickRate,
+      },
+
       domainName: isAdmin ? "All Domains" : domains[0].name,
       isAdmin,
-      domainsCount: domains.length,
+      domainsCount: isAdmin ? domains.length : 1,
     });
   } catch (error) {
     console.error("Error fetching email statistics:", error);
