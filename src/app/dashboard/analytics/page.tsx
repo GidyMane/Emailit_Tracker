@@ -289,6 +289,166 @@ export default function AnalyticsPage() {
         />
       )}
 
+      {/* Pie Chart Analytics */}
+      {statsData && (
+        <div className="grid gap-6 lg:grid-cols-2 mb-6">
+          {/* Delivery Status Pie Chart */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Delivery Status Distribution</CardTitle>
+              <CardDescription>Visual breakdown of email delivery outcomes</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="h-64 sm:h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { name: 'Delivered', value: statsData.delivered, color: CHART_COLORS.success },
+                        { name: 'Failed', value: statsData.failed, color: CHART_COLORS.danger }
+                      ].filter(item => item.value > 0)}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={renderPieLabel}
+                      outerRadius="80%"
+                      innerRadius="40%"
+                      fill="#8884d8"
+                      dataKey="value"
+                      stroke="#ffffff"
+                      strokeWidth={2}
+                    >
+                      {[{ color: CHART_COLORS.success }, { color: CHART_COLORS.danger }].map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <ChartTooltip
+                      content={({ active, payload }) => {
+                        if (active && payload && payload.length) {
+                          const data = payload[0].payload
+                          return (
+                            <div className="bg-white p-3 border rounded shadow-lg">
+                              <div className="flex items-center gap-2 mb-1">
+                                <div
+                                  className="w-3 h-3 rounded"
+                                  style={{ backgroundColor: data.color }}
+                                />
+                                <span className="font-medium">{data.name}</span>
+                              </div>
+                              <p className="text-lg font-bold">{data.value.toLocaleString()}</p>
+                              <p className="text-sm text-gray-600">
+                                {((data.value / statsData.totalSent) * 100).toFixed(1)}% of total
+                              </p>
+                            </div>
+                          )
+                        }
+                        return null
+                      }}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Delivery Legend */}
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center justify-between p-2 bg-green-50 rounded">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded bg-green-500" />
+                    <span className="text-sm font-medium">Delivered</span>
+                  </div>
+                  <span className="text-sm font-bold">{statsData.delivered.toLocaleString()}</span>
+                </div>
+                <div className="flex items-center justify-between p-2 bg-red-50 rounded">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded bg-red-500" />
+                    <span className="text-sm font-medium">Failed</span>
+                  </div>
+                  <span className="text-sm font-bold">{statsData.failed.toLocaleString()}</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Engagement Pie Chart */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Email Engagement</CardTitle>
+              <CardDescription>Opens vs clicks vs unopened emails</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="h-64 sm:h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { name: 'Opened', value: statsData.opens, color: CHART_COLORS.purple },
+                        { name: 'Clicked', value: statsData.clicks, color: CHART_COLORS.warning },
+                        { name: 'Not Opened', value: Math.max(0, statsData.totalSent - statsData.opens), color: CHART_COLORS.gray }
+                      ].filter(item => item.value > 0)}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={renderPieLabel}
+                      outerRadius="80%"
+                      innerRadius="40%"
+                      fill="#8884d8"
+                      dataKey="value"
+                      stroke="#ffffff"
+                      strokeWidth={2}
+                    >
+                      {[{ color: CHART_COLORS.purple }, { color: CHART_COLORS.warning }, { color: CHART_COLORS.gray }].map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <ChartTooltip
+                      content={({ active, payload }) => {
+                        if (active && payload && payload.length) {
+                          const data = payload[0].payload
+                          return (
+                            <div className="bg-white p-3 border rounded shadow-lg">
+                              <div className="flex items-center gap-2 mb-1">
+                                <div
+                                  className="w-3 h-3 rounded"
+                                  style={{ backgroundColor: data.color }}
+                                />
+                                <span className="font-medium">{data.name}</span>
+                              </div>
+                              <p className="text-lg font-bold">{data.value.toLocaleString()}</p>
+                              <p className="text-sm text-gray-600">
+                                {((data.value / statsData.totalSent) * 100).toFixed(1)}% of total
+                              </p>
+                            </div>
+                          )
+                        }
+                        return null
+                      }}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Engagement Metrics */}
+              <div className="mt-4 grid grid-cols-3 gap-2 text-center">
+                <div className="p-2 bg-purple-50 rounded">
+                  <div className="text-sm font-bold text-purple-600">{statsData.openRate.toFixed(1)}%</div>
+                  <div className="text-xs text-muted-foreground">Open Rate</div>
+                </div>
+                <div className="p-2 bg-orange-50 rounded">
+                  <div className="text-sm font-bold text-orange-600">{statsData.clickRate.toFixed(1)}%</div>
+                  <div className="text-xs text-muted-foreground">Click Rate</div>
+                </div>
+                <div className="p-2 bg-blue-50 rounded">
+                  <div className="text-sm font-bold text-blue-600">
+                    {statsData.opens > 0 ? ((statsData.clicks / statsData.opens) * 100).toFixed(1) : 0}%
+                  </div>
+                  <div className="text-xs text-muted-foreground">Click-to-Open</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
       {/* Additional Analytics Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
