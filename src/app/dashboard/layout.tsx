@@ -4,19 +4,18 @@ import * as React from "react"
 import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
-import { 
-  BarChart3, 
-  Bell, 
-  ChevronDown, 
-  FileText, 
-  Home, 
-  Inbox, 
-  Mail, 
-  Search, 
-  Send, 
-  Settings, 
-  Users, 
-  Eye 
+import {
+  BarChart3,
+  Bell,
+  ChevronDown,
+  FileText,
+  Home,
+  Inbox,
+  Mail,
+  Search,
+  Send,
+  Settings,
+  Users
 } from 'lucide-react'
 
 import { Button } from "@/components/ui/button"
@@ -50,7 +49,7 @@ interface DomainData {
     id: string;
     name: string;
     emailCount: number;
-    summary: any;
+    summary: unknown;
     createdAt: string;
     updatedAt: string;
   };
