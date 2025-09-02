@@ -89,6 +89,7 @@ const getNavigation = (isAdmin: boolean = false) => [
 // Mobile-aware navigation link component
 function NavLink({ href, children, isActive }: { href: string; children: React.ReactNode; isActive: boolean }) {
   const { isMobile, setOpenMobile } = useSidebar()
+  const searchParams = useSearchParams()
 
   const handleClick = () => {
     if (isMobile) {
@@ -96,9 +97,12 @@ function NavLink({ href, children, isActive }: { href: string; children: React.R
     }
   }
 
+  const domainId = searchParams?.get('domainId')
+  const hrefWithParams = domainId ? `${href}?domainId=${encodeURIComponent(domainId)}` : href
+
   return (
     <SidebarMenuButton asChild isActive={isActive}>
-      <Link href={href} className="flex items-center gap-2" onClick={handleClick}>
+      <Link href={hrefWithParams} className="flex items-center gap-2" onClick={handleClick}>
         {children}
       </Link>
     </SidebarMenuButton>
