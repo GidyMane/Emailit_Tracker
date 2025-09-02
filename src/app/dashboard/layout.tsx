@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useState, useEffect } from "react"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import {
   BarChart3,
@@ -45,6 +45,7 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs"
 
+interface ListedDomain { id: string; name: string; emailCount: number; summary: unknown }
 interface DomainData {
   domain: {
     id: string;
@@ -56,6 +57,8 @@ interface DomainData {
   };
   userEmail: string;
   userDomain: string;
+  isAdmin?: boolean;
+  allDomains?: ListedDomain[];
 }
 
 interface AudienceData {
@@ -108,6 +111,8 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const [domainData, setDomainData] = useState<DomainData | null>(null)
   const [audienceData, setAudienceData] = useState<AudienceData | null>(null)
   const [loading, setLoading] = useState(true)
@@ -155,7 +160,22 @@ export default function DashboardLayout({
     fetchLayoutData()
   }, [])
 
-  const navigation = getNavigation(audienceData?.isAdmin || false)
+  const navigation = getNavigation(audienceData?.isAdmin || domainData?.isAdmin || false)
+
+  const currentDomainId = searchParams?.get('domainId') || 'all'
+  const selectedDomainName = (domainData?.isAdmin && currentDomainId && currentDomainId !== 'all' && currentDomainId !== 'admin-all')
+    ? (domainData?.allDomains?.find(d => d.id === currentDomainId)?.name || domainData?.userDomain)
+    : (domainData?.isAdmin ? 'All Domains' : domainData?.userDomain)
+
+  const onSelectDomain = (domainId: string) => {
+    const params = new URLSearchParams(searchParams?.toString() || '')
+    if (domainId === 'all') {
+      params.delete('domainId')
+    } else {
+      params.set('domainId', domainId)
+    }
+    router.push(`${pathname}?${params.toString()}`, { scroll: false })
+  }
 
   return (
     <SidebarProvider>
@@ -248,8 +268,8 @@ export default function DashboardLayout({
           <div className="flex items-center gap-2 flex-1 min-w-0">
             <div className="flex-1 min-w-0">
               <h1 className="font-semibold text-sm sm:text-base truncate">
-                <span className="hidden sm:inline">Dashboard - {domainData?.userDomain || 'Domain'}</span>
-                <span className="sm:hidden">{domainData?.userDomain || 'Dashboard'}</span>
+                <span className="hidden sm:inline">Dashboard - {selectedDomainName || 'Domain'}</span>
+                <span className="sm:hidden">{selectedDomainName || 'Dashboard'}</span>
               </h1>
               {domainData?.domain && (
                 <p className="text-xs text-muted-foreground hidden sm:block">
@@ -262,6 +282,33 @@ export default function DashboardLayout({
             </div>
 
             <div className="flex items-center gap-2">
+              {/* Domain Switcher for Admins */}
+              {domainData?.isAdmin && domainData?.allDomains && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" className="h-9 sm:h-10 px-3 gap-2">
+                      <div className="flex items-center gap-2">
+                        <span className="hidden md:inline text-sm font-medium truncate max-w-[160px]">
+                          {selectedDomainName}
+                        </span>
+                        <span className="md:hidden text-sm font-medium truncate max-w-[100px]">
+                          {selectedDomainName}
+                        </span>
+                      </div>
+                      <ChevronDown className="size-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-64 max-h-80 overflow-auto">
+                    <DropdownMenuItem onClick={() => onSelectDomain('all')}>All Domains</DropdownMenuItem>
+                    {domainData.allDomains.map(d => (
+                      <DropdownMenuItem key={d.id} onClick={() => onSelectDomain(d.id)}>
+                        {d.name}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
+
               {/* Dark/Light Mode Toggle */}
               <Button
                 variant="outline"
