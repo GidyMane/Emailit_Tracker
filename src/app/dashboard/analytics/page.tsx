@@ -1,6 +1,8 @@
 import { Suspense } from "react"
 import EnhancedAnalyticsDashboard from "@/components/enhanced-analytics-dashboard"
 
+export const dynamic = 'force-dynamic'
+
 export default function AnalyticsPage() {
   return (
     <Suspense
