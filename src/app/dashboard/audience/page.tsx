@@ -123,7 +123,6 @@ function AudiencePageInner() {
       }
       const data = await response.json()
 
-      // Create CSV content
       const csvHeaders = [
         'Email Address',
         'Email Domain',
@@ -157,7 +156,6 @@ function AudiencePageInner() {
         ...csvRows.map((row: (string | number)[]) => row.map((cell: string | number) => `"${cell}"`).join(','))
       ].join('\n')
 
-      // Download CSV file
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
       const link = document.createElement('a')
       const url = URL.createObjectURL(blob)
@@ -544,5 +542,13 @@ function AudiencePageInner() {
         </CardContent>
       </Card>
     </div>
+  )
+}
+
+export default function AudiencePage() {
+  return (
+    <Suspense fallback={<div className="p-4 md:p-6"><Skeleton className="h-8 w-48 mb-2" /><Skeleton className="h-4 w-72" /></div>}>
+      <AudiencePageInner />
+    </Suspense>
   )
 }
