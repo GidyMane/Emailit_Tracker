@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { useState, useEffect } from "react"
+import { useSearchParams } from "next/navigation"
 import { BarChart3, TrendingUp, PieChart, Mail, MousePointer, Eye, AlertTriangle } from 'lucide-react'
 import { formatChartDate, formatTooltipDate } from '@/lib/date-utils'
 import { useResponsiveChart } from '@/hooks/use-responsive-chart'
