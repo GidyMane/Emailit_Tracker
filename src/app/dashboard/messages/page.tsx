@@ -72,7 +72,7 @@ interface MessagesData {
   isAdmin: boolean;
 }
 
-export default function MessagesPage() {
+function MessagesPageInner() {
   const [messagesData, setMessagesData] = useState<MessagesData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
