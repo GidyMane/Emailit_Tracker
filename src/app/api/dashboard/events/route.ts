@@ -36,12 +36,24 @@ export async function GET(request: NextRequest) {
     const adminEmails = ["info@websoftdevelopment.com", "muragegideon2000@gmail.com"];
     const isAdmin = adminEmails.includes(user.email);
 
+    const url = new URL(request.url);
+    const requestedDomainId = url.searchParams.get("domainId");
+
     let domains: Domain[] = [];
     let domainFilter: DomainFilter;
 
     if (isAdmin) {
-      domains = await prisma.domain.findMany();
-      domainFilter = { email: { domainId: { in: domains.map((d) => d.id) } } };
+      if (requestedDomainId && requestedDomainId !== "all" && requestedDomainId !== "admin-all") {
+        const domain = await prisma.domain.findUnique({ where: { id: requestedDomainId } });
+        if (!domain) {
+          return NextResponse.json({ error: "Domain not found" }, { status: 404 });
+        }
+        domains = [domain];
+        domainFilter = { email: { domainId: domain.id } };
+      } else {
+        domains = await prisma.domain.findMany();
+        domainFilter = { email: { domainId: { in: domains.map((d) => d.id) } } };
+      }
     } else {
       const userEmailDomain = user.email.split("@")[1];
       if (!userEmailDomain) {
@@ -60,7 +72,6 @@ export async function GET(request: NextRequest) {
       domainFilter = { email: { domainId: domain.id } };
     }
 
-    const url = new URL(request.url);
     const startDate = url.searchParams.get("startDate");
     const endDate = url.searchParams.get("endDate");
     const eventType = url.searchParams.get("eventType");
@@ -82,7 +93,6 @@ export async function GET(request: NextRequest) {
       ...(eventType && eventType !== "all" ? { type: eventType } : {}),
     };
 
-    // ✅ fetch paginated events
     const events = await prisma.emailEvent.findMany({
       where: whereClause,
       include: {
@@ -95,14 +105,12 @@ export async function GET(request: NextRequest) {
 
     const totalCount = await prisma.emailEvent.count({ where: whereClause });
 
-    // charts (30d)
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
     const domainIds = domains.map((d) => d.id);
 
-    // ✅ aggregate using relations
-    const volumeData = isAdmin
+    const volumeData = isAdmin && domainIds.length > 1
       ? await prisma.$queryRawUnsafe(`
         SELECT
                to_char(DATE(e."occurredAt"), 'YYYY-MM-DD') as date,
@@ -132,9 +140,9 @@ export async function GET(request: NextRequest) {
           AND e."occurredAt" >= $2
         GROUP BY DATE(e."occurredAt")
         ORDER BY DATE(e."occurredAt")
-      `, domains[0].id, thirtyDaysAgo);
+      `, domainIds[0], thirtyDaysAgo);
 
-    const engagementData = isAdmin
+    const engagementData = isAdmin && domainIds.length > 1
       ? await prisma.$queryRawUnsafe(`
         SELECT EXTRACT(DOW FROM e."occurredAt") as day_of_week,
                TO_CHAR(e."occurredAt", 'Day') as day_name,
@@ -160,7 +168,7 @@ export async function GET(request: NextRequest) {
           AND e.type IN ('email.loaded','email.link.clicked')
         GROUP BY EXTRACT(DOW FROM e."occurredAt"), TO_CHAR(e."occurredAt", 'Day')
         ORDER BY EXTRACT(DOW FROM e."occurredAt")
-      `, domains[0].id, thirtyDaysAgo);
+      `, domainIds[0], thirtyDaysAgo);
 
     return safeJsonResponse({
       events: events.map((event) => ({
@@ -184,7 +192,9 @@ export async function GET(request: NextRequest) {
         volume: volumeData,
         engagement: engagementData,
       },
-      domainName: isAdmin ? "All Domains" : domains[0].name,
+      domainName: isAdmin && (requestedDomainId === "all" || requestedDomainId === "admin-all" || !requestedDomainId)
+        ? "All Domains"
+        : domains[0].name,
       isAdmin,
     });
   } catch (error) {
