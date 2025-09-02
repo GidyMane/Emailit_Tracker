@@ -78,14 +78,15 @@ export default function MessagesPage() {
   const [statusFilter, setStatusFilter] = useState("all")
   const [dateRange, setDateRange] = useState("30")
   const [currentPage, setCurrentPage] = useState(1)
+  const searchParams = useSearchParams()
 
   useEffect(() => {
-    setCurrentPage(1) // Reset to first page when filters change
+    setCurrentPage(1)
   }, [searchTerm, statusFilter, dateRange])
 
   useEffect(() => {
     fetchMessages()
-  }, [searchTerm, statusFilter, dateRange, currentPage])
+  }, [searchTerm, statusFilter, dateRange, currentPage, searchParams])
 
   const fetchMessages = async () => {
     try {
@@ -98,13 +99,15 @@ export default function MessagesPage() {
       params.append('page', currentPage.toString())
       params.append('limit', '20')
 
-      // Set date range
       if (dateRange !== 'all') {
         const days = parseInt(dateRange)
         const startDate = new Date()
         startDate.setDate(startDate.getDate() - days)
         params.append('startDate', startDate.toISOString())
       }
+
+      const domainId = searchParams?.get('domainId')
+      if (domainId) params.append('domainId', domainId)
 
       const response = await fetch(`/api/dashboard/messages?${params.toString()}`)
       if (!response.ok) {
@@ -123,19 +126,20 @@ export default function MessagesPage() {
 
   const exportMessages = async () => {
     try {
-      // Fetch all messages for export (without pagination)
       const params = new URLSearchParams()
       if (searchTerm) params.append('search', searchTerm)
       if (statusFilter !== 'all') params.append('status', statusFilter)
-      params.append('limit', '10000') // Large limit to get all results
+      params.append('limit', '10000')
 
-      // Set date range
       if (dateRange !== 'all') {
         const days = parseInt(dateRange)
         const startDate = new Date()
         startDate.setDate(startDate.getDate() - days)
         params.append('startDate', startDate.toISOString())
       }
+
+      const domainId = searchParams?.get('domainId')
+      if (domainId) params.append('domainId', domainId)
 
       const response = await fetch(`/api/dashboard/messages?${params.toString()}`)
       if (!response.ok) {
