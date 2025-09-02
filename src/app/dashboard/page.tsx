@@ -156,7 +156,7 @@ export default function DashboardOverview() {
     }
 
     fetchData()
-  }, [])
+  }, [searchParams])
 
   const LoadingSkeleton = () => (
     <div className="space-y-6 p-4 md:p-6">
