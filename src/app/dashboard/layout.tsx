@@ -79,14 +79,6 @@ const getNavigation = (isAdmin: boolean = false) => [
       { title: "Audience", href: "/dashboard/audience", icon: Users },
       ...(isAdmin ? [{ title: "Domains", href: "/dashboard/domains", icon: Send }] : []),
     ]
-  },
-  {
-    title: "Email Tools",
-    items: [
-      { title: "Campaigns", href: "#", icon: Mail },
-      { title: "Templates", href: "#", icon: FileText },
-      { title: "Inbox", href: "#", icon: Inbox },
-    ]
   }
 ]
 
