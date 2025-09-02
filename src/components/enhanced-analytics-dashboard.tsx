@@ -156,6 +156,7 @@ export default function EnhancedAnalyticsDashboard() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const chartSettings = useResponsiveChart()
+  const searchParams = useSearchParams()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -163,9 +164,12 @@ export default function EnhancedAnalyticsDashboard() {
         setLoading(true)
         setError(null)
 
+        const domainId = searchParams?.get('domainId')
+        const qs = domainId ? `?domainId=${encodeURIComponent(domainId)}` : ''
+
         const [statsResponse, eventsResponse, domainResponse] = await Promise.all([
-          fetch('/api/dashboard/stats'),
-          fetch('/api/dashboard/events'),
+          fetch(`/api/dashboard/stats${qs}`),
+          fetch(`/api/dashboard/events${qs}`),
           fetch('/api/dashboard/domain')
         ])
 
