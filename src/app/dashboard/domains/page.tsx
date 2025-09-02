@@ -53,7 +53,7 @@ interface AudienceData {
   isAdmin: boolean;
 }
 
-export default function DomainsPage() {
+function DomainsPageInner() {
   const [domainsData, setDomainsData] = useState<DomainsData | null>(null)
   const [audienceData, setAudienceData] = useState<AudienceData | null>(null)
   const [loading, setLoading] = useState(true)
