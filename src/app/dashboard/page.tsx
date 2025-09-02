@@ -110,6 +110,7 @@ export default function DashboardOverview() {
   const [audienceData, setAudienceData] = useState<AudienceData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const searchParams = useSearchParams()
 
   // Fetch data from APIs
   useEffect(() => {
@@ -118,11 +119,14 @@ export default function DashboardOverview() {
         setLoading(true)
         setError(null)
 
+        const domainId = searchParams?.get('domainId')
+        const qs = domainId ? `?domainId=${encodeURIComponent(domainId)}` : ''
+
         // Fetch all data in parallel
         const [domainResponse, statsResponse, audienceResponse] = await Promise.all([
           fetch('/api/dashboard/domain'),
-          fetch('/api/dashboard/stats'),
-          fetch('/api/dashboard/audience')
+          fetch(`/api/dashboard/stats${qs}`),
+          fetch(`/api/dashboard/audience${qs}`)
         ])
 
         if (!domainResponse.ok) {
