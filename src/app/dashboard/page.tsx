@@ -106,7 +106,7 @@ interface StatsResponse {
   domainsCount: number;
 }
 
-export default function DashboardOverview() {
+function DashboardOverviewInner() {
   const [statsData, setStatsData] = useState<StatsResponse | null>(null)
   const [domainData, setDomainData] = useState<DomainData | null>(null)
   const [audienceData, setAudienceData] = useState<AudienceData | null>(null)
