@@ -32,6 +32,8 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Button } from "@/components/ui/button"
 import CronManagement from "@/components/cron-management"
 
+export const dynamic = 'force-dynamic'
+
 interface EmailStats {
   totalSent: number;
   delivered: number;
