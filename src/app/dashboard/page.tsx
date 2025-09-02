@@ -114,7 +114,6 @@ function DashboardOverviewInner() {
   const [error, setError] = useState<string | null>(null)
   const searchParams = useSearchParams()
 
-  // Fetch data from APIs
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -124,7 +123,6 @@ function DashboardOverviewInner() {
         const domainId = searchParams?.get('domainId')
         const qs = domainId ? `?domainId=${encodeURIComponent(domainId)}` : ''
 
-        // Fetch all data in parallel
         const [domainResponse, statsResponse, audienceResponse] = await Promise.all([
           fetch('/api/dashboard/domain'),
           fetch(`/api/dashboard/stats${qs}`),
@@ -162,7 +160,6 @@ function DashboardOverviewInner() {
 
   const LoadingSkeleton = () => (
     <div className="space-y-6 p-4 md:p-6">
-      {/* Header Skeleton */}
       <div className="flex items-center justify-between">
         <div>
           <Skeleton className="h-8 w-64 mb-2" />
@@ -174,7 +171,6 @@ function DashboardOverviewInner() {
         </div>
       </div>
 
-      {/* Stats Cards Skeleton */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {Array.from({ length: 4 }).map((_, i) => (
           <Card key={i}>
@@ -193,7 +189,6 @@ function DashboardOverviewInner() {
         ))}
       </div>
 
-      {/* Two column layout skeleton */}
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>
@@ -249,7 +244,6 @@ function DashboardOverviewInner() {
 
   const { stats, engagement, isAdmin, domainName, domainsCount } = statsData
 
- 
   const clientStatCards = [
     {
       title: "Emails Delivered",
@@ -289,7 +283,6 @@ function DashboardOverviewInner() {
     }
   ]
 
-  // Build admin overview stats from database
   const adminStatCards = [
     {
       title: "Total Volume",
@@ -329,7 +322,6 @@ function DashboardOverviewInner() {
     }
   ]
 
- 
   const issueCards = [
     {
       title: "Hard Failures",
@@ -402,7 +394,6 @@ function DashboardOverviewInner() {
         </div>
       </div>
 
-    
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {statsCards.map((stat) => (
           <Card key={stat.title} className="hover:shadow-md transition-shadow">
@@ -423,9 +414,7 @@ function DashboardOverviewInner() {
         ))}
       </div>
 
-      {/* Two Column Layout */}
       <div className="grid gap-6 lg:grid-cols-2">
-        {/* Performance Summary */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -460,7 +449,6 @@ function DashboardOverviewInner() {
           </CardContent>
         </Card>
 
-        {/* Recent Activity from Database */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -514,7 +502,6 @@ function DashboardOverviewInner() {
         </Card>
       </div>
 
-      {/* Complete Email Status Breakdown */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -527,7 +514,6 @@ function DashboardOverviewInner() {
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {/* Successful Delivery */}
             <div className="flex items-center justify-between p-4 border rounded-lg bg-green-50">
               <div className="flex items-center gap-3">
                 <CheckCircle className="h-5 w-5 text-green-600" />
@@ -542,7 +528,6 @@ function DashboardOverviewInner() {
               </div>
             </div>
 
-            {/* Hard Failures */}
             <div className="flex items-center justify-between p-4 border rounded-lg bg-red-50">
               <div className="flex items-center gap-3">
                 <XCircle className="h-5 w-5 text-red-600" />
@@ -557,7 +542,6 @@ function DashboardOverviewInner() {
               </div>
             </div>
 
-            {/* Soft Failures */}
             <div className="flex items-center justify-between p-4 border rounded-lg bg-yellow-50">
               <div className="flex items-center gap-3">
                 <RefreshCw className="h-5 w-5 text-yellow-600" />
@@ -572,7 +556,6 @@ function DashboardOverviewInner() {
               </div>
             </div>
 
-            {/* Bounces */}
             <div className="flex items-center justify-between p-4 border rounded-lg bg-orange-50">
               <div className="flex items-center gap-3">
                 <TrendingDown className="h-5 w-5 text-orange-600" />
@@ -587,7 +570,6 @@ function DashboardOverviewInner() {
               </div>
             </div>
 
-            {/* System Errors */}
             <div className="flex items-center justify-between p-4 border rounded-lg bg-purple-50">
               <div className="flex items-center gap-3">
                 <AlertTriangle className="h-5 w-5 text-purple-600" />
@@ -602,7 +584,6 @@ function DashboardOverviewInner() {
               </div>
             </div>
 
-            {/* Held Emails */}
             <div className="flex items-center justify-between p-4 border rounded-lg bg-red-50">
               <div className="flex items-center gap-3">
                 <Shield className="h-5 w-5 text-red-600" />
@@ -617,7 +598,6 @@ function DashboardOverviewInner() {
               </div>
             </div>
 
-            {/* Delayed Emails */}
             <div className="flex items-center justify-between p-4 border rounded-lg bg-blue-50">
               <div className="flex items-center gap-3">
                 <Clock className="h-5 w-5 text-blue-600" />
@@ -635,7 +615,6 @@ function DashboardOverviewInner() {
         </CardContent>
       </Card>
 
-      {/* Enhanced Engagement Breakdown with Detailed Explanations */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -645,7 +624,6 @@ function DashboardOverviewInner() {
           <CardDescription>How recipients interact with your emails</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Email Opens Section */}
           <div className="space-y-3">
             <div className="flex items-center gap-2 mb-2">
               <MailOpen className="h-4 w-4 text-purple-600" />
@@ -660,17 +638,9 @@ function DashboardOverviewInner() {
               <div className="text-xs text-muted-foreground">
                 {engagement.recipientsWhoOpened.toLocaleString()} of {engagement.totalRecipients.toLocaleString()} recipients opened your emails
               </div>
-              {/* <div className="mt-3 p-3 bg-white rounded border text-xs space-y-1">
-                <div className="font-medium text-gray-800">How it's tracked:</div>
-                <div className="text-gray-600">Through a tiny invisible tracking pixel (image) embedded in the email. When the email client loads that image, the system counts it as an "open".</div>
-                <div className="font-medium text-gray-800 mt-2">What this tells you:</div>
-                <div className="text-gray-600">• How many recipients actually saw your email</div>
-                <div className="text-gray-600">• Your open rate (percentage of delivered emails that were opened)</div>
-              </div> */}
             </div>
           </div>
 
-          {/* Email Clicks Section */}
           <div className="space-y-3">
             <div className="flex items-center gap-2 mb-2">
               <MousePointer className="h-4 w-4 text-orange-600" />
@@ -685,18 +655,9 @@ function DashboardOverviewInner() {
               <div className="text-xs text-muted-foreground">
                 {engagement.recipientsWhoClicked.toLocaleString()} of {engagement.totalRecipients.toLocaleString()} recipients clicked links in your emails
               </div>
-              {/* <div className="mt-3 p-3 bg-white rounded border text-xs space-y-1">
-                <div className="font-medium text-gray-800">How it's tracked:</div>
-                <div className="text-gray-600">Emailit wraps links with a tracking redirect. When the user clicks, the redirect logs the event before taking them to the destination.</div>
-                <div className="font-medium text-gray-800 mt-2">What this tells you:</div>
-                <div className="text-gray-600">• Which links people are most interested in</div>
-                <div className="text-gray-600">• Your click-through rate (CTR)</div>
-                <div className="text-gray-600">• Engagement quality — clicks are a stronger indicator of interest than opens</div>
-              </div> */}
             </div>
           </div>
 
-          {/* Quick Stats Summary */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t">
             <div className="text-center">
               <div className="text-2xl font-bold text-purple-600">{stats.opens.toLocaleString()}</div>
@@ -718,7 +679,6 @@ function DashboardOverviewInner() {
         </CardContent>
       </Card>
 
-      {/* Quick Actions */}
       <Card>
         <CardHeader>
           <CardTitle>Quick Actions</CardTitle>
@@ -775,8 +735,15 @@ function DashboardOverviewInner() {
         </CardContent>
       </Card>
 
-      {/* Admin Only: Cron Job Management */}
       {isAdmin && <CronManagement />}
     </div>
+  )
+}
+
+export default function DashboardOverview() {
+  return (
+    <Suspense fallback={<div className="p-4 md:p-6"><Skeleton className="h-8 w-48 mb-2" /><Skeleton className="h-4 w-96" /></div>}>
+      <DashboardOverviewInner />
+    </Suspense>
   )
 }
