@@ -70,14 +70,15 @@ export default function AudiencePage() {
   const [error, setError] = useState<string | null>(null)
   const [searchTerm, setSearchTerm] = useState("")
   const [currentPage, setCurrentPage] = useState(1)
+  const searchParams = useSearchParams()
 
   useEffect(() => {
-    setCurrentPage(1) // Reset to first page when search changes
+    setCurrentPage(1)
   }, [searchTerm])
 
   useEffect(() => {
     fetchAudience()
-  }, [searchTerm, currentPage])
+  }, [searchTerm, currentPage, searchParams])
 
   const fetchAudience = async () => {
     try {
@@ -88,6 +89,8 @@ export default function AudiencePage() {
       if (searchTerm) params.append('search', searchTerm)
       params.append('page', currentPage.toString())
       params.append('limit', '50')
+      const domainId = searchParams?.get('domainId')
+      if (domainId) params.append('domainId', domainId)
 
       const response = await fetch(`/api/dashboard/audience?${params.toString()}`)
       if (!response.ok) {
@@ -106,10 +109,11 @@ export default function AudiencePage() {
 
   const exportAudience = async () => {
     try {
-      // Fetch all recipients for export (without pagination)
       const params = new URLSearchParams()
       if (searchTerm) params.append('search', searchTerm)
-      params.append('limit', '10000') // Large limit to get all results
+      params.append('limit', '10000')
+      const domainId = searchParams?.get('domainId')
+      if (domainId) params.append('domainId', domainId)
 
       const response = await fetch(`/api/dashboard/audience?${params.toString()}`)
       if (!response.ok) {
