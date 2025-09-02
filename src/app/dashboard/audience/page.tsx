@@ -2,8 +2,9 @@
 
 import * as React from "react"
 import { useState, useEffect } from "react"
-import { 
-  Users, 
+import { useSearchParams } from "next/navigation"
+import {
+  Users,
   Mail,
   Search,
   Eye,
