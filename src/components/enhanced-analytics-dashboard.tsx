@@ -197,7 +197,7 @@ export default function EnhancedAnalyticsDashboard() {
     }
 
     fetchData()
-  }, [])
+  }, [searchParams])
 
   // Prepare pie chart data with safety checks to prevent percentages over 100%
   const deliveryStatusPieData: PieData[] = statsData ? [
