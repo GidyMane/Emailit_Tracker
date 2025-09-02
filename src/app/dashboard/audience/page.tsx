@@ -66,7 +66,7 @@ interface AudienceData {
   isAdmin: boolean;
 }
 
-export default function AudiencePage() {
+function AudiencePageInner() {
   const [audienceData, setAudienceData] = useState<AudienceData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
