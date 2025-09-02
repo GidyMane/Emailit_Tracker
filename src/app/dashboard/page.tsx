@@ -29,6 +29,7 @@ import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Button } from "@/components/ui/button"
+import CronManagement from "@/components/cron-management"
 
 interface EmailStats {
   totalSent: number;
@@ -296,7 +297,7 @@ export default function DashboardOverview() {
       title: "Platform Delivery",
       description: "Overall delivery performance",
       icon: Shield,
-      value: `${stats.deliveryRate.toFixed(1)}%`,
+      value: `${Math.min(100, stats.deliveryRate).toFixed(1)}%`,
       subtitle: `${stats.delivered.toLocaleString()} delivered successfully`,
       color: stats.deliveryRate >= 95 ? "text-green-600" : stats.deliveryRate >= 85 ? "text-yellow-600" : "text-red-600",
       bgColor: stats.deliveryRate >= 95 ? "bg-green-50" : stats.deliveryRate >= 85 ? "bg-yellow-50" : "bg-red-50"
@@ -305,8 +306,8 @@ export default function DashboardOverview() {
       title: "Platform Engagement",
       description: "Overall open and click rates",
       icon: Activity,
-      value: `${((stats.openRate + stats.clickRate) / 2).toFixed(1)}%`,
-      subtitle: `${stats.openRate.toFixed(1)}% opens, ${stats.clickRate.toFixed(1)}% clicks`,
+      value: `${Math.min(100, ((Math.min(100, stats.openRate) + Math.min(100, stats.clickRate)) / 2)).toFixed(1)}%`,
+      subtitle: `${Math.min(100, stats.openRate).toFixed(1)}% opens, ${Math.min(100, stats.clickRate).toFixed(1)}% clicks`,
       color: "text-purple-600",
       bgColor: "bg-purple-50"
     },
@@ -766,6 +767,9 @@ export default function DashboardOverview() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Admin Only: Cron Job Management */}
+      {isAdmin && <CronManagement />}
     </div>
   )
 }
