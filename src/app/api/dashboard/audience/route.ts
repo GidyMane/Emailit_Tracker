@@ -41,12 +41,24 @@ export async function GET(request: NextRequest) {
     const adminEmails = ["info@websoftdevelopment.com", "muragegideon2000@gmail.com"];
     const isAdmin = adminEmails.includes(user.email);
 
+    const url = new URL(request.url);
+    const requestedDomainId = url.searchParams.get("domainId");
+
     let domains: Domain[] = [];
     let domainFilter: { domainId?: string | { in: string[] } };
 
     if (isAdmin) {
-      domains = await prisma.domain.findMany();
-      domainFilter = { domainId: { in: domains.map((d) => d.id) } };
+      if (requestedDomainId && requestedDomainId !== "all" && requestedDomainId !== "admin-all") {
+        const domain = await prisma.domain.findUnique({ where: { id: requestedDomainId } });
+        if (!domain) {
+          return NextResponse.json({ error: "Domain not found" }, { status: 404 });
+        }
+        domains = [domain];
+        domainFilter = { domainId: domain.id };
+      } else {
+        domains = await prisma.domain.findMany();
+        domainFilter = { domainId: { in: domains.map((d) => d.id) } };
+      }
     } else {
       const userEmailDomain = user.email.split("@")[1];
       if (!userEmailDomain) {
@@ -65,13 +77,11 @@ export async function GET(request: NextRequest) {
       domainFilter = { domainId: domain.id };
     }
 
-    const url = new URL(request.url);
     const search = url.searchParams.get("search") || "";
     const page = parseInt(url.searchParams.get("page") || "1");
     const limit = parseInt(url.searchParams.get("limit") || "50");
     const offset = (page - 1) * limit;
 
-    // Get all emails with recipients
     const whereClause = {
       ...domainFilter,
       to: { not: null },
@@ -80,7 +90,6 @@ export async function GET(request: NextRequest) {
       } : {})
     };
 
-    // Get unique recipients with their email statistics
     const recipients = await prisma.email.groupBy({
       by: ['to'],
       where: whereClause,
@@ -104,7 +113,6 @@ export async function GET(request: NextRequest) {
       skip: offset
     });
 
-    // Get total count for pagination
     const totalUniqueRecipients = await prisma.email.groupBy({
       by: ['to'],
       where: whereClause,
@@ -113,14 +121,13 @@ export async function GET(request: NextRequest) {
       }
     });
 
-    // Get engagement data for each recipient
     const recipientEmails = recipients.map(r => r.to).filter(Boolean);
 
     const domainIds = domains.map(d => d.id);
 
     let engagementData: EngagementData[] = [];
     if (recipientEmails.length > 0) {
-      if (isAdmin) {
+      if (isAdmin && domainIds.length > 1) {
         engagementData = await prisma.$queryRawUnsafe(`
           SELECT
             em."to" as recipient_email,
@@ -153,17 +160,15 @@ export async function GET(request: NextRequest) {
           WHERE em."to" = ANY($1)
             AND em."domainId" = $2
           GROUP BY em."to"
-        `, recipientEmails, domains[0].id) as EngagementData[];
+        `, recipientEmails, domainIds[0]) as EngagementData[];
       }
     }
 
-    // Format the final recipient data
     const formattedRecipients = recipients.map(recipient => {
       const engagement = engagementData.find(
         (e: EngagementData) => e.recipient_email === recipient.to
       );
 
-      // Convert BigInt values to Numbers to avoid BigInt math errors
       const totalEmails = Number(engagement?.total_emails || Number(recipient._count.id) || 0);
       const totalOpens = Number(engagement?.total_opens || 0);
       const totalClicks = Number(engagement?.total_clicks || 0);
@@ -185,7 +190,6 @@ export async function GET(request: NextRequest) {
       };
     });
 
-    // Calculate overview statistics
     const overviewStats = {
       totalRecipients: totalUniqueRecipients.length,
       totalEmailsSent: formattedRecipients.reduce((sum, r) => sum + r.totalEmails, 0),
@@ -210,7 +214,9 @@ export async function GET(request: NextRequest) {
         hasMore: totalUniqueRecipients.length > offset + limit,
         hasPrevious: page > 1
       },
-      domainName: isAdmin ? "All Domains" : domains[0].name,
+      domainName: isAdmin && (requestedDomainId === 'all' || requestedDomainId === 'admin-all' || !requestedDomainId)
+        ? 'All Domains'
+        : domains[0].name,
       isAdmin,
     });
 
