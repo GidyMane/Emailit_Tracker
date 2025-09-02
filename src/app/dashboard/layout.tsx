@@ -9,9 +9,7 @@ import Link from "next/link"
 import {
   BarChart3,
   ChevronDown,
-  FileText,
   Home,
-  Inbox,
   LogOut,
   Mail,
   Moon,
