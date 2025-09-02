@@ -149,7 +149,6 @@ function MessagesPageInner() {
       }
       const data = await response.json()
 
-      // Create CSV content
       const csvHeaders = [
         'Message ID',
         'Recipient',
@@ -185,7 +184,6 @@ function MessagesPageInner() {
         ...csvRows.map((row: (string | number)[]) => row.map((cell: string | number) => `"${cell}"`).join(','))
       ].join('\n')
 
-      // Download CSV file
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
       const link = document.createElement('a')
       const url = URL.createObjectURL(blob)
@@ -272,7 +270,6 @@ function MessagesPageInner() {
             <div className="md:col-span-4 space-y-2">
               <Skeleton className="h-4 w-3/4" />
               <Skeleton className="h-3 w-1/2" />
-              <Skeleton className="h-3 w-2/3" />
             </div>
             <div className="md:col-span-3 space-y-2">
               <Skeleton className="h-4 w-full" />
@@ -603,5 +600,13 @@ function MessagesPageInner() {
         </CardContent>
       </Card>
     </div>
+  )
+}
+
+export default function MessagesPage() {
+  return (
+    <Suspense fallback={<div className="p-4 md:p-6"><Skeleton className="h-8 w-48 mb-2" /><Skeleton className="h-4 w-72" /></div>}>
+      <MessagesPageInner />
+    </Suspense>
   )
 }
