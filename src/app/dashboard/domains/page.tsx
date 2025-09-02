@@ -67,13 +67,11 @@ function DomainsPageInner() {
         setLoading(true)
         setError(null)
 
-        // Check if user is admin first
         const audienceResponse = await fetch('/api/dashboard/audience')
         if (audienceResponse.ok) {
           const audienceResult = await audienceResponse.json()
           setAudienceData(audienceResult)
           
-          // Only fetch domains if user is admin
           if (audienceResult.isAdmin) {
             const domainsResponse = await fetch('/api/dashboard/domains')
             if (!domainsResponse.ok) {
@@ -99,20 +97,17 @@ function DomainsPageInner() {
     fetchData()
   }, [])
 
-  // Filter domains based on search term and status
   const filteredDomains = React.useMemo(() => {
     if (!domainsData?.domains) return []
     
     let domains = [...domainsData.domains]
 
-    // Filter by search term
     if (searchTerm) {
       domains = domains.filter(domain => 
         domain.name.toLowerCase().includes(searchTerm.toLowerCase())
       )
     }
 
-    // Filter by status
     if (statusFilter !== "all") {
       if (statusFilter === "active") {
         domains = domains.filter(domain => domain.totalEmails > 0)
@@ -126,7 +121,6 @@ function DomainsPageInner() {
 
   const getDeliveryRate = (domain: SendingDomain): number => {
     if (!domain.summary || domain.summary.totalSent === 0) return 0
-    // Calculate actual delivery rate: delivered emails vs sent emails
     const totalFailed = (domain.summary.totalHardFail || 0) +
                        (domain.summary.totalSoftFail || 0) +
                        (domain.summary.totalBounce || 0) +
@@ -185,7 +179,6 @@ function DomainsPageInner() {
           <Skeleton className="h-4 w-72" />
         </div>
         
-        {/* Overview Cards Skeleton */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-muted/30 rounded-lg mb-4">
           <div className="text-center space-y-2">
             <Skeleton className="h-8 w-16 mx-auto" />
@@ -262,7 +255,6 @@ function DomainsPageInner() {
 
   return (
     <div className="space-y-6 p-4 md:p-6">
-      {/* Page Header */}
       <div className="flex items-center justify-between">
         <div className="space-y-2">
           <h1 className="text-2xl font-bold">Sending Domains</h1>
@@ -276,7 +268,6 @@ function DomainsPageInner() {
         </Button>
       </div>
 
-      {/* Domains Summary */}
       {domainsData && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-muted/30 rounded-lg mb-4">
           <div className="text-center">
@@ -298,7 +289,6 @@ function DomainsPageInner() {
         </div>
       )}
 
-      {/* Search and Filter */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-2 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -325,7 +315,6 @@ function DomainsPageInner() {
         </div>
       </div>
 
-      {/* Domains Table */}
       <Card>
         <CardHeader>
           <CardTitle>Sending Domains</CardTitle>
@@ -340,7 +329,6 @@ function DomainsPageInner() {
           <div className="space-y-4">
             {filteredDomains.length > 0 ? (
               <>
-                {/* Domains Table */}
                 <div className="rounded-lg border overflow-hidden">
                   <div className="overflow-x-auto">
                     <div className="min-w-[900px] grid grid-cols-12 gap-4 p-3 sm:p-4 font-medium text-xs sm:text-sm text-muted-foreground border-b bg-muted/50">
@@ -423,7 +411,6 @@ function DomainsPageInner() {
                   </div>
                 </div>
 
-                {/* Additional Domain Stats */}
                 {filteredDomains.some(d => d.summary) && (
                   <div className="grid gap-4 md:grid-cols-4">
                     <Card>
@@ -530,5 +517,13 @@ function DomainsPageInner() {
         </CardContent>
       </Card>
     </div>
+  )
+}
+
+export default function DomainsPage() {
+  return (
+    <Suspense fallback={<div className="p-4 md:p-6"><Skeleton className="h-8 w-48 mb-2" /><Skeleton className="h-4 w-72" /></div>}>
+      <DomainsPageInner />
+    </Suspense>
   )
 }
