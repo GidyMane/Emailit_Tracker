@@ -2,14 +2,15 @@
 
 import * as React from "react"
 import { useState, useEffect } from "react"
-import { 
-  Send, 
-  CheckCircle, 
-  XCircle, 
-  MailOpen, 
-  Zap, 
-  Clock, 
-  TrendingUp, 
+import { useSearchParams } from "next/navigation"
+import {
+  Send,
+  CheckCircle,
+  XCircle,
+  MailOpen,
+  Zap,
+  Clock,
+  TrendingUp,
   TrendingDown,
   AlertTriangle,
   Shield,
