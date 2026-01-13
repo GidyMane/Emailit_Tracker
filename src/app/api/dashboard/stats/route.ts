@@ -72,6 +72,25 @@ export async function GET(request: NextRequest) {
       ? { domainId: { in: domainIds } }
       : { domainId: domains[0].id };
 
+    // Parse date filters
+    const startDate = url.searchParams.get("startDate");
+    const endDate = url.searchParams.get("endDate");
+    const dateFilter: { createdAt?: { gte?: Date; lte?: Date } } = {};
+
+    if (startDate || endDate) {
+      dateFilter.createdAt = {};
+      if (startDate) {
+        dateFilter.createdAt.gte = new Date(startDate);
+      }
+      if (endDate) {
+        const endDateTime = new Date(endDate);
+        endDateTime.setHours(23, 59, 59, 999);
+        dateFilter.createdAt.lte = endDateTime;
+      }
+    }
+
+    const emailDateFilter = { ...domainFilter, ...dateFilter };
+
     // Aggregated engagement from summary (unique first opens/clicks per email)
     const summaries = await prisma.emailSummary.findMany({ where: domainFilter });
     const aggregatedSummary = summaries.reduce(
@@ -114,11 +133,29 @@ export async function GET(request: NextRequest) {
       'email.delivery.delayed',
     ];
 
+    // Build event filter with date range if provided
+    const eventDateFilter: { occurredAt?: { gte?: Date; lte?: Date } } = {};
+    if (startDate || endDate) {
+      eventDateFilter.occurredAt = {};
+      if (startDate) {
+        eventDateFilter.occurredAt.gte = new Date(startDate);
+      }
+      if (endDate) {
+        const endDateTime = new Date(endDate);
+        endDateTime.setHours(23, 59, 59, 999);
+        eventDateFilter.occurredAt.lte = endDateTime;
+      }
+    }
+
+    const eventTypeScope = (isAdmin && domains.length > 1)
+      ? { email: { domainId: { in: domainIds } }, ...eventDateFilter }
+      : { email: { domainId: domains[0].id }, ...eventDateFilter };
+
     const grouped = await prisma.emailEvent.groupBy({
       by: ['type'],
       _count: { _all: true },
       where: {
-        ...typeScope,
+        ...eventTypeScope,
         type: { in: deliveryTypes },
       },
     });
@@ -150,8 +187,12 @@ export async function GET(request: NextRequest) {
       ? `WHERE em."domainId" IN (${domainIds.map((id) => `'${id}'`).join(",")})`
       : `WHERE em."domainId" = '${domains[0].id}'`;
 
+    const dateFilterString = startDate || endDate
+      ? ` AND e."occurredAt" >= ${startDate ? `'${startDate}'` : 'NOW() - INTERVAL \'36500 days\''} AND e."occurredAt" <= ${endDate ? `'${new Date(new Date(endDate).getTime() + 86400000).toISOString().split('T')[0]}'` : 'NOW()'}`
+      : '';
+
     const recentActivityQuery = `
-      SELECT 
+      SELECT
         COUNT(DISTINCT CASE WHEN e."occurredAt" >= NOW() - INTERVAL '7 days' THEN em."id" END)::int as emails_last_7_days,
         COUNT(DISTINCT CASE WHEN e."occurredAt" >= NOW() - INTERVAL '24 hours' THEN em."id" END)::int as emails_last_24_hours,
         COUNT(DISTINCT CASE WHEN e."type" = 'email.loaded' AND e."occurredAt" >= NOW() - INTERVAL '7 days' THEN e."id" END)::int as opens_last_7_days,
@@ -159,7 +200,7 @@ export async function GET(request: NextRequest) {
         COUNT(DISTINCT em."to")::int as unique_recipients
       FROM "EmailEvent" e
       JOIN "Email" em ON e."emailId" = em."id"
-      ${domainFilterString}
+      ${domainFilterString}${dateFilterString}
     `;
 
     const [recentActivity] = await prisma.$queryRawUnsafe<{
@@ -171,13 +212,13 @@ export async function GET(request: NextRequest) {
     }[]>(recentActivityQuery);
 
     const engagementQuery = `
-      SELECT 
+      SELECT
         COUNT(DISTINCT CASE WHEN e."type" = 'email.loaded' THEN em."to" END)::int as recipients_who_opened,
         COUNT(DISTINCT CASE WHEN e."type" = 'email.link.clicked' THEN em."to" END)::int as recipients_who_clicked,
         COUNT(DISTINCT CASE WHEN em."to" IS NOT NULL THEN em."to" END)::int as total_recipients
       FROM "EmailEvent" e
       JOIN "Email" em ON e."emailId" = em."id"
-      ${domainFilterString}
+      ${domainFilterString}${dateFilterString}
     `;
 
     const [engagement] = await prisma.$queryRawUnsafe<{
