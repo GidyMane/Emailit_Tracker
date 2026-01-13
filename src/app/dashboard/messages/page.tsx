@@ -593,19 +593,46 @@ export default function MessagesPage() {
             </CardDescription>
           </div>
           {messagesData?.messages.length ? (
-            <Button variant="outline" size="sm" onClick={exportMessages} disabled={isSearching || isExporting}>
-              {isExporting ? (
-                <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Exporting...
-                </>
-              ) : (
-                <>
-                  <Download className="h-4 w-4 mr-2" />
-                  Export All
-                </>
-              )}
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => exportMessages('filtered')}
+                disabled={isSearching || isExporting}
+                title="Export messages matching current filters (search, status, date)"
+              >
+                {isExporting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Exporting...
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-4 w-4 mr-2" />
+                    Export Filtered
+                  </>
+                )}
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => exportMessages('all')}
+                disabled={isSearching || isExporting}
+                title="Export all messages without filters"
+              >
+                {isExporting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Exporting...
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-4 w-4 mr-2" />
+                    Export All
+                  </>
+                )}
+              </Button>
+            </div>
           ) : null}
         </CardHeader>
         <CardContent>
