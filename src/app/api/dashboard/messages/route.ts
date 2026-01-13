@@ -37,19 +37,20 @@ const { getUser } = getKindeServerSession();
 const user = await getUser();
 
 
-if (!user?.email) {  
-  return NextResponse.json({ error: "Unauthorized" }, { status: 401 });  
-}  
+if (!user?.email) {
+  return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+}
 
-const adminEmails = ["info@websoftdevelopment.com", "muragegideon2000@gmail.com"];  
-const isAdmin = adminEmails.includes(user.email);  
+const adminEmails = ["info@websoftdevelopment.com", "muragegideon2000@gmail.com"];
+const isAdmin = adminEmails.includes(user.email);
 
-const url = new URL(request.url);  
-const selectedDomainId = url.searchParams.get("domainId");  
-const search = url.searchParams.get("search") || "";  
-const statusParam = url.searchParams.get("status") || "all";  
-const page = parseInt(url.searchParams.get("page") || "1");  
-const limit = parseInt(url.searchParams.get("limit") || "20");  
+const url = new URL(request.url);
+const selectedDomainId = url.searchParams.get("domainId");
+const search = url.searchParams.get("search") || "";
+const statusParam = url.searchParams.get("status") || "all";
+const dateRange = url.searchParams.get("dateRange") || "all";
+const page = parseInt(url.searchParams.get("page") || "1");
+const limit = parseInt(url.searchParams.get("limit") || "20");
 const offset = (page - 1) * limit;  
 
 // Domain filter  
