@@ -83,6 +83,7 @@ export default function MessagesPage() {
   const [dateRange, setDateRange] = useState("30")
   const [currentPage, setCurrentPage] = useState(1)
   const [isSearching, setIsSearching] = useState(false)
+  const [isExporting, setIsExporting] = useState(false)
   const debounceTimer = useRef<NodeJS.Timeout | null>(null)
   const abortControllerRef = useRef<AbortController | null>(null)
   const requestCacheRef = useRef<Map<string, { data: MessagesData; timestamp: number }>>(new Map())
@@ -199,12 +200,34 @@ export default function MessagesPage() {
 
   const exportMessages = async () => {
     try {
-      if (!messagesData?.messages.length) {
+      setIsExporting(true)
+      setError(null)
+
+      // Build query parameters matching current filters
+      const params = new URLSearchParams()
+      if (searchTerm) params.append('search', searchTerm)
+      if (statusFilter !== 'all') params.append('status', statusFilter)
+      params.append('limit', '10000')
+      params.append('page', '1')
+
+      const selectedId = typeof window !== 'undefined' ? localStorage.getItem('selectedDomainId') : null
+      if (selectedId && selectedId !== 'all') params.append('domainId', selectedId)
+
+      // Fetch all matching messages
+      const response = await fetch(`/api/dashboard/messages?${params.toString()}`)
+      if (!response.ok) {
+        throw new Error('Failed to fetch all messages for export')
+      }
+
+      const result = await response.json()
+      const allMessages = result.messages
+
+      if (!allMessages || allMessages.length === 0) {
         setError('No messages to export')
         return
       }
 
-      // Create CSV content from current data (respecting filters)
+      // Create CSV content from ALL fetched data
       const csvHeaders = [
         'Message ID',
         'Recipient',
@@ -220,7 +243,7 @@ export default function MessagesPage() {
         'Total Events'
       ]
 
-      const csvRows = messagesData.messages.map((message: EmailMessage) => [
+      const csvRows = allMessages.map((message: EmailMessage) => [
         message.messageId,
         message.recipient,
         message.sender,
@@ -245,7 +268,7 @@ export default function MessagesPage() {
       const link = document.createElement('a')
       const url = URL.createObjectURL(blob)
       link.setAttribute('href', url)
-      link.setAttribute('download', `messages-${new Date().toISOString().split('T')[0]}.csv`)
+      link.setAttribute('download', `messages-export-${new Date().toISOString().split('T')[0]}.csv`)
       link.style.visibility = 'hidden'
       document.body.appendChild(link)
       link.click()
@@ -256,6 +279,8 @@ export default function MessagesPage() {
     } catch (err) {
       console.error('Error exporting messages data:', err)
       setError('Failed to export messages data')
+    } finally {
+      setIsExporting(false)
     }
   }
 
@@ -557,9 +582,18 @@ export default function MessagesPage() {
             </CardDescription>
           </div>
           {messagesData?.messages.length ? (
-            <Button variant="outline" size="sm" onClick={exportMessages} disabled={isSearching}>
-              <Download className="h-4 w-4 mr-2" />
-              Export
+            <Button variant="outline" size="sm" onClick={exportMessages} disabled={isSearching || isExporting}>
+              {isExporting ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Exporting...
+                </>
+              ) : (
+                <>
+                  <Download className="h-4 w-4 mr-2" />
+                  Export All
+                </>
+              )}
             </Button>
           ) : null}
         </CardHeader>

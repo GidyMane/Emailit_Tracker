@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useState, useEffect } from "react"
-import { BarChart3, TrendingUp, PieChart, Mail, MousePointer, Eye, AlertTriangle } from 'lucide-react'
+import { BarChart3, TrendingUp, PieChart, Mail, MousePointer, Eye, AlertTriangle, Calendar, X } from 'lucide-react'
 import { formatChartDate, formatTooltipDate } from '@/lib/date-utils'
 import { useResponsiveChart } from '@/hooks/use-responsive-chart'
 
@@ -154,6 +154,8 @@ export default function EnhancedAnalyticsDashboard() {
   const [domainData, setDomainData] = useState<DomainData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [startDate, setStartDate] = useState<string>("")
+  const [endDate, setEndDate] = useState<string>("")
   const chartSettings = useResponsiveChart()
 
   useEffect(() => {
@@ -163,7 +165,18 @@ export default function EnhancedAnalyticsDashboard() {
         setError(null)
 
         const selectedId = typeof window !== 'undefined' ? localStorage.getItem('selectedDomainId') : null
-        const qs = selectedId && selectedId !== 'all' ? `?domainId=${encodeURIComponent(selectedId)}` : ''
+        const params = new URLSearchParams()
+        if (selectedId && selectedId !== 'all') {
+          params.append('domainId', encodeURIComponent(selectedId))
+        }
+        if (startDate) {
+          params.append('startDate', startDate)
+        }
+        if (endDate) {
+          params.append('endDate', endDate)
+        }
+        const qs = params.toString() ? `?${params.toString()}` : ''
+
         const [statsResponse, eventsResponse, domainResponse] = await Promise.all([
           fetch(`/api/dashboard/stats${qs}`),
           fetch(`/api/dashboard/events${qs}`),
@@ -194,7 +207,7 @@ export default function EnhancedAnalyticsDashboard() {
     }
 
     fetchData()
-  }, [])
+  }, [startDate, endDate])
 
   // Prepare pie chart data with safety checks to prevent percentages over 100%
   const attempted = statsData ? (
@@ -310,6 +323,60 @@ export default function EnhancedAnalyticsDashboard() {
           Comprehensive email analytics and performance metrics for {domainData?.userDomain || eventsData?.domainName || 'your domain'}
         </p>
       </div>
+
+      {/* Date Filter Controls */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Calendar className="h-5 w-5" />
+            Filter by Date Range
+          </CardTitle>
+          <CardDescription>Select a date range to view analytics for a specific period</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col sm:flex-row gap-4 items-end">
+            <div className="flex-1">
+              <label className="block text-sm font-medium mb-2">Start Date</label>
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className="w-full px-3 py-2 border border-input rounded-md bg-background text-sm"
+              />
+            </div>
+            <div className="flex-1">
+              <label className="block text-sm font-medium mb-2">End Date</label>
+              <input
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className="w-full px-3 py-2 border border-input rounded-md bg-background text-sm"
+              />
+            </div>
+            <button
+              onClick={() => {
+                setStartDate("")
+                setEndDate("")
+              }}
+              className="px-4 py-2 border border-input rounded-md bg-background text-sm hover:bg-muted transition-colors flex items-center gap-2"
+            >
+              <X className="h-4 w-4" />
+              Clear
+            </button>
+          </div>
+          {(startDate || endDate) && (
+            <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-950 rounded-md text-sm text-blue-800 dark:text-blue-200">
+              {startDate && endDate ? (
+                <p>Showing analytics from {new Date(startDate).toLocaleDateString()} to {new Date(endDate).toLocaleDateString()}</p>
+              ) : startDate ? (
+                <p>Showing analytics from {new Date(startDate).toLocaleDateString()} onwards</p>
+              ) : (
+                <p>Showing analytics up to {new Date(endDate).toLocaleDateString()}</p>
+              )}
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Delivery Breakdown - Raw Numbers */}
       <Card className="border-2">
