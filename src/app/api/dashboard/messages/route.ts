@@ -37,19 +37,20 @@ const { getUser } = getKindeServerSession();
 const user = await getUser();
 
 
-if (!user?.email) {  
-  return NextResponse.json({ error: "Unauthorized" }, { status: 401 });  
-}  
+if (!user?.email) {
+  return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+}
 
-const adminEmails = ["info@websoftdevelopment.com", "muragegideon2000@gmail.com"];  
-const isAdmin = adminEmails.includes(user.email);  
+const adminEmails = ["info@websoftdevelopment.com", "muragegideon2000@gmail.com"];
+const isAdmin = adminEmails.includes(user.email);
 
-const url = new URL(request.url);  
-const selectedDomainId = url.searchParams.get("domainId");  
-const search = url.searchParams.get("search") || "";  
-const statusParam = url.searchParams.get("status") || "all";  
-const page = parseInt(url.searchParams.get("page") || "1");  
-const limit = parseInt(url.searchParams.get("limit") || "20");  
+const url = new URL(request.url);
+const selectedDomainId = url.searchParams.get("domainId");
+const search = url.searchParams.get("search") || "";
+const statusParam = url.searchParams.get("status") || "all";
+const dateRange = url.searchParams.get("dateRange") || "all";
+const page = parseInt(url.searchParams.get("page") || "1");
+const limit = parseInt(url.searchParams.get("limit") || "20");
 const offset = (page - 1) * limit;  
 
 // Domain filter  
@@ -89,21 +90,47 @@ if (isAdmin) {
   domainName = domain.name;  
 }  
 
-// Search filter  
-const searchFilter = search  
-  ? {  
-      OR: [  
-        { to: { contains: search, mode: "insensitive" as const } },  
-        { from: { contains: search, mode: "insensitive" as const } },  
-        { subject: { contains: search, mode: "insensitive" as const } },  
-      ],  
-    }  
-  : {};  
+// Search filter
+const searchFilter = search
+  ? {
+      OR: [
+        { to: { contains: search, mode: "insensitive" as const } },
+        { from: { contains: search, mode: "insensitive" as const } },
+        { subject: { contains: search, mode: "insensitive" as const } },
+      ],
+    }
+  : {};
 
-// Build WHERE clause without date filter  
+// Date range filter
+const getDateRangeFilter = (range: string) => {
+  const now = new Date();
+  let startDate: Date | null = null;
+
+  switch (range) {
+    case "7":
+      startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+      break;
+    case "30":
+      startDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+      break;
+    case "90":
+      startDate = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+      break;
+    case "all":
+    default:
+      return {};
+  }
+
+  return startDate ? { createdAt: { gte: startDate } } : {};
+};
+
+const dateRangeFilter = getDateRangeFilter(dateRange);
+
+// Build WHERE clause with all filters
 const whereClause: Prisma.EmailWhereInput = {
   domainId: { in: domainIds },
   ...searchFilter,
+  ...dateRangeFilter,
 };
 
 // Fetch total count and paginated emails  

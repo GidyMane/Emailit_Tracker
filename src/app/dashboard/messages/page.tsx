@@ -129,10 +129,11 @@ export default function MessagesPage() {
       const params = new URLSearchParams()
       if (searchTerm) params.append('search', searchTerm)
       if (statusFilter !== 'all') params.append('status', statusFilter)
+      params.append('dateRange', dateRange)
       params.append('page', currentPage.toString())
       params.append('limit', '20')
 
-    
+
 
       const selectedId = typeof window !== 'undefined' ? localStorage.getItem('selectedDomainId') : null
       if (selectedId && selectedId !== 'all') params.append('domainId', selectedId)
@@ -198,15 +199,24 @@ export default function MessagesPage() {
     }
   }
 
-  const exportMessages = async () => {
+  const exportMessages = async (exportType: 'filtered' | 'all' = 'filtered') => {
     try {
       setIsExporting(true)
       setError(null)
 
-      // Build query parameters matching current filters
+      // Build query parameters
       const params = new URLSearchParams()
-      if (searchTerm) params.append('search', searchTerm)
-      if (statusFilter !== 'all') params.append('status', statusFilter)
+
+      // Apply filters only if exporting filtered data
+      if (exportType === 'filtered') {
+        if (searchTerm) params.append('search', searchTerm)
+        if (statusFilter !== 'all') params.append('status', statusFilter)
+        params.append('dateRange', dateRange)
+      } else {
+        // For "export all", fetch without filters but keep domain filter
+        params.append('dateRange', 'all')
+      }
+
       params.append('limit', '10000')
       params.append('page', '1')
 
@@ -216,14 +226,14 @@ export default function MessagesPage() {
       // Fetch all matching messages
       const response = await fetch(`/api/dashboard/messages?${params.toString()}`)
       if (!response.ok) {
-        throw new Error('Failed to fetch all messages for export')
+        throw new Error(`Failed to fetch messages for export`)
       }
 
       const result = await response.json()
       const allMessages = result.messages
 
       if (!allMessages || allMessages.length === 0) {
-        setError('No messages to export')
+        setError(`No messages to export`)
         return
       }
 
@@ -263,12 +273,13 @@ export default function MessagesPage() {
         ...csvRows.map((row: (string | number)[]) => row.map((cell: string | number) => `"${cell}"`).join(','))
       ].join('\n')
 
-      // Download CSV file
+      // Download CSV file with appropriate filename
+      const exportLabel = exportType === 'filtered' ? 'filtered' : 'all'
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
       const link = document.createElement('a')
       const url = URL.createObjectURL(blob)
       link.setAttribute('href', url)
-      link.setAttribute('download', `messages-export-${new Date().toISOString().split('T')[0]}.csv`)
+      link.setAttribute('download', `messages-${exportLabel}-${new Date().toISOString().split('T')[0]}.csv`)
       link.style.visibility = 'hidden'
       document.body.appendChild(link)
       link.click()
@@ -582,19 +593,46 @@ export default function MessagesPage() {
             </CardDescription>
           </div>
           {messagesData?.messages.length ? (
-            <Button variant="outline" size="sm" onClick={exportMessages} disabled={isSearching || isExporting}>
-              {isExporting ? (
-                <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Exporting...
-                </>
-              ) : (
-                <>
-                  <Download className="h-4 w-4 mr-2" />
-                  Export All
-                </>
-              )}
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => exportMessages('filtered')}
+                disabled={isSearching || isExporting}
+                title="Export messages matching current filters (search, status, date)"
+              >
+                {isExporting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Exporting...
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-4 w-4 mr-2" />
+                    Export Filtered
+                  </>
+                )}
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => exportMessages('all')}
+                disabled={isSearching || isExporting}
+                title="Export all messages without filters"
+              >
+                {isExporting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Exporting...
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-4 w-4 mr-2" />
+                    Export All
+                  </>
+                )}
+              </Button>
+            </div>
           ) : null}
         </CardHeader>
         <CardContent>
