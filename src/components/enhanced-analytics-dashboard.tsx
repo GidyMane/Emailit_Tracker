@@ -154,9 +154,25 @@ export default function EnhancedAnalyticsDashboard() {
   const [domainData, setDomainData] = useState<DomainData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  // Temporary state for date inputs (doesn't trigger fetch)
   const [startDate, setStartDate] = useState<string>("")
   const [endDate, setEndDate] = useState<string>("")
+  // Applied state for actual filtering (triggers fetch)
+  const [appliedStartDate, setAppliedStartDate] = useState<string>("")
+  const [appliedEndDate, setAppliedEndDate] = useState<string>("")
   const chartSettings = useResponsiveChart()
+
+  const handleApplyDateFilter = () => {
+    setAppliedStartDate(startDate)
+    setAppliedEndDate(endDate)
+  }
+
+  const handleClearDateFilter = () => {
+    setStartDate("")
+    setEndDate("")
+    setAppliedStartDate("")
+    setAppliedEndDate("")
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -169,11 +185,11 @@ export default function EnhancedAnalyticsDashboard() {
         if (selectedId && selectedId !== 'all') {
           params.append('domainId', encodeURIComponent(selectedId))
         }
-        if (startDate) {
-          params.append('startDate', startDate)
+        if (appliedStartDate) {
+          params.append('startDate', appliedStartDate)
         }
-        if (endDate) {
-          params.append('endDate', endDate)
+        if (appliedEndDate) {
+          params.append('endDate', appliedEndDate)
         }
         const qs = params.toString() ? `?${params.toString()}` : ''
 
@@ -207,7 +223,7 @@ export default function EnhancedAnalyticsDashboard() {
     }
 
     fetchData()
-  }, [startDate, endDate])
+  }, [appliedStartDate, appliedEndDate])
 
   // Prepare pie chart data with safety checks to prevent percentages over 100%
   const attempted = statsData ? (
@@ -331,7 +347,7 @@ export default function EnhancedAnalyticsDashboard() {
             <Calendar className="h-5 w-5" />
             Filter by Date Range
           </CardTitle>
-          <CardDescription>Select a date range to view analytics for a specific period</CardDescription>
+          <CardDescription>Select a date range to view analytics for a specific period, then click "Apply"</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col sm:flex-row gap-4 items-end">
@@ -354,24 +370,27 @@ export default function EnhancedAnalyticsDashboard() {
               />
             </div>
             <button
-              onClick={() => {
-                setStartDate("")
-                setEndDate("")
-              }}
+              onClick={handleApplyDateFilter}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700 transition-colors font-medium"
+            >
+              Apply
+            </button>
+            <button
+              onClick={handleClearDateFilter}
               className="px-4 py-2 border border-input rounded-md bg-background text-sm hover:bg-muted transition-colors flex items-center gap-2"
             >
               <X className="h-4 w-4" />
               Clear
             </button>
           </div>
-          {(startDate || endDate) && (
-            <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-950 rounded-md text-sm text-blue-800 dark:text-blue-200">
-              {startDate && endDate ? (
-                <p>Showing analytics from {new Date(startDate).toLocaleDateString()} to {new Date(endDate).toLocaleDateString()}</p>
-              ) : startDate ? (
-                <p>Showing analytics from {new Date(startDate).toLocaleDateString()} onwards</p>
+          {(appliedStartDate || appliedEndDate) && (
+            <div className="mt-4 p-3 bg-green-50 dark:bg-green-950 rounded-md text-sm text-green-800 dark:text-green-200">
+              {appliedStartDate && appliedEndDate ? (
+                <p>✓ Showing analytics from {new Date(appliedStartDate).toLocaleDateString()} to {new Date(appliedEndDate).toLocaleDateString()}</p>
+              ) : appliedStartDate ? (
+                <p>✓ Showing analytics from {new Date(appliedStartDate).toLocaleDateString()} onwards</p>
               ) : (
-                <p>Showing analytics up to {new Date(endDate).toLocaleDateString()}</p>
+                <p>✓ Showing analytics up to {new Date(appliedEndDate).toLocaleDateString()}</p>
               )}
             </div>
           )}
