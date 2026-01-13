@@ -90,21 +90,47 @@ if (isAdmin) {
   domainName = domain.name;  
 }  
 
-// Search filter  
-const searchFilter = search  
-  ? {  
-      OR: [  
-        { to: { contains: search, mode: "insensitive" as const } },  
-        { from: { contains: search, mode: "insensitive" as const } },  
-        { subject: { contains: search, mode: "insensitive" as const } },  
-      ],  
-    }  
-  : {};  
+// Search filter
+const searchFilter = search
+  ? {
+      OR: [
+        { to: { contains: search, mode: "insensitive" as const } },
+        { from: { contains: search, mode: "insensitive" as const } },
+        { subject: { contains: search, mode: "insensitive" as const } },
+      ],
+    }
+  : {};
 
-// Build WHERE clause without date filter  
+// Date range filter
+const getDateRangeFilter = (range: string) => {
+  const now = new Date();
+  let startDate: Date | null = null;
+
+  switch (range) {
+    case "7":
+      startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+      break;
+    case "30":
+      startDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+      break;
+    case "90":
+      startDate = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+      break;
+    case "all":
+    default:
+      return {};
+  }
+
+  return startDate ? { createdAt: { gte: startDate } } : {};
+};
+
+const dateRangeFilter = getDateRangeFilter(dateRange);
+
+// Build WHERE clause with all filters
 const whereClause: Prisma.EmailWhereInput = {
   domainId: { in: domainIds },
   ...searchFilter,
+  ...dateRangeFilter,
 };
 
 // Fetch total count and paginated emails  
