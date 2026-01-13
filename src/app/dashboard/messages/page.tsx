@@ -129,10 +129,11 @@ export default function MessagesPage() {
       const params = new URLSearchParams()
       if (searchTerm) params.append('search', searchTerm)
       if (statusFilter !== 'all') params.append('status', statusFilter)
+      params.append('dateRange', dateRange)
       params.append('page', currentPage.toString())
       params.append('limit', '20')
 
-    
+
 
       const selectedId = typeof window !== 'undefined' ? localStorage.getItem('selectedDomainId') : null
       if (selectedId && selectedId !== 'all') params.append('domainId', selectedId)
