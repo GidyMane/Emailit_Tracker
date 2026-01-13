@@ -79,14 +79,27 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(url.searchParams.get("limit") || "50");
     const offset = parseInt(url.searchParams.get("offset") || "0");
 
-    const dateFilter: { gte?: Date; lte?: Date } = {};
-    if (startDate) dateFilter.gte = new Date(startDate);
-    if (endDate) dateFilter.lte = new Date(endDate);
-    if (!startDate && !endDate) {
-      const thirtyDaysAgo = new Date();
-      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-      dateFilter.gte = thirtyDaysAgo;
+    let filterStartDate: Date;
+    let filterEndDate: Date;
+
+    if (startDate) {
+      filterStartDate = new Date(startDate);
+    } else {
+      filterStartDate = new Date();
+      filterStartDate.setDate(filterStartDate.getDate() - 30);
     }
+
+    if (endDate) {
+      filterEndDate = new Date(endDate);
+      filterEndDate.setHours(23, 59, 59, 999);
+    } else {
+      filterEndDate = new Date();
+    }
+
+    const dateFilter: { gte?: Date; lte?: Date } = {
+      gte: filterStartDate,
+      lte: filterEndDate
+    };
 
     const whereClause = {
       ...domainFilter,
@@ -104,9 +117,6 @@ export async function GET(request: NextRequest) {
 
     const totalCount = await prisma.emailEvent.count({ where: whereClause });
 
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
     const domainIds = domains.map((d) => d.id);
 
     const volumeData = isAdmin && domains.length > 1
@@ -122,9 +132,10 @@ export async function GET(request: NextRequest) {
         INNER JOIN "Email" em ON e."emailId" = em.id
         WHERE em."domainId" = ANY($1)
           AND e."occurredAt" >= $2
+          AND e."occurredAt" <= $3
         GROUP BY DATE(e."occurredAt")
         ORDER BY DATE(e."occurredAt")
-      `, domainIds, thirtyDaysAgo)
+      `, domainIds, filterStartDate, filterEndDate)
       : await prisma.$queryRawUnsafe(`
         SELECT
                to_char(DATE(e."occurredAt"), 'YYYY-MM-DD') as date,
@@ -137,9 +148,10 @@ export async function GET(request: NextRequest) {
         INNER JOIN "Email" em ON e."emailId" = em.id
         WHERE em."domainId" = $1
           AND e."occurredAt" >= $2
+          AND e."occurredAt" <= $3
         GROUP BY DATE(e."occurredAt")
         ORDER BY DATE(e."occurredAt")
-      `, domains[0].id, thirtyDaysAgo);
+      `, domains[0].id, filterStartDate, filterEndDate);
 
     const engagementData = isAdmin && domains.length > 1
       ? await prisma.$queryRawUnsafe(`
@@ -151,10 +163,11 @@ export async function GET(request: NextRequest) {
         INNER JOIN "Email" em ON e."emailId" = em.id
         WHERE em."domainId" = ANY($1)
           AND e."occurredAt" >= $2
+          AND e."occurredAt" <= $3
           AND e.type IN ('email.loaded','email.link.clicked')
         GROUP BY EXTRACT(DOW FROM e."occurredAt"), TO_CHAR(e."occurredAt", 'Day')
         ORDER BY EXTRACT(DOW FROM e."occurredAt")
-      `, domainIds, thirtyDaysAgo)
+      `, domainIds, filterStartDate, filterEndDate)
       : await prisma.$queryRawUnsafe(`
         SELECT EXTRACT(DOW FROM e."occurredAt") as day_of_week,
                TO_CHAR(e."occurredAt", 'Day') as day_name,
@@ -164,10 +177,11 @@ export async function GET(request: NextRequest) {
         INNER JOIN "Email" em ON e."emailId" = em.id
         WHERE em."domainId" = $1
           AND e."occurredAt" >= $2
+          AND e."occurredAt" <= $3
           AND e.type IN ('email.loaded','email.link.clicked')
         GROUP BY EXTRACT(DOW FROM e."occurredAt"), TO_CHAR(e."occurredAt", 'Day')
         ORDER BY EXTRACT(DOW FROM e."occurredAt")
-      `, domains[0].id, thirtyDaysAgo);
+      `, domains[0].id, filterStartDate, filterEndDate);
 
     return safeJsonResponse({
       events: events.map((event) => ({
