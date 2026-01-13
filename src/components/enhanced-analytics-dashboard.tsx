@@ -154,9 +154,25 @@ export default function EnhancedAnalyticsDashboard() {
   const [domainData, setDomainData] = useState<DomainData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  // Temporary state for date inputs (doesn't trigger fetch)
   const [startDate, setStartDate] = useState<string>("")
   const [endDate, setEndDate] = useState<string>("")
+  // Applied state for actual filtering (triggers fetch)
+  const [appliedStartDate, setAppliedStartDate] = useState<string>("")
+  const [appliedEndDate, setAppliedEndDate] = useState<string>("")
   const chartSettings = useResponsiveChart()
+
+  const handleApplyDateFilter = () => {
+    setAppliedStartDate(startDate)
+    setAppliedEndDate(endDate)
+  }
+
+  const handleClearDateFilter = () => {
+    setStartDate("")
+    setEndDate("")
+    setAppliedStartDate("")
+    setAppliedEndDate("")
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -169,11 +185,11 @@ export default function EnhancedAnalyticsDashboard() {
         if (selectedId && selectedId !== 'all') {
           params.append('domainId', encodeURIComponent(selectedId))
         }
-        if (startDate) {
-          params.append('startDate', startDate)
+        if (appliedStartDate) {
+          params.append('startDate', appliedStartDate)
         }
-        if (endDate) {
-          params.append('endDate', endDate)
+        if (appliedEndDate) {
+          params.append('endDate', appliedEndDate)
         }
         const qs = params.toString() ? `?${params.toString()}` : ''
 
@@ -207,7 +223,7 @@ export default function EnhancedAnalyticsDashboard() {
     }
 
     fetchData()
-  }, [startDate, endDate])
+  }, [appliedStartDate, appliedEndDate])
 
   // Prepare pie chart data with safety checks to prevent percentages over 100%
   const attempted = statsData ? (
