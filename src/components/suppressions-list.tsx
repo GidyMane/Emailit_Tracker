@@ -279,7 +279,15 @@ export default function SuppressionsList() {
                         : 'N/A'
                       }
                     </TableCell>
-                    <TableCell className="text-right">
+                    <TableCell className="text-right flex gap-1 justify-end">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleOpenEdit(suppression)}
+                        className="h-8 w-8 text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-950"
+                      >
+                        <Edit2 className="h-4 w-4" />
+                      </Button>
                       <Button
                         variant="ghost"
                         size="icon"
