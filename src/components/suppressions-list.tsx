@@ -93,16 +93,6 @@ export default function SuppressionsList() {
     }
   }
 
-  if (!isAuthenticated) {
-    return (
-      <Card>
-        <CardContent className="pt-6">
-          <p className="text-muted-foreground">Please log in to view suppressions.</p>
-        </CardContent>
-      </Card>
-    )
-  }
-
   return (
     <Card>
       <CardHeader>
