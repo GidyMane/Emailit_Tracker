@@ -30,7 +30,9 @@ interface Suppression {
   email?: string
   status?: string
   created_at?: string
+  timestamp?: string
   description?: string
+  reason?: string
   [key: string]: any
 }
 
@@ -337,6 +339,7 @@ export default function SuppressionsList() {
                 <TableRow>
                   <TableHead>Name / Email</TableHead>
                   <TableHead>Status</TableHead>
+                  <TableHead>Reason</TableHead>
                   <TableHead>Created At</TableHead>
                   <TableHead className="w-24 text-right">Actions</TableHead>
                 </TableRow>
@@ -358,22 +361,26 @@ export default function SuppressionsList() {
                       </span>
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
-                      {suppression.created_at && suppression.created_at !== 'N/A'
-                        ? (() => {
-                            try {
-                              const timestamp = parseFloat(suppression.created_at)
-                              if (isNaN(timestamp)) {
-                                // Try parsing as ISO string
-                                return new Date(suppression.created_at).toLocaleString()
-                              }
-                              // If it's a Unix timestamp in seconds (less than year 2100 in seconds)
-                              return new Date(timestamp * 1000).toLocaleString()
-                            } catch {
-                              return 'N/A'
+                      {suppression.reason || 'N/A'}
+                    </TableCell>
+                    <TableCell className="text-sm text-muted-foreground">
+                      {(() => {
+                        const timestampValue = suppression.timestamp || suppression.created_at
+                        if (timestampValue && timestampValue !== 'N/A') {
+                          try {
+                            const timestamp = parseFloat(timestampValue)
+                            if (isNaN(timestamp)) {
+                              // Try parsing as ISO string
+                              return new Date(timestampValue).toLocaleString()
                             }
-                          })()
-                        : 'N/A'
-                      }
+                            // If it's a Unix timestamp in seconds (less than year 2100 in seconds)
+                            return new Date(timestamp * 1000).toLocaleString()
+                          } catch {
+                            return 'N/A'
+                          }
+                        }
+                        return 'N/A'
+                      })()}
                     </TableCell>
                     <TableCell className="text-right flex gap-1 justify-end">
                       <Button
