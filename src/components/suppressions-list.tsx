@@ -173,11 +173,58 @@ export default function SuppressionsList() {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Suppressed Emails</CardTitle>
-        <CardDescription>
-          Manage suppressed email addresses for domain: <span className="font-semibold">{domain}</span>
-        </CardDescription>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <div>
+          <CardTitle>Suppressed Emails</CardTitle>
+          <CardDescription>
+            Manage suppressed email addresses for domain: <span className="font-semibold">{domain}</span>
+          </CardDescription>
+        </div>
+        <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+          <DialogTrigger asChild>
+            <Button className="gap-2" onClick={() => resetForm()}>
+              <Plus className="h-4 w-4" />
+              Add Suppression
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Add New Suppression</DialogTitle>
+              <DialogDescription>
+                Add a new email address to the suppression list
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="create-name">Name *</Label>
+                <Input
+                  id="create-name"
+                  placeholder="Enter email or name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                />
+              </div>
+              <div>
+                <Label htmlFor="create-description">Description</Label>
+                <Input
+                  id="create-description"
+                  placeholder="Optional description"
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                />
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" onClick={() => setIsCreateOpen(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={handleCreateOrUpdate} disabled={isSubmitting}>
+                  {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+                  Add Suppression
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </CardHeader>
       <CardContent>
         {error && (
