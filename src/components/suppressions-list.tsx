@@ -1,9 +1,11 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { Trash2, AlertCircle, Loader2 } from 'lucide-react'
+import { Trash2, AlertCircle, Loader2, Plus, X, Edit2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import {
   Table,
   TableBody,
@@ -12,6 +14,14 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 
 interface Suppression {
   id: string
@@ -19,6 +29,7 @@ interface Suppression {
   email?: string
   status?: string
   created_at?: string
+  description?: string
   [key: string]: any
 }
 
