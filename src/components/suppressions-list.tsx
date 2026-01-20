@@ -314,7 +314,21 @@ export default function SuppressionsList() {
           </div>
         ) : suppressions.length === 0 ? (
           <div className="py-8 text-center">
-            <p className="text-muted-foreground">No suppressed emails found for your domain.</p>
+            <p className="text-muted-foreground">
+              {searchTerm
+                ? 'No suppressed emails match your search.'
+                : 'No suppressed emails found for your domain.'}
+            </p>
+            {searchTerm && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="mt-4"
+                onClick={() => setSearchInput('')}
+              >
+                Clear Search
+              </Button>
+            )}
           </div>
         ) : (
           <div className="overflow-x-auto">
