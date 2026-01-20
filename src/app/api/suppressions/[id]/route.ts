@@ -39,7 +39,7 @@ async function callEmailItAPI(
   }
 
   try {
-    const response = await fetch(`https://api.emailit.com/v1${endpoint}`, options);
+    const response = await fetch(`https://api.emailit.com/v2${endpoint}`, options);
     clearTimeout(timeoutId);
     return response;
   } catch (error) {
