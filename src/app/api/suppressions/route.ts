@@ -15,23 +15,12 @@ export async function GET(request: NextRequest) {
     const adminEmails = ["info@websoftdevelopment.com", "muragegideon2000@gmail.com"];
     const isAdmin = adminEmails.includes(user.email);
 
-    // Get domain from query params or derive from user email
-    const url = new URL(request.url);
-    const domainParam = url.searchParams.get("domain");
-
-    let userDomain: string;
-
-    if (isAdmin && domainParam) {
-      // Admin can query any domain
-      userDomain = domainParam;
-    } else {
-      // Non-admin users can only access their own domain
-      const userEmailDomain = user.email.split("@")[1];
-      if (!userEmailDomain) {
-        return NextResponse.json({ error: "Invalid email format" }, { status: 400 });
-      }
-      userDomain = userEmailDomain;
+    // Derive domain from user email
+    const userEmailDomain = user.email.split("@")[1];
+    if (!userEmailDomain) {
+      return NextResponse.json({ error: "Invalid email format" }, { status: 400 });
     }
+    const userDomain = userEmailDomain;
 
     // Validate API key
     if (!process.env.EMAILIT_API_KEY) {
