@@ -274,8 +274,8 @@ export default function SuppressionsList() {
                       </span>
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
-                      {suppression.created_at 
-                        ? new Date(suppression.created_at).toLocaleDateString()
+                      {suppression.created_at
+                        ? new Date(parseFloat(suppression.created_at) * 1000).toLocaleString()
                         : 'N/A'
                       }
                     </TableCell>
