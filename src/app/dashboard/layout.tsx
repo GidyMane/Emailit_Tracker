@@ -14,7 +14,8 @@ import {
   Moon,
   Send,
   Sun,
-  Users
+  Users,
+  Ban
 } from 'lucide-react'
 
 import { Button } from "@/components/ui/button"
