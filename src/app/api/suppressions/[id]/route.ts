@@ -51,7 +51,7 @@ async function callEmailItAPI(
 // GET /api/suppressions/:id - Retrieve a specific suppression
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { getUser } = getKindeServerSession();
@@ -78,7 +78,8 @@ export async function GET(
       );
     }
 
-    const response = await callEmailItAPI(`/suppressions/${params.id}`, "GET");
+    const { id } = await params;
+    const response = await callEmailItAPI(`/suppressions/${id}`, "GET");
 
     if (!response.ok) {
       const error = await response.text();
