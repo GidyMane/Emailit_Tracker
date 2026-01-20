@@ -89,10 +89,15 @@ export default function SuppressionsList() {
 
   const fetchSuppressions = async () => {
     try {
-      setLoading(true)
       setError(null)
 
-      const response = await fetch('/api/suppressions')
+      const params = new URLSearchParams()
+      if (searchTerm) {
+        params.append('search', searchTerm)
+      }
+
+      const url = `/api/suppressions${params.toString() ? `?${params.toString()}` : ''}`
+      const response = await fetch(url)
 
       if (!response.ok) {
         const errorData = await response.json()
@@ -106,9 +111,12 @@ export default function SuppressionsList() {
       console.error('Error fetching suppressions:', err)
       const errorMessage = err instanceof Error ? err.message : 'Failed to load suppressions'
       setError(errorMessage)
-      toast.error(errorMessage)
+      if (searchTerm) {
+        toast.error(errorMessage)
+      }
     } finally {
       setLoading(false)
+      setIsSearching(false)
     }
   }
 
