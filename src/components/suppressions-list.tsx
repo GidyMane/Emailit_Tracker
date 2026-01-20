@@ -74,7 +74,9 @@ export default function SuppressionsList() {
       setDomain(data.domain)
     } catch (err) {
       console.error('Error fetching suppressions:', err)
-      setError(err instanceof Error ? err.message : 'Failed to load suppressions')
+      const errorMessage = err instanceof Error ? err.message : 'Failed to load suppressions'
+      setError(errorMessage)
+      toast.error(errorMessage)
     } finally {
       setLoading(false)
     }
