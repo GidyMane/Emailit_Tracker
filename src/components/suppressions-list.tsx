@@ -1,7 +1,8 @@
 "use client"
 
-import { useState, useEffect } from 'react'
-import { Trash2, AlertCircle, Loader2, Plus, X, Edit2 } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
+import { Trash2, AlertCircle, Loader2, Plus, X, Edit2, Search } from 'lucide-react'
+import toast from 'react-hot-toast'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -51,17 +52,52 @@ export default function SuppressionsList() {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [formData, setFormData] = useState({ name: '', description: '' })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [searchInput, setSearchInput] = useState('')
+  const [searchTerm, setSearchTerm] = useState('')
+  const [isSearching, setIsSearching] = useState(false)
+  const debounceTimer = useRef<NodeJS.Timeout | null>(null)
 
+  // Debounce search input
+  useEffect(() => {
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current)
+    }
+
+    debounceTimer.current = setTimeout(() => {
+      setSearchTerm(searchInput)
+      setIsSearching(true)
+    }, 300)
+
+    return () => {
+      if (debounceTimer.current) {
+        clearTimeout(debounceTimer.current)
+      }
+    }
+  }, [searchInput])
+
+  // Fetch suppressions when search term changes
   useEffect(() => {
     fetchSuppressions()
+  }, [searchTerm])
+
+  // Initial fetch
+  useEffect(() => {
+    if (searchTerm === '') {
+      fetchSuppressions()
+    }
   }, [])
 
   const fetchSuppressions = async () => {
     try {
-      setLoading(true)
       setError(null)
 
-      const response = await fetch('/api/suppressions')
+      const params = new URLSearchParams()
+      if (searchTerm) {
+        params.append('search', searchTerm)
+      }
+
+      const url = `/api/suppressions${params.toString() ? `?${params.toString()}` : ''}`
+      const response = await fetch(url)
 
       if (!response.ok) {
         const errorData = await response.json()
@@ -73,9 +109,14 @@ export default function SuppressionsList() {
       setDomain(data.domain)
     } catch (err) {
       console.error('Error fetching suppressions:', err)
-      setError(err instanceof Error ? err.message : 'Failed to load suppressions')
+      const errorMessage = err instanceof Error ? err.message : 'Failed to load suppressions'
+      setError(errorMessage)
+      if (searchTerm) {
+        toast.error(errorMessage)
+      }
     } finally {
       setLoading(false)
+      setIsSearching(false)
     }
   }
 
@@ -100,9 +141,10 @@ export default function SuppressionsList() {
 
       // Remove the deleted suppression from the list
       setSuppressions(suppressions.filter(s => s.id !== id))
+      toast.success('Suppression deleted successfully')
     } catch (err) {
       console.error('Error deleting suppression:', err)
-      alert(err instanceof Error ? err.message : 'Failed to delete suppression')
+      toast.error(err instanceof Error ? err.message : 'Failed to delete suppression')
     } finally {
       setDeleting(null)
     }
@@ -110,7 +152,7 @@ export default function SuppressionsList() {
 
   const handleCreateOrUpdate = async () => {
     if (!formData.name.trim()) {
-      alert('Name is required')
+      toast.error('Name is required')
       return
     }
 
@@ -141,17 +183,19 @@ export default function SuppressionsList() {
         // Update existing suppression in list
         setSuppressions(suppressions.map(s => s.id === editingId ? newSuppression : s))
         setIsEditOpen(false)
+        toast.success('Suppression updated successfully')
       } else {
         // Add new suppression to list
         setSuppressions([...suppressions, newSuppression])
         setIsCreateOpen(false)
+        toast.success('Suppression added successfully')
       }
 
       setFormData({ name: '', description: '' })
       setEditingId(null)
     } catch (err) {
       console.error('Error saving suppression:', err)
-      alert(err instanceof Error ? err.message : 'Failed to save suppression')
+      toast.error(err instanceof Error ? err.message : 'Failed to save suppression')
     } finally {
       setIsSubmitting(false)
     }
@@ -173,20 +217,21 @@ export default function SuppressionsList() {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <div>
-          <CardTitle>Suppressed Emails</CardTitle>
-          <CardDescription>
-            Manage suppressed email addresses for domain: <span className="font-semibold">{domain}</span>
-          </CardDescription>
-        </div>
-        <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
-          <DialogTrigger asChild>
-            <Button className="gap-2" onClick={() => resetForm()}>
-              <Plus className="h-4 w-4" />
-              Add Suppression
-            </Button>
-          </DialogTrigger>
+      <CardHeader>
+        <div className="flex flex-row items-center justify-between">
+          <div>
+            <CardTitle>Suppressed Emails</CardTitle>
+            <CardDescription>
+              Manage suppressed email addresses for domain: <span className="font-semibold">{domain}</span>
+            </CardDescription>
+          </div>
+          <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+            <DialogTrigger asChild>
+              <Button className="gap-2" onClick={() => resetForm()}>
+                <Plus className="h-4 w-4" />
+                Add Suppression
+              </Button>
+            </DialogTrigger>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Add New Suppression</DialogTitle>
@@ -224,9 +269,34 @@ export default function SuppressionsList() {
               </div>
             </div>
           </DialogContent>
-        </Dialog>
+          </Dialog>
+        </div>
       </CardHeader>
       <CardContent>
+        <div className="flex gap-2 mb-4">
+          <div className="relative flex-1">
+            {isSearching ? (
+              <Loader2 className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground animate-spin" />
+            ) : (
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            )}
+            <Input
+              placeholder="Search by name or email..."
+              className="pl-10 pr-10"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+            />
+            {searchInput && (
+              <button
+                onClick={() => setSearchInput('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="Clear search"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+        </div>
         {error && (
           <div className="mb-4 p-4 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg flex items-start gap-3">
             <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
@@ -244,7 +314,21 @@ export default function SuppressionsList() {
           </div>
         ) : suppressions.length === 0 ? (
           <div className="py-8 text-center">
-            <p className="text-muted-foreground">No suppressed emails found for your domain.</p>
+            <p className="text-muted-foreground">
+              {searchTerm
+                ? 'No suppressed emails match your search.'
+                : 'No suppressed emails found for your domain.'}
+            </p>
+            {searchTerm && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="mt-4"
+                onClick={() => setSearchInput('')}
+              >
+                Clear Search
+              </Button>
+            )}
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -274,8 +358,20 @@ export default function SuppressionsList() {
                       </span>
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
-                      {suppression.created_at
-                        ? new Date(parseFloat(suppression.created_at) * 1000).toLocaleString()
+                      {suppression.created_at && suppression.created_at !== 'N/A'
+                        ? (() => {
+                            try {
+                              const timestamp = parseFloat(suppression.created_at)
+                              if (isNaN(timestamp)) {
+                                // Try parsing as ISO string
+                                return new Date(suppression.created_at).toLocaleString()
+                              }
+                              // If it's a Unix timestamp in seconds (less than year 2100 in seconds)
+                              return new Date(timestamp * 1000).toLocaleString()
+                            } catch {
+                              return 'N/A'
+                            }
+                          })()
                         : 'N/A'
                       }
                     </TableCell>

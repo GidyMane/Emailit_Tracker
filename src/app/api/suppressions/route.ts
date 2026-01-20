@@ -54,6 +54,10 @@ export async function GET(request: NextRequest) {
     }
     const userDomain = userEmailDomain;
 
+    // Get search parameter
+    const searchParams = request.nextUrl.searchParams;
+    const searchTerm = searchParams.get("search") || "";
+
     // Validate API key
     if (!process.env.EMAILIT_API_KEY) {
       console.error("EMAILIT_API_KEY not configured");
@@ -94,7 +98,23 @@ export async function GET(request: NextRequest) {
     const data = await response.json();
 
     // If API returns array directly, use it; otherwise check for data property
-    const suppressions = Array.isArray(data) ? data : data.data || [];
+    let suppressions = Array.isArray(data) ? data : data.data || [];
+
+    // Filter suppressions based on search term
+    if (searchTerm) {
+      const searchLower = searchTerm.toLowerCase();
+      suppressions = suppressions.filter((suppression: any) => {
+        const name = suppression.name?.toLowerCase() || "";
+        const email = suppression.email?.toLowerCase() || "";
+        const description = suppression.description?.toLowerCase() || "";
+
+        return (
+          name.includes(searchLower) ||
+          email.includes(searchLower) ||
+          description.includes(searchLower)
+        );
+      });
+    }
 
     return NextResponse.json({
       suppressions: suppressions,
