@@ -237,7 +237,7 @@ export async function DELETE(
 
     return NextResponse.json({
       success: true,
-      message: `Suppression ${params.id} deleted successfully`,
+      message: `Suppression ${id} deleted successfully`,
     });
   } catch (error) {
     console.error("Error deleting suppression:", error);
