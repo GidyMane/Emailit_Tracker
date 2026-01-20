@@ -68,7 +68,7 @@ export async function GET(request: NextRequest) {
     const timeoutId = setTimeout(() => controller.abort(), 30000);
 
     // Call EmailIt API to get suppressions
-    const response = await fetch("https://api.emailit.com/v1/suppressions", {
+    const response = await fetch("https://api.emailit.com/v2/suppressions", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${process.env.EMAILIT_API_KEY}`,
