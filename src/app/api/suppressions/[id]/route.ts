@@ -193,7 +193,7 @@ export async function PATCH(
 // DELETE /api/suppressions/:id - Delete a suppression
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { getUser } = getKindeServerSession();
@@ -220,7 +220,8 @@ export async function DELETE(
       );
     }
 
-    const response = await callEmailItAPI(`/suppressions/${params.id}`, "DELETE");
+    const { id } = await params;
+    const response = await callEmailItAPI(`/suppressions/${id}`, "DELETE");
 
     if (!response.ok) {
       const error = await response.text();
