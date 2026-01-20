@@ -101,9 +101,10 @@ export default function SuppressionsList() {
 
       // Remove the deleted suppression from the list
       setSuppressions(suppressions.filter(s => s.id !== id))
+      toast.success('Suppression deleted successfully')
     } catch (err) {
       console.error('Error deleting suppression:', err)
-      alert(err instanceof Error ? err.message : 'Failed to delete suppression')
+      toast.error(err instanceof Error ? err.message : 'Failed to delete suppression')
     } finally {
       setDeleting(null)
     }
