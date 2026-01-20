@@ -57,8 +57,34 @@ export default function SuppressionsList() {
   const [isSearching, setIsSearching] = useState(false)
   const debounceTimer = useRef<NodeJS.Timeout | null>(null)
 
+  // Debounce search input
+  useEffect(() => {
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current)
+    }
+
+    debounceTimer.current = setTimeout(() => {
+      setSearchTerm(searchInput)
+      setIsSearching(true)
+    }, 300)
+
+    return () => {
+      if (debounceTimer.current) {
+        clearTimeout(debounceTimer.current)
+      }
+    }
+  }, [searchInput])
+
+  // Fetch suppressions when search term changes
   useEffect(() => {
     fetchSuppressions()
+  }, [searchTerm])
+
+  // Initial fetch
+  useEffect(() => {
+    if (searchTerm === '') {
+      fetchSuppressions()
+    }
   }, [])
 
   const fetchSuppressions = async () => {
