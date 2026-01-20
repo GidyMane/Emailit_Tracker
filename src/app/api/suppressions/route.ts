@@ -126,3 +126,79 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+export async function POST(request: NextRequest) {
+  try {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user?.email) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Check if user is admin
+    const isAdmin = adminEmails.includes(user.email);
+
+    if (!isAdmin) {
+      return NextResponse.json(
+        { error: "Only admins can create suppressions" },
+        { status: 403 }
+      );
+    }
+
+    const body = await request.json();
+    const { name, description } = body;
+
+    if (!name) {
+      return NextResponse.json(
+        { error: "Name is required" },
+        { status: 400 }
+      );
+    }
+
+    // Validate API key
+    if (!process.env.EMAILIT_API_KEY) {
+      console.error("EMAILIT_API_KEY not configured");
+      return NextResponse.json(
+        { error: "EmailIt API key not configured" },
+        { status: 500 }
+      );
+    }
+
+    // Call EmailIt API to create suppression
+    const response = await callEmailItAPI(
+      "/suppressions",
+      "POST",
+      { name, ...(description && { description }) }
+    );
+
+    if (!response.ok) {
+      const error = await response.text();
+      console.error("EmailIt API error:", response.status, error);
+      return NextResponse.json(
+        {
+          error: `EmailIt API error: ${response.status}`,
+          details: error,
+        },
+        { status: response.status }
+      );
+    }
+
+    const data = await response.json();
+    return NextResponse.json(data, { status: 201 });
+  } catch (error) {
+    console.error("Error creating suppression:", error);
+
+    if (error instanceof Error && error.name === "AbortError") {
+      return NextResponse.json(
+        { error: "Request timeout" },
+        { status: 504 }
+      );
+    }
+
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
