@@ -112,7 +112,7 @@ export default function SuppressionsList() {
 
   const handleCreateOrUpdate = async () => {
     if (!formData.name.trim()) {
-      alert('Name is required')
+      toast.error('Name is required')
       return
     }
 
@@ -143,17 +143,19 @@ export default function SuppressionsList() {
         // Update existing suppression in list
         setSuppressions(suppressions.map(s => s.id === editingId ? newSuppression : s))
         setIsEditOpen(false)
+        toast.success('Suppression updated successfully')
       } else {
         // Add new suppression to list
         setSuppressions([...suppressions, newSuppression])
         setIsCreateOpen(false)
+        toast.success('Suppression added successfully')
       }
 
       setFormData({ name: '', description: '' })
       setEditingId(null)
     } catch (err) {
       console.error('Error saving suppression:', err)
-      alert(err instanceof Error ? err.message : 'Failed to save suppression')
+      toast.error(err instanceof Error ? err.message : 'Failed to save suppression')
     } finally {
       setIsSubmitting(false)
     }
