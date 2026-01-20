@@ -38,6 +38,14 @@ export default function SuppressionsList() {
 
   useEffect(() => {
     fetchSuppressions()
+
+    // Listen for domain changes in localStorage
+    const handleStorageChange = () => {
+      fetchSuppressions()
+    }
+
+    window.addEventListener('storage', handleStorageChange)
+    return () => window.removeEventListener('storage', handleStorageChange)
   }, [])
 
   const fetchSuppressions = async () => {
@@ -45,7 +53,13 @@ export default function SuppressionsList() {
       setLoading(true)
       setError(null)
 
-      const response = await fetch('/api/suppressions')
+      const params = new URLSearchParams()
+      const selectedDomain = typeof window !== 'undefined' ? localStorage.getItem('selectedDomainName') : null
+      if (selectedDomain && selectedDomain !== 'all') {
+        params.append('domain', selectedDomain)
+      }
+
+      const response = await fetch(`/api/suppressions${params.toString() ? '?' + params.toString() : ''}`)
 
       if (!response.ok) {
         const errorData = await response.json()
