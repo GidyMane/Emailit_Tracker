@@ -280,8 +280,20 @@ export default function SuppressionsList() {
                       </span>
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
-                      {suppression.created_at
-                        ? new Date(parseFloat(suppression.created_at) * 1000).toLocaleString()
+                      {suppression.created_at && suppression.created_at !== 'N/A'
+                        ? (() => {
+                            try {
+                              const timestamp = parseFloat(suppression.created_at)
+                              if (isNaN(timestamp)) {
+                                // Try parsing as ISO string
+                                return new Date(suppression.created_at).toLocaleString()
+                              }
+                              // If it's a Unix timestamp in seconds (less than year 2100 in seconds)
+                              return new Date(timestamp * 1000).toLocaleString()
+                            } catch {
+                              return 'N/A'
+                            }
+                          })()
                         : 'N/A'
                       }
                     </TableCell>
