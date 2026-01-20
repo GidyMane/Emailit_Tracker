@@ -339,6 +339,7 @@ export default function SuppressionsList() {
                 <TableRow>
                   <TableHead>Name / Email</TableHead>
                   <TableHead>Status</TableHead>
+                  <TableHead>Reason</TableHead>
                   <TableHead>Created At</TableHead>
                   <TableHead className="w-24 text-right">Actions</TableHead>
                 </TableRow>
