@@ -12,7 +12,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { useKindeAuth } from '@kinde-oss/kinde-auth-nextjs'
 
 interface Suppression {
   id: string
@@ -36,7 +35,6 @@ export default function SuppressionsList() {
   const [error, setError] = useState<string | null>(null)
   const [deleting, setDeleting] = useState<string | null>(null)
   const [domain, setDomain] = useState<string>('')
-  const { isAuthenticated } = useKindeAuth()
 
   useEffect(() => {
     fetchSuppressions()
@@ -93,16 +91,6 @@ export default function SuppressionsList() {
     } finally {
       setDeleting(null)
     }
-  }
-
-  if (!isAuthenticated) {
-    return (
-      <Card>
-        <CardContent className="pt-6">
-          <p className="text-muted-foreground">Please log in to view suppressions.</p>
-        </CardContent>
-      </Card>
-    )
   }
 
   return (
