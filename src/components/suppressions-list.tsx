@@ -30,7 +30,9 @@ interface Suppression {
   email?: string
   status?: string
   created_at?: string
+  timestamp?: string
   description?: string
+  reason?: string
   [key: string]: any
 }
 
