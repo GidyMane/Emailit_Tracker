@@ -86,12 +86,11 @@ export default function SuppressionsList() {
 
     try {
       setDeleting(id)
-      const response = await fetch('/api/suppressions/delete', {
+      const response = await fetch(`/api/suppressions/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id, domain }),
       })
 
       if (!response.ok) {
@@ -107,6 +106,69 @@ export default function SuppressionsList() {
     } finally {
       setDeleting(null)
     }
+  }
+
+  const handleCreateOrUpdate = async () => {
+    if (!formData.name.trim()) {
+      alert('Name is required')
+      return
+    }
+
+    try {
+      setIsSubmitting(true)
+      const method = editingId ? 'PATCH' : 'POST'
+      const url = editingId ? `/api/suppressions/${editingId}` : '/api/suppressions'
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          ...(formData.description && { description: formData.description }),
+        }),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || `Error: ${response.status}`)
+      }
+
+      const newSuppression = await response.json()
+
+      if (editingId) {
+        // Update existing suppression in list
+        setSuppressions(suppressions.map(s => s.id === editingId ? newSuppression : s))
+        setIsEditOpen(false)
+      } else {
+        // Add new suppression to list
+        setSuppressions([...suppressions, newSuppression])
+        setIsCreateOpen(false)
+      }
+
+      setFormData({ name: '', description: '' })
+      setEditingId(null)
+    } catch (err) {
+      console.error('Error saving suppression:', err)
+      alert(err instanceof Error ? err.message : 'Failed to save suppression')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleOpenEdit = (suppression: Suppression) => {
+    setEditingId(suppression.id)
+    setFormData({
+      name: suppression.name || '',
+      description: suppression.description || '',
+    })
+    setIsEditOpen(true)
+  }
+
+  const resetForm = () => {
+    setFormData({ name: '', description: '' })
+    setEditingId(null)
   }
 
   return (
