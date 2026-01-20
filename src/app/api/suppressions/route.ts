@@ -96,19 +96,11 @@ export async function GET(request: NextRequest) {
     // If API returns array directly, use it; otherwise check for data property
     const suppressions = Array.isArray(data) ? data : data.data || [];
 
-    // Filter suppressions by domain
-    const filteredSuppressions = suppressions.filter((s: any) => {
-      // Extract domain from email if the suppression has an email field
-      // or match against the userDomain if there's a domain field
-      const suppressionDomain = s.domain || s.email?.split("@")[1];
-      return suppressionDomain === userDomain;
-    });
-
     return NextResponse.json({
-      suppressions: filteredSuppressions,
+      suppressions: suppressions,
       domain: userDomain,
       isAdmin,
-      count: filteredSuppressions.length,
+      count: suppressions.length,
     });
   } catch (error) {
     console.error("Error fetching suppressions:", error);
