@@ -217,20 +217,21 @@ export default function SuppressionsList() {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <div>
-          <CardTitle>Suppressed Emails</CardTitle>
-          <CardDescription>
-            Manage suppressed email addresses for domain: <span className="font-semibold">{domain}</span>
-          </CardDescription>
-        </div>
-        <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
-          <DialogTrigger asChild>
-            <Button className="gap-2" onClick={() => resetForm()}>
-              <Plus className="h-4 w-4" />
-              Add Suppression
-            </Button>
-          </DialogTrigger>
+      <CardHeader>
+        <div className="flex flex-row items-center justify-between">
+          <div>
+            <CardTitle>Suppressed Emails</CardTitle>
+            <CardDescription>
+              Manage suppressed email addresses for domain: <span className="font-semibold">{domain}</span>
+            </CardDescription>
+          </div>
+          <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+            <DialogTrigger asChild>
+              <Button className="gap-2" onClick={() => resetForm()}>
+                <Plus className="h-4 w-4" />
+                Add Suppression
+              </Button>
+            </DialogTrigger>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Add New Suppression</DialogTitle>
@@ -268,9 +269,34 @@ export default function SuppressionsList() {
               </div>
             </div>
           </DialogContent>
-        </Dialog>
+          </Dialog>
+        </div>
       </CardHeader>
       <CardContent>
+        <div className="flex gap-2 mb-4">
+          <div className="relative flex-1">
+            {isSearching ? (
+              <Loader2 className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground animate-spin" />
+            ) : (
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            )}
+            <Input
+              placeholder="Search by name or email..."
+              className="pl-10 pr-10"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+            />
+            {searchInput && (
+              <button
+                onClick={() => setSearchInput('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="Clear search"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+        </div>
         {error && (
           <div className="mb-4 p-4 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg flex items-start gap-3">
             <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
