@@ -86,7 +86,7 @@ export default function SuppressionsList() {
       }
 
       // Remove the deleted suppression from the list
-      setSupppressions(suppressions.filter(s => s.id !== id))
+      setSuppressions(suppressions.filter(s => s.id !== id))
     } catch (err) {
       console.error('Error deleting suppression:', err)
       alert(err instanceof Error ? err.message : 'Failed to delete suppression')
