@@ -35,21 +35,18 @@ export default function SuppressionsList() {
   const [error, setError] = useState<string | null>(null)
   const [deleting, setDeleting] = useState<string | null>(null)
   const [domain, setDomain] = useState<string>('')
-  const [selectedDomain, setSelectedDomain] = useState<string | null>(null)
 
   useEffect(() => {
-    // Read selected domain from localStorage
-    if (typeof window !== 'undefined') {
-      const domainName = localStorage.getItem('selectedDomainName')
-      setSelectedDomain(domainName)
+    fetchSuppressions()
+
+    // Listen for domain changes in localStorage
+    const handleStorageChange = () => {
+      fetchSuppressions()
     }
-    fetchSuppressions()
-  }, [])
 
-  useEffect(() => {
-    // Refetch suppressions when domain changes
-    fetchSuppressions()
-  }, [selectedDomain])
+    window.addEventListener('storage', handleStorageChange)
+    return () => window.removeEventListener('storage', handleStorageChange)
+  }, [])
 
   const fetchSuppressions = async () => {
     try {
@@ -57,6 +54,7 @@ export default function SuppressionsList() {
       setError(null)
 
       const params = new URLSearchParams()
+      const selectedDomain = typeof window !== 'undefined' ? localStorage.getItem('selectedDomainName') : null
       if (selectedDomain && selectedDomain !== 'all') {
         params.append('domain', selectedDomain)
       }
