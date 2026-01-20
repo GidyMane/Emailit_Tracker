@@ -38,14 +38,6 @@ export default function SuppressionsList() {
 
   useEffect(() => {
     fetchSuppressions()
-
-    // Listen for domain changes in localStorage
-    const handleStorageChange = () => {
-      fetchSuppressions()
-    }
-
-    window.addEventListener('storage', handleStorageChange)
-    return () => window.removeEventListener('storage', handleStorageChange)
   }, [])
 
   const fetchSuppressions = async () => {
