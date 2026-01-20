@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useEffect } from 'react'
-import { Trash2, AlertCircle, Loader2, Plus, X, Edit2 } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
+import { Trash2, AlertCircle, Loader2, Plus, X, Edit2, Search } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
