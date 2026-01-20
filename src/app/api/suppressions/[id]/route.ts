@@ -115,7 +115,7 @@ export async function GET(
 // PATCH /api/suppressions/:id - Update a suppression
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { getUser } = getKindeServerSession();
@@ -152,8 +152,9 @@ export async function PATCH(
       );
     }
 
+    const { id } = await params;
     const response = await callEmailItAPI(
-      `/suppressions/${params.id}`,
+      `/suppressions/${id}`,
       "PATCH",
       { name, ...(description && { description }) }
     );
