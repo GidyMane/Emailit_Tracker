@@ -2,6 +2,39 @@ import { NextRequest, NextResponse } from "next/server";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { prisma } from "@/lib/prisma";
 
+const adminEmails = ["info@websoftdevelopment.com", "muragegideon2000@gmail.com"];
+
+async function callEmailItAPI(
+  endpoint: string,
+  method: string,
+  body?: Record<string, any>
+): Promise<Response> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+  const options: RequestInit = {
+    method,
+    headers: {
+      Authorization: `Bearer ${process.env.EMAILIT_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    signal: controller.signal,
+  };
+
+  if (body) {
+    options.body = JSON.stringify(body);
+  }
+
+  try {
+    const response = await fetch(`https://api.emailit.com/v1${endpoint}`, options);
+    clearTimeout(timeoutId);
+    return response;
+  } catch (error) {
+    clearTimeout(timeoutId);
+    throw error;
+  }
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { getUser } = getKindeServerSession();
