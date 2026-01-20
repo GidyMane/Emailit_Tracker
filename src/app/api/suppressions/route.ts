@@ -45,7 +45,6 @@ export async function GET(request: NextRequest) {
     }
 
     // Check if user is admin
-    const adminEmails = ["info@websoftdevelopment.com", "muragegideon2000@gmail.com"];
     const isAdmin = adminEmails.includes(user.email);
 
     // Derive domain from user email
