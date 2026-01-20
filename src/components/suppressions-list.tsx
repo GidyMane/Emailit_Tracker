@@ -31,7 +31,7 @@ interface SuppressionResponse {
 }
 
 export default function SuppressionsList() {
-  const [suppressions, setSupppressions] = useState<Suppression[]>([])
+  const [suppressions, setSuppressions] = useState<Suppression[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [deleting, setDeleting] = useState<string | null>(null)
@@ -48,14 +48,14 @@ export default function SuppressionsList() {
       setError(null)
 
       const response = await fetch('/api/suppressions')
-      
+
       if (!response.ok) {
         const errorData = await response.json()
         throw new Error(errorData.error || `Error: ${response.status}`)
       }
 
       const data: SuppressionResponse = await response.json()
-      setSupppressions(data.suppressions)
+      setSuppressions(data.suppressions)
       setDomain(data.domain)
     } catch (err) {
       console.error('Error fetching suppressions:', err)
