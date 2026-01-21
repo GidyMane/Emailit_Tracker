@@ -72,8 +72,8 @@ const getNavigation = (isAdmin: boolean = false) => [
       { title: "Analytics", href: "/dashboard/analytics", icon: BarChart3 },
       { title: "Messages", href: "/dashboard/messages", icon: Send },
       { title: "Audience", href: "/dashboard/audience", icon: Users },
+      { title: "Suppressions", href: "/dashboard/suppressions", icon: Ban },
       ...(isAdmin ? [
-        { title: "Suppressions", href: "/dashboard/suppressions", icon: Ban },
         { title: "Domains", href: "/dashboard/domains", icon: Send }
       ] : []),
     ]
