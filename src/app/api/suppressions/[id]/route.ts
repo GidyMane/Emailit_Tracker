@@ -203,15 +203,6 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const isAdmin = await checkAdminStatus(user);
-
-    if (!isAdmin) {
-      return NextResponse.json(
-        { error: "Only admins can delete suppressions" },
-        { status: 403 }
-      );
-    }
-
     if (!process.env.EMAILIT_API_KEY) {
       console.error("EMAILIT_API_KEY not configured");
       return NextResponse.json(
