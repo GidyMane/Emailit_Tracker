@@ -92,8 +92,9 @@ export async function GET(request: NextRequest) {
         Authorization: `Bearer ${process.env.EMAILIT_API_KEY}`,
         "Content-Type": "application/json",
       },
+      next: { revalidate: 0 },
       signal: controller.signal,
-    });
+    } as RequestInit);
 
     clearTimeout(timeoutId);
 
@@ -121,11 +122,15 @@ export async function GET(request: NextRequest) {
         const name = suppression.name?.toLowerCase() || "";
         const email = suppression.email?.toLowerCase() || "";
         const description = suppression.description?.toLowerCase() || "";
+        const reason = suppression.reason?.toLowerCase() || "";
+        const address = suppression.address?.toLowerCase() || "";
 
         return (
           name.includes(searchLower) ||
           email.includes(searchLower) ||
-          description.includes(searchLower)
+          description.includes(searchLower) ||
+          reason.includes(searchLower) ||
+          address.includes(searchLower)
         );
       });
     }
