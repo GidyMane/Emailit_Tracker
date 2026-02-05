@@ -71,15 +71,30 @@ export async function GET(request: NextRequest) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 30000);
 
+    // Prepare EmailIt API parameters
+    const emailitParams = new URLSearchParams();
+
+    // Set a high per_page to ensure we get more results (EmailIt default is 25)
+    // Most APIs support up to 100 or 1000 per page
+    emailitParams.append("per_page", "1000");
+
+    // If searching, pass search parameters to the EmailIt API
+    // EmailIt supports searchEmail for specific email lookups and search for general queries
+    if (searchTerm) {
+      emailitParams.append("searchEmail", searchTerm);
+      emailitParams.append("search", searchTerm);
+    }
+
     // Call EmailIt API to get suppressions
-    const response = await fetch("https://api.emailit.com/v1/suppressions", {
+    const response = await fetch(`https://api.emailit.com/v1/suppressions?${emailitParams.toString()}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${process.env.EMAILIT_API_KEY}`,
         "Content-Type": "application/json",
       },
+      next: { revalidate: 0 },
       signal: controller.signal,
-    });
+    } as RequestInit);
 
     clearTimeout(timeoutId);
 
@@ -97,8 +112,8 @@ export async function GET(request: NextRequest) {
 
     const data = await response.json();
 
-    // If API returns array directly, use it; otherwise check for data property
-    let suppressions = Array.isArray(data) ? data : data.data || [];
+    // If API returns array directly, use it; otherwise check for data or results property
+    let suppressions = Array.isArray(data) ? data : data.data || data.results || [];
 
     // Filter suppressions based on search term
     if (searchTerm) {
@@ -107,11 +122,17 @@ export async function GET(request: NextRequest) {
         const name = suppression.name?.toLowerCase() || "";
         const email = suppression.email?.toLowerCase() || "";
         const description = suppression.description?.toLowerCase() || "";
+        const reason = suppression.reason?.toLowerCase() || "";
+        const address = suppression.address?.toLowerCase() || "";
+        const type = suppression.type?.toLowerCase() || "";
 
         return (
           name.includes(searchLower) ||
           email.includes(searchLower) ||
-          description.includes(searchLower)
+          description.includes(searchLower) ||
+          reason.includes(searchLower) ||
+          address.includes(searchLower) ||
+          type.includes(searchLower)
         );
       });
     }
