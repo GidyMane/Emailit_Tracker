@@ -112,8 +112,8 @@ export async function GET(request: NextRequest) {
 
     const data = await response.json();
 
-    // If API returns array directly, use it; otherwise check for data property
-    let suppressions = Array.isArray(data) ? data : data.data || [];
+    // If API returns array directly, use it; otherwise check for data or results property
+    let suppressions = Array.isArray(data) ? data : data.data || data.results || [];
 
     // Filter suppressions based on search term
     if (searchTerm) {
@@ -124,13 +124,15 @@ export async function GET(request: NextRequest) {
         const description = suppression.description?.toLowerCase() || "";
         const reason = suppression.reason?.toLowerCase() || "";
         const address = suppression.address?.toLowerCase() || "";
+        const type = suppression.type?.toLowerCase() || "";
 
         return (
           name.includes(searchLower) ||
           email.includes(searchLower) ||
           description.includes(searchLower) ||
           reason.includes(searchLower) ||
-          address.includes(searchLower)
+          address.includes(searchLower) ||
+          type.includes(searchLower)
         );
       });
     }
