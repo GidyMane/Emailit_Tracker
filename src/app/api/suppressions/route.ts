@@ -4,10 +4,19 @@ import { prisma } from "@/lib/prisma";
 
 const adminEmails = ["info@websoftdevelopment.com", "muragegideon2000@gmail.com"];
 
+interface EmailItSuppression {
+  name?: string;
+  email?: string;
+  description?: string;
+  reason?: string;
+  address?: string;
+  type?: string;
+}
+
 async function callEmailItAPI(
   endpoint: string,
   method: string,
-  body?: Record<string, any>
+  body?: Record<string, unknown>
 ): Promise<Response> {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 30000);
@@ -47,16 +56,30 @@ export async function GET(request: NextRequest) {
     // Check if user is admin
     const isAdmin = adminEmails.includes(user.email);
 
-    // Derive domain from user email
-    const userEmailDomain = user.email.split("@")[1];
-    if (!userEmailDomain) {
-      return NextResponse.json({ error: "Invalid email format" }, { status: 400 });
-    }
-    const userDomain = userEmailDomain;
-
-    // Get search parameter
     const searchParams = request.nextUrl.searchParams;
     const searchTerm = searchParams.get("search") || "";
+    const selectedDomainId = searchParams.get("domainId");
+
+    let responseDomain = "All Domains";
+
+    if (isAdmin) {
+      if (selectedDomainId && selectedDomainId !== "all") {
+        const selectedDomain = await prisma.domain.findUnique({
+          where: { id: selectedDomainId },
+          select: { name: true },
+        });
+
+        if (selectedDomain) {
+          responseDomain = selectedDomain.name;
+        }
+      }
+    } else {
+      const userEmailDomain = user.email.split("@")[1];
+      if (!userEmailDomain) {
+        return NextResponse.json({ error: "Invalid email format" }, { status: 400 });
+      }
+      responseDomain = userEmailDomain;
+    }
 
     // Validate API key
     if (!process.env.EMAILIT_API_KEY) {
@@ -113,12 +136,18 @@ export async function GET(request: NextRequest) {
     const data = await response.json();
 
     // If API returns array directly, use it; otherwise check for data or results property
-    let suppressions = Array.isArray(data) ? data : data.data || data.results || [];
+    let suppressions: EmailItSuppression[] = Array.isArray(data)
+      ? data
+      : Array.isArray(data.data)
+        ? data.data
+        : Array.isArray(data.results)
+          ? data.results
+          : [];
 
     // Filter suppressions based on search term
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
-      suppressions = suppressions.filter((suppression: any) => {
+      suppressions = suppressions.filter((suppression) => {
         const name = suppression.name?.toLowerCase() || "";
         const email = suppression.email?.toLowerCase() || "";
         const description = suppression.description?.toLowerCase() || "";
@@ -139,7 +168,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       suppressions: suppressions,
-      domain: userDomain,
+      domain: responseDomain,
       isAdmin,
       count: suppressions.length,
     });

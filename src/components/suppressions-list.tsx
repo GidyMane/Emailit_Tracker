@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Trash2, AlertCircle, Loader2, Plus, X, Edit2, Search } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { Button } from '@/components/ui/button'
@@ -33,7 +33,7 @@ interface Suppression {
   timestamp?: string
   description?: string
   reason?: string
-  [key: string]: any
+  [key: string]: unknown
 }
 
 interface SuppressionResponse {
@@ -43,7 +43,11 @@ interface SuppressionResponse {
   count: number
 }
 
-export default function SuppressionsList() {
+interface SuppressionsListProps {
+  selectedDomainId?: string | null
+}
+
+export default function SuppressionsList({ selectedDomainId = null }: SuppressionsListProps) {
   const [suppressions, setSuppressions] = useState<Suppression[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -77,25 +81,16 @@ export default function SuppressionsList() {
     }
   }, [searchInput])
 
-  // Fetch suppressions when search term changes
-  useEffect(() => {
-    fetchSuppressions()
-  }, [searchTerm])
-
-  // Initial fetch
-  useEffect(() => {
-    if (searchTerm === '') {
-      fetchSuppressions()
-    }
-  }, [])
-
-  const fetchSuppressions = async () => {
+  const fetchSuppressions = useCallback(async () => {
     try {
       setError(null)
 
       const params = new URLSearchParams()
       if (searchTerm) {
         params.append('search', searchTerm)
+      }
+      if (selectedDomainId && selectedDomainId !== 'all') {
+        params.append('domainId', selectedDomainId)
       }
 
       const url = `/api/suppressions${params.toString() ? `?${params.toString()}` : ''}`
@@ -120,7 +115,12 @@ export default function SuppressionsList() {
       setLoading(false)
       setIsSearching(false)
     }
-  }
+  }, [searchTerm, selectedDomainId])
+
+  // Fetch suppressions when search term or selected domain changes
+  useEffect(() => {
+    fetchSuppressions()
+  }, [fetchSuppressions])
 
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this suppression?')) {
