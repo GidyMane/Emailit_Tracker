@@ -92,20 +92,28 @@ export async function GET(request: NextRequest) {
 
     let suppressions: EmailItSuppression[] = [];
 
+    console.log(`[GET /api/suppressions] Search term: "${searchTerm}"`);
+    console.log(`[GET /api/suppressions] API Key configured: ${!!process.env.EMAILIT_API_KEY}`);
+
     // If searching, first try direct lookup using the suppression ID endpoint
     // This supports both suppression IDs (sup_xxx) and URL-encoded email addresses
     if (searchTerm) {
+      console.log(`[GET /api/suppressions] Attempting direct lookup for: "${searchTerm}"`);
       const directLookupResult = await attemptDirectLookup(searchTerm);
       if (directLookupResult) {
+        console.log(`[GET /api/suppressions] Direct lookup succeeded!`);
         suppressions = [directLookupResult];
       } else {
         // Fall back to listing all suppressions and filtering
+        console.log(`[GET /api/suppressions] Direct lookup failed, falling back to list`);
         suppressions = await listAndFilterSuppressions(searchTerm);
       }
     } else {
       // No search term, list all suppressions
       suppressions = await listAndFilterSuppressions("");
     }
+
+    console.log(`[GET /api/suppressions] Response: ${suppressions.length} suppressions found`);
 
     return NextResponse.json({
       suppressions: suppressions,
@@ -140,32 +148,42 @@ async function attemptDirectLookup(searchTerm: string): Promise<EmailItSuppressi
     // URL-encode the search term in case it's an email address
     // The @ symbol needs to be encoded as %40
     const encodedSearchTerm = encodeURIComponent(searchTerm);
+    const url = `https://api.emailit.com/v1/suppressions/${encodedSearchTerm}`;
 
-    const response = await fetch(
-      `https://api.emailit.com/v1/suppressions/${encodedSearchTerm}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${process.env.EMAILIT_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        signal: controller.signal,
-      }
-    );
+    console.log(`[Direct Lookup] Searching for: "${searchTerm}" -> URL: ${url}`);
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${process.env.EMAILIT_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      signal: controller.signal,
+    });
 
     clearTimeout(timeoutId);
 
+    console.log(`[Direct Lookup] Response status: ${response.status}`);
+
     if (response.ok) {
       const data = await response.json();
-      // Handle both direct object response and wrapped response
-      return data.object === "suppression" ? data : data.data || null;
+      console.log(`[Direct Lookup] Success! Found suppression:`, data);
+      // The API returns the suppression object directly based on the docs
+      // It should have an "object" field with value "suppression"
+      return data;
+    } else if (response.status === 404) {
+      // Not found - return null to fall back to list
+      console.log(`[Direct Lookup] Email/ID not found (404)`);
+      return null;
+    } else {
+      // Other error - log it and fall back
+      const errorText = await response.text();
+      console.log(`[Direct Lookup] API error ${response.status}:`, errorText);
+      return null;
     }
-
-    // If not found (404) or other error, return null to fall back to list
-    return null;
   } catch (error) {
     // Timeout or network error, fall back to list
-    console.warn("Direct lookup failed, falling back to list:", error);
+    console.warn("[Direct Lookup] Error:", error);
     return null;
   }
 }
@@ -178,6 +196,8 @@ async function listAndFilterSuppressions(searchTerm: string): Promise<EmailItSup
 
     const emailitParams = new URLSearchParams();
     emailitParams.append("per_page", "1000");
+
+    console.log(`[List & Filter] Fetching all suppressions${searchTerm ? ` (will filter for: "${searchTerm}")` : ""}`);
 
     const response = await fetch(
       `https://api.emailit.com/v1/suppressions?${emailitParams.toString()}`,
@@ -193,9 +213,11 @@ async function listAndFilterSuppressions(searchTerm: string): Promise<EmailItSup
 
     clearTimeout(timeoutId);
 
+    console.log(`[List & Filter] API response status: ${response.status}`);
+
     if (!response.ok) {
       const error = await response.text();
-      console.error("EmailIt API error:", response.status, error);
+      console.error("[List & Filter] API error:", response.status, error);
       return [];
     }
 
@@ -210,9 +232,12 @@ async function listAndFilterSuppressions(searchTerm: string): Promise<EmailItSup
           ? data.results
           : [];
 
+    console.log(`[List & Filter] Retrieved ${suppressions.length} suppressions from API`);
+
     // Filter suppressions based on search term
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
+      const beforeFilter = suppressions.length;
       suppressions = suppressions.filter((suppression) => {
         const name = suppression.name?.toLowerCase() || "";
         const email = suppression.email?.toLowerCase() || "";
@@ -230,11 +255,12 @@ async function listAndFilterSuppressions(searchTerm: string): Promise<EmailItSup
           type.includes(searchLower)
         );
       });
+      console.log(`[List & Filter] After filtering: ${suppressions.length}/${beforeFilter} suppressions match`);
     }
 
     return suppressions;
   } catch (error) {
-    console.error("Error listing suppressions:", error);
+    console.error("[List & Filter] Error:", error);
     return [];
   }
 }
