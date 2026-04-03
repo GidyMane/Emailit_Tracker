@@ -67,15 +67,6 @@ export async function GET(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const isAdmin = await checkAdminStatus(user);
-
-    if (!isAdmin) {
-      return NextResponse.json(
-        { error: "Only admins can retrieve suppression details" },
-        { status: 403 }
-      );
-    }
-
     if (!process.env.EMAILIT_API_KEY) {
       console.error("EMAILIT_API_KEY not configured");
       return NextResponse.json(
@@ -85,9 +76,23 @@ export async function GET(
     }
 
     const { id } = await params;
+
+    // Allow email-based lookups for all authenticated users
+    // Only restrict suppression ID lookups to admins
+    const isEmail_lookup = isEmail(id);
+    if (!isEmail_lookup) {
+      const isAdmin = await checkAdminStatus(user);
+      if (!isAdmin) {
+        return NextResponse.json(
+          { error: "Only admins can retrieve suppression details by ID" },
+          { status: 403 }
+        );
+      }
+    }
+
     // Handle both ID (sup_xxx) and email address lookups
     // If it's an email, ensure it's properly URL-encoded for the EmailIt API
-    const encodedId = isEmail(id) ? encodeURIComponent(id) : id;
+    const encodedId = isEmail_lookup ? encodeURIComponent(id) : id;
     const response = await callEmailItAPI(`/suppressions/${encodedId}`, "GET");
 
     if (!response.ok) {
