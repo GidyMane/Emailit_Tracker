@@ -208,7 +208,7 @@ async function listAndFilterSuppressions(searchTerm: string, limitToFirstPage: b
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 30000);
 
-      const response = await fetch(nextPageUrl, {
+      const response: Response = await fetch(nextPageUrl, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${process.env.EMAILIT_API_KEY}`,
@@ -225,15 +225,15 @@ async function listAndFilterSuppressions(searchTerm: string, limitToFirstPage: b
         break; // Stop fetching if we hit an error
       }
 
-      const data = await response.json();
+      const data = await response.json() as Record<string, unknown>;
 
       // Extract suppressions from the response
       let pageSuppressions: EmailItSuppression[] = Array.isArray(data)
         ? data
         : Array.isArray(data.data)
-          ? data.data
+          ? (data.data as EmailItSuppression[])
           : Array.isArray(data.results)
-            ? data.results
+            ? (data.results as EmailItSuppression[])
             : [];
 
       console.log(`[List & Filter] Page ${pageCount}: Got ${pageSuppressions.length} suppressions`);
@@ -246,7 +246,7 @@ async function listAndFilterSuppressions(searchTerm: string, limitToFirstPage: b
       }
 
       // Check if there's a next page
-      nextPageUrl = data.next_page_url || null;
+      nextPageUrl = (data.next_page_url as string | null) || null;
 
       // Handle relative URLs (convert to absolute if needed)
       if (nextPageUrl && !nextPageUrl.startsWith("http")) {
