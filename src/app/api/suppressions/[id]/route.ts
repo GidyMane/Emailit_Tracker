@@ -91,13 +91,32 @@ export async function GET(
     }
 
     // Handle both ID (sup_xxx) and email address lookups
-    // If it's an email, ensure it's properly URL-encoded for the EmailIt API
-    const encodedId = isEmail_lookup ? encodeURIComponent(id) : id;
-    const response = await callEmailItAPI(`/suppressions/${encodedId}`, "GET");
+    // Next.js already decodes URL parameters, so we need to encode again for the API
+    let apiId = id;
+    if (isEmail_lookup) {
+      // For emails, encode the @ symbol as %40 for the EmailIt API
+      apiId = id.replace(/@/g, '%40');
+    }
+
+    console.log(`Searching for: "${id}", sending to API as: "${apiId}"`);
+    const response = await callEmailItAPI(`/suppressions/${apiId}`, "GET");
 
     if (!response.ok) {
       const error = await response.text();
       console.error("EmailIt API error:", response.status, error);
+      console.error("Searched for email:", apiId);
+
+      // Return 404 for not found cases so frontend can show appropriate message
+      if (response.status === 404) {
+        return NextResponse.json(
+          {
+            error: `Suppression not found for: ${id}`,
+            details: error,
+          },
+          { status: 404 }
+        );
+      }
+
       return NextResponse.json(
         {
           error: `EmailIt API error: ${response.status}`,
@@ -168,10 +187,14 @@ export async function PATCH(
 
     const { id } = await params;
     // Handle both ID (sup_xxx) and email address lookups
-    // If it's an email, ensure it's properly URL-encoded for the EmailIt API
-    const encodedId = isEmail(id) ? encodeURIComponent(id) : id;
+    // Next.js already decodes URL parameters, so we need to encode again for the API
+    let apiId = id;
+    if (isEmail(id)) {
+      // For emails, encode the @ symbol as %40 for the EmailIt API
+      apiId = id.replace(/@/g, '%40');
+    }
     const response = await callEmailItAPI(
-      `/suppressions/${encodedId}`,
+      `/suppressions/${apiId}`,
       "PATCH",
       { name, ...(description && { description }) }
     );
@@ -230,9 +253,13 @@ export async function DELETE(
 
     const { id } = await params;
     // Handle both ID (sup_xxx) and email address lookups
-    // If it's an email, ensure it's properly URL-encoded for the EmailIt API
-    const encodedId = isEmail(id) ? encodeURIComponent(id) : id;
-    const response = await callEmailItAPI(`/suppressions/${encodedId}`, "DELETE");
+    // Next.js already decodes URL parameters, so we need to encode again for the API
+    let apiId = id;
+    if (isEmail(id)) {
+      // For emails, encode the @ symbol as %40 for the EmailIt API
+      apiId = id.replace(/@/g, '%40');
+    }
+    const response = await callEmailItAPI(`/suppressions/${apiId}`, "DELETE");
 
     if (!response.ok) {
       const error = await response.text();
