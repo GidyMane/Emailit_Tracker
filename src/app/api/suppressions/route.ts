@@ -90,47 +90,113 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Create AbortController for 30-second timeout
+    let suppressions: EmailItSuppression[] = [];
+
+    // If searching, first try direct lookup using the suppression ID endpoint
+    // This supports both suppression IDs (sup_xxx) and URL-encoded email addresses
+    if (searchTerm) {
+      const directLookupResult = await attemptDirectLookup(searchTerm);
+      if (directLookupResult) {
+        suppressions = [directLookupResult];
+      } else {
+        // Fall back to listing all suppressions and filtering
+        suppressions = await listAndFilterSuppressions(searchTerm);
+      }
+    } else {
+      // No search term, list all suppressions
+      suppressions = await listAndFilterSuppressions("");
+    }
+
+    return NextResponse.json({
+      suppressions: suppressions,
+      domain: responseDomain,
+      isAdmin,
+      count: suppressions.length,
+    });
+  } catch (error) {
+    console.error("Error fetching suppressions:", error);
+
+    if (error instanceof Error && error.name === "AbortError") {
+      return NextResponse.json(
+        { error: "Request timeout" },
+        { status: 504 }
+      );
+    }
+
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
+
+// Attempt direct lookup using the GET /suppressions/:id endpoint
+// Supports both suppression IDs (sup_xxx) and email addresses (URL-encoded)
+async function attemptDirectLookup(searchTerm: string): Promise<EmailItSuppression | null> {
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+    // URL-encode the search term in case it's an email address
+    // The @ symbol needs to be encoded as %40
+    const encodedSearchTerm = encodeURIComponent(searchTerm);
+
+    const response = await fetch(
+      `https://api.emailit.com/v1/suppressions/${encodedSearchTerm}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${process.env.EMAILIT_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        signal: controller.signal,
+      }
+    );
+
+    clearTimeout(timeoutId);
+
+    if (response.ok) {
+      const data = await response.json();
+      // Handle both direct object response and wrapped response
+      return data.object === "suppression" ? data : data.data || null;
+    }
+
+    // If not found (404) or other error, return null to fall back to list
+    return null;
+  } catch (error) {
+    // Timeout or network error, fall back to list
+    console.warn("Direct lookup failed, falling back to list:", error);
+    return null;
+  }
+}
+
+// List all suppressions with optional filtering
+async function listAndFilterSuppressions(searchTerm: string): Promise<EmailItSuppression[]> {
+  try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 30000);
 
-    // Prepare EmailIt API parameters
     const emailitParams = new URLSearchParams();
-
-    // Set a high per_page to ensure we get more results (EmailIt default is 25)
-    // Most APIs support up to 100 or 1000 per page
     emailitParams.append("per_page", "1000");
 
-    // If searching, pass search parameters to the EmailIt API
-    // EmailIt supports searchEmail for specific email lookups and search for general queries
-    if (searchTerm) {
-      emailitParams.append("searchEmail", searchTerm);
-      emailitParams.append("search", searchTerm);
-    }
-
-    // Call EmailIt API to get suppressions
-    const response = await fetch(`https://api.emailit.com/v1/suppressions?${emailitParams.toString()}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${process.env.EMAILIT_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      next: { revalidate: 0 },
-      signal: controller.signal,
-    } as RequestInit);
+    const response = await fetch(
+      `https://api.emailit.com/v1/suppressions?${emailitParams.toString()}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${process.env.EMAILIT_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        signal: controller.signal,
+      }
+    );
 
     clearTimeout(timeoutId);
 
     if (!response.ok) {
       const error = await response.text();
       console.error("EmailIt API error:", response.status, error);
-      return NextResponse.json(
-        {
-          error: `EmailIt API error: ${response.status}`,
-          details: error,
-        },
-        { status: response.status }
-      );
+      return [];
     }
 
     const data = await response.json();
@@ -166,26 +232,10 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    return NextResponse.json({
-      suppressions: suppressions,
-      domain: responseDomain,
-      isAdmin,
-      count: suppressions.length,
-    });
+    return suppressions;
   } catch (error) {
-    console.error("Error fetching suppressions:", error);
-
-    if (error instanceof Error && error.name === "AbortError") {
-      return NextResponse.json(
-        { error: "Request timeout" },
-        { status: 504 }
-      );
-    }
-
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    console.error("Error listing suppressions:", error);
+    return [];
   }
 }
 
