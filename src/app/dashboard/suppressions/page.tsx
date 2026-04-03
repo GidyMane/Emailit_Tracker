@@ -12,11 +12,20 @@ interface AudienceData {
 export default function SuppressionsPage() {
   const [audienceData, setAudienceData] = useState<AudienceData | null>(null)
   const [loading, setLoading] = useState(true)
+  const [selectedDomainId, setSelectedDomainId] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchAudienceData = async () => {
       try {
-        const response = await fetch('/api/dashboard/audience')
+        const storedDomainId = localStorage.getItem('selectedDomainId')
+        setSelectedDomainId(storedDomainId)
+
+        const params = new URLSearchParams()
+        if (storedDomainId && storedDomainId !== 'all') {
+          params.append('domainId', storedDomainId)
+        }
+
+        const response = await fetch(`/api/dashboard/audience${params.toString() ? `?${params.toString()}` : ''}`)
         if (response.ok) {
           const data = await response.json()
           setAudienceData(data)
@@ -53,7 +62,7 @@ export default function SuppressionsPage() {
         </p>
       </div>
 
-      {isAdmin ? <SuppressionsList /> : <SuppressionsSearch />}
+      {isAdmin ? <SuppressionsList selectedDomainId={selectedDomainId} /> : <SuppressionsSearch />}
     </div>
   )
 }
