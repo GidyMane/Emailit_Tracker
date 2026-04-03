@@ -52,8 +52,8 @@ export async function DELETE(request: NextRequest) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 30000);
 
-    // Call EmailIt API to delete suppression
-    const response = await fetch(`https://api.emailit.com/v1/suppressions/${id}`, {
+    // Call EmailIt API to delete suppression (v2)
+    const response = await fetch(`https://api.emailit.com/v2/suppressions/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${process.env.EMAILIT_API_KEY}`,

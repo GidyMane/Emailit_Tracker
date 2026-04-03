@@ -35,7 +35,7 @@ async function callEmailItAPI(
   }
 
   try {
-    const response = await fetch(`https://api.emailit.com/v1${endpoint}`, options);
+    const response = await fetch(`https://api.emailit.com/v2${endpoint}`, options);
     clearTimeout(timeoutId);
     return response;
   } catch (error) {
@@ -108,8 +108,8 @@ export async function GET(request: NextRequest) {
       emailitParams.append("search", searchTerm);
     }
 
-    // Call EmailIt API to get suppressions
-    const response = await fetch(`https://api.emailit.com/v1/suppressions?${emailitParams.toString()}`, {
+    // Call EmailIt API to get suppressions (v2)
+    const response = await fetch(`https://api.emailit.com/v2/suppressions?${emailitParams.toString()}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${process.env.EMAILIT_API_KEY}`,
