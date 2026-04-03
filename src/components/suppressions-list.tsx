@@ -61,7 +61,13 @@ export default function SuppressionsList({ selectedDomainId = null }: Suppressio
   const [searchInput, setSearchInput] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
   const [isSearching, setIsSearching] = useState(false)
+  const [emailSearchInput, setEmailSearchInput] = useState('')
+  const [isEmailSearching, setIsEmailSearching] = useState(false)
+  const [emailSearchResult, setEmailSearchResult] = useState<Suppression | null>(null)
+  const [showEmailSearchResult, setShowEmailSearchResult] = useState(false)
+  const [emailSearchError, setEmailSearchError] = useState<string | null>(null)
   const debounceTimer = useRef<NodeJS.Timeout | null>(null)
+  const emailSearchTimer = useRef<NodeJS.Timeout | null>(null)
 
   // Debounce search input
   useEffect(() => {
@@ -121,6 +127,108 @@ export default function SuppressionsList({ selectedDomainId = null }: Suppressio
   useEffect(() => {
     fetchSuppressions()
   }, [fetchSuppressions])
+
+  // Handle email-based search with debounce
+  useEffect(() => {
+    if (emailSearchTimer.current) {
+      clearTimeout(emailSearchTimer.current)
+    }
+
+    if (!emailSearchInput.trim()) {
+      setEmailSearchResult(null)
+      setShowEmailSearchResult(false)
+      setEmailSearchError(null)
+      return
+    }
+
+    emailSearchTimer.current = setTimeout(() => {
+      performEmailSearch()
+    }, 300)
+
+    return () => {
+      if (emailSearchTimer.current) {
+        clearTimeout(emailSearchTimer.current)
+      }
+    }
+  }, [emailSearchInput])
+
+  const performEmailSearch = async () => {
+    try {
+      setIsEmailSearching(true)
+      setEmailSearchError(null)
+      setEmailSearchResult(null)
+
+      // URL-encode the email address
+      const encodedEmail = encodeURIComponent(emailSearchInput)
+      const response = await fetch(`/api/suppressions/${encodedEmail}`)
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          // Email not found - this is expected
+          setEmailSearchResult(null)
+          setShowEmailSearchResult(true)
+          return
+        }
+        const errorData = await response.json()
+        throw new Error(errorData.error || `Error: ${response.status}`)
+      }
+
+      const data: Suppression = await response.json()
+      setEmailSearchResult(data)
+      setShowEmailSearchResult(true)
+    } catch (err) {
+      console.error('Error searching suppression by email:', err)
+      const errorMessage = err instanceof Error ? err.message : 'Failed to search by email'
+      setEmailSearchError(errorMessage)
+      setShowEmailSearchResult(true)
+    } finally {
+      setIsEmailSearching(false)
+    }
+  }
+
+  const handleEmailSearchDelete = async () => {
+    if (!emailSearchResult) return
+
+    if (!confirm('Are you sure you want to delete this suppression?')) {
+      return
+    }
+
+    try {
+      setDeleting(emailSearchResult.id)
+      const response = await fetch(`/api/suppressions/${emailSearchResult.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || `Error: ${response.status}`)
+      }
+
+      // Remove from list if visible
+      setSuppressions(suppressions.filter(s => s.id !== emailSearchResult.id))
+
+      // Reset email search
+      setEmailSearchInput('')
+      setEmailSearchResult(null)
+      setShowEmailSearchResult(false)
+      toast.success('Suppression deleted successfully')
+    } catch (err) {
+      console.error('Error deleting suppression:', err)
+      toast.error(err instanceof Error ? err.message : 'Failed to delete suppression')
+    } finally {
+      setDeleting(null)
+    }
+  }
+
+  const handleClearEmailSearch = () => {
+    setEmailSearchInput('')
+    setEmailSearchResult(null)
+    setShowEmailSearchResult(false)
+    setEmailSearchError(null)
+  }
 
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this suppression?')) {
@@ -275,6 +383,78 @@ export default function SuppressionsList({ selectedDomainId = null }: Suppressio
         </div>
       </CardHeader>
       <CardContent>
+        {/* Email Search Section */}
+        <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg">
+          <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-3">Quick Email Search</h3>
+          <div className="flex gap-2">
+            <div className="relative flex-1">
+              {isEmailSearching ? (
+                <Loader2 className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground animate-spin" />
+              ) : (
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              )}
+              <Input
+                placeholder="Search by email address (e.g., user@example.com)..."
+                className="pl-10 pr-10"
+                value={emailSearchInput}
+                onChange={(e) => setEmailSearchInput(e.target.value)}
+              />
+              {emailSearchInput && (
+                <button
+                  onClick={handleClearEmailSearch}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  aria-label="Clear email search"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Email Search Result */}
+          {showEmailSearchResult && (
+            <div className="mt-4">
+              {emailSearchError ? (
+                <div className="p-3 bg-red-100 dark:bg-red-900 border border-red-300 dark:border-red-700 rounded text-red-800 dark:text-red-200 text-sm">
+                  {emailSearchError}
+                </div>
+              ) : emailSearchResult ? (
+                <div className="p-3 bg-white dark:bg-gray-900 border border-blue-300 dark:border-blue-700 rounded space-y-2">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <p className="text-sm font-medium">
+                        {emailSearchResult.name || emailSearchResult.email || 'N/A'}
+                      </p>
+                      {emailSearchResult.email && emailSearchResult.name && (
+                        <p className="text-xs text-muted-foreground mt-1">{emailSearchResult.email}</p>
+                      )}
+                    </div>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={handleEmailSearchDelete}
+                      disabled={deleting === emailSearchResult.id}
+                      className="gap-2"
+                    >
+                      {deleting === emailSearchResult.id ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <Trash2 className="h-4 w-4" />
+                      )}
+                      Remove
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="p-3 bg-amber-100 dark:bg-amber-900 border border-amber-300 dark:border-amber-700 rounded text-amber-800 dark:text-amber-200 text-sm">
+                  Email not found in suppressions list
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* List Search Section */}
         <div className="flex gap-2 mb-4">
           <div className="relative flex-1">
             {isSearching ? (

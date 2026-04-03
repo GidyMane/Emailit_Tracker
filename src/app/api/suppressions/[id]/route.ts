@@ -17,6 +17,12 @@ async function checkAdminStatus(user: any): Promise<boolean> {
   return adminEmails.includes(user?.email);
 }
 
+function isEmail(str: string): boolean {
+  // Simple email validation - checks for @ symbol
+  // Suppression IDs start with 'sup_' while emails contain @
+  return !str.startsWith('sup_') && str.includes('@');
+}
+
 async function callEmailItAPI(
   endpoint: string,
   method: string,
@@ -79,7 +85,10 @@ export async function GET(
     }
 
     const { id } = await params;
-    const response = await callEmailItAPI(`/suppressions/${id}`, "GET");
+    // Handle both ID (sup_xxx) and email address lookups
+    // If it's an email, ensure it's properly URL-encoded for the EmailIt API
+    const encodedId = isEmail(id) ? encodeURIComponent(id) : id;
+    const response = await callEmailItAPI(`/suppressions/${encodedId}`, "GET");
 
     if (!response.ok) {
       const error = await response.text();
@@ -153,8 +162,11 @@ export async function PATCH(
     }
 
     const { id } = await params;
+    // Handle both ID (sup_xxx) and email address lookups
+    // If it's an email, ensure it's properly URL-encoded for the EmailIt API
+    const encodedId = isEmail(id) ? encodeURIComponent(id) : id;
     const response = await callEmailItAPI(
-      `/suppressions/${id}`,
+      `/suppressions/${encodedId}`,
       "PATCH",
       { name, ...(description && { description }) }
     );
@@ -212,7 +224,10 @@ export async function DELETE(
     }
 
     const { id } = await params;
-    const response = await callEmailItAPI(`/suppressions/${id}`, "DELETE");
+    // Handle both ID (sup_xxx) and email address lookups
+    // If it's an email, ensure it's properly URL-encoded for the EmailIt API
+    const encodedId = isEmail(id) ? encodeURIComponent(id) : id;
+    const response = await callEmailItAPI(`/suppressions/${encodedId}`, "DELETE");
 
     if (!response.ok) {
       const error = await response.text();
