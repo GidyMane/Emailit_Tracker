@@ -96,7 +96,7 @@ export async function GET(request: NextRequest) {
     console.log(`[GET /api/suppressions] API Key configured: ${!!process.env.EMAILIT_API_KEY}`);
 
     // If searching, first try direct lookup using the suppression ID endpoint
-    // This supports both suppression IDs (sup_xxx) and URL-encoded email addresses
+    // This is much faster than fetching all suppressions, especially with 10k+
     if (searchTerm) {
       console.log(`[GET /api/suppressions] Attempting direct lookup for: "${searchTerm}"`);
       const directLookupResult = await attemptDirectLookup(searchTerm);
@@ -104,13 +104,14 @@ export async function GET(request: NextRequest) {
         console.log(`[GET /api/suppressions] Direct lookup succeeded!`);
         suppressions = [directLookupResult];
       } else {
-        // Fall back to listing all suppressions and filtering
-        console.log(`[GET /api/suppressions] Direct lookup failed, falling back to list`);
-        suppressions = await listAndFilterSuppressions(searchTerm);
+        // Direct lookup failed - email might be partial match
+        // For performance, only fetch first page instead of all 10k+ suppressions
+        console.log(`[GET /api/suppressions] Direct lookup failed, fetching first page for partial matches`);
+        suppressions = await listAndFilterSuppressions(searchTerm, true); // limit to first page
       }
     } else {
-      // No search term, list all suppressions
-      suppressions = await listAndFilterSuppressions("");
+      // No search term, list first page only
+      suppressions = await listAndFilterSuppressions("", true);
     }
 
     console.log(`[GET /api/suppressions] Response: ${suppressions.length} suppressions found`);
@@ -188,57 +189,78 @@ async function attemptDirectLookup(searchTerm: string): Promise<EmailItSuppressi
   }
 }
 
-// List all suppressions with optional filtering
-async function listAndFilterSuppressions(searchTerm: string): Promise<EmailItSuppression[]> {
+// List suppressions with optional filtering and pagination
+// limitToFirstPage: if true, only fetch the first page for performance (useful with 10k+ items)
+async function listAndFilterSuppressions(searchTerm: string, limitToFirstPage: boolean = false): Promise<EmailItSuppression[]> {
   try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 30000);
+    let allSuppressions: EmailItSuppression[] = [];
+    let nextPageUrl: string | null = `https://api.emailit.com/v1/suppressions?limit=100`;
+    let pageCount = 0;
+    const maxPages = limitToFirstPage ? 1 : 999; // Limit to 1 page if limitToFirstPage is true
 
-    const emailitParams = new URLSearchParams();
-    emailitParams.append("per_page", "1000");
+    console.log(`[List & Filter] Starting fetch${limitToFirstPage ? " (first page only)" : " (all pages)"}${searchTerm ? ` (will filter for: "${searchTerm}")` : ""}`);
 
-    console.log(`[List & Filter] Fetching all suppressions${searchTerm ? ` (will filter for: "${searchTerm}")` : ""}`);
+    // Fetch pages of suppressions
+    while (nextPageUrl && pageCount < maxPages) {
+      pageCount++;
+      console.log(`[List & Filter] Fetching page ${pageCount} from: ${nextPageUrl}`);
 
-    const response = await fetch(
-      `https://api.emailit.com/v1/suppressions?${emailitParams.toString()}`,
-      {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+      const response = await fetch(nextPageUrl, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${process.env.EMAILIT_API_KEY}`,
           "Content-Type": "application/json",
         },
         signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        const error = await response.text();
+        console.error(`[List & Filter] API error on page ${pageCount}:`, response.status, error);
+        break; // Stop fetching if we hit an error
       }
-    );
 
-    clearTimeout(timeoutId);
+      const data = await response.json();
 
-    console.log(`[List & Filter] API response status: ${response.status}`);
+      // Extract suppressions from the response
+      let pageSuppressions: EmailItSuppression[] = Array.isArray(data)
+        ? data
+        : Array.isArray(data.data)
+          ? data.data
+          : Array.isArray(data.results)
+            ? data.results
+            : [];
 
-    if (!response.ok) {
-      const error = await response.text();
-      console.error("[List & Filter] API error:", response.status, error);
-      return [];
+      console.log(`[List & Filter] Page ${pageCount}: Got ${pageSuppressions.length} suppressions`);
+      allSuppressions = [...allSuppressions, ...pageSuppressions];
+
+      // Stop if we've hit the page limit
+      if (pageCount >= maxPages) {
+        console.log(`[List & Filter] Reached page limit, stopping fetch`);
+        break;
+      }
+
+      // Check if there's a next page
+      nextPageUrl = data.next_page_url || null;
+
+      // Handle relative URLs (convert to absolute if needed)
+      if (nextPageUrl && !nextPageUrl.startsWith("http")) {
+        nextPageUrl = `https://api.emailit.com${nextPageUrl.startsWith("/") ? "" : "/"}${nextPageUrl}`;
+      }
     }
 
-    const data = await response.json();
-
-    // If API returns array directly, use it; otherwise check for data or results property
-    let suppressions: EmailItSuppression[] = Array.isArray(data)
-      ? data
-      : Array.isArray(data.data)
-        ? data.data
-        : Array.isArray(data.results)
-          ? data.results
-          : [];
-
-    console.log(`[List & Filter] Retrieved ${suppressions.length} suppressions from API`);
+    console.log(`[List & Filter] Total suppressions fetched: ${allSuppressions.length} across ${pageCount} pages`);
 
     // Filter suppressions based on search term
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
-      const beforeFilter = suppressions.length;
-      suppressions = suppressions.filter((suppression) => {
+      const beforeFilter = allSuppressions.length;
+      allSuppressions = allSuppressions.filter((suppression) => {
         const name = suppression.name?.toLowerCase() || "";
         const email = suppression.email?.toLowerCase() || "";
         const description = suppression.description?.toLowerCase() || "";
@@ -255,10 +277,10 @@ async function listAndFilterSuppressions(searchTerm: string): Promise<EmailItSup
           type.includes(searchLower)
         );
       });
-      console.log(`[List & Filter] After filtering: ${suppressions.length}/${beforeFilter} suppressions match`);
+      console.log(`[List & Filter] After filtering: ${allSuppressions.length}/${beforeFilter} suppressions match`);
     }
 
-    return suppressions;
+    return allSuppressions;
   } catch (error) {
     console.error("[List & Filter] Error:", error);
     return [];
@@ -285,11 +307,14 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { name, description } = body;
+    // Support both old field names (for backward compatibility) and new ones
+    const email = body.email || body.name;
+    const reason = body.reason || body.description || "manual";
+    const type = body.type || "recipient";
 
-    if (!name) {
+    if (!email) {
       return NextResponse.json(
-        { error: "Name is required" },
+        { error: "Email is required" },
         { status: 400 }
       );
     }
@@ -303,11 +328,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    console.log(`[POST /api/suppressions] Creating suppression for: ${email}`);
+
     // Call EmailIt API to create suppression
     const response = await callEmailItAPI(
       "/suppressions",
       "POST",
-      { name, ...(description && { description }) }
+      {
+        email,
+        type,
+        reason
+      }
     );
 
     if (!response.ok) {
@@ -323,6 +354,7 @@ export async function POST(request: NextRequest) {
     }
 
     const data = await response.json();
+    console.log(`[POST /api/suppressions] Successfully created suppression:`, data);
     return NextResponse.json(data, { status: 201 });
   } catch (error) {
     console.error("Error creating suppression:", error);
