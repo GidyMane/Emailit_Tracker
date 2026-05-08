@@ -195,7 +195,7 @@ export default function SuppressionsSearch() {
                   <DialogHeader>
                     <DialogTitle>Suppression Found</DialogTitle>
                     <DialogDescription>
-                      This email is on the suppressions list for {domain}
+                      This email is on the suppressions list for {domain}. Found using direct email lookup across all pages.
                     </DialogDescription>
                   </DialogHeader>
                   <div className="space-y-4 py-4">

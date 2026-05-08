@@ -299,6 +299,11 @@ export default function SuppressionsList({ selectedDomainId = null }: Suppressio
             )}
           </div>
         </div>
+        {searchTerm && !loading && suppressions.length > 0 && (
+          <div className="mb-4 text-sm text-muted-foreground">
+            Found <span className="font-semibold">{suppressions.length}</span> result{suppressions.length !== 1 ? 's' : ''} across all pages
+          </div>
+        )}
         {error && (
           <div className="mb-4 p-4 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg flex items-start gap-3">
             <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
