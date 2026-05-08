@@ -62,7 +62,14 @@ export default function SuppressionsPage() {
         </p>
       </div>
 
-      {isAdmin ? <SuppressionsList selectedDomainId={selectedDomainId} /> : <SuppressionsSearch />}
+      {isAdmin ? (
+        <div className="flex flex-col gap-6">
+          <SuppressionsSearch />
+          <SuppressionsList selectedDomainId={selectedDomainId} />
+        </div>
+      ) : (
+        <SuppressionsSearch />
+      )}
     </div>
   )
 }
