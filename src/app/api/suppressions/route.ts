@@ -109,8 +109,8 @@ export async function GET(request: NextRequest) {
         suppressions = await listAndFilterSuppressions(searchTerm, false); // fetch all pages
       }
     } else {
-      // No search term, list first page only
-      suppressions = await listAndFilterSuppressions("", true);
+      // No search term, fetch all pages
+      suppressions = await listAndFilterSuppressions("", false);
     }
 
     console.log(`[GET /api/suppressions] Response: ${suppressions.length} suppressions found`);
