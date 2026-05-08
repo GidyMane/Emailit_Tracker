@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 import { Trash2, AlertCircle, Loader2, Search, X } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { Button } from '@/components/ui/button'
@@ -28,57 +28,26 @@ interface Suppression {
 
 export default function SuppressionsSearch() {
   const [searchInput, setSearchInput] = useState('')
-  const [searchTerm, setSearchTerm] = useState('')
-  const [isSearching, setIsSearching] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [searchResult, setSearchResult] = useState<Suppression | null>(null)
   const [showResult, setShowResult] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [domain, setDomain] = useState<string>('')
-  const debounceTimer = useRef<NodeJS.Timeout | null>(null)
-
-  // Debounce search input
-  useEffect(() => {
-    if (debounceTimer.current) {
-      clearTimeout(debounceTimer.current)
-    }
-
-    if (!searchInput.trim()) {
-      setSearchResult(null)
-      setShowResult(false)
-      setError(null)
-      return
-    }
-
-    debounceTimer.current = setTimeout(() => {
-      setSearchTerm(searchInput)
-      setIsSearching(true)
-    }, 300)
-
-    return () => {
-      if (debounceTimer.current) {
-        clearTimeout(debounceTimer.current)
-      }
-    }
-  }, [searchInput])
-
-  // Fetch suppressions when search term changes
-  useEffect(() => {
-    if (!searchTerm.trim()) {
-      return
-    }
-    performSearch()
-  }, [searchTerm])
 
   const performSearch = async () => {
+    if (!searchInput.trim()) {
+      toast.error('Please enter an email address to search')
+      return
+    }
+
     try {
       setLoading(true)
       setError(null)
       setSearchResult(null)
 
       const params = new URLSearchParams()
-      params.append('search', searchTerm)
+      params.append('search', searchInput.trim())
 
       const response = await fetch(`/api/suppressions?${params.toString()}`)
 
@@ -106,7 +75,12 @@ export default function SuppressionsSearch() {
       toast.error(errorMessage)
     } finally {
       setLoading(false)
-      setIsSearching(false)
+    }
+  }
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      performSearch()
     }
   }
 
@@ -163,16 +137,14 @@ export default function SuppressionsSearch() {
       <CardContent>
         <div className="flex gap-2 mb-6">
           <div className="relative flex-1">
-            {isSearching ? (
-              <Loader2 className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground animate-spin" />
-            ) : (
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            )}
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Search by email or name..."
+              placeholder="Enter email address to search..."
               className="pl-10 pr-10"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
+              onKeyPress={handleKeyPress}
+              disabled={loading}
             />
             {searchInput && (
               <button
@@ -184,6 +156,18 @@ export default function SuppressionsSearch() {
               </button>
             )}
           </div>
+          <Button
+            onClick={performSearch}
+            disabled={loading || !searchInput.trim()}
+            className="gap-2"
+          >
+            {loading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Search className="h-4 w-4" />
+            )}
+            Search
+          </Button>
         </div>
 
         {error && (
