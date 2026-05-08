@@ -143,15 +143,16 @@ export async function GET(request: NextRequest) {
 // Supports both suppression IDs (sup_xxx) and email addresses (URL-encoded)
 async function attemptDirectLookup(searchTerm: string): Promise<EmailItSuppression | null> {
   try {
+    const trimmedTerm = searchTerm.trim();
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 10000);
 
     // URL-encode the search term in case it's an email address
     // The @ symbol needs to be encoded as %40
-    const encodedSearchTerm = encodeURIComponent(searchTerm);
+    const encodedSearchTerm = encodeURIComponent(trimmedTerm);
     const url = `https://api.emailit.com/v1/suppressions/${encodedSearchTerm}`;
 
-    console.log(`[Direct Lookup] Searching for: "${searchTerm}" -> URL: ${url}`);
+    console.log(`[Direct Lookup] Searching for: "${trimmedTerm}" -> URL: ${url}`);
 
     const response = await fetch(url, {
       method: "GET",
@@ -168,23 +169,18 @@ async function attemptDirectLookup(searchTerm: string): Promise<EmailItSuppressi
 
     if (response.ok) {
       const data = await response.json();
-      console.log(`[Direct Lookup] Success! Found suppression:`, data);
-      // The API returns the suppression object directly based on the docs
-      // It should have an "object" field with value "suppression"
+      console.log(`[Direct Lookup] Success! Found suppression:`, JSON.stringify(data, null, 2));
       return data;
     } else if (response.status === 404) {
-      // Not found - return null to fall back to list
-      console.log(`[Direct Lookup] Email/ID not found (404)`);
+      console.log(`[Direct Lookup] Email/ID not found (404) - will try list fallback`);
       return null;
     } else {
-      // Other error - log it and fall back
       const errorText = await response.text();
-      console.log(`[Direct Lookup] API error ${response.status}:`, errorText);
+      console.error(`[Direct Lookup] API error ${response.status}:`, errorText);
       return null;
     }
   } catch (error) {
-    // Timeout or network error, fall back to list
-    console.warn("[Direct Lookup] Error:", error);
+    console.error("[Direct Lookup] Error:", error instanceof Error ? error.message : String(error));
     return null;
   }
 }
