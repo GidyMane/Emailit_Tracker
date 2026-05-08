@@ -3,24 +3,21 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 interface SuppressionResponse {
   id: string;
-  name?: string;
-  email?: string;
-  status?: string;
-  description?: string;
-  created_at?: string;
-  [key: string]: any;
+  object?: string;
+  email: string;
+  type?: string;
+  reason?: string;
+  timestamp?: string;
+  keep_until?: string | null;
 }
 
 const adminEmails = ["info@websoftdevelopment.com", "muragegideon2000@gmail.com"];
 
-async function checkAdminStatus(user: any): Promise<boolean> {
-  return adminEmails.includes(user?.email);
-}
-
+// FIX 1: Use v2
 async function callEmailItAPI(
   endpoint: string,
   method: string,
-  body?: Record<string, any>
+  body?: Record<string, unknown>
 ): Promise<Response> {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 30000);
@@ -39,7 +36,7 @@ async function callEmailItAPI(
   }
 
   try {
-    const response = await fetch(`https://api.emailit.com/v1${endpoint}`, options);
+    const response = await fetch(`https://api.emailit.com/v2${endpoint}`, options);
     clearTimeout(timeoutId);
     return response;
   } catch (error) {
@@ -48,7 +45,7 @@ async function callEmailItAPI(
   }
 }
 
-// GET /api/suppressions/:id - Retrieve a specific suppression
+// GET /api/suppressions/:id
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -61,9 +58,7 @@ export async function GET(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const isAdmin = await checkAdminStatus(user);
-
-    if (!isAdmin) {
+    if (!adminEmails.includes(user.email)) {
       return NextResponse.json(
         { error: "Only admins can retrieve suppression details" },
         { status: 403 }
@@ -71,11 +66,7 @@ export async function GET(
     }
 
     if (!process.env.EMAILIT_API_KEY) {
-      console.error("EMAILIT_API_KEY not configured");
-      return NextResponse.json(
-        { error: "EmailIt API key not configured" },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: "EmailIt API key not configured" }, { status: 500 });
     }
 
     const { id } = await params;
@@ -83,12 +74,8 @@ export async function GET(
 
     if (!response.ok) {
       const error = await response.text();
-      console.error("EmailIt API error:", response.status, error);
       return NextResponse.json(
-        {
-          error: `EmailIt API error: ${response.status}`,
-          details: error,
-        },
+        { error: `EmailIt API error: ${response.status}`, details: error },
         { status: response.status }
       );
     }
@@ -96,23 +83,15 @@ export async function GET(
     const data: SuppressionResponse = await response.json();
     return NextResponse.json(data);
   } catch (error) {
-    console.error("Error retrieving suppression:", error);
-
     if (error instanceof Error && error.name === "AbortError") {
-      return NextResponse.json(
-        { error: "Request timeout" },
-        { status: 504 }
-      );
+      return NextResponse.json({ error: "Request timeout" }, { status: 504 });
     }
-
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
 
-// PATCH /api/suppressions/:id - Update a suppression
+// FIX 3: PATCH — send the correct Emailit field names (reason, type, keep_until)
+// The old code sent { name, description } which are not valid Emailit suppression fields.
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -125,48 +104,43 @@ export async function PATCH(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const isAdmin = await checkAdminStatus(user);
-
-    if (!isAdmin) {
-      return NextResponse.json(
-        { error: "Only admins can update suppressions" },
-        { status: 403 }
-      );
+    if (!adminEmails.includes(user.email)) {
+      return NextResponse.json({ error: "Only admins can update suppressions" }, { status: 403 });
     }
 
     const body = await request.json();
-    const { name, description } = body;
 
-    if (!name) {
+    // Accept correct Emailit field names; keep legacy aliases for safety
+    const email = body.email;
+    const reason = body.reason || body.description;
+    const type = body.type;
+    const keep_until = body.keep_until;
+
+    // At least one field must be provided
+    if (!email && !reason && !type && keep_until === undefined) {
       return NextResponse.json(
-        { error: "Name is required" },
+        { error: "At least one field (email, reason, type, keep_until) is required" },
         { status: 400 }
       );
     }
 
     if (!process.env.EMAILIT_API_KEY) {
-      console.error("EMAILIT_API_KEY not configured");
-      return NextResponse.json(
-        { error: "EmailIt API key not configured" },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: "EmailIt API key not configured" }, { status: 500 });
     }
 
+    const updatePayload: Record<string, unknown> = {};
+    if (email) updatePayload.email = email;
+    if (reason) updatePayload.reason = reason;
+    if (type) updatePayload.type = type;
+    if (keep_until !== undefined) updatePayload.keep_until = keep_until;
+
     const { id } = await params;
-    const response = await callEmailItAPI(
-      `/suppressions/${id}`,
-      "PATCH",
-      { name, ...(description && { description }) }
-    );
+    const response = await callEmailItAPI(`/suppressions/${id}`, "POST", updatePayload);
 
     if (!response.ok) {
       const error = await response.text();
-      console.error("EmailIt API error:", response.status, error);
       return NextResponse.json(
-        {
-          error: `EmailIt API error: ${response.status}`,
-          details: error,
-        },
+        { error: `EmailIt API error: ${response.status}`, details: error },
         { status: response.status }
       );
     }
@@ -174,23 +148,14 @@ export async function PATCH(
     const data: SuppressionResponse = await response.json();
     return NextResponse.json(data);
   } catch (error) {
-    console.error("Error updating suppression:", error);
-
     if (error instanceof Error && error.name === "AbortError") {
-      return NextResponse.json(
-        { error: "Request timeout" },
-        { status: 504 }
-      );
+      return NextResponse.json({ error: "Request timeout" }, { status: 504 });
     }
-
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
 
-// DELETE /api/suppressions/:id - Delete a suppression
+// DELETE /api/suppressions/:id
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -204,11 +169,7 @@ export async function DELETE(
     }
 
     if (!process.env.EMAILIT_API_KEY) {
-      console.error("EMAILIT_API_KEY not configured");
-      return NextResponse.json(
-        { error: "EmailIt API key not configured" },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: "EmailIt API key not configured" }, { status: 500 });
     }
 
     const { id } = await params;
@@ -216,12 +177,8 @@ export async function DELETE(
 
     if (!response.ok) {
       const error = await response.text();
-      console.error("EmailIt API error:", response.status, error);
       return NextResponse.json(
-        {
-          error: `EmailIt API error: ${response.status}`,
-          details: error,
-        },
+        { error: `EmailIt API error: ${response.status}`, details: error },
         { status: response.status }
       );
     }
@@ -231,18 +188,9 @@ export async function DELETE(
       message: `Suppression ${id} deleted successfully`,
     });
   } catch (error) {
-    console.error("Error deleting suppression:", error);
-
     if (error instanceof Error && error.name === "AbortError") {
-      return NextResponse.json(
-        { error: "Request timeout" },
-        { status: 504 }
-      );
+      return NextResponse.json({ error: "Request timeout" }, { status: 504 });
     }
-
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
