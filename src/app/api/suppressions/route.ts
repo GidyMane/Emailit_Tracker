@@ -104,10 +104,9 @@ export async function GET(request: NextRequest) {
         console.log(`[GET /api/suppressions] Direct lookup succeeded!`);
         suppressions = [directLookupResult];
       } else {
-        // Direct lookup failed - email might be partial match
-        // For performance, only fetch first page instead of all 10k+ suppressions
-        console.log(`[GET /api/suppressions] Direct lookup failed, fetching first page for partial matches`);
-        suppressions = await listAndFilterSuppressions(searchTerm, true); // limit to first page
+        // Direct lookup failed - fetch all pages to find partial matches
+        console.log(`[GET /api/suppressions] Direct lookup failed, fetching all pages for partial matches`);
+        suppressions = await listAndFilterSuppressions(searchTerm, false); // fetch all pages
       }
     } else {
       // No search term, list first page only
