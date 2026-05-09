@@ -10,6 +10,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Skeleton } from "@/components/ui/skeleton"
+
+// Fix 1: selectedDomainId from context — no per-component localStorage read
+import { useDashboard } from "@/context/dashboard-context"
 import { 
   Bar, 
   BarChart, 
@@ -162,6 +165,9 @@ export default function EnhancedAnalyticsDashboard() {
   const [appliedEndDate, setAppliedEndDate] = useState<string>("")
   const chartSettings = useResponsiveChart()
 
+  // Fix 1: selectedDomainId from context — no per-render localStorage read
+  const { selectedDomainId } = useDashboard()
+
   const handleApplyDateFilter = () => {
     setAppliedStartDate(startDate)
     setAppliedEndDate(endDate)
@@ -180,10 +186,10 @@ export default function EnhancedAnalyticsDashboard() {
         setLoading(true)
         setError(null)
 
-        const selectedId = typeof window !== 'undefined' ? localStorage.getItem('selectedDomainId') : null
         const params = new URLSearchParams()
-        if (selectedId && selectedId !== 'all') {
-          params.append('domainId', encodeURIComponent(selectedId))
+        // Fix 1: use selectedDomainId from context instead of localStorage
+        if (selectedDomainId && selectedDomainId !== 'all') {
+          params.append('domainId', encodeURIComponent(selectedDomainId))
         }
         if (appliedStartDate) {
           params.append('startDate', appliedStartDate)
@@ -223,7 +229,7 @@ export default function EnhancedAnalyticsDashboard() {
     }
 
     fetchData()
-  }, [appliedStartDate, appliedEndDate])
+  }, [appliedStartDate, appliedEndDate, selectedDomainId])
 
   // Prepare pie chart data with safety checks to prevent percentages over 100%
   const attempted = statsData ? (

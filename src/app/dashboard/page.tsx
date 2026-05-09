@@ -30,7 +30,8 @@ import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Button } from "@/components/ui/button"
 import CronManagement from "@/components/cron-management"
-import { useKindeAuth, useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs"
+// Fix 1: useKindeBrowserClient removed — access token log was a security risk (Fix 7)
+import { useDashboard } from "@/context/dashboard-context"
 
 interface EmailStats {
   totalSent: number;
@@ -62,32 +63,7 @@ interface EmailStats {
   };
 }
 
-interface DomainData {
-  domain: {
-    id: string;
-    name: string;
-    emailCount: number;
-    summary: unknown;
-    createdAt: string;
-    updatedAt: string;
-  };
-  userEmail: string;
-  userDomain: string;
-}
-
-interface AudienceData {
-  overview: {
-    totalRecipients: number;
-    activeRecipients: number;
-    inactiveRecipients: number;
-    bouncedRecipients: number;
-  };
-  engagement: {
-    openRate: number;
-    clickRate: number;
-  };
-  isAdmin: boolean;
-}
+// DomainData and AudienceData are now owned by DashboardContext (Fix 1)
 
 interface StatsResponse {
   stats: EmailStats;
@@ -106,63 +82,44 @@ interface StatsResponse {
 
 export default function DashboardOverview() {
   const [statsData, setStatsData] = useState<StatsResponse | null>(null)
-  const [domainData, setDomainData] = useState<DomainData | null>(null)
-  const [audienceData, setAudienceData] = useState<AudienceData | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [statsLoading, setStatsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const {getAccessTokenRaw} = useKindeBrowserClient()
+  // Fix 1: domain + audience come from context (fetched once by layout).
+  // Fix 7: console.log(accessToken) removed — it was logging the raw JWT.
+  const { selectedDomainId, loading: contextLoading } = useDashboard()
 
-  const accessToken = getAccessTokenRaw()
-
-  console.log(accessToken)
-
-
-
-  // Fetch data from APIs
+  // Only fetch stats here — domain + audience are shared via context
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchStats = async () => {
       try {
-        setLoading(true)
+        setStatsLoading(true)
         setError(null)
 
-        // Fetch all data in parallel
-        const selectedId = typeof window !== 'undefined' ? localStorage.getItem('selectedDomainId') : null
-        const qs = selectedId && selectedId !== 'all' ? `?domainId=${encodeURIComponent(selectedId)}` : ''
-        const [domainResponse, statsResponse, audienceResponse] = await Promise.all([
-          fetch(`/api/dashboard/domain${qs}`),
-          fetch(`/api/dashboard/stats${qs}`),
-          fetch(`/api/dashboard/audience${qs}`)
-        ])
+        const qs =
+          selectedDomainId && selectedDomainId !== 'all'
+            ? `?domainId=${encodeURIComponent(selectedDomainId)}`
+            : ''
 
-        if (!domainResponse.ok) {
-          throw new Error('Failed to fetch domain data')
-        }
-        const domainResult = await domainResponse.json()
-        setDomainData(domainResult)
+        const statsResponse = await fetch(`/api/dashboard/stats${qs}`)
 
         if (!statsResponse.ok) {
           throw new Error('Failed to fetch email statistics')
         }
-        const statsResult = await statsResponse.json()
-        setStatsData(statsResult)
-
-        if (!audienceResponse.ok) {
-          throw new Error('Failed to fetch audience data')
-        }
-        const audienceResult = await audienceResponse.json()
-        setAudienceData(audienceResult)
-
+        setStatsData(await statsResponse.json())
       } catch (err) {
-        console.error('Error fetching overview data:', err)
+        console.error('Error fetching stats:', err)
         setError(err instanceof Error ? err.message : 'Failed to load dashboard data')
       } finally {
-        setLoading(false)
+        setStatsLoading(false)
       }
     }
 
-    fetchData()
-  }, [])
+    fetchStats()
+    // Re-fetch stats when the selected domain changes
+  }, [selectedDomainId])
+
+  const loading = contextLoading || statsLoading
 
   const LoadingSkeleton = () => (
     <div className="space-y-6 p-4 md:p-6">

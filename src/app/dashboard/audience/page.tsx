@@ -23,6 +23,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
 
+// Fix 1: selectedDomainId comes from context — no per-page localStorage read
+import { useDashboard } from "@/context/dashboard-context"
+
 interface Recipient {
   email: string;
   emailDomain: string;
@@ -70,13 +73,16 @@ export default function AudiencePage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [currentPage, setCurrentPage] = useState(1)
 
+  // Fix 1: read selectedDomainId from context — no localStorage read needed
+  const { selectedDomainId } = useDashboard()
+
   useEffect(() => {
     setCurrentPage(1) // Reset to first page when search changes
   }, [searchTerm])
 
   useEffect(() => {
     fetchAudience()
-  }, [searchTerm, currentPage])
+  }, [searchTerm, currentPage, selectedDomainId])
 
   const fetchAudience = async () => {
     try {
@@ -88,8 +94,8 @@ export default function AudiencePage() {
       params.append('page', currentPage.toString())
       params.append('limit', '50')
 
-      const selectedId = typeof window !== 'undefined' ? localStorage.getItem('selectedDomainId') : null
-      if (selectedId && selectedId !== 'all') params.append('domainId', selectedId)
+      // Fix 1: use selectedDomainId from context (always up-to-date, no localStorage race)
+      if (selectedDomainId && selectedDomainId !== 'all') params.append('domainId', selectedDomainId)
       const response = await fetch(`/api/dashboard/audience?${params.toString()}`)
       if (!response.ok) {
         throw new Error('Failed to fetch audience data')
@@ -112,8 +118,8 @@ export default function AudiencePage() {
       if (searchTerm) params.append('search', searchTerm)
       params.append('limit', '10000') // Large limit to get all results
 
-      const selectedId = typeof window !== 'undefined' ? localStorage.getItem('selectedDomainId') : null
-      if (selectedId && selectedId !== 'all') params.append('domainId', selectedId)
+      // Fix 1: use selectedDomainId from context
+      if (selectedDomainId && selectedDomainId !== 'all') params.append('domainId', selectedDomainId)
       const response = await fetch(`/api/dashboard/audience?${params.toString()}`)
       if (!response.ok) {
         throw new Error('Failed to fetch data for export')

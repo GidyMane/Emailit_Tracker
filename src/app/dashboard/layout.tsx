@@ -7,7 +7,6 @@ import Link from "next/link"
 import {
   BarChart3,
   ChevronDown,
-  FileText,
   Home,
   LogOut,
   Mail,
@@ -19,7 +18,6 @@ import {
 } from 'lucide-react'
 
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -45,49 +43,40 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs"
 
-interface DomainData {
-  domain: {
-    id: string;
-    name: string;
-    emailCount: number;
-    summary: unknown;
-    createdAt: string;
-    updatedAt: string;
-  };
-  userEmail: string;
-  userDomain: string;
-  isAdmin?: boolean;
-  allDomains?: { id: string; name: string; emailCount: number; summary: unknown }[];
-}
+// Fix 1: Import the shared context provider and hook
+import { DashboardProvider, useDashboard } from "@/context/dashboard-context"
 
-interface AudienceData {
-  isAdmin: boolean;
-}
+// ─── Navigation config ────────────────────────────────────────────────────────
 
 const getNavigation = (isAdmin: boolean = false) => [
   {
     title: "Main Navigation",
     items: [
-      { title: "Overview", href: "/dashboard", icon: Home },
-      { title: "Analytics", href: "/dashboard/analytics", icon: BarChart3 },
-      { title: "Messages", href: "/dashboard/messages", icon: Send },
-      { title: "Audience", href: "/dashboard/audience", icon: Users },
-      { title: "Suppressions", href: "/dashboard/suppressions", icon: Ban },
-      ...(isAdmin ? [
-        { title: "Domains", href: "/dashboard/domains", icon: Send }
-      ] : []),
-    ]
-  }
+      { title: "Overview",     href: "/dashboard",             icon: Home },
+      { title: "Analytics",    href: "/dashboard/analytics",   icon: BarChart3 },
+      { title: "Messages",     href: "/dashboard/messages",    icon: Send },
+      { title: "Audience",     href: "/dashboard/audience",    icon: Users },
+      { title: "Suppressions", href: "/dashboard/suppressions",icon: Ban },
+      ...(isAdmin ? [{ title: "Domains", href: "/dashboard/domains", icon: Send }] : []),
+    ],
+  },
 ]
 
-// Mobile-aware navigation link component
-function NavLink({ href, children, isActive }: { href: string; children: React.ReactNode; isActive: boolean }) {
+// ─── Mobile-aware nav link ────────────────────────────────────────────────────
+
+function NavLink({
+  href,
+  children,
+  isActive,
+}: {
+  href: string
+  children: React.ReactNode
+  isActive: boolean
+}) {
   const { isMobile, setOpenMobile } = useSidebar()
 
   const handleClick = () => {
-    if (isMobile) {
-      setOpenMobile(false)
-    }
+    if (isMobile) setOpenMobile(false)
   }
 
   return (
@@ -99,33 +88,30 @@ function NavLink({ href, children, isActive }: { href: string; children: React.R
   )
 }
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  const pathname = usePathname()
-  const [domainData, setDomainData] = useState<DomainData | null>(null)
-  const [audienceData, setAudienceData] = useState<AudienceData | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [isDarkMode, setIsDarkMode] = useState(false)
-  const [selectedDomainId, setSelectedDomainId] = useState<string | null>(null)
-  const [selectedDomainName, setSelectedDomainName] = useState<string | null>(null)
+// ─── Inner layout — consumes context ─────────────────────────────────────────
+// Separated so it can call useDashboard() inside the provider tree.
 
-  // Theme toggle functionality
+function DashboardLayoutInner({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname()
+  const [isDarkMode, setIsDarkMode] = useState(false)
+
+  // Fix 1: All shared data now comes from context — zero extra fetches
+  const {
+    domainData,
+    loading,
+    isAdmin,
+    selectedDomainName,
+    setSelectedDomain,
+  } = useDashboard()
+
+  // Theme initialisation (localStorage read is fine here — it's unrelated to data)
   useEffect(() => {
     const saved = localStorage.getItem('theme')
-    const isDark = saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    const isDark =
+      saved === 'dark' ||
+      (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)
     setIsDarkMode(isDark)
     document.documentElement.classList.toggle('dark', isDark)
-  }, [])
-
-  // Load selected domain from localStorage
-  useEffect(() => {
-    const id = localStorage.getItem('selectedDomainId')
-    const name = localStorage.getItem('selectedDomainName')
-    setSelectedDomainId(id)
-    setSelectedDomainName(name)
   }, [])
 
   const toggleTheme = () => {
@@ -135,36 +121,7 @@ export default function DashboardLayout({
     localStorage.setItem('theme', newIsDark ? 'dark' : 'light')
   }
 
-  // Fetch user and domain data for layout
-  useEffect(() => {
-    const fetchLayoutData = async () => {
-      try {
-        const qs = selectedDomainId && selectedDomainId !== 'all' ? `?domainId=${encodeURIComponent(selectedDomainId)}` : ''
-        const [domainResponse, audienceResponse] = await Promise.all([
-          fetch(`/api/dashboard/domain${qs}`),
-          fetch('/api/dashboard/audience')
-        ])
-
-        if (domainResponse.ok) {
-          const domainResult = await domainResponse.json()
-          setDomainData(domainResult)
-        }
-
-        if (audienceResponse.ok) {
-          const audienceResult = await audienceResponse.json()
-          setAudienceData(audienceResult)
-        }
-      } catch (error) {
-        console.error('Error fetching layout data:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchLayoutData()
-  }, [selectedDomainId])
-
-  const navigation = getNavigation(audienceData?.isAdmin || false)
+  const navigation = getNavigation(isAdmin)
 
   return (
     <SidebarProvider>
@@ -186,7 +143,7 @@ export default function DashboardLayout({
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarHeader>
-        
+
         <SidebarContent>
           {navigation.map((section) => (
             <SidebarGroup key={section.title}>
@@ -213,7 +170,7 @@ export default function DashboardLayout({
             </SidebarGroup>
           ))}
         </SidebarContent>
-        
+
         <SidebarFooter>
           <SidebarMenu>
             <SidebarMenuItem>
@@ -249,45 +206,50 @@ export default function DashboardLayout({
           </SidebarMenu>
         </SidebarFooter>
       </Sidebar>
-      
+
       <SidebarInset>
         <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center gap-2 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-3 sm:px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
+
           <div className="flex items-center gap-2 flex-1 min-w-0">
             <div className="flex-1 min-w-0">
-              <h1 className="font-semibold text-sm sm:text-base truncate">
-                <span className="hidden sm:inline">Dashboard</span>
-                <span className="sm:hidden">Dashboard</span>
-              </h1>
+              <h1 className="font-semibold text-sm sm:text-base truncate">Dashboard</h1>
               {domainData?.domain && (
                 <p className="text-xs text-muted-foreground hidden sm:block">
-                  {(selectedDomainName || domainData?.userDomain || 'All Domains')}: {domainData.domain.emailCount > 0
+                  {selectedDomainName || domainData?.userDomain || 'All Domains'}:{' '}
+                  {domainData.domain.emailCount > 0
                     ? `${domainData.domain.emailCount.toLocaleString()} emails sent`
-                    : 'No emails sent yet'
-                  }
+                    : 'No emails sent yet'}
                 </p>
               )}
             </div>
 
             <div className="flex items-center gap-2">
-              {/* Admin Domain Switcher */}
-              {audienceData?.isAdmin && domainData?.allDomains && (
+
+              {/* Admin Domain Switcher — Fix 1: uses setSelectedDomain, no page reload */}
+              {isAdmin && domainData?.allDomains && (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" className="h-9 sm:h-10 px-2 sm:px-3 gap-2">
                       <Send className="size-4" />
-                      <span className="hidden sm:inline text-sm font-medium">{selectedDomainName || domainData?.userDomain || 'All Domains'}</span>
+                      <span className="hidden sm:inline text-sm font-medium">
+                        {selectedDomainName || domainData?.userDomain || 'All Domains'}
+                      </span>
                       <ChevronDown className="size-4" />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-64">
-                    <DropdownMenuItem onSelect={() => { localStorage.setItem('selectedDomainId', 'all'); localStorage.setItem('selectedDomainName', 'All Domains'); window.location.reload(); }}>
+                    {/* Fix 1: setSelectedDomain updates context + localStorage; no reload needed */}
+                    <DropdownMenuItem onSelect={() => setSelectedDomain('all', 'All Domains')}>
                       All Domains
                     </DropdownMenuItem>
                     <Separator className="my-1" />
                     {domainData.allDomains.map((d) => (
-                      <DropdownMenuItem key={d.id} onSelect={() => { localStorage.setItem('selectedDomainId', d.id); localStorage.setItem('selectedDomainName', d.name); window.location.reload(); }}>
+                      <DropdownMenuItem
+                        key={d.id}
+                        onSelect={() => setSelectedDomain(d.id, d.name)}
+                      >
                         {d.name}
                       </DropdownMenuItem>
                     ))}
@@ -295,7 +257,7 @@ export default function DashboardLayout({
                 </DropdownMenu>
               )}
 
-              {/* Dark/Light Mode Toggle */}
+              {/* Dark / Light Mode Toggle */}
               <Button
                 variant="outline"
                 size="icon"
@@ -303,11 +265,7 @@ export default function DashboardLayout({
                 className="h-9 w-9 sm:h-10 sm:w-10"
                 title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
               >
-                {isDarkMode ? (
-                  <Sun className="size-4" />
-                ) : (
-                  <Moon className="size-4" />
-                )}
+                {isDarkMode ? <Sun className="size-4" /> : <Moon className="size-4" />}
               </Button>
 
               {/* User Menu */}
@@ -343,11 +301,21 @@ export default function DashboardLayout({
             </div>
           </div>
         </header>
-        
+
         <main className="flex-1">
           {children}
         </main>
       </SidebarInset>
     </SidebarProvider>
+  )
+}
+
+// ─── Exported layout — wraps everything in the provider ──────────────────────
+
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <DashboardProvider>
+      <DashboardLayoutInner>{children}</DashboardLayoutInner>
+    </DashboardProvider>
   )
 }

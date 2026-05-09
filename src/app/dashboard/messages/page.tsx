@@ -30,6 +30,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
 
+// Fix 1: selectedDomainId from context — no per-page localStorage reads
+import { useDashboard } from "@/context/dashboard-context"
+
 interface EmailMessage {
   id: string;
   emailId: number;
@@ -88,6 +91,9 @@ export default function MessagesPage() {
   const abortControllerRef = useRef<AbortController | null>(null)
   const requestCacheRef = useRef<Map<string, { data: MessagesData; timestamp: number }>>(new Map())
 
+  // Fix 1: selectedDomainId from context — no localStorage race condition
+  const { selectedDomainId } = useDashboard()
+
   // Debounce search input
   useEffect(() => {
     if (debounceTimer.current) {
@@ -121,7 +127,7 @@ export default function MessagesPage() {
 
   useEffect(() => {
     fetchMessages()
-  }, [searchTerm, statusFilter, dateRange, currentPage])
+  }, [searchTerm, statusFilter, dateRange, currentPage, selectedDomainId])
 
   const fetchMessages = async () => {
     try {
@@ -135,8 +141,8 @@ export default function MessagesPage() {
 
 
 
-      const selectedId = typeof window !== 'undefined' ? localStorage.getItem('selectedDomainId') : null
-      if (selectedId && selectedId !== 'all') params.append('domainId', selectedId)
+      // Fix 1: selectedDomainId from context — always correct, no render-cycle race
+      if (selectedDomainId && selectedDomainId !== 'all') params.append('domainId', selectedDomainId)
 
       const cacheKey = params.toString()
 
@@ -220,8 +226,8 @@ export default function MessagesPage() {
       params.append('limit', '10000')
       params.append('page', '1')
 
-      const selectedId = typeof window !== 'undefined' ? localStorage.getItem('selectedDomainId') : null
-      if (selectedId && selectedId !== 'all') params.append('domainId', selectedId)
+      // Fix 1: selectedDomainId from context
+      if (selectedDomainId && selectedDomainId !== 'all') params.append('domainId', selectedDomainId)
 
       // Fetch all matching messages
       const response = await fetch(`/api/dashboard/messages?${params.toString()}`)

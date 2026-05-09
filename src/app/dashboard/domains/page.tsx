@@ -18,6 +18,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
 
+// Fix 1: isAdmin comes from context — no extra fetch needed
+import { useDashboard } from "@/context/dashboard-context"
+
 interface DomainSummary {
   totalSent: number;
   totalHardFail: number;
@@ -47,45 +50,35 @@ interface DomainsData {
   isAdmin: boolean;
 }
 
-interface AudienceData {
-  isAdmin: boolean;
-}
-
 export default function DomainsPage() {
   const [domainsData, setDomainsData] = useState<DomainsData | null>(null)
-  const [audienceData, setAudienceData] = useState<AudienceData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
 
+  // Fix 1: isAdmin from context — no separate audience fetch needed
+  const { isAdmin, loading: contextLoading } = useDashboard()
+
   useEffect(() => {
+    // Wait for context to finish loading before checking admin status
+    if (contextLoading) return
+
     const fetchData = async () => {
       try {
         setLoading(true)
         setError(null)
 
-        // Check if user is admin first
-        const audienceResponse = await fetch('/api/dashboard/audience')
-        if (audienceResponse.ok) {
-          const audienceResult = await audienceResponse.json()
-          setAudienceData(audienceResult)
-          
-          // Only fetch domains if user is admin
-          if (audienceResult.isAdmin) {
-            const domainsResponse = await fetch('/api/dashboard/domains')
-            if (!domainsResponse.ok) {
-              throw new Error('Failed to fetch domains data')
-            }
-            const domainsResult = await domainsResponse.json()
-            setDomainsData(domainsResult)
-          } else {
-            setError('Access denied. Admin privileges required.')
-          }
-        } else {
-          throw new Error('Failed to verify admin status')
+        if (!isAdmin) {
+          setError('Access denied. Admin privileges required.')
+          return
         }
 
+        const domainsResponse = await fetch('/api/dashboard/domains')
+        if (!domainsResponse.ok) {
+          throw new Error('Failed to fetch domains data')
+        }
+        setDomainsData(await domainsResponse.json())
       } catch (err) {
         console.error('Error fetching domains data:', err)
         setError(err instanceof Error ? err.message : 'Failed to load domains data')
@@ -95,7 +88,7 @@ export default function DomainsPage() {
     }
 
     fetchData()
-  }, [])
+  }, [isAdmin, contextLoading])
 
   // Filter domains based on search term and status
   const filteredDomains = React.useMemo(() => {
@@ -242,7 +235,7 @@ export default function DomainsPage() {
     )
   }
 
-  if (!audienceData?.isAdmin) {
+  if (!isAdmin) {
     return (
       <div className="space-y-6 p-4 md:p-6">
         <div className="text-center space-y-4 py-12">
