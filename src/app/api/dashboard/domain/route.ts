@@ -2,6 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { prisma } from "@/lib/prisma";
 
+
+// Fix 2: shared helper — adds Cache-Control header to successful responses
+function cachedResponse(data: unknown, maxAge: number): NextResponse {
+  const res = NextResponse.json(data)
+  res.headers.set(
+    "Cache-Control",
+    `private, max-age=${maxAge}, stale-while-revalidate=${maxAge * 2}`
+  )
+  return res
+}
 export async function GET(request: NextRequest) {
   try {
     const { getUser } = getKindeServerSession();
@@ -29,7 +39,8 @@ export async function GET(request: NextRequest) {
       if (selectedDomainId && selectedDomainId !== "all") {
         const selected = domains.find((d) => d.id === selectedDomainId);
         if (selected) {
-          return NextResponse.json({
+          // Fix 2: cache domain data for 30 s
+          return cachedResponse({
             domain: {
               id: selected.id,
               name: selected.name,
@@ -47,7 +58,7 @@ export async function GET(request: NextRequest) {
               emailCount: d._count.emails,
               summary: d.summary,
             })),
-          });
+          }, 30);
         }
       }
 
@@ -81,7 +92,8 @@ export async function GET(request: NextRequest) {
         }
       );
 
-      return NextResponse.json({
+      // Fix 2: cache domain data for 30 s
+      return cachedResponse({
         domain: {
           id: "admin-all",
           name: "All Domains",
@@ -99,7 +111,7 @@ export async function GET(request: NextRequest) {
           emailCount: d._count.emails,
           summary: d.summary,
         })),
-      });
+      }, 30);
     }
 
     const userEmailDomain = user.email.split("@")[1];
@@ -126,7 +138,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    return NextResponse.json({
+    // Fix 2: cache domain data for 30 s
+    return cachedResponse({
       domain: {
         id: domain.id,
         name: domain.name,
@@ -138,7 +151,7 @@ export async function GET(request: NextRequest) {
       userEmail: user.email,
       userDomain: userEmailDomain,
       isAdmin: false,
-    });
+    }, 30);
   } catch (error) {
     console.error("Error fetching domain data:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

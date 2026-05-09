@@ -28,6 +28,24 @@ function safeJsonResponse<T>(data: T): NextResponse {
   );
 }
 
+function safeJsonPrepare<T>(data: T): unknown {
+  return JSON.parse(
+    JSON.stringify(data, (_, value) =>
+      typeof value === "bigint" ? value.toString() : value
+    )
+  );
+}
+
+
+// Fix 2: shared helper — adds Cache-Control header to successful responses
+function cachedResponse(data: unknown, maxAge: number): NextResponse {
+  const res = NextResponse.json(data)
+  res.headers.set(
+    "Cache-Control",
+    `private, max-age=${maxAge}, stale-while-revalidate=${maxAge * 2}`
+  )
+  return res
+}
 export async function GET(request: NextRequest) {
   try {
     const { getUser } = getKindeServerSession();
@@ -197,8 +215,10 @@ export async function GET(request: NextRequest) {
           : 0,
     };
 
-    return safeJsonResponse({
-      recipients: formattedRecipients,
+    // Fix 2: cache audience list for 30 s
+    return cachedResponse(
+      safeJsonPrepare({
+        recipients: formattedRecipients,
       overview: overviewStats,
       pagination: {
         total: totalUniqueRecipients.length,
@@ -210,7 +230,9 @@ export async function GET(request: NextRequest) {
       },
       domainName: isAdmin ? (selectedDomainId && selectedDomainId !== "all" && domains[0] ? domains[0].name : "All Domains") : domains[0].name,
       isAdmin,
-    });
+      }),
+      30
+    );
   } catch (error) {
     console.error("Error fetching audience data:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

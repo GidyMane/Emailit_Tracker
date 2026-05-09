@@ -47,6 +47,16 @@ async function callEmailItAPI(
   }
 }
 
+
+// Fix 2: shared helper — adds Cache-Control header to successful responses
+function cachedResponse(data: unknown, maxAge: number): NextResponse {
+  const res = NextResponse.json(data)
+  res.headers.set(
+    "Cache-Control",
+    `private, max-age=${maxAge}, stale-while-revalidate=${maxAge * 2}`
+  )
+  return res
+}
 export async function GET(request: NextRequest) {
   try {
     const { getUser } = getKindeServerSession();
@@ -102,6 +112,7 @@ export async function GET(request: NextRequest) {
       const directResult = await attemptDirectLookup(searchTerm);
       if (directResult) {
         console.log(`[GET /api/suppressions] Direct lookup succeeded`);
+        // Fix 2: search results are not cached (user expects live data)
         return NextResponse.json({
           suppressions: [directResult],
           domain: responseDomain,
@@ -117,6 +128,7 @@ export async function GET(request: NextRequest) {
 
       console.log(`[GET /api/suppressions] Direct lookup miss, scanning pages`);
       const matched = await searchAcrossAllPages(searchTerm);
+      // Fix 2: search results not cached
       return NextResponse.json({
         suppressions: matched,
         domain: responseDomain,
@@ -138,7 +150,8 @@ export async function GET(request: NextRequest) {
 
     console.log(`[GET /api/suppressions] Page ${page}: ${suppressions.length} suppressions`);
 
-    return NextResponse.json({
+    // Fix 2: cache the paginated browse (no search) for 60 s — suppression list changes rarely
+    return cachedResponse({
       suppressions,
       domain: responseDomain,
       isAdmin,
@@ -148,7 +161,7 @@ export async function GET(request: NextRequest) {
       totalPages,
       hasNextPage,
       hasPreviousPage,
-    });
+    }, 60);
   } catch (error) {
     console.error("Error fetching suppressions:", error);
     if (error instanceof Error && error.name === "AbortError") {

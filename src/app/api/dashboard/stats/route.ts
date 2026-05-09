@@ -9,6 +9,16 @@ interface Domain {
   updatedAt: Date;
 }
 
+
+// Fix 2: shared helper — adds Cache-Control header to successful responses
+function cachedResponse(data: unknown, maxAge: number): NextResponse {
+  const res = NextResponse.json(data)
+  res.headers.set(
+    "Cache-Control",
+    `private, max-age=${maxAge}, stale-while-revalidate=${maxAge * 2}`
+  )
+  return res
+}
 export async function GET(request: NextRequest) {
   try {
     const { getUser } = getKindeServerSession();
@@ -227,7 +237,8 @@ export async function GET(request: NextRequest) {
       total_recipients: number;
     }[]>(engagementQuery);
 
-    return NextResponse.json({
+    // Fix 2: cache stats for 60 s (only changes when cron syncs new emails)
+    return cachedResponse({
       stats: {
         totalSent: sentCount,
         delivered: sentCount,
@@ -274,7 +285,7 @@ export async function GET(request: NextRequest) {
       domainName: isAdmin ? (selectedDomainId && selectedDomainId !== "all" && selectedName ? selectedName : "All Domains") : (domains[0].name),
       isAdmin,
       domainsCount: isAdmin ? domains.length : 1,
-    });
+    }, 60);
   } catch (error) {
     console.error("Error fetching email statistics:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

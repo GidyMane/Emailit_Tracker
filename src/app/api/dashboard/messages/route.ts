@@ -9,6 +9,12 @@ typeof value === "bigint" ? value.toString() : value
 )));
 }
 
+function safeJsonPrepare<T>(data: T): unknown {
+return JSON.parse(JSON.stringify(data, (_, value) =>
+typeof value === "bigint" ? value.toString() : value
+));
+}
+
 const STATUS_META: Record<string, { label: string; description: string }> = {
 'email.delivery.sent': { label: 'Sent', description: 'Email has been sent to the recipient.' },
 'email.delivery.hardfail': { label: 'Hard Fail', description: 'Email could not be delivered to the recipient.' },
@@ -31,6 +37,16 @@ if (!type) return 'No delivery status recorded yet.';
 return STATUS_META[type]?.description || 'No delivery status recorded yet.';
 }
 
+
+// Fix 2: shared helper — adds Cache-Control header to successful responses
+function cachedResponse(data: unknown, maxAge: number): NextResponse {
+  const res = NextResponse.json(data)
+  res.headers.set(
+    "Cache-Control",
+    `private, max-age=${maxAge}, stale-while-revalidate=${maxAge * 2}`
+  )
+  return res
+}
 export async function GET(request: NextRequest) {
 try {
 const { getUser } = getKindeServerSession();
@@ -209,19 +225,23 @@ const processedEmails = emails.map((email) => {
 // Filter by status if specified  
 const finalEmails = statusParam !== "all" ? processedEmails.filter((e) => e.statusType === statusParam) : processedEmails;  
 
-return safeJsonResponse({  
-  messages: finalEmails,  
-  pagination: {  
-    total: totalCount,  
-    page,  
-    limit,  
-    totalPages: Math.ceil(totalCount / limit),  
-    hasMore: totalCount > offset + limit,  
-    hasPrevious: page > 1,  
-  },  
-  domainName,  
-  isAdmin,  
-});  
+// Fix 2: cache messages list for 10 s
+return cachedResponse(
+  safeJsonPrepare({
+    messages: finalEmails,
+    pagination: {
+      total: totalCount,
+      page,
+      limit,
+      totalPages: Math.ceil(totalCount / limit),
+      hasMore: totalCount > offset + limit,
+      hasPrevious: page > 1,
+    },
+    domainName,
+    isAdmin,
+  }),
+  10
+);  
 
 
 } catch (error) {

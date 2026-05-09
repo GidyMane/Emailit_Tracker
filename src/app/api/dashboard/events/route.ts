@@ -23,6 +23,24 @@ function safeJsonResponse<T>(data: T): NextResponse {
   );
 }
 
+function safeJsonPrepare<T>(data: T): unknown {
+  return JSON.parse(
+    JSON.stringify(data, (_, value) =>
+      typeof value === "bigint" ? value.toString() : value
+    )
+  );
+}
+
+
+// Fix 2: shared helper — adds Cache-Control header to successful responses
+function cachedResponse(data: unknown, maxAge: number): NextResponse {
+  const res = NextResponse.json(data)
+  res.headers.set(
+    "Cache-Control",
+    `private, max-age=${maxAge}, stale-while-revalidate=${maxAge * 2}`
+  )
+  return res
+}
 export async function GET(request: NextRequest) {
   try {
     const { getUser } = getKindeServerSession();
@@ -183,8 +201,10 @@ export async function GET(request: NextRequest) {
         ORDER BY EXTRACT(DOW FROM e."occurredAt")
       `, domains[0].id, filterStartDate, filterEndDate);
 
-    return safeJsonResponse({
-      events: events.map((event) => ({
+    // Fix 2: cache events/chart data for 15 s
+    return cachedResponse(
+      safeJsonPrepare({
+        events: events.map((event) => ({
         id: event.id,
         emailId: event.emailId,
         to: event.email?.to,
@@ -207,7 +227,9 @@ export async function GET(request: NextRequest) {
       },
       domainName: isAdmin ? (selectedDomainId && selectedDomainId !== "all" && domains[0] ? domains[0].name : "All Domains") : domains[0].name,
       isAdmin,
-    });
+      }),
+      15
+    );
   } catch (error) {
     console.error("Error fetching email events:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
