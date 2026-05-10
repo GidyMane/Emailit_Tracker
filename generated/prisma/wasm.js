@@ -36,11 +36,11 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.19.2
+ * Prisma Client JS version: 6.19.3
  * Query Engine version: c2990dca591cba766e3b7ef5d9e8a84796e47ab7
  */
 Prisma.prismaVersion = {
-  client: "6.19.2",
+  client: "6.19.3",
   engine: "c2990dca591cba766e3b7ef5d9e8a84796e47ab7"
 }
 
@@ -208,7 +208,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/root/app/code/generated/prisma",
+      "value": "C:\\Users\\USER\\Desktop\\Emailit_Tracker\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -217,25 +217,25 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "debian-openssl-3.0.x",
+        "value": "windows",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/root/app/code/prisma/schema.prisma",
+    "sourceFilePath": "C:\\Users\\USER\\Desktop\\Emailit_Tracker\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null
+    "rootEnvPath": null,
+    "schemaEnvPath": "../../.env"
   },
   "relativePath": "../../prisma",
-  "clientVersion": "6.19.2",
+  "clientVersion": "6.19.3",
   "engineVersion": "c2990dca591cba766e3b7ef5d9e8a84796e47ab7",
   "datasourceNames": [
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -244,8 +244,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nenum Role {\n  ADMIN\n  CLIENT\n}\n\nmodel User {\n  id        String   @id @default(uuid())\n  kindeId   String   @unique\n  email     String   @unique\n  name      String?\n  domains   Domain[]\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel Domain {\n  id        String        @id @default(uuid())\n  name      String        @unique\n  userId    String?\n  user      User?         @relation(fields: [userId], references: [id])\n  emails    Email[]\n  summary   EmailSummary?\n  createdAt DateTime      @default(now())\n  updatedAt DateTime      @updatedAt\n}\n\nmodel Email {\n  id         String  @id @default(uuid())\n  emailId    Int\n  token      String\n  messageId  String  @unique\n  to         String?\n  from       String?\n  subject    String?\n  spamStatus Int?\n  domainId   String\n  domain     Domain  @relation(fields: [domainId], references: [id])\n\n  deliveryStatus String?\n  sentAt         DateTime?\n  firstOpenAt    DateTime?\n  firstClickAt   DateTime?\n\n  events    EmailEvent[]\n  createdAt DateTime     @default(now())\n  updatedAt DateTime     @updatedAt\n\n  @@index([domainId])\n  @@index([domainId, sentAt])\n  @@index([domainId, createdAt])\n  @@index([to])\n  @@index([from])\n  @@index([subject])\n  @@index([sentAt])\n}\n\nmodel EmailEvent {\n  id         String   @id @default(uuid())\n  eventId    String   @unique\n  type       String\n  status     String?\n  occurredAt DateTime\n\n  emailId String\n  email   Email  @relation(fields: [emailId], references: [id])\n\n  ipAddress String?\n  country   String?\n  city      String?\n  userAgent String?\n\n  linkId  String?\n  linkUrl String?\n\n  rawPayload Json\n\n  createdAt DateTime @default(now())\n\n  @@index([emailId, type])\n  @@index([type, occurredAt])\n  @@index([emailId, occurredAt])\n}\n\nmodel EmailSummary {\n  id            String   @id @default(cuid())\n  domainId      String   @unique\n  domain        Domain   @relation(fields: [domainId], references: [id])\n  totalSent     Int      @default(0)\n  totalHardFail Int      @default(0)\n  totalSoftFail Int      @default(0)\n  totalBounce   Int      @default(0)\n  totalError    Int      @default(0)\n  totalHeld     Int      @default(0)\n  totalDelayed  Int      @default(0)\n  totalLoaded   Int      @default(0)\n  totalClicked  Int      @default(0)\n  createdAt     DateTime @default(now())\n  updatedAt     DateTime @updatedAt\n}\n",
-  "inlineSchemaHash": "9d455dce8b30b622687145468fa507c7e140ba6f95193b372725538dd1c695fe",
+  "inlineSchema": "// PENDING MIGRATION: after deploying these schema changes run:\n//   npx prisma migrate dev --name add_perf_indexes\n// This adds the compound [to, domainId] index on Email which\n// speeds up the audience COUNT DISTINCT and groupBy queries (Fix 5 + Fix 6).\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nenum Role {\n  ADMIN\n  CLIENT\n}\n\nmodel User {\n  id        String   @id @default(uuid())\n  kindeId   String   @unique\n  email     String   @unique\n  name      String?\n  domains   Domain[]\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel Domain {\n  id        String        @id @default(uuid())\n  name      String        @unique\n  userId    String?\n  user      User?         @relation(fields: [userId], references: [id])\n  emails    Email[]\n  summary   EmailSummary?\n  createdAt DateTime      @default(now())\n  updatedAt DateTime      @updatedAt\n}\n\nmodel Email {\n  id         String  @id @default(uuid())\n  emailId    Int\n  token      String\n  messageId  String  @unique\n  to         String?\n  from       String?\n  subject    String?\n  spamStatus Int?\n  domainId   String\n  domain     Domain  @relation(fields: [domainId], references: [id])\n\n  deliveryStatus String?\n  sentAt         DateTime?\n  firstOpenAt    DateTime?\n  firstClickAt   DateTime?\n\n  events    EmailEvent[]\n  createdAt DateTime     @default(now())\n  updatedAt DateTime     @updatedAt\n\n  @@index([domainId])\n  @@index([domainId, sentAt])\n  @@index([domainId, createdAt])\n  @@index([to])\n  @@index([to, domainId]) // Fix 6: compound index for audience COUNT DISTINCT + groupBy queries\n  @@index([from])\n  @@index([subject])\n  @@index([sentAt])\n}\n\nmodel EmailEvent {\n  id         String   @id @default(uuid())\n  eventId    String   @unique\n  type       String\n  status     String?\n  occurredAt DateTime\n\n  emailId String\n  email   Email  @relation(fields: [emailId], references: [id])\n\n  ipAddress String?\n  country   String?\n  city      String?\n  userAgent String?\n\n  linkId  String?\n  linkUrl String?\n\n  rawPayload Json\n\n  createdAt DateTime @default(now())\n\n  @@index([emailId, type])\n  @@index([type, occurredAt])\n  @@index([emailId, occurredAt])\n}\n\nmodel EmailSummary {\n  id            String   @id @default(cuid())\n  domainId      String   @unique\n  domain        Domain   @relation(fields: [domainId], references: [id])\n  totalSent     Int      @default(0)\n  totalHardFail Int      @default(0)\n  totalSoftFail Int      @default(0)\n  totalBounce   Int      @default(0)\n  totalError    Int      @default(0)\n  totalHeld     Int      @default(0)\n  totalDelayed  Int      @default(0)\n  totalLoaded   Int      @default(0)\n  totalClicked  Int      @default(0)\n  createdAt     DateTime @default(now())\n  updatedAt     DateTime @updatedAt\n}\n",
+  "inlineSchemaHash": "c6eaac71625c85c505cbc8ae8ff72ecd58f325474fb700ce752bd4b00960048b",
   "copyEngine": true
 }
 config.dirname = '/'

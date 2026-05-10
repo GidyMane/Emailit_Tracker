@@ -1,3 +1,8 @@
+// PENDING MIGRATION: after deploying these schema changes run:
+//   npx prisma migrate dev --name add_perf_indexes
+// This adds the compound [to, domainId] index on Email which
+// speeds up the audience COUNT DISTINCT and groupBy queries (Fix 5 + Fix 6).
+
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
@@ -59,6 +64,7 @@ model Email {
   @@index([domainId, sentAt])
   @@index([domainId, createdAt])
   @@index([to])
+  @@index([to, domainId]) // Fix 6: compound index for audience COUNT DISTINCT + groupBy queries
   @@index([from])
   @@index([subject])
   @@index([sentAt])

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { prisma } from "@/lib/prisma";
-import { Prisma } from "../../../../../generated/prisma/client";
+import { Prisma } from "@prisma/client";
 
 function safeJsonResponse<T>(data: T): NextResponse {
 return NextResponse.json(JSON.parse(JSON.stringify(data, (_, value) =>
