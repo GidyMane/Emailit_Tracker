@@ -136,7 +136,8 @@ export default function SuppressionsList({ selectedDomainId = null }: Suppressio
     if (!confirm('Are you sure you want to delete this suppression?')) return
     try {
       setDeleting(id)
-      const response = await fetch(`/api/suppressions/${id}`, { method: 'DELETE' })
+      const encodedId = encodeURIComponent(id)
+      const response = await fetch(`/api/suppressions/${encodedId}`, { method: 'DELETE' })
       if (!response.ok) {
         const errorData = await response.json()
         throw new Error(errorData.error || `Error: ${response.status}`)

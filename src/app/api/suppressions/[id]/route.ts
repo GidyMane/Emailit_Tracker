@@ -243,28 +243,15 @@ async function fetchSinglePage(
 
   const data = await response.json() as Record<string, unknown>;
 
-  const rawList: Record<string, unknown>[] = Array.isArray(data.data)
-    ? (data.data as Record<string, unknown>[])
+  const rawList: EmailItSuppression[] = Array.isArray(data.data)
+    ? (data.data as EmailItSuppression[])
     : Array.isArray(data)
-      ? (data as Record<string, unknown>[])
+      ? (data as EmailItSuppression[])
       : [];
 
-  // Log raw fields on first item so we can see exact Emailit response shape
-  if (rawList.length > 0) {
-    console.log("[fetchSinglePage] Raw fields:", Object.keys(rawList[0]));
-    console.log("[fetchSinglePage] Sample:", JSON.stringify(rawList[0]));
-  }
-
-  const suppressions: EmailItSuppression[] = rawList.map((s) => ({
-    id:         (s.id as string)        || (s.email as string),
-    object:     s.object as string      | undefined,
-    email:      s.email as string,
-    type:       s.type as string        | undefined,
-    reason:     s.reason as string      | undefined,
-    // Normalise timestamp — docs say "timestamp" but real API may differ
-    timestamp:  (s.timestamp as string) || (s.created_at as string) || (s.suppressed_at as string) || undefined,
-    keep_until: (s.keep_until as string | null),
-  }));
+  // Ensure every item has a usable id — Emailit's paginated list may omit sup_xxx
+  // and only include the email address, so fall back to email so deletes work.
+  const suppressions = rawList.map((s) => ({ ...s, id: s.id || s.email }));
 
   const hasNextPage = !!data.next_page_url;
   const hasPreviousPage = !!data.previous_page_url;
