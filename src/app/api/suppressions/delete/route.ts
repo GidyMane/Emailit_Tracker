@@ -10,13 +10,9 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Check if user is admin
-    const adminEmails = ["info@websoftdevelopment.com", "muragegideon2000@gmail.com"];
-    const isAdmin = adminEmails.includes(user.email);
-
-    // Get suppression ID and domain from request body
+    // Any authenticated user can delete a suppression
     const body = await request.json();
-    const { id, domain } = body;
+    const { id } = body;
 
     if (!id) {
       return NextResponse.json(
@@ -25,35 +21,15 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    // For non-admin users, verify the domain matches their email domain
-    if (!isAdmin) {
-      const userEmailDomain = user.email.split("@")[1];
-      if (!userEmailDomain) {
-        return NextResponse.json({ error: "Invalid email format" }, { status: 400 });
-      }
-      if (domain && domain !== userEmailDomain) {
-        return NextResponse.json(
-          { error: "Unauthorized to delete suppressions for this domain" },
-          { status: 403 }
-        );
-      }
-    }
-
-    // Validate API key
     if (!process.env.EMAILIT_API_KEY) {
-      console.error("EMAILIT_API_KEY not configured");
-      return NextResponse.json(
-        { error: "EmailIt API key not configured" },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: "EmailIt API key not configured" }, { status: 500 });
     }
 
-    // Create AbortController for 30-second timeout
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 30000);
 
-    // Call EmailIt API to delete suppression
-    const response = await fetch(`https://api.emailit.com/v1/suppressions/${id}`, {
+    // Fixed: v1 → v2
+    const response = await fetch(`https://api.emailit.com/v2/suppressions/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${process.env.EMAILIT_API_KEY}`,
@@ -68,10 +44,7 @@ export async function DELETE(request: NextRequest) {
       const error = await response.text();
       console.error("EmailIt API error:", response.status, error);
       return NextResponse.json(
-        {
-          error: `EmailIt API error: ${response.status}`,
-          details: error,
-        },
+        { error: `EmailIt API error: ${response.status}`, details: error },
         { status: response.status }
       );
     }
@@ -82,17 +55,9 @@ export async function DELETE(request: NextRequest) {
     });
   } catch (error) {
     console.error("Error deleting suppression:", error);
-
     if (error instanceof Error && error.name === "AbortError") {
-      return NextResponse.json(
-        { error: "Request timeout" },
-        { status: 504 }
-      );
+      return NextResponse.json({ error: "Request timeout" }, { status: 504 });
     }
-
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

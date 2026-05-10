@@ -168,24 +168,37 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Any authenticated user can delete a suppression (no admin restriction)
     if (!process.env.EMAILIT_API_KEY) {
       return NextResponse.json({ error: "EmailIt API key not configured" }, { status: 500 });
     }
 
     const { id } = await params;
-    const response = await callEmailItAPI(`/suppressions/${id}`, "DELETE");
+
+    // URL-encode the id in case it is an email address (@ must be %40)
+    const encodedId = encodeURIComponent(id);
+    console.log(`[DELETE /api/suppressions/${id}] Calling Emailit DELETE /suppressions/${encodedId}`);
+
+    const response = await callEmailItAPI(`/suppressions/${encodedId}`, "DELETE");
 
     if (!response.ok) {
-      const error = await response.text();
+      const errorBody = await response.text();
+      console.error(`[DELETE suppression] Emailit returned ${response.status}:`, errorBody);
       return NextResponse.json(
-        { error: `EmailIt API error: ${response.status}`, details: error },
+        { error: `EmailIt API error: ${response.status}`, details: errorBody },
         { status: response.status }
       );
     }
 
+    // Emailit returns { object, id, email, deleted: true } on success
+    const data = await response.json();
+    console.log(`[DELETE suppression] Success:`, data);
+
     return NextResponse.json({
       success: true,
-      message: `Suppression ${id} deleted successfully`,
+      deleted: true,
+      id,
+      message: `Suppression deleted successfully`,
     });
   } catch (error) {
     if (error instanceof Error && error.name === "AbortError") {
