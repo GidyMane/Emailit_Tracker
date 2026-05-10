@@ -145,7 +145,11 @@ export default function SuppressionsList({ selectedDomainId = null }: Suppressio
       const response = await fetch(`/api/suppressions/${encodedIdentifier}`, { method: 'DELETE' })
       if (!response.ok) {
         const errorData = await response.json()
-        throw new Error(errorData.error || `Error: ${response.status}`)
+        // Show Emailit's full error detail so we can diagnose API rejections
+        const msg = errorData.details
+          ? `${errorData.error} — ${errorData.details}`
+          : errorData.error || `Error: ${response.status}`
+        throw new Error(msg)
       }
       setSuppressions(suppressions.filter(s => s.id !== id))
       toast.success('Suppression deleted successfully')
