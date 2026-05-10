@@ -9,6 +9,12 @@ interface Domain {
   updatedAt: Date;
 }
 
+// Fix 3: Server-side in-memory cache for stats.
+// Stats only change when the cron job syncs new emails from Emailit.
+// Caching for 60 s means the first request in any minute hits the DB;
+// every subsequent request in that window is instant (<1 ms).
+const statsCache = new Map<string, { data: unknown; expiresAt: number }>()
+const STATS_CACHE_TTL = 60_000 // 60 seconds
 
 // Fix 2: shared helper — adds Cache-Control header to successful responses
 function cachedResponse(data: unknown, maxAge: number): NextResponse {
@@ -100,6 +106,21 @@ export async function GET(request: NextRequest) {
     }
 
     const emailDateFilter = { ...domainFilter, ...dateFilter };
+
+    // Fix 3: Build a cache key from all inputs that affect the result.
+    // user.email scopes non-admin users; domainIds+dates scope admin views.
+    const cacheKey = [
+      isAdmin ? "admin" : user.email,
+      domainIds.sort().join(","),
+      startDate ?? "",
+      endDate ?? "",
+    ].join("|")
+
+    const cached = statsCache.get(cacheKey)
+    if (cached && cached.expiresAt > Date.now()) {
+      // Serve from cache — no DB queries at all
+      return cachedResponse(cached.data, 60)
+    }
 
     // Aggregated engagement from summary (unique first opens/clicks per email)
     const summaries = await prisma.emailSummary.findMany({ where: domainFilter });
@@ -237,8 +258,9 @@ export async function GET(request: NextRequest) {
       total_recipients: number;
     }[]>(engagementQuery);
 
-    // Fix 2: cache stats for 60 s (only changes when cron syncs new emails)
-    return cachedResponse({
+    // Fix 3: Build the response payload, store it in the server-side cache,
+    // then return it with the HTTP Cache-Control header (Fix 2).
+    const responsePayload = {
       stats: {
         totalSent: sentCount,
         delivered: sentCount,
@@ -285,7 +307,16 @@ export async function GET(request: NextRequest) {
       domainName: isAdmin ? (selectedDomainId && selectedDomainId !== "all" && selectedName ? selectedName : "All Domains") : (domains[0].name),
       isAdmin,
       domainsCount: isAdmin ? domains.length : 1,
-    }, 60);
+    }
+
+    // Fix 3: Write to server-side cache before responding
+    statsCache.set(cacheKey, {
+      data: responsePayload,
+      expiresAt: Date.now() + STATS_CACHE_TTL,
+    })
+
+    // Fix 2: Return with HTTP Cache-Control header
+    return cachedResponse(responsePayload, 60);
   } catch (error) {
     console.error("Error fetching email statistics:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
