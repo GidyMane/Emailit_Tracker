@@ -173,7 +173,6 @@ export async function DELETE(
 
     const { id } = await params;
 
-    // Log exactly what we received — this tells us if id is "undefined" or malformed
     console.log(`[DELETE] Raw id from Next.js params: "${id}" (type: ${typeof id})`);
 
     if (!id || id === "undefined" || id === "null") {
@@ -183,12 +182,26 @@ export async function DELETE(
       );
     }
 
-    // Encode so email addresses work (@ → %40). Safe for sup_xxx IDs too.
     const encodedId = encodeURIComponent(id);
-    console.log(`[DELETE] Calling Emailit: DELETE /v2/suppressions/${encodedId}`);
+    const url = `https://api.emailit.com/v2/suppressions/${encodedId}`;
+    console.log(`[DELETE] Calling Emailit: DELETE ${url}`);
 
-    const response = await callEmailItAPI(`/suppressions/${encodedId}`, "DELETE");
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000);
 
+    // Do NOT send Content-Type: application/json on a bodyless DELETE.
+    // Emailit uses Fastify which tries to parse a JSON body when that header
+    // is present — an empty body causes a FastifyError 400.
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${process.env.EMAILIT_API_KEY}`,
+        // No Content-Type header — no body to describe
+      },
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
     console.log(`[DELETE] Emailit responded with status: ${response.status}`);
 
     if (!response.ok) {
