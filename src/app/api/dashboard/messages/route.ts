@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { prisma } from "@/lib/prisma";
-import { Prisma } from "@prisma/client";
 
 function safeJsonResponse<T>(data: T): NextResponse {
 return NextResponse.json(JSON.parse(JSON.stringify(data, (_, value) =>
@@ -145,7 +144,7 @@ const dateRangeFilter = getDateRangeFilter(dateRange);
 // Fix 4: Build WHERE clause with ALL filters — including status — so
 // the DB only fetches matching rows instead of fetching everything and
 // discarding most of it in JavaScript afterward.
-const statusFilter: Prisma.EmailWhereInput =
+const statusFilter =
   statusParam !== "all"
     ? {
         events: {
@@ -156,7 +155,7 @@ const statusFilter: Prisma.EmailWhereInput =
       }
     : {};
 
-const whereClause: Prisma.EmailWhereInput = {
+const whereClause = {
   domainId: { in: domainIds },
   ...searchFilter,
   ...dateRangeFilter,
