@@ -243,11 +243,28 @@ async function fetchSinglePage(
 
   const data = await response.json() as Record<string, unknown>;
 
-  const suppressions: EmailItSuppression[] = Array.isArray(data.data)
-    ? (data.data as EmailItSuppression[])
+  const rawList: Record<string, unknown>[] = Array.isArray(data.data)
+    ? (data.data as Record<string, unknown>[])
     : Array.isArray(data)
-      ? (data as EmailItSuppression[])
+      ? (data as Record<string, unknown>[])
       : [];
+
+  // Log raw fields on first item so we can see exact Emailit response shape
+  if (rawList.length > 0) {
+    console.log("[fetchSinglePage] Raw fields:", Object.keys(rawList[0]));
+    console.log("[fetchSinglePage] Sample:", JSON.stringify(rawList[0]));
+  }
+
+  const suppressions: EmailItSuppression[] = rawList.map((s) => ({
+    id:         (s.id as string)        || (s.email as string),
+    object:     s.object as string      | undefined,
+    email:      s.email as string,
+    type:       s.type as string        | undefined,
+    reason:     s.reason as string      | undefined,
+    // Normalise timestamp — docs say "timestamp" but real API may differ
+    timestamp:  (s.timestamp as string) || (s.created_at as string) || (s.suppressed_at as string) || undefined,
+    keep_until: (s.keep_until as string | null),
+  }));
 
   const hasNextPage = !!data.next_page_url;
   const hasPreviousPage = !!data.previous_page_url;
