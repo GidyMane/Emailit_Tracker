@@ -13,7 +13,6 @@ interface SuppressionResponse {
 
 const adminEmails = ["info@websoftdevelopment.com", "muragegideon2000@gmail.com"];
 
-// FIX 1: Use v2
 async function callEmailItAPI(
   endpoint: string,
   method: string,
@@ -70,7 +69,9 @@ export async function GET(
     }
 
     const { id } = await params;
-    const response = await callEmailItAPI(`/suppressions/${id}`, "GET");
+    // Encode so email addresses work as lookup keys
+    const encodedId = encodeURIComponent(id);
+    const response = await callEmailItAPI(`/suppressions/${encodedId}`, "GET");
 
     if (!response.ok) {
       const error = await response.text();
@@ -90,8 +91,7 @@ export async function GET(
   }
 }
 
-// FIX 3: PATCH — send the correct Emailit field names (reason, type, keep_until)
-// The old code sent { name, description } which are not valid Emailit suppression fields.
+// PATCH /api/suppressions/:id
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -110,13 +110,11 @@ export async function PATCH(
 
     const body = await request.json();
 
-    // Accept correct Emailit field names; keep legacy aliases for safety
     const email = body.email;
     const reason = body.reason || body.description;
     const type = body.type;
     const keep_until = body.keep_until;
 
-    // At least one field must be provided
     if (!email && !reason && !type && keep_until === undefined) {
       return NextResponse.json(
         { error: "At least one field (email, reason, type, keep_until) is required" },
@@ -135,7 +133,8 @@ export async function PATCH(
     if (keep_until !== undefined) updatePayload.keep_until = keep_until;
 
     const { id } = await params;
-    const response = await callEmailItAPI(`/suppressions/${id}`, "POST", updatePayload);
+    const encodedId = encodeURIComponent(id);
+    const response = await callEmailItAPI(`/suppressions/${encodedId}`, "POST", updatePayload);
 
     if (!response.ok) {
       const error = await response.text();
@@ -168,45 +167,57 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Any authenticated user can delete a suppression (no admin restriction)
     if (!process.env.EMAILIT_API_KEY) {
       return NextResponse.json({ error: "EmailIt API key not configured" }, { status: 500 });
     }
 
     const { id } = await params;
 
-    // URL-encode the id in case it is an email address (@ must be %40)
+    // Log exactly what we received — this tells us if id is "undefined" or malformed
+    console.log(`[DELETE] Raw id from Next.js params: "${id}" (type: ${typeof id})`);
+
+    if (!id || id === "undefined" || id === "null") {
+      return NextResponse.json(
+        { error: "Suppression ID is missing or invalid" },
+        { status: 400 }
+      );
+    }
+
+    // Encode so email addresses work (@ → %40). Safe for sup_xxx IDs too.
     const encodedId = encodeURIComponent(id);
-    console.log(`[DELETE /api/suppressions/${id}] Calling Emailit DELETE /suppressions/${encodedId}`);
+    console.log(`[DELETE] Calling Emailit: DELETE /v2/suppressions/${encodedId}`);
 
     const response = await callEmailItAPI(`/suppressions/${encodedId}`, "DELETE");
 
+    console.log(`[DELETE] Emailit responded with status: ${response.status}`);
+
     if (!response.ok) {
       const errorBody = await response.text();
-      console.error(`[DELETE suppression] Emailit returned ${response.status}:`, errorBody);
+      console.error(`[DELETE] Emailit error body:`, errorBody);
       return NextResponse.json(
         { error: `EmailIt API error: ${response.status}`, details: errorBody },
         { status: response.status }
       );
     }
 
-    // Emailit docs show a JSON body but the real API may return an empty 200/204
+    // Emailit may return empty body or JSON — handle both
     const rawText = await response.text();
     let data: Record<string, unknown> = {};
-    try { if (rawText.trim()) data = JSON.parse(rawText); } catch { /* empty body */ }
-    console.log(`[DELETE suppression] Success (status ${response.status}):`, data);
+    try { if (rawText.trim()) data = JSON.parse(rawText); } catch { /* empty body is fine */ }
+    console.log(`[DELETE] Success:`, data);
 
     return NextResponse.json({
       success: true,
       deleted: true,
       id,
-      message: `Suppression deleted successfully`,
+      message: "Suppression deleted successfully",
       ...data,
     });
   } catch (error) {
     if (error instanceof Error && error.name === "AbortError") {
       return NextResponse.json({ error: "Request timeout" }, { status: 504 });
     }
+    console.error("[DELETE] Unexpected error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

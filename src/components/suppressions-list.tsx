@@ -132,11 +132,17 @@ export default function SuppressionsList({ selectedDomainId = null }: Suppressio
     fetchSuppressions()
   }, [fetchSuppressions])
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this suppression?')) return
+  // Use email as the identifier — it's always present and Emailit accepts it URL-encoded.
+  // Falls back to sup_xxx id if email somehow missing.
+  const handleDelete = async (id: string, email: string) => {
+    if (!confirm(`Remove ${email} from the suppression list?`)) return
+    // Use email as the lookup key (always valid); encode @ as %40 for the URL
+    const identifier = email || id
+    console.log('[handleDelete] identifier:', identifier)
     try {
       setDeleting(id)
-      const response = await fetch(`/api/suppressions/${id}`, { method: 'DELETE' })
+      const encodedIdentifier = encodeURIComponent(identifier)
+      const response = await fetch(`/api/suppressions/${encodedIdentifier}`, { method: 'DELETE' })
       if (!response.ok) {
         const errorData = await response.json()
         throw new Error(errorData.error || `Error: ${response.status}`)
@@ -376,7 +382,7 @@ export default function SuppressionsList({ selectedDomainId = null }: Suppressio
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => handleDelete(suppression.id)}
+                          onClick={() => handleDelete(suppression.id, suppression.email)}
                           disabled={deleting === suppression.id}
                           className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950"
                         >
