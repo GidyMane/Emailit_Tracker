@@ -142,11 +142,25 @@ const getDateRangeFilter = (range: string) => {
 
 const dateRangeFilter = getDateRangeFilter(dateRange);
 
-// Build WHERE clause with all filters
+// Fix 4: Build WHERE clause with ALL filters — including status — so
+// the DB only fetches matching rows instead of fetching everything and
+// discarding most of it in JavaScript afterward.
+const statusFilter: Prisma.EmailWhereInput =
+  statusParam !== "all"
+    ? {
+        events: {
+          some: {
+            type: statusParam,
+          },
+        },
+      }
+    : {};
+
 const whereClause: Prisma.EmailWhereInput = {
   domainId: { in: domainIds },
   ...searchFilter,
   ...dateRangeFilter,
+  ...statusFilter,
 };
 
 // Fetch total count and paginated emails  
@@ -222,8 +236,9 @@ const processedEmails = emails.map((email) => {
   };  
 });  
 
-// Filter by status if specified  
-const finalEmails = statusParam !== "all" ? processedEmails.filter((e) => e.statusType === statusParam) : processedEmails;  
+// Fix 4: Status filtering now happens in SQL (whereClause above).
+// totalCount already reflects the filtered total — pagination is now correct.
+const finalEmails = processedEmails;
 
 // Fix 2: cache messages list for 10 s
 return cachedResponse(
